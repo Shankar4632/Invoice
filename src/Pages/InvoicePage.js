@@ -7,6 +7,7 @@ import Select from "@mui/material/Select";
 
 import { MdModeEditOutline } from "react-icons/md";
 import { AiOutlinePlus } from "react-icons/ai";
+import { RxDividerVertical } from "react-icons/rx";
 
 import { BsArrowLeft, BsThreeDotsVertical, BsCamera } from "react-icons/bs";
 
@@ -129,8 +130,28 @@ const InvoicePage = () => {
             <button className="text-bold ml-4 mt-3 text-blue-600  font-bold flex items-center text-xl ">
               <AiOutlinePlus className="mr-2" /> Add items or Service
             </button>
-            <div className="flex items-center p-3 mt-10">
+            <div className=" p-3 mt-10">
               <p className="font-bold text-lg">Message To Customer</p>
+              <div className="relative mb-3" data-te-input-wrapper-init>
+                <textarea
+                  className="peer block min-h-[auto] w-full border border-gray-500 rounded mt-5 text-black px-3 py-[0.32rem]  "
+                  id="exampleFormControlTextarea1"
+                  rows="6"
+                  placeholder="Seller note to customer"
+                >
+                  {" "}
+                </textarea>
+                <div className="flex items-center ">
+                  <button className="text-bold  mt-3 text-blue-600  font-bold flex items-center text-xl ">
+                    Add terms and conditions
+                  </button>
+
+                  <button className="text-bold  ml-1 mt-3 text-blue-600  font-bold flex items-center text-xl ">
+                    <RxDividerVertical className="text-black flex item-center text-xl" />{" "}
+                    Add reference number
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
           <div className="border w-[25%] rounded-xl bg-white ">
