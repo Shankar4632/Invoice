@@ -1,5 +1,7 @@
+//Reactjs Library imports
 import * as React from "react";
 import { useState } from "react";
+//materialUI imports
 import Box from "@mui/material/Box";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
@@ -7,20 +9,23 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
-
+//Reacticons
 import { MdModeEditOutline } from "react-icons/md";
 import { AiOutlinePlus } from "react-icons/ai";
 import { RxDividerVertical } from "react-icons/rx";
 import { IoIosArrowUp } from "react-icons/io";
-
 import { BsArrowLeft, BsThreeDotsVertical, BsCamera } from "react-icons/bs";
-
+//Reat Router Dom
+import { useNavigate } from "react-router-dom";
 const InvoicePage = () => {
+  //hooks or States
   const [selectedTemplate, setSelectedTemplate] = React.useState("");
   const [currency, setCurrency] = React.useState("");
   const [selectedOption, setSelectedOption] = React.useState("");
   const [inputValue, setInputValue] = React.useState("");
   const [textareaValue, setTextareaValue] = useState("");
+  //Function Calling
+  const navigate = useNavigate();
 
   const handleTextareaChange = (event) => {
     setTextareaValue(event.target.value);
@@ -58,6 +63,18 @@ const InvoicePage = () => {
       label: "Tax able",
     },
   ];
+
+  const receipt = [
+    {
+      value: "on receipt",
+      label: "on receipt",
+    },
+    {
+      value: "without receipt ",
+      label: "without receipt",
+    },
+  ];
+  //Return Statements
   return (
     <div>
       <div className=" ">
@@ -153,7 +170,10 @@ const InvoicePage = () => {
             </div>
             <div className="flex items-center pl-3 pt-20">
               <p className="font-bold text-lg">Items</p>
-              <button className=" text-blue-500 text-xl font-bold  rounded-full w-full flex justify-end items-center mr-3">
+              <button
+                className=" text-blue-500 text-xl font-bold  rounded-full w-full flex justify-end items-center mr-3"
+                onClick={() => navigate("/customise")}
+              >
                 <MdModeEditOutline className="mr-1" /> Customise
               </button>
             </div>
@@ -310,6 +330,55 @@ const InvoicePage = () => {
                   defaultValue="23/24-03"
                 />
               </Box>
+              <Box
+                component="form"
+                sx={{
+                  "& .MuiTextField-root": { m: 1, width: "25ch" },
+                }}
+                noValidate
+                autoComplete="off"
+              >
+                <TextField
+                  id="outlined-select-currency"
+                  select
+                  label="Due"
+                  defaultValue="EUR"
+                >
+                  {receipt.map((option) => (
+                    <MenuItem key={option.value} value={option.value}>
+                      {option.label}
+                    </MenuItem>
+                  ))}
+                </TextField>
+              </Box>
+              <div className="mx-auto mt-3 border h-[350px] grid grid-cols-2 ">
+                <div>
+                  <p className="font-semibold w-full text-lg p-3">Subtotal </p>
+                  <p className="font-semibold text-lg p-3">Other Discounts </p>
+                  <p className="font-semibold text-lg p-3">Shipping </p>
+                  <p className="font-semibold text-lg p-3">Other Amount </p>
+                  <p className="font-semibold text-lg p-3">Total </p>
+                </div>
+                <div className="">
+                  <p className="p-3">$0.00</p>
+                  <p className="p-3">
+                    <i className="p-2 text-blue-600 rounded-xl text-lg font-bold not-italic cursor-pointer">
+                      Add
+                    </i>
+                  </p>
+                  <p className="p-3 mt-8">
+                    <i className=" p-2 text-blue-600 rounded-xl text-lg font-bold not-italic cursor-pointer">
+                      Add
+                    </i>
+                  </p>
+                  <p className="p-3">
+                    <i className="p-2 text-blue-600 rounded-xl text-lg font-bold not-italic cursor-pointer">
+                      Add
+                    </i>
+                  </p>
+                  <p className="p-3"></p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
