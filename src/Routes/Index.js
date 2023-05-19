@@ -4,6 +4,8 @@ import InvoicePage from "../Pages/InvoicePage";
 import CustomiseItem from "../Pages/CustomiseItem";
 import AddItem from "../Pages/AddItem";
 import AddCustomer from "../Pages/AddCustomer";
+import AmountsOnly from "../Pages/AmountsOnly";
+import Hours from "../Pages/Hours";
 
 const Index = () => {
   return (
@@ -13,6 +15,8 @@ const Index = () => {
         <Route path="/customise" element={<CustomiseItem />} />
         <Route path="/additems" element={<AddItem />} />
         <Route path="/addcustomer" element={<AddCustomer />} />
+        <Route path="/amountsonly" element={<AmountsOnly />} />
+        <Route path="/hours" element={<Hours />} />
       </Routes>
     </div>
   );

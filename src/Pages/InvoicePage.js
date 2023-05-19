@@ -106,9 +106,30 @@ const InvoicePage = () => {
                     label="Templete"
                     onChange={handleselectedTemplate}
                   >
-                    <MenuItem value="template1">Ten</MenuItem>
-                    <MenuItem value="template2">Twenty</MenuItem>
-                    <MenuItem value="template3">Thirty</MenuItem>
+                    <MenuItem
+                      value="template1 "
+                      onClick={() => {
+                        navigate("/amountsonly");
+                      }}
+                    >
+                      Amounts only
+                    </MenuItem>
+                    <MenuItem
+                      value="template2"
+                      onClick={() => {
+                        navigate("/amountsonly");
+                      }}
+                    >
+                      Hours
+                    </MenuItem>
+                    <MenuItem
+                      value="template3"
+                      onClick={() => {
+                        navigate("/");
+                      }}
+                    >
+                      Quantity{" "}
+                    </MenuItem>
                   </Select>
                 </FormControl>
               </Box>
