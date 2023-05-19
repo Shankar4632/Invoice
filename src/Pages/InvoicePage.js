@@ -8,7 +8,6 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import TextField from "@mui/material/TextField";
-import Autocomplete from "@mui/material/Autocomplete";
 //Reacticons
 import { MdModeEditOutline } from "react-icons/md";
 import { AiOutlinePlus } from "react-icons/ai";
@@ -22,11 +21,14 @@ const InvoicePage = () => {
   const [selectedTemplate, setSelectedTemplate] = React.useState("");
   const [currency, setCurrency] = React.useState("");
   const [selectedOption, setSelectedOption] = React.useState("");
-  const [inputValue, setInputValue] = React.useState("");
   const [textareaValue, setTextareaValue] = useState("");
+  const [showAddButton, setShowAddButton] = useState(false);
+
   //Function Calling
   const navigate = useNavigate();
-
+  const handleClick = () => {
+    setShowAddButton(true);
+  };
   const handleTextareaChange = (event) => {
     setTextareaValue(event.target.value);
   };
@@ -41,17 +43,6 @@ const InvoicePage = () => {
   const handleOptionChange = (event) => {
     setSelectedOption(event.target.value);
   };
-
-  const handleInputChange = (event) => {
-    setInputValue(event.target.value);
-  };
-  const options = top100Films.map((option) => {
-    const firstLetter = option.title[0].toUpperCase();
-    return {
-      firstLetter: /[0-9]/.test(firstLetter) ? "0-9" : firstLetter,
-      ...option,
-    };
-  });
 
   const currencies = [
     {
@@ -149,24 +140,25 @@ const InvoicePage = () => {
                 invoice multiple customer
               </button>
             </div>
-            <div className="mx-auto w-full ">
-              <Autocomplete
-                id="grouped-demo"
-                options={options.sort(
-                  (a, b) => -b.firstLetter.localeCompare(a.firstLetter)
-                )}
-                groupBy={(option) => option.firstLetter}
-                getOptionLabel={(option) => option.title}
-                sx={{
-                  width: 250,
-                  minWidth: "97%",
-
-                  marin: "0 auto",
-                }}
-                renderInput={(params) => (
-                  <TextField {...params} label="With categories" />
-                )}
+            <div className="mx-auto w-[97%] ">
+              <input
+                required
+                id="outlined-required"
+                className="w-full mt-3 py-4 px-3 border border-gray-500 rounded-md"
+                type="text"
+                placeholder="Email address or name"
+                onClick={handleClick}
               />
+              {showAddButton && (
+                <button
+                  className="mt-3 px-4 py-2 rounded bg-blue-900 text-white font-semibold"
+                  onClick={() => {
+                    navigate("/addcustomer");
+                  }}
+                >
+                  Add Customer
+                </button>
+              )}
             </div>
             <div className="flex items-center pl-3 pt-20">
               <p className="font-bold text-lg">Items</p>
@@ -250,7 +242,10 @@ const InvoicePage = () => {
                 onChange={handleTextareaChange}
               ></textarea>
             </div>
-            <button className="text-bold ml-4 mt-3 text-blue-600  font-bold flex items-center text-xl ">
+            <button
+              className="text-bold ml-4 mt-3 text-blue-600  font-bold flex items-center text-xl "
+              onClick={() => navigate("/additems")}
+            >
               <AiOutlinePlus className="mr-2" /> Add items or Service
             </button>
             <div className=" p-3 mt-10">
@@ -301,7 +296,7 @@ const InvoicePage = () => {
               <p className="font-bold text-lg">Memo To Self</p>
               <div className="relative mb-2" data-te-input-wrapper-init>
                 <textarea
-                  className="peer block min-h-[auto] w-[97%] mx-auto border border-gray-500 rounded mt-5 text-black px-3 py-[0.32rem]  "
+                  className="peer block min-h-[auto] placeholder-gray-500  w-[97%] mx-auto border border-gray-500 rounded mt-5 text-black px-3 py-[0.32rem]  "
                   id="exampleFormControlTextarea1"
                   rows="6"
                   placeholder="Memo"
@@ -388,10 +383,3 @@ const InvoicePage = () => {
 };
 
 export default InvoicePage;
-const top100Films = [
-  { title: "The Shawshank Redemption" },
-  { title: "The Godfather" },
-  { title: "The Godfather: Part II" },
-  { title: "The Dark Knight" },
-  { title: "12 Angry Men" },
-];

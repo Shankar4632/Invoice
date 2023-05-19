@@ -196,7 +196,7 @@ const CustomiseItem = () => {
         </div>{" "}
       </form>
       <div className="text-center pb-10">
-        <button className="px-8 py-3 rounded-3xl  bg-blue-800 text-white font-bold mx-auto ">
+        <button className="px-8 py-3 rounded-3xl  bg-blue-900 text-white font-bold mx-auto ">
           Save
         </button>
       </div>
