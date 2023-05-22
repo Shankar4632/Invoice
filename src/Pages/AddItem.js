@@ -64,8 +64,8 @@ const AddItem = () => {
             id="dropdown-select"
             className="w-full py-4 px-3 text-base mt-3 border text-gray-500 border-gray-500 rounded-md box-border"
           >
-            <option value="">None</option>
-            <option value="option1">Option 1</option>
+            <option value="">No Tax</option>
+            <option value="option1">Tax able</option>
             <option value="option2">Option 2</option>
             <option value="option3">Option 3</option>
           </select>

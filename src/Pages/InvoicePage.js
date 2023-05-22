@@ -23,11 +23,15 @@ const InvoicePage = () => {
   const [selectedOption, setSelectedOption] = React.useState("");
   const [textareaValue, setTextareaValue] = useState("");
   const [showAddButton, setShowAddButton] = useState(false);
+  const [showAddTax, setShowAddTax] = useState(false);
 
   //Function Calling
   const navigate = useNavigate();
   const handleClick = () => {
     setShowAddButton(true);
+  };
+  const handleClickTax = () => {
+    setShowAddTax(true);
   };
   const handleTextareaChange = (event) => {
     setTextareaValue(event.target.value);
@@ -44,7 +48,7 @@ const InvoicePage = () => {
     setSelectedOption(event.target.value);
   };
 
-  const currencies = [
+  const Tax = [
     {
       value: "No Tax",
       label: "No Tax",
@@ -61,8 +65,28 @@ const InvoicePage = () => {
       label: "on receipt",
     },
     {
-      value: "without receipt ",
-      label: "without receipt",
+      value: "on specific date ",
+      label: "on specific date",
+    },
+    {
+      value: "in 10 days ",
+      label: "in 10 days",
+    },
+    {
+      value: "in 15 days ",
+      label: "in 15 days",
+    },
+    {
+      value: "in 20 days ",
+      label: "in 20 days",
+    },
+    {
+      value: "in 25 days ",
+      label: "in 25 days",
+    },
+    {
+      value: "in 30 days ",
+      label: "in 30 days",
     },
   ];
   //Return Statements
@@ -244,8 +268,16 @@ const InvoicePage = () => {
                     select
                     label="Select"
                     defaultValue="EUR"
+                    onClick={handleClickTax}
                   >
-                    {currencies.map((option) => (
+                    {showAddTax && (
+                      <MenuItem>
+                        <button onClick={() => navigate("/addtax")}>
+                          Add Tax
+                        </button>
+                      </MenuItem>
+                    )}
+                    {Tax.map((option) => (
                       <MenuItem key={option.value} value={option.value}>
                         {option.label}
                       </MenuItem>
@@ -328,7 +360,7 @@ const InvoicePage = () => {
               </div>
             </div>
           </div>
-          <div className=" w-[25%]  ">
+          <div className=" w-[25%] text-center ">
             <div className="h-[200px] border rounded-xl bg-white">1</div>
             <div className="h-[700px] border rounded-xl bg-white mt-4 pt-8 pl-4 ">
               <Box

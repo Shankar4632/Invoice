@@ -6,7 +6,7 @@ import AddItem from "../Pages/AddItem";
 import AddCustomer from "../Pages/AddCustomer";
 import AmountsOnly from "../Pages/AmountsOnly";
 import Hours from "../Pages/Hours";
-
+import AddTax from "../Pages/AddTax";
 const Index = () => {
   return (
     <div>
@@ -17,6 +17,7 @@ const Index = () => {
         <Route path="/addcustomer" element={<AddCustomer />} />
         <Route path="/amountsonly" element={<AmountsOnly />} />
         <Route path="/hours" element={<Hours />} />
+        <Route path="/addtax" element={<AddTax />} />
       </Routes>
     </div>
   );
