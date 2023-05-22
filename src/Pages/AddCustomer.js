@@ -78,7 +78,7 @@ const AddCustomer = () => {
             placeholder="Email address"
           />
         </div>
-        <div className="grid grid-cols-2 w-full border mt-3 text-center">
+        <div className="grid grid-cols-2 w-full  mt-3 text-center">
           <select
             id="dropdown-select"
             className="w-[95%] py-4 px-3 text-base border border-gray-500 rounded-md box-border"

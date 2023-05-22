@@ -15,7 +15,7 @@ const AddItem = () => {
     setTextareaValue(event.target.value);
   };
   return (
-    <div className="bg-white h-screen w-[70%] mx-auto border">
+    <div className="bg-white h-auto w-[70%] mx-auto border">
       <div className="flex items-center  mt-4 ">
         <i className="w-full flex justify-center text-blue-600  ">
           <FaPaypal className="text-3xl" />

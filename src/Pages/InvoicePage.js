@@ -117,7 +117,7 @@ const InvoicePage = () => {
                     <MenuItem
                       value="template2"
                       onClick={() => {
-                        navigate("/amountsonly");
+                        navigate("/hours");
                       }}
                     >
                       Hours
@@ -212,7 +212,7 @@ const InvoicePage = () => {
                 <Box
                   component="form"
                   sx={{
-                    "& > :not(style)": { m: 1, width: "70%" },
+                    "& > :not(style)": { m: 1, width: "90%" },
                   }}
                   noValidate
                   autoComplete="off"
@@ -228,7 +228,6 @@ const InvoicePage = () => {
                   label="Price"
                   type="search"
                   style={{
-                    marginRight: "10px",
                     width: "25%",
                   }}
                 />
