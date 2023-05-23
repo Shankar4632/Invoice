@@ -1,20 +1,22 @@
+//import from reactjs package
 import React from "react";
 import { useState, useEffect } from "react";
-// import { useState } from "react";
 //import reacticons
 import { FaPaypal } from "react-icons/fa";
 import { RxCross1 } from "react-icons/rx";
 //import Routes
 import { useNavigate } from "react-router-dom";
 //import from firebase
-
 import { addDoc, collection, getDocs } from "firebase/firestore";
 import { db } from "../firebase-config";
+//import from country json
+import countrydata from "../json file/countriesdata.json";
+import states from "../json file/states.json";
+import language from "../json file/language.json";
 
 const AddCustomer = () => {
   //hooks or states
   const [isLoading, setIsLoading] = useState(true);
-
   const [textareaValue, setTextareaValue] = useState("");
   const [users, setUsers] = useState([]);
   const usersdetails = collection(db, "users");
@@ -35,9 +37,34 @@ const AddCustomer = () => {
       inputs.firstname === "" ||
       inputs.lastname === "" ||
       inputs.email === "" ||
+      inputs.businessname === "" ||
       inputs.phone === ""
     ) {
-      alert("All fields are required");
+      alert(
+        <div
+          className="flex p-4 mb-4 text-sm text-yellow-800 rounded-lg bg-yellow-50 dark:bg-gray-800 dark:text-yellow-300"
+          role="alert"
+        >
+          <svg
+            aria-hidden="true"
+            className="flex-shrink-0 inline w-5 h-5 mr-3"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+          <span className="sr-only">Info</span>
+          <div>
+            <span className="font-medium">Warning alert!</span> Change a few
+            things up and try submitting again.
+          </div>
+        </div>
+      );
     } else {
       createuser();
       navigate("/");
@@ -49,7 +76,7 @@ const AddCustomer = () => {
       lastname: inputs.lastname,
       email: inputs.email,
       businessname: inputs.businessname,
-      pho234ne: inputs.phone,
+      phone: inputs.phone,
     });
   };
   //on Change action event
@@ -63,16 +90,18 @@ const AddCustomer = () => {
     const getUsers = async () => {
       const data = await getDocs(usersdetails);
       setUsers(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-      console.log(data);
+
       setIsLoading(false);
     };
     getUsers();
-  }, []);
+  }, [usersdetails]);
 
   const navigate = useNavigate();
   const handleTextareaChange = (event) => {
     setTextareaValue(event.target.value);
   };
+  //fetch data of country in json format
+
   //loading
   if (isLoading) {
     return (
@@ -85,6 +114,7 @@ const AddCustomer = () => {
   if (!users) {
     return <div>No data available</div>;
   }
+
   //return statement
   return (
     <div className="bg-white h-auto w-[70%] mx-auto border">
@@ -130,6 +160,7 @@ const AddCustomer = () => {
                 type="search"
                 className=" w-[95%]  border border-gray-400 rounded-md py-4 px-3 placeholder-black"
                 placeholder="First name"
+                required
               />
             </div>
             <div className="">
@@ -141,6 +172,7 @@ const AddCustomer = () => {
                 type="search"
                 className=" w-[95%]  border border-gray-400 rounded-md py-4 px-3 placeholder-black"
                 placeholder="Last name"
+                required
               />
             </div>
           </div>
@@ -153,6 +185,7 @@ const AddCustomer = () => {
               onChange={handleChange}
               className="w-[98%] mt-3 border border-gray-400 rounded-md py-4 px-3 placeholder-black"
               placeholder="Business name"
+              required
             />
           </div>
           <div className="w-full  text-center">
@@ -164,6 +197,7 @@ const AddCustomer = () => {
               onChange={handleChange}
               className="w-[98%] mt-3 border border-gray-400 rounded-md py-4 px-3 placeholder-black"
               placeholder="Email address"
+              required
             />
           </div>
           <div className="grid grid-cols-2 w-full  mt-3 text-center">
@@ -171,10 +205,14 @@ const AddCustomer = () => {
               id="dropdown-select"
               className="w-[95%] py-4 px-3 text-base border border-gray-500 rounded-md box-border"
             >
-              <option value="">code</option>
-              <option value="option1">+91</option>
-              <option value="option2">Option 2</option>
-              <option value="option3">Option 3</option>
+              <option selected disabled="true" value="option1">
+                ---select code---
+              </option>
+              {countrydata.map((country, index) => (
+                <option value="option1" key={index}>
+                  +{country.code}
+                </option>
+              ))}
             </select>
             <div className="">
               {" "}
@@ -185,6 +223,7 @@ const AddCustomer = () => {
                 onChange={handleChange}
                 className=" w-[95%]  border border-gray-400 rounded-md py-4 px-3 placeholder-black"
                 placeholder="Phone number"
+                required
               />
             </div>
           </div>
@@ -196,12 +235,16 @@ const AddCustomer = () => {
             {" "}
             <select
               id="dropdown-select"
-              className="w-[98%] py-4 px-3 text-base border border-gray-500 rounded-md box-border"
+              className="w-[98%] py-4 px-3 text-black border border-gray-500 rounded-md box-border"
             >
-              <option value="">Country</option>
-              <option value="option1">USA</option>
-              <option value="option2">India</option>
-              <option value="option3">Germany</option>
+              <option selected disabled="true" value="option1">
+                ---select country---
+              </option>
+              {countrydata.map((country, index) => (
+                <option value="option1" key={index}>
+                  {country.country}
+                </option>
+              ))}
             </select>
           </div>
           <div className="w-full  text-center">
@@ -224,23 +267,35 @@ const AddCustomer = () => {
           </div>
           <div className="grid grid-cols-2 w-full mt-3 text-center">
             <div className="">
-              {" "}
-              <input
-                id="outlined-search"
-                type="text"
-                className=" w-[95%]  border border-gray-400 rounded-md py-4 px-3 placeholder-black"
-                placeholder="Town/City"
-              />
+              <select
+                id="dropdown-select"
+                className="w-[95%] py-4 px-3 text-base border border-gray-500 rounded-md box-border"
+              >
+                <option selected disabled="true" value="option1">
+                  ---select city---
+                </option>
+                {states.map((name, index) => (
+                  <option value="option1" key={index}>
+                    {name.name}
+                  </option>
+                ))}
+              </select>
             </div>
-            <select
-              id="dropdown-select"
-              className="w-[95%] py-4 px-3 text-base border border-gray-500 rounded-md box-border"
-            >
-              <option value="">State</option>
-              <option value="option1">option 1</option>
-              <option value="option2">Option 2</option>
-              <option value="option3">Option 3</option>
-            </select>
+            <div>
+              <select
+                id="dropdown-select"
+                className="w-[95%] py-4 px-3 text-base border border-gray-500 rounded-md box-border"
+              >
+                <option selected disabled="true" value="option1">
+                  ---select states---
+                </option>
+                {states.map((state, index) => (
+                  <option value="option1" key={index}>
+                    {state.state}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
           <div className="w-full  text-center">
             {" "}
@@ -288,12 +343,16 @@ const AddCustomer = () => {
             {" "}
             <select
               id="dropdown-select"
-              className="w-[98%] py-4 px-3 text-base border border-gray-500 rounded-md box-border"
+              className="w-[98%] py-4 px-3 text-black border border-gray-500 rounded-md box-border"
             >
-              <option value="">Country</option>
-              <option value="option1">USA</option>
-              <option value="option2">India</option>
-              <option value="option3">Germany</option>
+              <option selected disabled="true" value="option1">
+                ---select country---
+              </option>
+              {countrydata.map((country, index) => (
+                <option value="option1" key={index}>
+                  {country.country}
+                </option>
+              ))}
             </select>
           </div>
           <div className="w-full  text-center">
@@ -317,21 +376,32 @@ const AddCustomer = () => {
           <div className="grid grid-cols-2 w-full mt-3 text-center">
             <div className="">
               {" "}
-              <input
-                id="outlined-search"
-                type="text"
-                className=" w-[95%]  border border-gray-400 rounded-md py-4 px-3 placeholder-black"
-                placeholder="Town/City"
-              />
+              <select
+                id="dropdown-select"
+                className="w-[95%] py-4 px-3 text-base border border-gray-500 rounded-md box-border"
+              >
+                <option selected disabled="true" value="option1">
+                  ---select city---
+                </option>
+                {states.map((name, index) => (
+                  <option value="option1" key={index}>
+                    {name.name}
+                  </option>
+                ))}
+              </select>
             </div>
             <select
               id="dropdown-select"
               className="w-[95%] py-4 px-3 text-base border border-gray-500 rounded-md box-border"
             >
-              <option value="">State</option>
-              <option value="option1">option 1</option>
-              <option value="option2">Option 2</option>
-              <option value="option3">Option 3</option>
+              <option selected disabled="true" value="option1">
+                ---select states---
+              </option>
+              {states.map((state, index) => (
+                <option value="option1" key={index}>
+                  {state.state}
+                </option>
+              ))}
             </select>
           </div>
           <div className="w-full  text-center">
@@ -351,12 +421,16 @@ const AddCustomer = () => {
             {" "}
             <select
               id="dropdown-select"
-              className="w-[98%] py-4 px-3 text-base border border-gray-500 rounded-md box-border"
+              className="w-[98%] py-4 px-3 text-black border border-gray-500 rounded-md box-border"
             >
-              <option value="">Country</option>
-              <option value="option1">USA</option>
-              <option value="option2">India</option>
-              <option value="option3">Germany</option>
+              <option selected disabled="true" value="option1">
+                ---select country---
+              </option>
+              {countrydata.map((country, index) => (
+                <option value="option1" key={index}>
+                  {country.country}
+                </option>
+              ))}
             </select>
           </div>
 
@@ -364,12 +438,16 @@ const AddCustomer = () => {
             <div className="">
               <select
                 id="dropdown-select"
-                className="w-[95%] py-4 px-3 text-base border border-gray-500 rounded-md box-border"
+                className="w-[98%] py-4 px-3 text-black border border-gray-500 rounded-md box-border"
               >
-                <option value="">Language</option>
-                <option value="option1">option 1</option>
-                <option value="option2">Option 2</option>
-                <option value="option3">Option 3</option>
+                <option selected disabled="true" value="option1">
+                  ---select language---
+                </option>
+                {language.map((languages, index) => (
+                  <option value="option1" key={index}>
+                    {languages.name}
+                  </option>
+                ))}
               </select>
             </div>
           </div>
