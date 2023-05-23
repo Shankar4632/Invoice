@@ -267,7 +267,6 @@ const InvoicePage = () => {
                     id="outlined-select-currency"
                     select
                     label="Select"
-                    defaultValue="EUR"
                     onClick={handleClickTax}
                   >
                     {showAddTax && (
@@ -385,12 +384,7 @@ const InvoicePage = () => {
                 noValidate
                 autoComplete="off"
               >
-                <TextField
-                  id="outlined-select-currency"
-                  select
-                  label="Due"
-                  defaultValue="EUR"
-                >
+                <TextField id="outlined-select-currency" select label="Due">
                   {receipt.map((option) => (
                     <MenuItem key={option.value} value={option.value}>
                       {option.label}
