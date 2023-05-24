@@ -34,16 +34,28 @@ const AddCustomer = () => {
   //input to db
   const handlesubmit = (event) => {
     event.preventDefault();
+    const isInputValid = Object.values(inputs).every(
+      (value) => value.trim() !== ""
+    );
+
+    if (isInputValid) {
+      createuser();
+      navigate("/");
+    } else {
+      alert("Warning alert! Fill in all the required fields.");
+    }
     if (
       inputs.firstname === "" ||
       inputs.lastname === "" ||
       inputs.email === "" ||
       inputs.businessname === "" ||
-      inputs.phone === ""
+      inputs.phone === "" ||
+      inputs.countrycode === ""
     ) {
       alert("Warning alert! Change a few things up and try submitting again.");
     } else {
       createuser();
+      console.log(users);
       navigate("/");
     }
   };
@@ -61,6 +73,7 @@ const AddCustomer = () => {
   const handleChange = (event) => {
     const firstname = event.target.name;
     const value = event.target.value;
+
     setInput((values) => ({ ...values, [firstname]: value }));
   };
   //fetch data from db
@@ -68,11 +81,10 @@ const AddCustomer = () => {
     const getUsers = async () => {
       const data = await getDocs(usersdetails);
       setUsers(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-
       setIsLoading(false);
     };
     getUsers();
-  }, []);
+  }, [usersdetails]);
 
   const navigate = useNavigate();
   const handleTextareaChange = (event) => {
@@ -89,7 +101,7 @@ const AddCustomer = () => {
     );
   }
 
-  if (!users) {
+  if (users.length === 0) {
     return <div>No data available</div>;
   }
 

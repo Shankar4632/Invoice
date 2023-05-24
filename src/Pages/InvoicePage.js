@@ -345,10 +345,9 @@ const InvoicePage = () => {
             </div>
             <div className=" p-3 mt-10 mb-4">
               <p className="font-bold text-lg">Memo To Self</p>
-              <div className="relative mb-2" data-te-input-wrapper-init>
+              <div className=" mb-2">
                 <textarea
                   className="peer block min-h-[auto] placeholder-gray-500  w-[97%] mx-auto border border-gray-500 rounded mt-5 text-black px-3 py-[0.32rem]  "
-                  id="exampleFormControlTextarea1"
                   rows="6"
                   placeholder="Memo"
                   value={textareaValue}
