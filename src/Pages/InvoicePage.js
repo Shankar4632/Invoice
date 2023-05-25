@@ -12,10 +12,13 @@ import TextField from "@mui/material/TextField";
 import { MdModeEditOutline } from "react-icons/md";
 import { AiOutlinePlus } from "react-icons/ai";
 import { RxDividerVertical } from "react-icons/rx";
-import { IoIosArrowUp } from "react-icons/io";
+import { IoIosArrowUp, IoIosArrowDown } from "react-icons/io";
 import { BsArrowLeft, BsThreeDotsVertical, BsCamera } from "react-icons/bs";
 //Reat Router Dom
 import { useNavigate } from "react-router-dom";
+
+// import currencies json
+import Currencydata from "../json file/currencies.json";
 const InvoicePage = () => {
   //hooks or States
   const [selectedTemplate, setSelectedTemplate] = React.useState("");
@@ -24,6 +27,7 @@ const InvoicePage = () => {
   const [textareaValue, setTextareaValue] = useState("");
   const [showAddButton, setShowAddButton] = useState(false);
   const [showAddTax, setShowAddTax] = useState(false);
+  const [showMemo, setShowMemo] = useState(false);
 
   //Function Calling
   const navigate = useNavigate();
@@ -46,6 +50,9 @@ const InvoicePage = () => {
 
   const handleOptionChange = (event) => {
     setSelectedOption(event.target.value);
+  };
+  const hideshow = () => {
+    setShowMemo((prevShowMemo) => !prevShowMemo);
   };
 
   const Tax = [
@@ -92,7 +99,7 @@ const InvoicePage = () => {
   //Return Statements
   return (
     <div>
-      <div className=" ">
+      <div className="mb-3 ">
         <div className="grid grid-cols-2 h-40 ">
           <div className="  ">
             <div className="pt-8 pl-3  flex items-center">
@@ -160,6 +167,7 @@ const InvoicePage = () => {
               <Box sx={{ minWidth: 120 }}>
                 <FormControl fullWidth>
                   <InputLabel id="currency-select-label">Currency</InputLabel>
+
                   <Select
                     labelId="currency-select-label"
                     id="currency-select"
@@ -168,9 +176,11 @@ const InvoicePage = () => {
                     onChange={handlecurrency}
                   >
                     <MenuItem value="">None</MenuItem>
-                    <MenuItem value="USA">USA</MenuItem>
-                    <MenuItem value="RUPEE">RUPEE</MenuItem>
-                    <MenuItem value="EUROS">EUROS</MenuItem>
+                    {Currencydata.map((codes, index) => (
+                      <MenuItem value={codes.code} key={index}>
+                        {codes.code}
+                      </MenuItem>
+                    ))}
                   </Select>
                 </FormControl>
               </Box>
@@ -214,7 +224,7 @@ const InvoicePage = () => {
                 <MdModeEditOutline className="mr-1" /> Customise
               </button>
             </div>
-            <div className="h-64 w-[97%] mt-4  border-2 rounded-xl mx-auto  ">
+            <div className="h-auto  w-[97%] mt-4  border-2 rounded-xl mx-auto  ">
               <div className="flex items-center mx-auto  w-[97%] mt-3">
                 <Box sx={{ width: 500, maxWidth: "25%" }}>
                   <FormControl fullWidth>
@@ -285,7 +295,7 @@ const InvoicePage = () => {
                 </Box>
               </div>
               <textarea
-                className="peer block min-h-[auto] w-[97%] mx-auto border border-gray-500 rounded mt-5 text-black px-3 py-[0.32rem]"
+                className="peer block min-h-[auto] mb-3 w-[97%] mx-auto border border-gray-500 rounded mt-5 text-black px-3 py-[0.32rem]"
                 id="exampleFormControlTextarea1"
                 rows="5"
                 placeholder="Description(optional)"
@@ -327,36 +337,44 @@ const InvoicePage = () => {
             <div className="p-3 mt-10 flex items-center">
               <p className=" text-[27px] font-semibold w-full">More Options</p>
               <div className="flex justify-end w-full">
-                <button>
+                <button onClick={hideshow}>
                   {" "}
-                  <IoIosArrowUp className="text-2xl text-gray-500" />{" "}
+                  {showMemo ? (
+                    <IoIosArrowUp className="text-2xl text-gray-500" />
+                  ) : (
+                    <IoIosArrowDown className="text-2xl text-gray-500" />
+                  )}
                 </button>
               </div>
             </div>
             <hr className="border w-[97%] mx-auto" />
-            <div className="">
-              <p className="text-xl p-3 font-bold">Attachments</p>
-              <button className="text-[#003087] ml-3  font-bold border-2 border-[#003087] px-4 py-1 rounded-full text-sm">
-                Upload files
-              </button>
-              <p className="text-sm font-semibold p-3 text-gray-800">
-                JPG GIF PNG PDF | Up to 5 files , 4MB per file
-              </p>
-            </div>
-            <div className=" p-3 mt-10 mb-4">
-              <p className="font-bold text-lg">Memo To Self</p>
-              <div className=" mb-2">
-                <textarea
-                  className="peer block min-h-[auto] placeholder-gray-500  w-[97%] mx-auto border border-gray-500 rounded mt-5 text-black px-3 py-[0.32rem]  "
-                  rows="6"
-                  placeholder="Memo"
-                  value={textareaValue}
-                  onChange={handleTextareaChange}
-                >
-                  {" "}
-                </textarea>
+            {showMemo && (
+              <div>
+                <div className="">
+                  <p className="text-xl p-3 font-bold">Attachments</p>
+                  <button className="text-[#003087] ml-3  font-bold border-2 border-[#003087] px-4 py-1 rounded-full text-sm">
+                    Upload files
+                  </button>
+                  <p className="text-sm font-semibold p-3 text-gray-800">
+                    JPG GIF PNG PDF | Up to 5 files , 4MB per file
+                  </p>
+                </div>
+                <div className=" p-3 mt-10 mb-4">
+                  <p className="font-bold text-lg">Memo To Self</p>
+                  <div className=" mb-2">
+                    <textarea
+                      className="peer block min-h-[auto] placeholder-gray-500  w-[97%] mx-auto border border-gray-500 rounded mt-5 text-black px-3 py-[0.32rem]  "
+                      rows="6"
+                      placeholder="Memo"
+                      value={textareaValue}
+                      onChange={handleTextareaChange}
+                    >
+                      {" "}
+                    </textarea>
+                  </div>
+                </div>
               </div>
-            </div>
+            )}
           </div>
           <div className=" w-[25%] text-center ">
             <div className="h-[200px] border rounded-xl bg-white">1</div>

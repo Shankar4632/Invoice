@@ -22,8 +22,8 @@ const CustomiseItem = () => {
   const [fieldVisibility, setFieldVisibility] = useState({
     Discount: false,
     Tax: false,
-    Quantity: false,
-    Price: false,
+    date: false,
+    description: false,
   });
 
   //function calling
@@ -33,8 +33,8 @@ const CustomiseItem = () => {
     const updatedFieldVisibility = {
       Discount: selectedCheckboxes.includes("Discount"),
       Tax: selectedCheckboxes.includes("Tax"),
-      Quantity: selectedCheckboxes.includes("Quantity"),
-      Price: selectedCheckboxes.includes("Price"),
+      date: selectedCheckboxes.includes("date"),
+      description: selectedCheckboxes.includes("description"),
     };
     setFieldVisibility(updatedFieldVisibility);
   }, [selectedCheckboxes]);
@@ -97,43 +97,52 @@ const CustomiseItem = () => {
             </Select>
           </FormControl>
         </Box>
-        <div className="h-56 w-[95%] mx-auto mt-3 border-2 border-gray-300 rounded-xl">
-          <div className="p-3 ">
-            <div className=" max-w-1/4 flex items-center w-full">
+        <div className="h-auto w-[95%] mx-auto mt-3 border-2 border-gray-300 rounded-xl">
+          <div className="p-3   ">
+            <div className="   flex items-center ">
               <select
                 id="dropdown-select"
                 name="selectoptions"
-                className="w-60 py-4 px-3 text-base border border-gray-300 rounded-md box-border"
+                className="w-1/2  py-4 px-3 text-base border border-gray-300 rounded-md box-border"
               >
-                <option value="">None</option>
+                <option value="" defaultValue disabled>
+                  Item Name
+                </option>
                 <option value="option1">Option 1</option>
                 <option value="option2">Option 2</option>
                 <option value="option3">Option 3</option>
               </select>
 
-              {fieldVisibility.Quantity && (
-                <input
-                  id="outlined-search"
-                  type="search"
-                  className="w-1/4 ml-6 border border-gray-400 rounded-md py-4 px-3 placeholder-black"
-                  placeholder="Quantity"
-                  name="Quantity"
-                />
-              )}
+              <input
+                id="outlined-search"
+                type="search"
+                className="w-1/2  ml-6 border border-gray-400 rounded-md py-4 px-3 placeholder-black"
+                placeholder="Quantity"
+                name="Quantity"
+              />
+
+              <input
+                id="outlined-search"
+                type="search"
+                className="w-1/2 ml-4 border border-gray-400 rounded-md py-4 px-3 placeholder-black"
+                placeholder="Price"
+                name="Price"
+              />
+
               {fieldVisibility.Discount && (
                 <input
                   id="outlined-search"
                   type="search"
-                  className="w-1/4 ml-6 border border-gray-400 rounded-md py-4 px-3 placeholder-black"
+                  className="w-1/2 ml-4 border border-gray-400 rounded-md py-4 px-3 placeholder-black"
                   placeholder="Discount"
                   name="Discount"
                 />
               )}
-              {selectedCheckboxes.includes("Price") && (
+              {fieldVisibility.date && (
                 <input
                   id="outlined-search"
-                  type="search"
-                  className="w-1/4 ml-6 border border-gray-400 rounded-md py-4 px-3 placeholder-black"
+                  type="date"
+                  className="w-1/2 ml-4 border border-gray-400 rounded-md py-4 px-3 placeholder-black"
                   placeholder="Price"
                   name="Price"
                 />
@@ -144,7 +153,7 @@ const CustomiseItem = () => {
                   <select
                     id="outlined-select-currency"
                     name="taxes"
-                    className="w-full py-4 px-3 border border-gray-400 rounded-md"
+                    className="w-1/2 ml-4 py-4 px-3   border border-gray-400 rounded-md"
                   >
                     {currencies.map((option) => (
                       <option key={option.value} value={option.value}>
@@ -157,16 +166,18 @@ const CustomiseItem = () => {
             </div>
           </div>
           <div className="">
-            <textarea
-              className="peer block min-h-[auto] w-[97%] mx-auto border border-gray-500 rounded mt-5 text-black px-3 py-[0.32rem]  "
-              id="exampleFormControlTextarea1"
-              rows="4"
-              placeholder="Description(optional)"
-              value={textareaValue}
-              onChange={handleTextareaChange}
-            >
-              {" "}
-            </textarea>
+            {fieldVisibility.description && (
+              <textarea
+                className="peer block min-h-[auto] mb-3 w-[97%] mx-auto border border-gray-500 rounded mt-5 text-black px-3 py-[0.32rem]  "
+                id="exampleFormControlTextarea1"
+                rows="4"
+                placeholder="Description(optional)"
+                value={textareaValue}
+                onChange={handleTextareaChange}
+              >
+                {" "}
+              </textarea>
+            )}
           </div>
         </div>
         <div className="w-[97%] p-5  mx-auto mt-5">
@@ -206,7 +217,7 @@ const CustomiseItem = () => {
               id="Tax"
               name="Tax"
               value="Tax"
-              className="mt-5 h-5 w-5"
+              className="mt-5  h-5 w-5"
               onChange={(event) => {
                 const checkboxValue = event.target.value;
                 setSelectedCheckboxes((prevCheckboxes) => {
@@ -227,13 +238,14 @@ const CustomiseItem = () => {
               {" "}
               Tax
             </label>
+
             <br />
             <input
               type="checkbox"
-              id="Quantity"
-              name="Quantity"
-              value="Quantity"
-              className="mt-5 h-5 w-5"
+              id="description"
+              name="description"
+              value="description"
+              className="mt-5  h-5 w-5"
               onChange={(event) => {
                 const checkboxValue = event.target.value;
                 setSelectedCheckboxes((prevCheckboxes) => {
@@ -248,17 +260,18 @@ const CustomiseItem = () => {
               }}
             />
             <label
-              htmlFor="Price"
-              className="text-lg font-semibold pl-1 text-gray-700"
+              htmlFor="Quantity"
+              className="text-lg font-semibold text-gray-700"
             >
-              Quantity
+              {" "}
+              Description
             </label>
             <br />
             <input
               type="checkbox"
-              id="Price"
-              name="Price"
-              value="Price"
+              id="date"
+              name="date"
+              value="date"
               className="mt-5 h-5 w-5 "
               onChange={(event) => {
                 const checkboxValue = event.target.value;
@@ -274,11 +287,11 @@ const CustomiseItem = () => {
               }}
             />
             <label
-              htmlFor="Price"
+              htmlFor="Item"
               className="text-lg font-semibold text-gray-700"
             >
               {" "}
-              Price
+              Date
             </label>
           </div>
         </div>{" "}
@@ -288,6 +301,7 @@ const CustomiseItem = () => {
           className="px-8 py-3 rounded-3xl  bg-blue-900 text-white font-bold mx-auto "
           onClick={() => {
             console.log(selectedCheckboxes);
+            navigate("/");
           }}
         >
           Save
