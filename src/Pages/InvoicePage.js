@@ -1,6 +1,6 @@
 //Reactjs Library imports
 import * as React from "react";
-import { useState } from "react";
+import { useState, useRef } from "react";
 //materialUI imports
 import Box from "@mui/material/Box";
 import InputLabel from "@mui/material/InputLabel";
@@ -16,10 +16,11 @@ import { IoIosArrowUp, IoIosArrowDown } from "react-icons/io";
 import { BsArrowLeft, BsThreeDotsVertical, BsCamera } from "react-icons/bs";
 //Reat Router Dom
 import { useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 // import currencies json
 import Currencydata from "../json file/currencies.json";
-const InvoicePage = ({ selectedCheckboxes }) => {
+const InvoicePage = () => {
   //hooks or States
   const [selectedTemplate, setSelectedTemplate] = useState("");
   const [currency, setCurrency] = useState("");
@@ -30,6 +31,16 @@ const InvoicePage = ({ selectedCheckboxes }) => {
   const [showMemo, setShowMemo] = useState(false);
 
   //Function Calling
+  const fileInputRef = useRef(null);
+
+  const handleButtonClick = () => {
+    fileInputRef.current.click();
+  };
+
+  const handleFileChange = (event) => {
+    const files = event.target.files;
+    // Do something with the selected files
+  };
   const navigate = useNavigate();
   const handleClick = () => {
     setShowAddButton(true);
@@ -54,6 +65,9 @@ const InvoicePage = ({ selectedCheckboxes }) => {
   const hideshow = () => {
     setShowMemo((prevShowMemo) => !prevShowMemo);
   };
+  const location = useLocation();
+  const selectedCheckboxes = location.state?.selectedCheckboxes;
+  console.log(selectedCheckboxes);
 
   const Tax = [
     {
@@ -216,6 +230,7 @@ const InvoicePage = ({ selectedCheckboxes }) => {
                 </button>
               )}
             </div>
+            {selectedCheckboxes}
             <div className="flex items-center pl-3 pt-20">
               <p className="font-bold text-lg">Items</p>
               <button
@@ -354,9 +369,29 @@ const InvoicePage = ({ selectedCheckboxes }) => {
               <div>
                 <div className="">
                   <p className="text-xl p-3 font-bold">Attachments</p>
-                  <button className="text-[#003087] ml-3  font-bold border-2 border-[#003087] px-4 py-1 rounded-full text-sm">
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    name="files"
+                    id="files"
+                    className="hidden"
+                    onChange={handleFileChange}
+                  />
+                  <button
+                    type="button"
+                    className="text-[#003087] ml-3 font-bold border-2 border-[#003087] px-4 py-1 rounded-full text-sm"
+                    onClick={handleButtonClick}
+                  >
                     Upload files
                   </button>
+
+                  {/* <div className="flex">
+                    <input
+                      type="file"
+                      className=" text-[#003087] ml-3  font-bold border-2 border-[#003087] px-4 py-1 rounded-full text-sm "
+                    />
+                  </div> */}
+
                   <p className="text-sm font-semibold p-3 text-gray-800">
                     JPG GIF PNG PDF | Up to 5 files , 4MB per file
                   </p>

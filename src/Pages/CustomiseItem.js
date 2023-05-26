@@ -12,7 +12,6 @@ import { FaPaypal } from "react-icons/fa";
 import { RxCross1 } from "react-icons/rx";
 //import Routes
 import { useNavigate } from "react-router-dom";
-import InvoicePage from "./InvoicePage";
 
 const CustomiseItem = () => {
   //Hooks or states
@@ -48,7 +47,12 @@ const CustomiseItem = () => {
   const handleselectedTemplate = (event) => {
     setSelectedTemplate(event.target.value);
   };
-
+  const handleSave = () => {
+    console.log(selectedCheckboxes);
+    navigate("/", {
+      state: { selectedCheckboxes },
+    });
+  };
   const tax = [
     {
       value: "No Tax",
@@ -59,7 +63,7 @@ const CustomiseItem = () => {
       label: "Tax able",
     },
   ];
-  // return statement
+  //////////////////////// return statement  /////////////////////////
   return (
     <div className="bg-white h-auto w-[70%] mx-auto border">
       <div className="flex items-center  mt-4">
@@ -301,15 +305,7 @@ const CustomiseItem = () => {
         <button
           className="px-8 py-3 rounded-3xl  bg-blue-900 text-white font-bold mx-auto "
           type="submit"
-          onClick={() => {
-            console.log(selectedCheckboxes);
-            navigate("/", {
-              state: { selectedCheckboxes },
-            });
-            console.log(navigate);
-
-            // <InvoicePage selectedCheckboxes={selectedCheckboxes} />;
-          }}
+          onClick={handleSave}
         >
           Save
         </button>
