@@ -27,6 +27,9 @@ const AddCustomer = () => {
     email: "",
     phone: "",
     countrycode: "",
+    selectcountry: "",
+    city: "",
+    state: "",
   });
 
   //function calling
@@ -50,7 +53,10 @@ const AddCustomer = () => {
       inputs.email === "" ||
       inputs.businessname === "" ||
       inputs.phone === "" ||
-      inputs.countrycode === ""
+      inputs.countrycode === "" ||
+      inputs.selectcountry === "" ||
+      inputs.city === "" ||
+      inputs.state === ""
     ) {
       alert("Warning alert! Change a few things up and try submitting again.");
     } else {
@@ -67,6 +73,9 @@ const AddCustomer = () => {
       businessname: inputs.businessname,
       phone: inputs.phone,
       countrycode: inputs.countrycode,
+      selectcountry: inputs.selectcountry,
+      city: inputs.city,
+      state: inputs.state,
     });
   };
   //on Change action event
@@ -134,6 +143,7 @@ const AddCustomer = () => {
             <h1 className="text-3xl text-black">{user.email}</h1>
             <h1 className="text-3xl text-black">{user.phone}</h1>
             <h1 className="text-3xl text-black">{user.countrycode}</h1>
+            <h1 className="text-3xl text-black">{user.selectcountry}</h1>
           </div>
         );
       })}
@@ -198,8 +208,9 @@ const AddCustomer = () => {
                 className="w-[95%] py-4 px-3 text-base border border-gray-500 rounded-md box-border"
                 onChange={handleChange}
                 name="countrycode"
+                value={inputs.countrycode}
               >
-                <option defaultValue disabled value="option1">
+                <option defaultValue disabled value="">
                   ---select code---
                 </option>
                 {countrydata.map((country, index) => (
@@ -229,14 +240,15 @@ const AddCustomer = () => {
             <select
               id="dropdown-select"
               className="w-[98%] py-4 px-3 text-black border border-gray-500 rounded-md box-border"
+              onChange={handleChange}
+              name="selectcountry"
+              value={inputs.selectcountry}
             >
-              <option defaultValue disabled value="option1">
+              <option defaultValue disabled value="">
                 ---select country---
               </option>
               {countrydata.map((country, index) => (
-                <option value="option1" key={index}>
-                  {country.country}
-                </option>
+                <option key={index}>{country.country}</option>
               ))}
             </select>
           </div>
@@ -247,6 +259,8 @@ const AddCustomer = () => {
               type="search"
               className="w-[98%] mt-3 border border-gray-400 rounded-md py-4 px-3 placeholder-black"
               placeholder="Address line 1"
+              onChange={handleChange}
+              name="address1"
             />
           </div>
           <div className="w-full  text-center">
@@ -256,6 +270,8 @@ const AddCustomer = () => {
               type="search"
               className="w-[98%] mt-3 border border-gray-400 rounded-md py-4 px-3 placeholder-black"
               placeholder="Address line 2"
+              onChange={handleChange}
+              name="address2"
             />
           </div>
           <div className="grid grid-cols-2 w-full mt-3 text-center">
@@ -263,14 +279,15 @@ const AddCustomer = () => {
               <select
                 id="dropdown-select"
                 className="w-[95%] py-4 px-3 text-base border border-gray-500 rounded-md box-border"
+                onChange={handleChange}
+                name="city"
+                value={inputs.city}
               >
-                <option defaultValue disabled value="option1">
+                <option defaultValue disabled value="">
                   ---select city---
                 </option>
                 {states.map((name, index) => (
-                  <option value="option1" key={index}>
-                    {name.name}
-                  </option>
+                  <option key={index}>{name.name}</option>
                 ))}
               </select>
             </div>
@@ -278,18 +295,20 @@ const AddCustomer = () => {
               <select
                 id="dropdown-select"
                 className="w-[95%] py-4 px-3 text-base border border-gray-500 rounded-md box-border"
+                onChange={handleChange}
+                name="state"
+                value={inputs.state}
               >
-                <option defaultValue disabled value="option1">
+                <option defaultValue disabled value="">
                   ---select states---
                 </option>
                 {states.map((state, index) => (
-                  <option value="option1" key={index}>
-                    {state.state}
-                  </option>
+                  <option key={index}>{state.state}</option>
                 ))}
               </select>
             </div>
           </div>
+
           <div className="w-full  text-center">
             {" "}
             <input
@@ -297,6 +316,8 @@ const AddCustomer = () => {
               type="search"
               className="w-[98%] mt-3 border border-gray-400 rounded-md py-4 px-3 placeholder-black"
               placeholder="Pin code"
+              onChange={handleChange}
+              name="pincode"
             />
           </div>
         </div>
@@ -338,7 +359,7 @@ const AddCustomer = () => {
               id="dropdown-select"
               className="w-[98%] py-4 px-3 text-black border border-gray-500 rounded-md box-border"
             >
-              <option defaultValue disabled value="option1">
+              <option defaultValue disabled value="">
                 ---select country---
               </option>
               {countrydata.map((country, index) => (
@@ -373,7 +394,7 @@ const AddCustomer = () => {
                 id="dropdown-select"
                 className="w-[95%] py-4 px-3 text-base border border-gray-500 rounded-md box-border"
               >
-                <option defaultValue disabled value="option1">
+                <option defaultValue disabled value="">
                   ---select city---
                 </option>
                 {states.map((name, index) => (
@@ -387,7 +408,7 @@ const AddCustomer = () => {
               id="dropdown-select"
               className="w-[95%] py-4 px-3 text-base border border-gray-500 rounded-md box-border"
             >
-              <option defaultValue disabled value="option1">
+              <option defaultValue disabled value="">
                 ---select states---
               </option>
               {states.map((state, index) => (
@@ -416,7 +437,7 @@ const AddCustomer = () => {
               id="dropdown-select"
               className="w-[98%] py-4 px-3 text-black border border-gray-500 rounded-md box-border"
             >
-              <option defaultValue disabled value="option1">
+              <option defaultValue disabled value="">
                 ---select country---
               </option>
               {countrydata.map((country, index) => (
@@ -433,7 +454,7 @@ const AddCustomer = () => {
                 id="dropdown-select"
                 className="w-[98%] py-4 px-3 text-black border border-gray-500 rounded-md box-border"
               >
-                <option defaultValue disabled value="option1">
+                <option defaultValue disabled value="">
                   ---select language---
                 </option>
                 {language.map((languages, index) => (

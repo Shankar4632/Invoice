@@ -19,11 +19,11 @@ import { useNavigate } from "react-router-dom";
 
 // import currencies json
 import Currencydata from "../json file/currencies.json";
-const InvoicePage = () => {
+const InvoicePage = ({ selectedCheckboxes }) => {
   //hooks or States
-  const [selectedTemplate, setSelectedTemplate] = React.useState("");
-  const [currency, setCurrency] = React.useState("");
-  const [selectedOption, setSelectedOption] = React.useState("");
+  const [selectedTemplate, setSelectedTemplate] = useState("");
+  const [currency, setCurrency] = useState("");
+  const [selectedOption, setSelectedOption] = useState("");
   const [textareaValue, setTextareaValue] = useState("");
   const [showAddButton, setShowAddButton] = useState(false);
   const [showAddTax, setShowAddTax] = useState(false);
@@ -96,6 +96,7 @@ const InvoicePage = () => {
       label: "in 30 days",
     },
   ];
+
   //Return Statements
   return (
     <div>
@@ -294,6 +295,7 @@ const InvoicePage = () => {
                   </TextField>
                 </Box>
               </div>
+
               <textarea
                 className="peer block min-h-[auto] mb-3 w-[97%] mx-auto border border-gray-500 rounded mt-5 text-black px-3 py-[0.32rem]"
                 id="exampleFormControlTextarea1"

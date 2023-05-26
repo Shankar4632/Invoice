@@ -11,13 +11,15 @@ import TextField from "@mui/material/TextField";
 //Reacticons
 import { MdModeEditOutline } from "react-icons/md";
 import { AiOutlinePlus } from "react-icons/ai";
-
 import { BsArrowLeft, BsThreeDotsVertical, BsCamera } from "react-icons/bs";
 //Reat Router Dom
 import { useNavigate } from "react-router-dom";
+// import currencies json
+import Currencydata from "../json file/currencies.json";
 const AmountsOnly = () => {
   //hooks or States
   const [selectedTemplate, setSelectedTemplate] = useState("");
+
   const [currency, setCurrency] = useState("");
   const [selectedOption, setSelectedOption] = useState("");
   const [showAddButton, setShowAddButton] = useState(false);
@@ -120,6 +122,7 @@ const AmountsOnly = () => {
               <Box sx={{ minWidth: 120 }}>
                 <FormControl fullWidth>
                   <InputLabel id="currency-select-label">Currency</InputLabel>
+
                   <Select
                     labelId="currency-select-label"
                     id="currency-select"
@@ -128,9 +131,11 @@ const AmountsOnly = () => {
                     onChange={handlecurrency}
                   >
                     <MenuItem value="">None</MenuItem>
-                    <MenuItem value="USA">USA</MenuItem>
-                    <MenuItem value="RUPEE">RUPEE</MenuItem>
-                    <MenuItem value="EUROS">EUROS</MenuItem>
+                    {Currencydata.map((codes, index) => (
+                      <MenuItem value={codes.code} key={index}>
+                        {codes.code}
+                      </MenuItem>
+                    ))}
                   </Select>
                 </FormControl>
               </Box>
