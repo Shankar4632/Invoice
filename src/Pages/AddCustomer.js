@@ -1,6 +1,5 @@
 //import from reactjs package
-import React from "react";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 //import reacticons
 import { FaPaypal } from "react-icons/fa";
 import { RxCross1 } from "react-icons/rx";
@@ -9,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 //import from firebase
 import { addDoc, collection, getDocs } from "firebase/firestore";
 import { db } from "../firebase-config";
-//import from country json
+//import from  json
 import countrydata from "../json file/countriesdata.json";
 import states from "../json file/states.json";
 import language from "../json file/language.json";
@@ -61,7 +60,7 @@ const AddCustomer = () => {
       alert("Warning alert! Change a few things up and try submitting again.");
     } else {
       createuser();
-      console.log(users);
+
       navigate("/");
     }
   };
@@ -80,11 +79,10 @@ const AddCustomer = () => {
   };
   //on Change action event
   const handleChange = (event) => {
-    const firstname = event.target.name;
-    const value = event.target.value;
-
-    setInput((values) => ({ ...values, [firstname]: value }));
+    const { name, value } = event.target;
+    setInput((prevInputs) => ({ ...prevInputs, [name]: value }));
   };
+
   //fetch data from db
   useEffect(() => {
     const getUsers = async () => {

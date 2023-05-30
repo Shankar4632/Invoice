@@ -16,53 +16,121 @@ import { useNavigate } from "react-router-dom";
 const CustomiseItem = () => {
   //Hooks or states
   const [selectedTemplate, setSelectedTemplate] = useState("");
-  const [textareaValue, setTextareaValue] = useState("");
+  const [fields, setFields] = useState(["name", "username", "password"]);
+  const [fields1, setField1] = useState([]);
+  const [selectedFields, setSelectedFields] = useState([]);
+  const [selecteddescriptionFields, setSelecteddescriptionFields] = useState(
+    []
+  );
+
   //for selection on checkbox change
-  const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
-  const [fieldVisibility, setFieldVisibility] = useState({
-    Discount: false,
-    Tax: false,
-    date: false,
-    description: false,
-  });
 
   //function calling
 
   //checkbox selection only
-  useEffect(() => {
-    const updatedFieldVisibility = {
-      Discount: selectedCheckboxes.includes("Discount"),
-      Tax: selectedCheckboxes.includes("Tax"),
-      date: selectedCheckboxes.includes("date"),
-      description: selectedCheckboxes.includes("description"),
-    };
-    setFieldVisibility(updatedFieldVisibility);
-  }, [selectedCheckboxes]);
 
   const navigate = useNavigate();
-  const handleTextareaChange = (event) => {
-    setTextareaValue(event.target.value);
-  };
-
   const handleselectedTemplate = (event) => {
     setSelectedTemplate(event.target.value);
   };
-  const handleSave = () => {
-    console.log(selectedCheckboxes);
-    navigate("/", {
-      state: { selectedCheckboxes },
-    });
+  // Handle checkbox change
+  const handleCheckboxChange = (e) => {
+    const { value, checked } = e.target;
+
+    // Add or remove the field based on checkbox selection
+    if (checked) {
+      setFields((prevFields) => [...prevFields, value]);
+    } else {
+      setFields((prevFields) => prevFields.filter((field) => field !== value));
+    }
   };
-  const tax = [
-    {
-      value: "No Tax",
-      label: "No Tax",
-    },
-    {
-      value: "Tax able",
-      label: "Tax able",
-    },
-  ];
+  const handleCheckboxChangedescription = (e) => {
+    const { value, checked } = e.target;
+
+    // Add or remove the field based on checkbox selection
+    if (checked) {
+      setField1((prevField1) => [...prevField1, value]);
+    } else {
+      setField1((prevField1) =>
+        prevField1.filter((fields1) => fields1 !== value)
+      );
+    }
+  };
+  // Handle save button click
+  const handleSaveClick = () => {
+    // Process the form data
+    // You can access the values using the field names and perform further actions
+    setSelectedFields(fields);
+    setSelecteddescriptionFields(fields1);
+    <navigate to="/" replace={true} />;
+  };
+
+  // Render the form fields
+  const renderFields = () => {
+    return fields.map((field) => (
+      <div key={field}>
+        <input
+          id="outlined-search"
+          type="text"
+          className="w-36  ml-2 border border-gray-400 rounded-md py-4 px-3 placeholder-black"
+          placeholder={field}
+          name={field}
+        />
+      </div>
+    ));
+  };
+  const renderFieldsdescription = () => {
+    return fields1.map((fields1) => (
+      <div key={fields1}>
+        <textarea
+          className="peer block min-h-[auto] mb-3 w-[97%] mx-auto border border-gray-500 rounded mt-5 text-black px-3 py-[0.32rem]  "
+          id="exampleFormControlTextarea1"
+          rows="4"
+          type="text"
+          placeholder="Description(optional)"
+          name={fields1}
+        >
+          {" "}
+        </textarea>
+      </div>
+    ));
+  };
+
+  // Render the selected fields below the form
+  const renderSelectedFields = () => {
+    return selectedFields.map((field) => (
+      <div key={field}>
+        <input
+          id="outlined-search"
+          type="text"
+          className="w-36  ml-2 border border-gray-400 rounded-md py-4 px-3 placeholder-black"
+          placeholder={field}
+          name={field}
+          value={field}
+          readOnly
+        />
+      </div>
+    ));
+  };
+  const renderSelecteddescriptionFields = () => {
+    return selecteddescriptionFields.map((field) => (
+      <div key={field}>
+        <textarea
+          className="peer block min-h-[auto] mb-3 w-[97%] mx-auto border border-gray-500 rounded mt-5 text-black px-3 py-[0.32rem]  "
+          id="exampleFormControlTextarea1"
+          rows="4"
+          type="text"
+          placeholder="Description(optional)"
+          name={fields1}
+          value={fields1}
+          readOnly
+        >
+          {" "}
+        </textarea>
+      </div>
+    ));
+  };
+
   //////////////////////// return statement  /////////////////////////
   return (
     <div className="bg-white h-auto w-[70%] mx-auto border">
@@ -105,84 +173,9 @@ const CustomiseItem = () => {
         <div className="h-auto w-[95%] mx-auto mt-3 border-2 border-gray-300 rounded-xl">
           <div className="p-3   ">
             <div className="   flex items-center ">
-              <select
-                id="dropdown-select"
-                name="selectoptions"
-                className="w-1/2  py-4 px-3 text-base border border-gray-300 rounded-md box-border"
-              >
-                <option value="" defaultValue disabled>
-                  Item Name
-                </option>
-                <option value="option1">Option 1</option>
-                <option value="option2">Option 2</option>
-                <option value="option3">Option 3</option>
-              </select>
-
-              <input
-                id="outlined-search"
-                type="search"
-                className="w-1/2  ml-6 border border-gray-400 rounded-md py-4 px-3 placeholder-black"
-                placeholder="Quantity"
-                name="Quantity"
-              />
-
-              <input
-                id="outlined-search"
-                type="search"
-                className="w-1/2 ml-4 border border-gray-400 rounded-md py-4 px-3 placeholder-black"
-                placeholder="Price"
-                name="Price"
-              />
-
-              {fieldVisibility.Discount && (
-                <input
-                  id="outlined-search"
-                  type="search"
-                  className="w-1/2 ml-4 border border-gray-400 rounded-md py-4 px-3 placeholder-black"
-                  placeholder="Discount"
-                  name="Discount"
-                />
-              )}
-              {fieldVisibility.date && (
-                <input
-                  id="outlined-search"
-                  type="date"
-                  className="w-1/2 ml-4 border border-gray-400 rounded-md py-4 px-3 placeholder-black"
-                  placeholder="Price"
-                  name="Price"
-                />
-              )}
-
-              <div className="w-full">
-                {selectedCheckboxes.includes("Tax") && (
-                  <select
-                    id="outlined-select-currency"
-                    name="taxes"
-                    className="w-1/2 ml-4 py-4 px-3   border border-gray-400 rounded-md"
-                  >
-                    {tax.map((option) => (
-                      <option key={option.value} value={option.value}>
-                        {option.label}
-                      </option>
-                    ))}
-                  </select>
-                )}
-              </div>
+              <div className="flex">{renderFields()}</div>
             </div>
-          </div>
-          <div className="">
-            {fieldVisibility.description && (
-              <textarea
-                className="peer block min-h-[auto] mb-3 w-[97%] mx-auto border border-gray-500 rounded mt-5 text-black px-3 py-[0.32rem]  "
-                id="exampleFormControlTextarea1"
-                rows="4"
-                placeholder="Description(optional)"
-                value={textareaValue}
-                onChange={handleTextareaChange}
-              >
-                {" "}
-              </textarea>
-            )}
+            <div>{renderFieldsdescription()}</div>
           </div>
         </div>
         <div className="w-[97%] p-5  mx-auto mt-5">
@@ -192,25 +185,12 @@ const CustomiseItem = () => {
           <div>
             <input
               type="checkbox"
-              id="Discount"
-              name="Discount"
               value="Discount"
-              className="mt-5 p-3 h-5 w-5  text-center"
-              onChange={(event) => {
-                const checkboxValue = event.target.value;
-                setSelectedCheckboxes((prevCheckboxes) => {
-                  if (prevCheckboxes.includes(checkboxValue)) {
-                    return prevCheckboxes.filter(
-                      (value) => value !== checkboxValue
-                    );
-                  } else {
-                    return [...prevCheckboxes, checkboxValue];
-                  }
-                });
-              }}
+              className="mt-5 h-5 w-5 "
+              onChange={handleCheckboxChange}
             />
             <label
-              htmlFor="Tax"
+              htmlFor="Item"
               className="text-lg font-semibold text-gray-700"
             >
               {" "}
@@ -219,77 +199,23 @@ const CustomiseItem = () => {
             <br />
             <input
               type="checkbox"
-              id="Tax"
-              name="Tax"
               value="Tax"
-              className="mt-5  h-5 w-5"
-              onChange={(event) => {
-                const checkboxValue = event.target.value;
-                setSelectedCheckboxes((prevCheckboxes) => {
-                  if (prevCheckboxes.includes(checkboxValue)) {
-                    return prevCheckboxes.filter(
-                      (value) => value !== checkboxValue
-                    );
-                  } else {
-                    return [...prevCheckboxes, checkboxValue];
-                  }
-                });
-              }}
+              className="mt-5 h-5 w-5 "
+              onChange={handleCheckboxChange}
             />
             <label
-              htmlFor="Quantity"
+              htmlFor="Item"
               className="text-lg font-semibold text-gray-700"
             >
               {" "}
               Tax
             </label>
-
             <br />
             <input
               type="checkbox"
-              id="description"
-              name="description"
-              value="description"
-              className="mt-5  h-5 w-5"
-              onChange={(event) => {
-                const checkboxValue = event.target.value;
-                setSelectedCheckboxes((prevCheckboxes) => {
-                  if (prevCheckboxes.includes(checkboxValue)) {
-                    return prevCheckboxes.filter(
-                      (value) => value !== checkboxValue
-                    );
-                  } else {
-                    return [...prevCheckboxes, checkboxValue];
-                  }
-                });
-              }}
-            />
-            <label
-              htmlFor="Quantity"
-              className="text-lg font-semibold text-gray-700"
-            >
-              {" "}
-              Description
-            </label>
-            <br />
-            <input
-              type="checkbox"
-              id="date"
-              name="date"
               value="date"
               className="mt-5 h-5 w-5 "
-              onChange={(event) => {
-                const checkboxValue = event.target.value;
-                setSelectedCheckboxes((prevCheckboxes) => {
-                  if (prevCheckboxes.includes(checkboxValue)) {
-                    return prevCheckboxes.filter(
-                      (value) => value !== checkboxValue
-                    );
-                  } else {
-                    return [...prevCheckboxes, checkboxValue];
-                  }
-                });
-              }}
+              onChange={handleCheckboxChange}
             />
             <label
               htmlFor="Item"
@@ -298,6 +224,20 @@ const CustomiseItem = () => {
               {" "}
               Date
             </label>
+            <br />
+            <input
+              type="checkbox"
+              value="description"
+              className="mt-5 h-5 w-5 "
+              onChange={handleCheckboxChangedescription}
+            />
+            <label
+              htmlFor="Item"
+              className="text-lg font-semibold text-gray-700"
+            >
+              {" "}
+              description
+            </label>
           </div>
         </div>{" "}
       </form>
@@ -305,10 +245,19 @@ const CustomiseItem = () => {
         <button
           className="px-8 py-3 rounded-3xl  bg-blue-900 text-white font-bold mx-auto "
           type="submit"
-          onClick={handleSave}
+          onClick={handleSaveClick}
         >
           Save
         </button>
+        {/* <InvoicePage state={renderSelectedFields()} /> */}
+        <div className="h-auto w-[95%] mx-auto mt-3 border-2 border-gray-300 rounded-xl">
+          <div className="p-3   ">
+            <div className="   flex items-center ">
+              {renderSelectedFields()}
+            </div>
+            <div> {renderSelecteddescriptionFields()}</div>
+          </div>
+        </div>
       </div>
     </div>
   );

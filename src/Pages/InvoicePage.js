@@ -16,7 +16,6 @@ import { IoIosArrowUp, IoIosArrowDown } from "react-icons/io";
 import { BsArrowLeft, BsThreeDotsVertical, BsCamera } from "react-icons/bs";
 //Reat Router Dom
 import { useNavigate } from "react-router-dom";
-import { useLocation } from "react-router-dom";
 
 // import currencies json
 import Currencydata from "../json file/currencies.json";
@@ -65,9 +64,6 @@ const InvoicePage = () => {
   const hideshow = () => {
     setShowMemo((prevShowMemo) => !prevShowMemo);
   };
-  const location = useLocation();
-  const selectedCheckboxes = location.state?.selectedCheckboxes;
-  console.log(selectedCheckboxes);
 
   const Tax = [
     {
@@ -230,7 +226,7 @@ const InvoicePage = () => {
                 </button>
               )}
             </div>
-            {selectedCheckboxes}
+
             <div className="flex items-center pl-3 pt-20">
               <p className="font-bold text-lg">Items</p>
               <button
@@ -241,6 +237,10 @@ const InvoicePage = () => {
               </button>
             </div>
             <div className="h-auto  w-[97%] mt-4  border-2 rounded-xl mx-auto  ">
+              <div className="flex items-center mx-auto  w-[97%] mt-3"></div>
+            </div>
+
+            {/* <div className="h-auto  w-[97%] mt-4  border-2 rounded-xl mx-auto  ">
               <div className="flex items-center mx-auto  w-[97%] mt-3">
                 <Box sx={{ width: 500, maxWidth: "25%" }}>
                   <FormControl fullWidth>
@@ -319,7 +319,7 @@ const InvoicePage = () => {
                 value={textareaValue}
                 onChange={handleTextareaChange}
               ></textarea>
-            </div>
+            </div> */}
             <button
               className="text-bold ml-4 mt-3 text-blue-600  font-bold flex items-center text-xl "
               onClick={() => navigate("/additems")}
