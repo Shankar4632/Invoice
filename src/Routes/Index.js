@@ -11,7 +11,7 @@ const Index = () => {
   return (
     <div>
       <Routes>
-        <Route path="/" element={<InvoicePage />} />
+        <Route exact path="/" element={<InvoicePage />} />
         <Route path="/customise" element={<CustomiseItem />} />
         <Route path="/additems" element={<AddItem />} />
         <Route path="/addcustomer" element={<AddCustomer />} />

@@ -1,11 +1,12 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 //import material UI
 import Box from "@mui/material/Box";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
+import InvoicePage from "./InvoicePage";
 
 //import reacticons
 import { FaPaypal } from "react-icons/fa";
@@ -62,7 +63,9 @@ const CustomiseItem = () => {
     // You can access the values using the field names and perform further actions
     setSelectedFields(fields);
     setSelecteddescriptionFields(fields1);
-    <navigate to="/" replace={true} />;
+    navigate("/", {
+      state: { selectedFields: fields, selectedDescriptionFields: fields1 },
+    });
   };
 
   // Render the form fields
@@ -254,6 +257,7 @@ const CustomiseItem = () => {
           <div className="p-3   ">
             <div className="   flex items-center ">
               {renderSelectedFields()}
+              {/* <InvoicePage state={renderSelectedFields()} /> */}
             </div>
             <div> {renderSelecteddescriptionFields()}</div>
           </div>

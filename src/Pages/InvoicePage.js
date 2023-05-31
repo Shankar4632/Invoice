@@ -16,6 +16,7 @@ import { IoIosArrowUp, IoIosArrowDown } from "react-icons/io";
 import { BsArrowLeft, BsThreeDotsVertical, BsCamera } from "react-icons/bs";
 //Reat Router Dom
 import { useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 // import currencies json
 import Currencydata from "../json file/currencies.json";
@@ -41,6 +42,9 @@ const InvoicePage = () => {
     // Do something with the selected files
   };
   const navigate = useNavigate();
+  const location = useLocation();
+  const { selectedFields, selectedDescriptionFields } = location.state || {};
+  console.log(selectedFields);
   const handleClick = () => {
     setShowAddButton(true);
   };
@@ -237,7 +241,10 @@ const InvoicePage = () => {
               </button>
             </div>
             <div className="h-auto  w-[97%] mt-4  border-2 rounded-xl mx-auto  ">
-              <div className="flex items-center mx-auto  w-[97%] mt-3"></div>
+              <div className="flex items-center mx-auto  w-[97%] mt-3">
+                {selectedFields}
+                {selectedDescriptionFields}
+              </div>
             </div>
 
             {/* <div className="h-auto  w-[97%] mt-4  border-2 rounded-xl mx-auto  ">
