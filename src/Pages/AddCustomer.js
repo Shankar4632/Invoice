@@ -27,8 +27,23 @@ const AddCustomer = () => {
     phone: "",
     countrycode: "",
     selectcountry: "",
+    address1: "",
+    address2: "",
     city: "",
     state: "",
+    pincode: "",
+    dfirstname: "",
+    dlastname: "",
+    dbusinessname: "",
+    dselectcountry: "",
+    daddress1: "",
+    daddress2: "",
+    dcity: "",
+    dstate: "",
+    dpincode: "",
+    lselectcountry: "",
+    lselectlanguage: "",
+    ldescription: "",
   });
 
   //function calling
@@ -72,9 +87,24 @@ const AddCustomer = () => {
       businessname: inputs.businessname,
       phone: inputs.phone,
       countrycode: inputs.countrycode,
+      address1: inputs.address1,
+      address2: inputs.address2,
       selectcountry: inputs.selectcountry,
       city: inputs.city,
       state: inputs.state,
+      pincode: inputs.pincode,
+      dfirstname: inputs.dfirstname,
+      dlastname: inputs.dlastname,
+      dbusinessname: inputs.dbusinessname,
+      dselectcountry: inputs.dselectcountry,
+      daddress1: inputs.daddress1,
+      daddress2: inputs.daddress2,
+      dcity: inputs.dcity,
+      dstate: inputs.dstate,
+      dpincode: inputs.dpincode,
+      lselectcountry: inputs.lselectcountry,
+      lselectlanguage: inputs.lselectlanguage,
+      ldescription: inputs.ldescription,
     });
   };
   //on Change action event
@@ -132,6 +162,7 @@ const AddCustomer = () => {
         {" "}
         Customer information{" "}
       </p>
+
       {users.map((user, i) => {
         return (
           <div key={i}>
@@ -141,7 +172,10 @@ const AddCustomer = () => {
             <h1 className="text-3xl text-black">{user.email}</h1>
             <h1 className="text-3xl text-black">{user.phone}</h1>
             <h1 className="text-3xl text-black">{user.countrycode}</h1>
+            <h1 className="text-3xl text-black">{user.address1}</h1>
+            <h1 className="text-3xl text-black">{user.address2}</h1>
             <h1 className="text-3xl text-black">{user.selectcountry}</h1>
+            <h1 className="text-3xl text-black">{user.pincode}</h1>
           </div>
         );
       })}
@@ -329,6 +363,8 @@ const AddCustomer = () => {
                 type="search"
                 className=" w-[95%]  border border-gray-400 rounded-md py-4 px-3 placeholder-black"
                 placeholder="First name"
+                name="dfirstname"
+                onChange={handleChange}
               />
             </div>
             <div className="">
@@ -338,6 +374,8 @@ const AddCustomer = () => {
                 type="search"
                 className=" w-[95%]  border border-gray-400 rounded-md py-4 px-3 placeholder-black"
                 placeholder="Last name"
+                name="dLastname"
+                onChange={handleChange}
               />
             </div>
           </div>
@@ -349,6 +387,8 @@ const AddCustomer = () => {
               type="search"
               className="w-[98%] mt-3 border border-gray-400 rounded-md py-4 px-3 placeholder-black"
               placeholder="Busiiness name(optional)"
+              name="dbusinessname"
+              onChange={handleChange}
             />
           </div>
           <div className="w-full  text-center mt-4">
@@ -356,14 +396,15 @@ const AddCustomer = () => {
             <select
               id="dropdown-select"
               className="w-[98%] py-4 px-3 text-black border border-gray-500 rounded-md box-border"
+              name="dselectcountry"
+              onChange={handleChange}
+              value={inputs.dselectcountry}
             >
               <option defaultValue disabled value="">
                 ---select country---
               </option>
               {countrydata.map((country, index) => (
-                <option value="option1" key={index}>
-                  {country.country}
-                </option>
+                <option key={index}>{country.country}</option>
               ))}
             </select>
           </div>
@@ -374,6 +415,8 @@ const AddCustomer = () => {
               type="search"
               className="w-[98%] mt-3 border border-gray-400 rounded-md py-4 px-3 placeholder-black"
               placeholder="Address line 1"
+              name="daddress1"
+              onChange={handleChange}
             />
           </div>
           <div className="w-full  text-center">
@@ -383,6 +426,8 @@ const AddCustomer = () => {
               type="search"
               className="w-[98%] mt-3 border border-gray-400 rounded-md py-4 px-3 placeholder-black"
               placeholder="Address line 2"
+              name="daddress2"
+              onChange={handleChange}
             />
           </div>
           <div className="grid grid-cols-2 w-full mt-3 text-center">
@@ -391,28 +436,30 @@ const AddCustomer = () => {
               <select
                 id="dropdown-select"
                 className="w-[95%] py-4 px-3 text-base border border-gray-500 rounded-md box-border"
+                name="dcity"
+                onChange={handleChange}
+                value={inputs.dcity}
               >
                 <option defaultValue disabled value="">
                   ---select city---
                 </option>
                 {states.map((name, index) => (
-                  <option value="option1" key={index}>
-                    {name.name}
-                  </option>
+                  <option key={index}>{name.name}</option>
                 ))}
               </select>
             </div>
             <select
               id="dropdown-select"
               className="w-[95%] py-4 px-3 text-base border border-gray-500 rounded-md box-border"
+              name="dstate"
+              onChange={handleChange}
+              value={inputs.dstate}
             >
               <option defaultValue disabled value="">
                 ---select states---
               </option>
               {states.map((state, index) => (
-                <option value="option1" key={index}>
-                  {state.state}
-                </option>
+                <option key={index}>{state.state}</option>
               ))}
             </select>
           </div>
@@ -423,6 +470,8 @@ const AddCustomer = () => {
               type="search"
               className="w-[98%] mt-3 border border-gray-400 rounded-md py-4 px-3 placeholder-black"
               placeholder="Pin code"
+              name="dpincode"
+              onChange={handleChange}
             />
           </div>
         </div>
@@ -434,14 +483,15 @@ const AddCustomer = () => {
             <select
               id="dropdown-select"
               className="w-[98%] py-4 px-3 text-black border border-gray-500 rounded-md box-border"
+              name="lselectcountry"
+              value={inputs.lselectcountry}
+              onChange={handleChange}
             >
               <option defaultValue disabled value="">
                 ---select country---
               </option>
               {countrydata.map((country, index) => (
-                <option value="option1" key={index}>
-                  {country.country}
-                </option>
+                <option key={index}>{country.country}</option>
               ))}
             </select>
           </div>
@@ -451,14 +501,15 @@ const AddCustomer = () => {
               <select
                 id="dropdown-select"
                 className="w-[98%] py-4 px-3 text-black border border-gray-500 rounded-md box-border"
+                name="lselectlanguage"
+                value={inputs.lselectlanguage}
+                onChange={handleChange}
               >
                 <option defaultValue disabled value="">
                   ---select language---
                 </option>
                 {language.map((languages, index) => (
-                  <option value="option1" key={index}>
-                    {languages.name}
-                  </option>
+                  <option key={index}>{languages.name}</option>
                 ))}
               </select>
             </div>
@@ -474,7 +525,9 @@ const AddCustomer = () => {
               rows="4"
               placeholder="Additional customer information"
               value={textareaValue}
-              onChange={handleTextareaChange}
+              // onChange={handleTextareaChange}
+              name="ldescription"
+              onChange={handleChange}
             >
               {" "}
             </textarea>{" "}
