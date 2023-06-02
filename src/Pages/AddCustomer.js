@@ -12,8 +12,9 @@ import countrydata from "../json file/countriesdata.json";
 import states from "../json file/states.json";
 import language from "../json file/language.json";
 //import toster
-import { toast } from "react-toastify";
+
 import { dataRef } from "../firebase-config";
+import { toast } from "react-toastify";
 
 const initialState = {
   firstname: "",
@@ -25,7 +26,6 @@ const initialState = {
 const AddCustomer = () => {
   //hooks or states
   const [isLoading, setIsLoading] = useState(true);
-  const [textareaValue, setTextareaValue] = useState("");
   const [state, setState] = useState(initialState);
   const [data, setData] = useState({});
   const { firstname, lastname, businessname, email, phone } = state;
@@ -456,17 +456,13 @@ const AddCustomer = () => {
 
           <div className="w-full  text-center mt-4">
             <textarea
-              className="peer block min-h-[auto] w-[97%] mx-auto border border-gray-500 rounded mt-5 text-black px-3 py-[0.32rem]  "
+              className="peer block min-h-[auto] w-[97%] mx-auto border border-gray-500 rounded mt-5 text-black px-3 py-[0.32rem]"
               id="exampleFormControlTextarea1"
               rows="4"
               placeholder="Additional customer information"
-              value={textareaValue}
-              // onChange={handleTextareaChange}
               name="ldescription"
-              onChange={handleinputchange}
-            >
-              {" "}
-            </textarea>{" "}
+              defaultValue="" // Set the initial value here
+            ></textarea>
           </div>
           <div className="text-center pb-10 mt-10">
             <button

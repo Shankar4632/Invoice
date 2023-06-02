@@ -7,9 +7,12 @@ import AddCustomer from "../Pages/AddCustomer";
 import AmountsOnly from "../Pages/AmountsOnly";
 import Hours from "../Pages/Hours";
 import AddTax from "../Pages/AddTax";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const Index = () => {
   return (
     <div>
+      <ToastContainer className="text-center" />
       <Routes>
         <Route exact path="/" element={<InvoicePage />} />
         <Route path="/customise" element={<CustomiseItem />} />
