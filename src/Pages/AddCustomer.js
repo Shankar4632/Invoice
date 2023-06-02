@@ -6,127 +6,74 @@ import { RxCross1 } from "react-icons/rx";
 //import Routes
 import { useNavigate } from "react-router-dom";
 //import from firebase
-import { addDoc, collection, getDocs } from "firebase/firestore";
-import { db } from "../firebase-config";
+
 //import from  json
 import countrydata from "../json file/countriesdata.json";
 import states from "../json file/states.json";
 import language from "../json file/language.json";
+//import toster
+import { toast } from "react-toastify";
+import { dataRef } from "../firebase-config";
 
+const initialState = {
+  firstname: "",
+  lastname: "",
+  businessname: "",
+  email: "",
+  phone: "",
+};
 const AddCustomer = () => {
   //hooks or states
   const [isLoading, setIsLoading] = useState(true);
   const [textareaValue, setTextareaValue] = useState("");
-  const [users, setUsers] = useState([]);
-  const usersdetails = collection(db, "users");
-  const [inputs, setInput] = useState({
-    firstname: "",
-    lastname: "",
-    businessname: "",
-    email: "",
-    phone: "",
-    countrycode: "",
-    selectcountry: "",
-    address1: "",
-    address2: "",
-    city: "",
-    state: "",
-    pincode: "",
-    dfirstname: "",
-    dlastname: "",
-    dbusinessname: "",
-    dselectcountry: "",
-    daddress1: "",
-    daddress2: "",
-    dcity: "",
-    dstate: "",
-    dpincode: "",
-    lselectcountry: "",
-    lselectlanguage: "",
-    ldescription: "",
-  });
+  const [state, setState] = useState(initialState);
+  const [data, setData] = useState({});
+  const { firstname, lastname, businessname, email, phone } = state;
 
   //function calling
-
-  //input to db
-  const handlesubmit = (event) => {
-    event.preventDefault();
-    const isInputValid = Object.values(inputs).every(
-      (value) => value.trim() !== ""
-    );
-
-    if (isInputValid) {
-      createuser();
-      navigate("/");
-    } else {
-      alert("Warning alert! Fill in all the required fields.");
-    }
-    if (
-      inputs.firstname === "" ||
-      inputs.lastname === "" ||
-      inputs.email === "" ||
-      inputs.businessname === "" ||
-      inputs.phone === "" ||
-      inputs.countrycode === "" ||
-      inputs.selectcountry === "" ||
-      inputs.city === "" ||
-      inputs.state === ""
-    ) {
-      alert("Warning alert! Change a few things up and try submitting again.");
-    } else {
-      createuser();
-
-      navigate("/");
-    }
-  };
-  const createuser = async () => {
-    await addDoc(usersdetails, {
-      firstname: inputs.firstname,
-      lastname: inputs.lastname,
-      email: inputs.email,
-      businessname: inputs.businessname,
-      phone: inputs.phone,
-      countrycode: inputs.countrycode,
-      address1: inputs.address1,
-      address2: inputs.address2,
-      selectcountry: inputs.selectcountry,
-      city: inputs.city,
-      state: inputs.state,
-      pincode: inputs.pincode,
-      dfirstname: inputs.dfirstname,
-      dlastname: inputs.dlastname,
-      dbusinessname: inputs.dbusinessname,
-      dselectcountry: inputs.dselectcountry,
-      daddress1: inputs.daddress1,
-      daddress2: inputs.daddress2,
-      dcity: inputs.dcity,
-      dstate: inputs.dstate,
-      dpincode: inputs.dpincode,
-      lselectcountry: inputs.lselectcountry,
-      lselectlanguage: inputs.lselectlanguage,
-      ldescription: inputs.ldescription,
-    });
-  };
+  const navigate = useNavigate();
   //on Change action event
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setInput((prevInputs) => ({ ...prevInputs, [name]: value }));
+  const handleinputchange = (e) => {
+    const { name, value } = e.target;
+    setState({ ...state, [name]: value });
   };
-
+  //input to db
+  const handlesubmit = (e) => {
+    e.preventDefault();
+    if (!firstname || !email || !lastname || !businessname || !phone) {
+      toast.error(<div className="">Please enter the values!</div>);
+    } else {
+      dataRef
+        .ref()
+        .child("users")
+        .push(state, (err) => {
+          if (err) {
+            toast.error(err);
+          } else {
+            toast.success("Successfully added");
+            navigate("/");
+          }
+        });
+    }
+  };
   //fetch data from db
   useEffect(() => {
-    const getUsers = async () => {
-      const data = await getDocs(usersdetails);
-      setUsers(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-      setIsLoading(false);
+    dataRef
+      .ref()
+      .child("users")
+      .on("value", (snapshot) => {
+        if (snapshot.val() !== null) {
+          setData({ ...snapshot.val() });
+        } else {
+          setData({});
+        }
+        setIsLoading(false);
+      });
+    return () => {
+      setData({});
     };
-    getUsers();
-  }, [usersdetails]);
+  }, []);
 
-  const navigate = useNavigate();
-  const handleTextareaChange = (event) => {
-    setTextareaValue(event.target.value);
-  };
   //fetch data of country in json format
 
   //loading
@@ -138,7 +85,7 @@ const AddCustomer = () => {
     );
   }
 
-  if (users.length === 0) {
+  if (data.length === 0) {
     return <div>No data available</div>;
   }
 
@@ -163,19 +110,13 @@ const AddCustomer = () => {
         Customer information{" "}
       </p>
 
-      {users.map((user, i) => {
+      {Object.keys(data).map((id, index) => {
         return (
-          <div key={i}>
-            <h1 className="text-3xl text-black">{user.firstname}</h1>
-            <h1 className="text-3xl text-black">{user.lastname}</h1>
-            <h1 className="text-3xl text-black">{user.businessname}</h1>
-            <h1 className="text-3xl text-black">{user.email}</h1>
-            <h1 className="text-3xl text-black">{user.phone}</h1>
-            <h1 className="text-3xl text-black">{user.countrycode}</h1>
-            <h1 className="text-3xl text-black">{user.address1}</h1>
-            <h1 className="text-3xl text-black">{user.address2}</h1>
-            <h1 className="text-3xl text-black">{user.selectcountry}</h1>
-            <h1 className="text-3xl text-black">{user.pincode}</h1>
+          <div key={id}>
+            <h1 className="text-3xl text-black">{index + 1}</h1>
+            <h1 className="text-3xl text-black">{data[id].firstname}</h1>
+            <h1 className="text-3xl text-black">{data[id].lastname}</h1>
+            <h1 className="text-3xl text-black">{data[id].email}</h1>
           </div>
         );
       })}
@@ -189,11 +130,10 @@ const AddCustomer = () => {
               <input
                 id="outlined-search"
                 name="firstname"
-                onChange={handleChange}
+                onChange={handleinputchange}
                 type="search"
                 className=" w-[95%]  border border-gray-400 rounded-md py-4 px-3 placeholder-black"
                 placeholder="First name"
-                required
               />
             </div>
             <div className="">
@@ -201,11 +141,10 @@ const AddCustomer = () => {
               <input
                 id="outlined-search"
                 name="lastname"
-                onChange={handleChange}
+                onChange={handleinputchange}
                 type="search"
                 className=" w-[95%]  border border-gray-400 rounded-md py-4 px-3 placeholder-black"
                 placeholder="Last name"
-                required
               />
             </div>
           </div>
@@ -215,10 +154,9 @@ const AddCustomer = () => {
               id="outlined-search"
               type="search"
               name="businessname"
-              onChange={handleChange}
+              onChange={handleinputchange}
               className="w-[98%] mt-3 border border-gray-400 rounded-md py-4 px-3 placeholder-black"
               placeholder="Business name"
-              required
             />
           </div>
           <div className="w-full  text-center">
@@ -227,10 +165,9 @@ const AddCustomer = () => {
               id="outlined-search"
               type="search"
               name="email"
-              onChange={handleChange}
+              onChange={handleinputchange}
               className="w-[98%] mt-3 border border-gray-400 rounded-md py-4 px-3 placeholder-black"
               placeholder="Email address"
-              required
             />
           </div>
           <div className="grid grid-cols-2 w-full  mt-3 text-center">
@@ -238,9 +175,9 @@ const AddCustomer = () => {
               <select
                 id="dropdown-select"
                 className="w-[95%] py-4 px-3 text-base border border-gray-500 rounded-md box-border"
-                onChange={handleChange}
+                onChange={handleinputchange}
                 name="countrycode"
-                value={inputs.countrycode}
+                value={initialState.countrycode}
               >
                 <option defaultValue disabled value="">
                   ---select code---
@@ -256,10 +193,9 @@ const AddCustomer = () => {
                 id="outlined-search"
                 type="number"
                 name="phone"
-                onChange={handleChange}
+                onChange={handleinputchange}
                 className=" w-[95%]  border border-gray-400 rounded-md py-4 px-3 placeholder-black"
                 placeholder="Phone number"
-                required
               />
             </div>
           </div>
@@ -272,9 +208,9 @@ const AddCustomer = () => {
             <select
               id="dropdown-select"
               className="w-[98%] py-4 px-3 text-black border border-gray-500 rounded-md box-border"
-              onChange={handleChange}
+              onChange={handleinputchange}
               name="selectcountry"
-              value={inputs.selectcountry}
+              value={initialState.selectcountry}
             >
               <option defaultValue disabled value="">
                 ---select country---
@@ -291,7 +227,7 @@ const AddCustomer = () => {
               type="search"
               className="w-[98%] mt-3 border border-gray-400 rounded-md py-4 px-3 placeholder-black"
               placeholder="Address line 1"
-              onChange={handleChange}
+              onChange={handleinputchange}
               name="address1"
             />
           </div>
@@ -302,7 +238,7 @@ const AddCustomer = () => {
               type="search"
               className="w-[98%] mt-3 border border-gray-400 rounded-md py-4 px-3 placeholder-black"
               placeholder="Address line 2"
-              onChange={handleChange}
+              onChange={handleinputchange}
               name="address2"
             />
           </div>
@@ -311,9 +247,9 @@ const AddCustomer = () => {
               <select
                 id="dropdown-select"
                 className="w-[95%] py-4 px-3 text-base border border-gray-500 rounded-md box-border"
-                onChange={handleChange}
+                onChange={handleinputchange}
                 name="city"
-                value={inputs.city}
+                value={initialState.city}
               >
                 <option defaultValue disabled value="">
                   ---select city---
@@ -327,9 +263,9 @@ const AddCustomer = () => {
               <select
                 id="dropdown-select"
                 className="w-[95%] py-4 px-3 text-base border border-gray-500 rounded-md box-border"
-                onChange={handleChange}
+                onChange={handleinputchange}
                 name="state"
-                value={inputs.state}
+                value={initialState.state}
               >
                 <option defaultValue disabled value="">
                   ---select states---
@@ -348,7 +284,7 @@ const AddCustomer = () => {
               type="search"
               className="w-[98%] mt-3 border border-gray-400 rounded-md py-4 px-3 placeholder-black"
               placeholder="Pin code"
-              onChange={handleChange}
+              onChange={handleinputchange}
               name="pincode"
             />
           </div>
@@ -364,7 +300,7 @@ const AddCustomer = () => {
                 className=" w-[95%]  border border-gray-400 rounded-md py-4 px-3 placeholder-black"
                 placeholder="First name"
                 name="dfirstname"
-                onChange={handleChange}
+                onChange={handleinputchange}
               />
             </div>
             <div className="">
@@ -375,7 +311,7 @@ const AddCustomer = () => {
                 className=" w-[95%]  border border-gray-400 rounded-md py-4 px-3 placeholder-black"
                 placeholder="Last name"
                 name="dLastname"
-                onChange={handleChange}
+                onChange={handleinputchange}
               />
             </div>
           </div>
@@ -388,7 +324,7 @@ const AddCustomer = () => {
               className="w-[98%] mt-3 border border-gray-400 rounded-md py-4 px-3 placeholder-black"
               placeholder="Busiiness name(optional)"
               name="dbusinessname"
-              onChange={handleChange}
+              onChange={handleinputchange}
             />
           </div>
           <div className="w-full  text-center mt-4">
@@ -397,8 +333,8 @@ const AddCustomer = () => {
               id="dropdown-select"
               className="w-[98%] py-4 px-3 text-black border border-gray-500 rounded-md box-border"
               name="dselectcountry"
-              onChange={handleChange}
-              value={inputs.dselectcountry}
+              onChange={handleinputchange}
+              value={initialState.dselectcountry}
             >
               <option defaultValue disabled value="">
                 ---select country---
@@ -416,7 +352,7 @@ const AddCustomer = () => {
               className="w-[98%] mt-3 border border-gray-400 rounded-md py-4 px-3 placeholder-black"
               placeholder="Address line 1"
               name="daddress1"
-              onChange={handleChange}
+              onChange={handleinputchange}
             />
           </div>
           <div className="w-full  text-center">
@@ -427,7 +363,7 @@ const AddCustomer = () => {
               className="w-[98%] mt-3 border border-gray-400 rounded-md py-4 px-3 placeholder-black"
               placeholder="Address line 2"
               name="daddress2"
-              onChange={handleChange}
+              onChange={handleinputchange}
             />
           </div>
           <div className="grid grid-cols-2 w-full mt-3 text-center">
@@ -437,8 +373,8 @@ const AddCustomer = () => {
                 id="dropdown-select"
                 className="w-[95%] py-4 px-3 text-base border border-gray-500 rounded-md box-border"
                 name="dcity"
-                onChange={handleChange}
-                value={inputs.dcity}
+                onChange={handleinputchange}
+                value={initialState.dcity}
               >
                 <option defaultValue disabled value="">
                   ---select city---
@@ -452,8 +388,8 @@ const AddCustomer = () => {
               id="dropdown-select"
               className="w-[95%] py-4 px-3 text-base border border-gray-500 rounded-md box-border"
               name="dstate"
-              onChange={handleChange}
-              value={inputs.dstate}
+              onChange={handleinputchange}
+              value={initialState.dstate}
             >
               <option defaultValue disabled value="">
                 ---select states---
@@ -471,7 +407,7 @@ const AddCustomer = () => {
               className="w-[98%] mt-3 border border-gray-400 rounded-md py-4 px-3 placeholder-black"
               placeholder="Pin code"
               name="dpincode"
-              onChange={handleChange}
+              onChange={handleinputchange}
             />
           </div>
         </div>
@@ -484,8 +420,8 @@ const AddCustomer = () => {
               id="dropdown-select"
               className="w-[98%] py-4 px-3 text-black border border-gray-500 rounded-md box-border"
               name="lselectcountry"
-              value={inputs.lselectcountry}
-              onChange={handleChange}
+              value={initialState.lselectcountry}
+              onChange={handleinputchange}
             >
               <option defaultValue disabled value="">
                 ---select country---
@@ -502,8 +438,8 @@ const AddCustomer = () => {
                 id="dropdown-select"
                 className="w-[98%] py-4 px-3 text-black border border-gray-500 rounded-md box-border"
                 name="lselectlanguage"
-                value={inputs.lselectlanguage}
-                onChange={handleChange}
+                value={initialState.lselectlanguage}
+                onChange={handleinputchange}
               >
                 <option defaultValue disabled value="">
                   ---select language---
@@ -527,7 +463,7 @@ const AddCustomer = () => {
               value={textareaValue}
               // onChange={handleTextareaChange}
               name="ldescription"
-              onChange={handleChange}
+              onChange={handleinputchange}
             >
               {" "}
             </textarea>{" "}
@@ -536,7 +472,6 @@ const AddCustomer = () => {
             <button
               className="px-8 py-3 rounded-3xl  bg-blue-900 text-white font-bold mx-auto "
               type="submit"
-              onClick={createuser}
             >
               Save
             </button>
