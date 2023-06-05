@@ -22,13 +22,56 @@ const initialState = {
   businessname: "",
   email: "",
   phone: "",
+  countrycode: "",
+  selectcountry: "",
+  address1: "",
+  address2: "",
+  city: "",
+  state1: "",
+  pincode: "",
+  dfirstname: "",
+  dlastname: "",
+  dbusinessname: "",
+  dselectcountry: "",
+  daddress1: "",
+  daddress2: "",
+  dcity: "",
+  dstate: "",
+  dpincode: "",
+  lselectcountry: "",
+  lselectlanguage: "",
+  ldescription: "",
 };
 const AddCustomer = () => {
   //hooks or states
   const [isLoading, setIsLoading] = useState(true);
   const [state, setState] = useState(initialState);
   const [data, setData] = useState({});
-  const { firstname, lastname, businessname, email, phone } = state;
+  const {
+    firstname,
+    lastname,
+    businessname,
+    email,
+    phone,
+    countrycode,
+    selectcountry,
+    address1,
+    address2,
+    city,
+    state1,
+    pincode,
+    dfirstname,
+    dlastname,
+    dbusinessname,
+    daddress1,
+    daddress2,
+    dcity,
+    dstate,
+    dpincode,
+    lselectcountry,
+    lselectlanguage,
+    ldescription,
+  } = state;
 
   //function calling
   const navigate = useNavigate();
@@ -132,7 +175,7 @@ const AddCustomer = () => {
                 name="firstname"
                 onChange={handleinputchange}
                 type="search"
-                className=" w-[95%]  border border-gray-400 rounded-md py-4 px-3 placeholder-black"
+                className=" w-[95%]  border border-gray-400 rounded-md py-4 px-3 placeholder-black focus:border-blue-400"
                 placeholder="First name"
               />
             </div>
@@ -264,8 +307,8 @@ const AddCustomer = () => {
                 id="dropdown-select"
                 className="w-[95%] py-4 px-3 text-base border border-gray-500 rounded-md box-border"
                 onChange={handleinputchange}
-                name="state"
-                value={initialState.state}
+                name="state1"
+                value={initialState.state1}
               >
                 <option defaultValue disabled value="">
                   ---select states---
@@ -310,7 +353,7 @@ const AddCustomer = () => {
                 type="search"
                 className=" w-[95%]  border border-gray-400 rounded-md py-4 px-3 placeholder-black"
                 placeholder="Last name"
-                name="dLastname"
+                name="dlastname"
                 onChange={handleinputchange}
               />
             </div>
@@ -461,7 +504,8 @@ const AddCustomer = () => {
               rows="4"
               placeholder="Additional customer information"
               name="ldescription"
-              defaultValue="" // Set the initial value here
+              defaultValue=""
+              onChange={handleinputchange} // Set the initial value here
             ></textarea>
           </div>
           <div className="text-center pb-10 mt-10">
