@@ -118,7 +118,17 @@ const InvoicePage = () => {
         <div className="grid grid-cols-2 h-40 ">
           <div className="  ">
             <div className="pt-8 pl-3  flex items-center">
-              <BsArrowLeft className="text-2xl" />
+              <button
+                onClick={() => {
+                  navigate("/addedlist");
+                }}
+              >
+                <BsArrowLeft
+                  className="text-2xl cursor-pointer "
+                  // onClick={navigate("/")}
+                />
+              </button>
+
               <span className="font-bold text-blue-600 text-lg pl-2 ">
                 Back to invoice
               </span>
@@ -131,6 +141,7 @@ const InvoicePage = () => {
           <div className=" flex items-center  justify-end ">
             <div className="flex items-center ">
               <BsThreeDotsVertical className="mr-8 text-[23px] text-gray-600" />
+
               <BsCamera className="mr-8 text-xl text-gray-600" />
               <button className="text-white bg-[#003087] px-9 py-3   mr-5 rounded-full    font-extrabold text-lg">
                 Send
@@ -138,7 +149,7 @@ const InvoicePage = () => {
             </div>
           </div>
         </div>
-        <div className="flex   w-[97%]  mx-auto  gap-5 ">
+        <div className="flex   w-[97%]  mx-auto  gap-5  ">
           <div className="border w-[75%] h-auto rounded-xl bg-white ">
             <div className=" flex justify-end w-full mt-3 pr-4">
               <Box sx={{ minWidth: 150, marginRight: "20px" }}>

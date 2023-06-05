@@ -94,7 +94,7 @@ const AddCustomer = () => {
             toast.error(err);
           } else {
             toast.success("Successfully added");
-            navigate("/");
+            navigate("/addedlist");
           }
         });
     }
