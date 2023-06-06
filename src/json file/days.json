@@ -1,0 +1,30 @@
+[
+  {
+    "value": "on receipt",
+    "label": "on receipt"
+  },
+  {
+    "value": "on specific date ",
+    "label": "on specific date"
+  },
+  {
+    "value": "in 10 days ",
+    "label": "in 10 days"
+  },
+  {
+    "value": "in 15 days ",
+    "label": "in 15 days"
+  },
+  {
+    "value": "in 20 days ",
+    "label": "in 20 days"
+  },
+  {
+    "value": "in 25 days ",
+    "label": "in 25 days"
+  },
+  {
+    "value": "in 30 days ",
+    "label": "in 30 days"
+  }
+]
