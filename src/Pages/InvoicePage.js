@@ -116,46 +116,47 @@ const InvoicePage = () => {
 
   //Return Statements
   return (
-    <>
-      <form>
-        <div className="mb-3 ">
-          <div className="grid grid-cols-2 h-40 ">
-            <div className="  ">
-              <div className="pt-8 pl-3  flex items-center">
-                <button
-                  onClick={() => {
-                    navigate("/addedlist");
-                  }}
-                >
-                  <BsArrowLeft
-                    className="text-2xl cursor-pointer "
-                    // onClick={navigate("/")}
-                  />
-                </button>
+    <div className="mb-3 ">
+      <div className="grid grid-cols-2 h-40 ">
+        <div className="  ">
+          <div className="pt-8 pl-3  flex items-center">
+            <button
+              onClick={() => {
+                navigate("/addedlist");
+              }}
+            >
+              <BsArrowLeft
+                className="text-2xl cursor-pointer "
+                // onClick={navigate("/")}
+              />
+            </button>
 
-                <span className="font-bold text-blue-600 text-lg pl-2 ">
-                  Back to invoice
-                </span>
-              </div>
-
-              <p className="pl-3 text-[43px] font-semibold mt-1">
-                New invoice No (23/23-03)
-              </p>
-            </div>
-            <div className=" flex items-center  justify-end ">
-              <div className="flex items-center ">
-                <BsThreeDotsVertical className="mr-8 text-[23px] text-gray-600" />
-
-                <BsCamera className="mr-8 text-xl text-gray-600" />
-                <button className="text-white bg-[#003087] px-9 py-3   mr-5 rounded-full    font-extrabold text-lg">
-                  Send
-                </button>
-              </div>
-            </div>
+            <span className="font-bold text-blue-600 text-lg pl-2 ">
+              Back to invoice
+            </span>
           </div>
-          <div className="flex   w-[97%]  mx-auto  gap-5  ">
-            <div className="border w-[75%] h-auto rounded-xl bg-white ">
-              <div className="border border-red-600">
+
+          <p className="pl-3 text-[43px] font-semibold mt-1">
+            New invoice No (23/23-03)
+          </p>
+        </div>
+        <div className=" flex items-center  justify-end ">
+          <div className="flex items-center ">
+            <BsThreeDotsVertical className="mr-8 text-[23px] text-gray-600" />
+
+            <BsCamera className="mr-8 text-xl text-gray-600" />
+            <button className="text-white bg-[#003087] px-9 py-3   mr-5 rounded-full    font-extrabold text-lg">
+              Send
+            </button>
+          </div>
+        </div>
+      </div>
+      <div className="flex   w-[97%]  mx-auto gap-5  ">
+        <div className="w-[75%]">
+          <div className="border  h-auto rounded-xl bg-white ">
+            {/* section-1 */}
+            <form onSubmit={handledatasubmit}>
+              <div className="">
                 <div className="  flex justify-end w-full mt-3 pr-4">
                   <Box sx={{ minWidth: 150, marginRight: "20px" }}>
                     <FormControl fullWidth>
@@ -221,8 +222,8 @@ const InvoicePage = () => {
                   </Box>
                 </div>
                 <hr className="mt-3 w-[97%] mx-auto" />
-                <div className="flex items-center p-3">
-                  <p className="font-bold text-lg">Bill To</p>
+                <div className="flex items-center p-3 ml-5">
+                  <p className="font-bold text-xl">Bill To</p>
                   <button className="rounded-full bg-[#003087] px-3 py-1 text-white font-bold ml-3">
                     invoice single customer
                   </button>
@@ -250,9 +251,12 @@ const InvoicePage = () => {
                   )}
                 </div>
               </div>
-              <div className="border border-blue-500">
+            </form>
+            {/* section-2 */}
+            <form onSubmit={handledatasubmit}>
+              <div className="p-3 ">
                 <div className="flex items-center pl-3 pt-20">
-                  <p className="font-bold text-lg">Items</p>
+                  <p className="font-bold text-xl ml-3">Items</p>
                   <button
                     className=" text-blue-500 text-xl font-bold  rounded-full w-full flex justify-end items-center mr-3"
                     onClick={() => navigate("/customise")}
@@ -274,9 +278,11 @@ const InvoicePage = () => {
                   <AiOutlinePlus className="mr-2" /> Add items or Service
                 </button>
               </div>
-
-              <div className="border border-green-500 p-3 mt-10">
-                <p className="font-bold text-lg">Message To Customer</p>
+            </form>
+            {/* section-3 */}
+            <form onSubmit={handledatasubmit}>
+              <div className="p-3">
+                <p className="font-bold text-xl ml-5">Message To Customer</p>
                 <div className="relative mb-2" data-te-input-wrapper-init>
                   <textarea
                     className="peer block min-h-[auto] w-[97%] mx-auto border border-gray-500 rounded mt-5 text-black px-3 py-[0.32rem]  "
@@ -288,7 +294,7 @@ const InvoicePage = () => {
                   >
                     {" "}
                   </textarea>
-                  <div className="flex items-center ">
+                  <div className="flex items-center ml-5 ">
                     <button className="text-bold  mt-3 text-blue-600  font-bold flex items-center text-xl ">
                       Add terms and conditions
                     </button>
@@ -300,12 +306,14 @@ const InvoicePage = () => {
                   </div>
                 </div>
               </div>
-
-              <div className="border border-yellow-500   p-3 mt-10 flex items-center">
-                <p className=" text-[27px] font-semibold w-full">
-                  More Options
-                </p>
-                <div className="flex justify-end w-full">
+            </form>
+            {/* section-4 */}
+            <form onSubmit={handledatasubmit}>
+              <div className="  p-3 mt-10 ">
+                <div className="flex items-center">
+                  <p className=" text-[27px]  ml-3 font-semibold w-full">
+                    More Options
+                  </p>
                   <button onClick={hideshow}>
                     {" "}
                     {showMemo ? (
@@ -315,140 +323,128 @@ const InvoicePage = () => {
                     )}
                   </button>
                 </div>
-              </div>
-              <hr className="border w-[97%] mx-auto" />
-
-              {showMemo && (
-                <div>
-                  <div className="">
-                    <p className="text-xl p-3 font-bold">Attachments</p>
-                    <input
-                      ref={fileInputRef}
-                      type="file"
-                      name="files"
-                      id="files"
-                      className="hidden"
-                      onChange={handleFileChange}
-                    />
-                    <button
-                      type="button"
-                      className="text-[#003087] ml-3 font-bold border-2 border-[#003087] px-4 py-1 rounded-full text-sm"
-                      onClick={handleButtonClick}
-                    >
-                      Upload files
-                    </button>
-
-                    {/* <div className="flex">
-                    <input
-                      type="file"
-                      className=" text-[#003087] ml-3  font-bold border-2 border-[#003087] px-4 py-1 rounded-full text-sm "
-                    />
-                  </div> */}
-
-                    <p className="text-sm font-semibold p-3 text-gray-800">
-                      JPG GIF PNG PDF | Up to 5 files , 4MB per file
-                    </p>
-                  </div>
-                  <div className=" p-3 mt-10 mb-4">
-                    <p className="font-bold text-lg">Memo To Self</p>
-                    <div className=" mb-2">
-                      <textarea
-                        className="peer block min-h-[auto] placeholder-gray-500  w-[97%] mx-auto border border-gray-500 rounded mt-5 text-black px-3 py-[0.32rem]  "
-                        rows="6"
-                        placeholder="Memo"
-                        value={textareaValue}
-                        onChange={handleTextareaChange}
-                      >
-                        {" "}
-                      </textarea>
+                <hr className="mt-3 w-[98%] mx-auto" />
+                <div className="  ">
+                  {showMemo && (
+                    <div>
+                      <div className="">
+                        <p className="text-xl p-3 ml-1 font-bold">
+                          Attachments
+                        </p>
+                        <input
+                          ref={fileInputRef}
+                          type="file"
+                          name="files"
+                          id="files"
+                          className="hidden"
+                          onChange={handleFileChange}
+                        />
+                        <button
+                          type="button"
+                          className="text-[#003087] ml-3 font-bold border-2 border-[#003087] px-4 py-1 rounded-full text-sm"
+                          onClick={handleButtonClick}
+                        >
+                          Upload files
+                        </button>
+                        <p className="text-sm font-semibold p-3 text-gray-800">
+                          JPG GIF PNG PDF | Up to 5 files , 4MB per file
+                        </p>
+                      </div>
+                      <div className=" p-3 mt-10 mb-4">
+                        <p className="font-bold text-xl ml-2">Memo To Self</p>
+                        <div className=" mb-2">
+                          <textarea
+                            className="peer block min-h-[auto] placeholder-gray-500  w-[98%] mx-auto border border-gray-500 rounded mt-5 text-black px-3 py-[0.32rem]  "
+                            rows="6"
+                            placeholder="Memo"
+                            value={textareaValue}
+                            onChange={handleTextareaChange}
+                          >
+                            {" "}
+                          </textarea>
+                        </div>
+                      </div>
                     </div>
-                  </div>
+                  )}
                 </div>
-              )}
-            </div>
-            <div className=" w-[25%] text-center ">
-              <div className="h-[200px] border rounded-xl bg-white">1</div>
-
-              <div className="h-[700px] border rounded-xl bg-white mt-4 pt-8 ">
-                <Box
-                  component="form"
-                  sx={{
-                    "& > :not(style)": { m: 1, width: "90%" },
-                  }}
-                  noValidate
-                  autoComplete="off"
-                  className="flex items-start pl-4"
-                  name="invoicenumber"
-                  onChange={handleinputinvoice}
-                >
-                  <TextField
-                    id="outlined-uncontrolled"
-                    label="Invoice Number"
-                    onChange={handleinputinvoice}
-                    name="invoicenumber"
-                  />
-                </Box>
-                <input
-                  type="date"
-                  id="birthday"
-                  name="invoicedate"
-                  className="p-4 border flex items-start ml-6 border-gray-300"
-                  onChange={handleinputinvoice}
-                />{" "}
-                <div>
-                  <select
-                    id="dropdown-select"
-                    className="w-[90%] py-4 mt-2 px-3 text-base border border-gray-500 rounded-md box-border"
-                    onChange={handleinputinvoice}
-                    name="invoicedue"
-                    value={initialState.invoicedue}
-                  >
-                    <option defaultValue disabled value="">
-                      ---select Due---
-                    </option>
-                    {days.map((days, index) => (
-                      <option key={index}>{days.value}</option>
-                    ))}
-                  </select>
-                </div>
-                <div className="mx-auto mt-3 border h-[350px] grid grid-cols-2 ">
-                  <div>
-                    <p className="font-semibold w-full text-lg p-3">
-                      Subtotal{" "}
-                    </p>
-                    <p className="font-semibold text-lg p-3">
-                      Other Discounts{" "}
-                    </p>
-                    <p className="font-semibold text-lg p-3">Shipping </p>
-                    <p className="font-semibold text-lg p-3">Other Amount </p>
-                    <p className="font-semibold text-lg p-3">Total </p>
-                  </div>
-                  <div className="">
-                    <p className="p-3">$0.00</p>
-                    <p className="p-3">
-                      <i className="p-2 text-blue-600 rounded-xl text-lg font-bold not-italic cursor-pointer">
-                        Add
-                      </i>
-                    </p>
-                    <p className="p-3 mt-2">
-                      <i className=" p-2 text-blue-600 rounded-xl text-lg font-bold not-italic cursor-pointer">
-                        Add
-                      </i>
-                    </p>
-                    <p className="p-3">
-                      <i className="p-2 text-blue-600 rounded-xl text-lg font-bold not-italic cursor-pointer">
-                        Add
-                      </i>
-                    </p>
-                    <p className="p-3"></p>
-                  </div>
-                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div className=" w-[25%] text-center ">
+          <div className="h-[200px] border rounded-xl bg-white">1</div>
+          <div className="h-[700px] border rounded-xl bg-white mt-4 pt-8 ">
+            <Box
+              component="form"
+              sx={{
+                "& > :not(style)": { m: 1, width: "90%" },
+              }}
+              noValidate
+              autoComplete="off"
+              className="flex items-start pl-4"
+              name="invoicenumber"
+              onChange={handleinputinvoice}
+            >
+              <TextField
+                id="outlined-uncontrolled"
+                label="Invoice Number"
+                onChange={handleinputinvoice}
+                name="invoicenumber"
+              />
+            </Box>
+            <input
+              type="date"
+              id="birthday"
+              name="invoicedate"
+              className="p-4 border flex items-start ml-6 border-gray-300"
+              onChange={handleinputinvoice}
+            />{" "}
+            <select
+              id="dropdown-select"
+              className="w-[90%] py-4 mt-2 px-3 text-base border border-gray-500 rounded-md box-border"
+              onChange={handleinputinvoice}
+              name="invoicedue"
+              value={initialState.invoicedue}
+            >
+              <option defaultValue disabled value="">
+                ---select Due---
+              </option>
+              {days.map((days, index) => (
+                <option key={index}>{days.value}</option>
+              ))}
+            </select>
+            <div className="mx-auto mt-3 border h-[350px] grid grid-cols-2 ">
+              <div>
+                <p className="font-semibold w-full text-lg p-3">Subtotal </p>
+                <p className="font-semibold text-lg p-3">Other Discounts </p>
+                <p className="font-semibold text-lg p-3">Shipping </p>
+                <p className="font-semibold text-lg p-3">Other Amount </p>
+                <p className="font-semibold text-lg p-3">Total </p>
+              </div>
+              <div className="">
+                <p className="p-3">$0.00</p>
+                <p className="p-3">
+                  <i className="p-2 text-blue-600 rounded-xl text-lg font-bold not-italic cursor-pointer">
+                    Add
+                  </i>
+                </p>
+                <p className="p-3 mt-2">
+                  <i className=" p-2 text-blue-600 rounded-xl text-lg font-bold not-italic cursor-pointer">
+                    Add
+                  </i>
+                </p>
+                <p className="p-3">
+                  <i className="p-2 text-blue-600 rounded-xl text-lg font-bold not-italic cursor-pointer">
+                    Add
+                  </i>
+                </p>
+                <p className="p-3"></p>
               </div>
             </div>
           </div>
         </div>
-      </form>
-    </>
+      </div>
+    </div>
   );
 };
 
