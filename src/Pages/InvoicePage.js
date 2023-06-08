@@ -38,7 +38,7 @@ const InvoicePage = () => {
   const [showAddButton, setShowAddButton] = useState(false);
   const [showAddTax, setShowAddTax] = useState(false);
   const [showMemo, setShowMemo] = useState(false);
-  const [data, setData] = useState({});
+  const [data, setData] = useState(0);
   const [inputuser, setInputuser] = useState(initialState);
   const [subtotal, setSubtotal] = useState("$0.00");
   const [discount, setDiscount] = useState("");
@@ -46,17 +46,31 @@ const InvoicePage = () => {
   const [otherAmount, setOtherAmount] = useState("");
   const [total, setTotal] = useState("");
   const [invoiceNumber, setInvoiceNumber] = useState("");
+  //section-3
+  const [input, setInput] = useState({
+    section3messege: "",
+  });
 
   //Function Calling
   const { invoicenumber, invoicedate, invoicedue } = inputuser;
-  //input file
+  //input file onchange events
+  const handleChangesection3 = (event) => {
+    const section3messege = event.target.name;
+    const value = event.target.value;
+    setInput((values) => ({ ...values, [section3messege]: value }));
+  };
   const handleInputInvoice = (event) => {
     const inputValue = event.target.value;
     setInvoiceNumber(inputValue);
   };
-  const handleinputinvoice = (e) => {
-    const { name, value } = e.target;
-    setData({ ...inputuser, [name]: value });
+  // const handleinputinvoice = (e) => {
+  //   const { name, value } = e.target;
+  //   setData({ ...inputuser, [name]: value });
+  // };
+  const handleinputinvoice = (event) => {
+    const title = event.target.name;
+    const value = event.target.value;
+    setData((values) => ({ ...values, [title]: value }));
   };
   //addiding the value field
   const handleAdd = (section) => {
@@ -90,15 +104,33 @@ const InvoicePage = () => {
     return discountValue + shippingValue + otherAmountValue;
   };
   //submit the form
-  const handledatasubmit = (e) => {
+  // const handlesubmit5 = (e) => {
+  //   e.preventDefault();
+  //   if (!invoicenumber || !invoicedate || !invoicedue) {
+  //     toast.error(<div className="">Please enter the values!</div>);
+  //   } else {
+  //     dataRef
+  //       .ref()
+  //       .child("dataofusers")
+  //       .push(inputuser, (err) => {
+  //         if (err) {
+  //           toast.error(err);
+  //         } else {
+  //           toast.success("Successfully added");
+  //         }
+  //       });
+  //   }
+  // };
+
+  const handleSubmitsection3 = (e) => {
     e.preventDefault();
-    if (!invoicenumber || !invoicedate || !invoicedue) {
+    if (!input) {
       toast.error(<div className="">Please enter the values!</div>);
     } else {
       dataRef
         .ref()
-        .child("dataofusers")
-        .push(inputuser, (err) => {
+        .child("section3")
+        .push(input, (err) => {
           if (err) {
             toast.error(err);
           } else {
@@ -190,6 +222,7 @@ const InvoicePage = () => {
             <button
               className="text-white bg-[#003087] px-9 py-3   mr-5 rounded-full    font-extrabold text-lg"
               type="submit"
+              onClick={handleSubmitsection3}
             >
               Send
             </button>
@@ -325,7 +358,7 @@ const InvoicePage = () => {
               </div>
             </form>
             {/* section-3 */}
-            <form>
+            <form onSubmit={handleSubmitsection3}>
               <div className="p-3">
                 <p className="font-bold text-xl ml-5">Message To Customer</p>
                 <div className="relative mb-2" data-te-input-wrapper-init>
@@ -333,9 +366,10 @@ const InvoicePage = () => {
                     className="peer block min-h-[auto] w-[97%] mx-auto border border-gray-500 rounded mt-5 text-black px-3 py-[0.32rem]  "
                     id="exampleFormControlTextarea1"
                     rows="6"
-                    value={textareaValue}
-                    onChange={handleTextareaChange}
+                    value={input.section3messege}
+                    name="section3messege"
                     placeholder="Seller note to customer"
+                    onChange={handleChangesection3}
                   >
                     {" "}
                   </textarea>
@@ -353,67 +387,64 @@ const InvoicePage = () => {
               </div>
             </form>
             {/* section-4 */}
-            <form>
-              <div className="  p-3 mt-10 ">
-                <div className="flex items-center">
-                  <p className=" text-[27px]  ml-3 font-semibold w-full">
-                    More Options
-                  </p>
-                  <button onClick={hideshow}>
-                    {" "}
-                    {showMemo ? (
-                      <IoIosArrowUp className="text-2xl text-gray-500" />
-                    ) : (
-                      <IoIosArrowDown className="text-2xl text-gray-500" />
-                    )}
-                  </button>
-                </div>
-                <hr className="mt-3 w-[98%] mx-auto" />
-                <div className="  ">
-                  {showMemo && (
-                    <div>
-                      <div className="">
-                        <p className="text-xl p-3 ml-1 font-bold">
-                          Attachments
-                        </p>
-                        <input
-                          ref={fileInputRef}
-                          type="file"
-                          name="files"
-                          id="files"
-                          className="hidden"
-                          onChange={handleFileChange}
-                        />
-                        <button
-                          type="button"
-                          className="text-[#003087] ml-3 font-bold border-2 border-[#003087] px-4 py-1 rounded-full text-sm"
-                          onClick={handleButtonClick}
+
+            <div className="  p-3 mt-10 ">
+              <div className="flex items-center">
+                <p className=" text-[27px]  ml-3 font-semibold w-full">
+                  More Options
+                </p>
+                <button onClick={hideshow}>
+                  {" "}
+                  {showMemo ? (
+                    <IoIosArrowUp className="text-2xl text-gray-500" />
+                  ) : (
+                    <IoIosArrowDown className="text-2xl text-gray-500" />
+                  )}
+                </button>
+              </div>
+              <hr className="mt-3 w-[98%] mx-auto" />
+              <div className="  ">
+                {showMemo && (
+                  <div>
+                    <div className="">
+                      <p className="text-xl p-3 ml-1 font-bold">Attachments</p>
+                      <input
+                        ref={fileInputRef}
+                        type="file"
+                        name="files"
+                        id="files"
+                        className="hidden"
+                        onChange={handleFileChange}
+                      />
+                      <button
+                        type="button"
+                        className="text-[#003087] ml-3 font-bold border-2 border-[#003087] px-4 py-1 rounded-full text-sm"
+                        onClick={handleButtonClick}
+                      >
+                        Upload files
+                      </button>
+                      <p className="text-sm font-semibold p-3 text-gray-800">
+                        JPG GIF PNG PDF | Up to 5 files , 4MB per file
+                      </p>
+                    </div>
+                    <div className=" p-3 mt-10 mb-4">
+                      <p className="font-bold text-xl ml-2">Memo To Self</p>
+                      <div className=" mb-2">
+                        <textarea
+                          className="peer block min-h-[auto] placeholder-gray-500  w-[98%] mx-auto border border-gray-500 rounded mt-5 text-black px-3 py-[0.32rem]  "
+                          rows="6"
+                          placeholder="Memo"
+                          value={textareaValue}
+                          onChange={handleTextareaChange}
                         >
-                          Upload files
-                        </button>
-                        <p className="text-sm font-semibold p-3 text-gray-800">
-                          JPG GIF PNG PDF | Up to 5 files , 4MB per file
-                        </p>
-                      </div>
-                      <div className=" p-3 mt-10 mb-4">
-                        <p className="font-bold text-xl ml-2">Memo To Self</p>
-                        <div className=" mb-2">
-                          <textarea
-                            className="peer block min-h-[auto] placeholder-gray-500  w-[98%] mx-auto border border-gray-500 rounded mt-5 text-black px-3 py-[0.32rem]  "
-                            rows="6"
-                            placeholder="Memo"
-                            value={textareaValue}
-                            onChange={handleTextareaChange}
-                          >
-                            {" "}
-                          </textarea>
-                        </div>
+                          {" "}
+                        </textarea>
                       </div>
                     </div>
-                  )}
-                </div>
+                  </div>
+                )}
               </div>
-            </form>
+            </div>
           </div>
         </div>
 
@@ -444,7 +475,6 @@ const InvoicePage = () => {
               type="date"
               name="invoicedate"
               className="p-4 border flex items-start ml-6 border-gray-300"
-              onChange={handleinputinvoice}
             />{" "}
             <select
               id="dropdown-select"
