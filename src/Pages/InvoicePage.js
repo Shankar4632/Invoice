@@ -26,8 +26,8 @@ import days from "../json file/days.json";
 
 const initialState = {
   invoicedue: "",
-  invoicenumber: "",
   invoicedate: "",
+  invoicenumber: "",
 };
 const InvoicePage = () => {
   //hooks or States
@@ -38,8 +38,6 @@ const InvoicePage = () => {
   const [showAddButton, setShowAddButton] = useState(false);
   const [showAddTax, setShowAddTax] = useState(false);
   const [showMemo, setShowMemo] = useState(false);
-  const [data, setData] = useState(0);
-  const [inputuser, setInputuser] = useState(initialState);
   const [subtotal, setSubtotal] = useState("$0.00");
   const [discount, setDiscount] = useState("");
   const [shipping, setShipping] = useState("");
@@ -50,10 +48,11 @@ const InvoicePage = () => {
   const [input, setInput] = useState({
     section3messege: "",
   });
-
+  //section-5
+  const [inputuser5, setInputuser5] = useState(initialState);
   //Function Calling
-  const { invoicenumber, invoicedate, invoicedue } = inputuser;
-  //input file onchange events
+  ////////////////////////input file onchange events
+  //section-3
   const handleChangesection3 = (event) => {
     const section3messege = event.target.name;
     const value = event.target.value;
@@ -63,16 +62,52 @@ const InvoicePage = () => {
     const inputValue = event.target.value;
     setInvoiceNumber(inputValue);
   };
-  // const handleinputinvoice = (e) => {
-  //   const { name, value } = e.target;
-  //   setData({ ...inputuser, [name]: value });
-  // };
-  const handleinputinvoice = (event) => {
-    const title = event.target.name;
-    const value = event.target.value;
-    setData((values) => ({ ...values, [title]: value }));
+  //section-5
+
+  const handleChangesection5 = (e) => {
+    const { name, value } = e.target;
+    setInputuser5({ ...inputuser5, [name]: value });
   };
-  //addiding the value field
+
+  ///////////////////addiding the value field onsubmit events///////////////////
+
+  //section-3
+  const handleSubmitsection3 = (e) => {
+    e.preventDefault();
+    if (!input) {
+      toast.error(<div className="">Please enter the values!</div>);
+    } else {
+      dataRef
+        .ref()
+        .child("section3")
+        .push(input, (err) => {
+          if (err) {
+            toast.error(err);
+          } else {
+            toast.success("Successfully added");
+          }
+        });
+    }
+  };
+  //section-5
+
+  const handleSubmitsection5 = (e) => {
+    e.preventDefault();
+    if (!inputuser5) {
+      toast.error(<div className="">Please enter the values!</div>);
+    } else {
+      dataRef
+        .ref()
+        .child("section5")
+        .push(inputuser5, (err) => {
+          if (err) {
+            toast.error(err);
+          } else {
+            toast.success("Successfully added");
+          }
+        });
+    }
+  };
   const handleAdd = (section) => {
     const value = prompt("Enter the value:");
     if (value) {
@@ -103,44 +138,13 @@ const InvoicePage = () => {
 
     return discountValue + shippingValue + otherAmountValue;
   };
-  //submit the form
-  // const handlesubmit5 = (e) => {
-  //   e.preventDefault();
-  //   if (!invoicenumber || !invoicedate || !invoicedue) {
-  //     toast.error(<div className="">Please enter the values!</div>);
-  //   } else {
-  //     dataRef
-  //       .ref()
-  //       .child("dataofusers")
-  //       .push(inputuser, (err) => {
-  //         if (err) {
-  //           toast.error(err);
-  //         } else {
-  //           toast.success("Successfully added");
-  //         }
-  //       });
-  //   }
-  // };
 
-  const handleSubmitsection3 = (e) => {
-    e.preventDefault();
-    if (!input) {
-      toast.error(<div className="">Please enter the values!</div>);
-    } else {
-      dataRef
-        .ref()
-        .child("section3")
-        .push(input, (err) => {
-          if (err) {
-            toast.error(err);
-          } else {
-            toast.success("Successfully added");
-          }
-        });
-    }
-  };
   const fileInputRef = useRef(null);
-
+  //handle click
+  const handleClickAllsections = () => {
+    handleSubmitsection3();
+    handleSubmitsection5();
+  };
   const handleButtonClick = () => {
     fileInputRef.current.click();
   };
@@ -222,7 +226,7 @@ const InvoicePage = () => {
             <button
               className="text-white bg-[#003087] px-9 py-3   mr-5 rounded-full    font-extrabold text-lg"
               type="submit"
-              onClick={handleSubmitsection3}
+              onClick={handleSubmitsection5}
             >
               Send
             </button>
@@ -449,102 +453,105 @@ const InvoicePage = () => {
         </div>
 
         <div className=" w-[25%] text-center ">
-          <div className="h-[200px] border rounded-xl bg-white">1</div>
-          <div className="h-[700px] border rounded-xl bg-white mt-4 pt-8 ">
-            <Box
-              component="form"
-              sx={{
-                "& > :not(style)": { m: 1, width: "90%" },
-              }}
-              noValidate
-              autoComplete="off"
-              className="flex items-start pl-4"
-              name="invoicenumber"
-              value={invoiceNumber.invoiceNumber}
-              onChange={handleInputInvoice}
-            >
-              <TextField
-                id="outlined-uncontrolled"
-                label="Invoice Number"
+          <form onSubmit={handleSubmitsection5}>
+            <div className="h-[200px] border rounded-xl bg-white">1</div>
+            <div className="h-[700px] border rounded-xl bg-white mt-4 pt-8 ">
+              <Box
+                component=""
+                sx={{
+                  "& > :not(style)": { m: 1, width: "90%" },
+                }}
+                noValidate
+                autoComplete="off"
+                className="flex items-start pl-4"
                 name="invoicenumber"
-                value={invoiceNumber}
+                value={invoiceNumber.invoiceNumber}
                 onChange={handleInputInvoice}
-              />
-            </Box>
-            <input
-              type="date"
-              name="invoicedate"
-              className="p-4 border flex items-start ml-6 border-gray-300"
-            />{" "}
-            <select
-              id="dropdown-select"
-              className="w-[90%] py-4 mt-2 px-3 text-base border border-gray-500 rounded-md box-border"
-              onChange={handleinputinvoice}
-              name="invoicedue"
-              value={initialState.invoicedue}
-            >
-              <option defaultValue disabled value="">
-                ---select Due---
-              </option>
-              {days.map((days, index) => (
-                <option key={index}>{days.value}</option>
-              ))}
-            </select>
-            <div className="mx-auto mt-3 border h-[350px] grid grid-cols-2">
-              <div>
-                <p className="font-semibold w-full text-lg p-3">Subtotal </p>
-                <p className="font-semibold text-lg p-3">Other Discounts </p>
-                <p className="font-semibold text-lg p-3">Shipping </p>
-                <p className="font-semibold text-lg p-3">Other Amount </p>
-                <p className="font-bold text-lg p-3">
-                  Total{" "}
-                  <span className="text-sm text-blue-500 font-bold">
-                    (Tax Excl.)
-                  </span>{" "}
-                </p>
-              </div>
-              <div className="">
-                <p className="p-3">{subtotal}</p>
-                <p className="p-3">
-                  {discount ? (
-                    discount
-                  ) : (
-                    <button
-                      className=" text-blue-600 rounded-xl text-lg font-bold not-italic cursor-pointer"
-                      onClick={() => handleAdd("discount")}
-                    >
-                      Add
-                    </button>
-                  )}
-                </p>
-                <p className="p-4 ">
-                  {shipping ? (
-                    shipping
-                  ) : (
-                    <button
-                      className=" text-blue-600 rounded-xl text-lg font-bold not-italic cursor-pointer"
-                      onClick={() => handleAdd("shipping")}
-                    >
-                      Add
-                    </button>
-                  )}
-                </p>
-                <p className="p-4">
-                  {otherAmount ? (
-                    otherAmount
-                  ) : (
-                    <button
-                      className=" text-blue-600 rounded-xl text-lg font-bold not-italic cursor-pointer"
-                      onClick={() => handleAdd("otherAmount")}
-                    >
-                      Add
-                    </button>
-                  )}
-                </p>
-                <p className="p-3 font-bold">$ {calculateTotal()}</p>
+              >
+                <TextField
+                  id="outlined-uncontrolled"
+                  label="Invoice Number"
+                  name="invoicenumber"
+                  value={invoiceNumber}
+                  onChange={handleChangesection5}
+                />
+              </Box>
+              <input
+                type="date"
+                name="invoicedate"
+                className="p-4 border flex items-start ml-6 border-gray-300"
+                onChange={handleChangesection5}
+              />{" "}
+              <select
+                id="dropdown-select"
+                className="w-[90%] py-4 mt-2 px-3 text-base border border-gray-500 rounded-md box-border"
+                onChange={handleChangesection5}
+                name="invoicedue"
+                value={initialState.invoicedue}
+              >
+                <option defaultValue disabled value="">
+                  ---select Due---
+                </option>
+                {days.map((days, index) => (
+                  <option key={index}>{days.value}</option>
+                ))}
+              </select>
+              <div className="mx-auto mt-3 border h-[350px] grid grid-cols-2">
+                <div>
+                  <p className="font-semibold w-full text-lg p-3">Subtotal </p>
+                  <p className="font-semibold text-lg p-3">Other Discounts </p>
+                  <p className="font-semibold text-lg p-3">Shipping </p>
+                  <p className="font-semibold text-lg p-3">Other Amount </p>
+                  <p className="font-bold text-lg p-3">
+                    Total{" "}
+                    <span className="text-sm text-blue-500 font-bold">
+                      (Tax Excl.)
+                    </span>{" "}
+                  </p>
+                </div>
+                <div className="">
+                  <p className="p-3">{subtotal}</p>
+                  <p className="p-3">
+                    {discount ? (
+                      discount
+                    ) : (
+                      <button
+                        className=" text-blue-600 rounded-xl text-lg font-bold not-italic cursor-pointer"
+                        onClick={() => handleAdd("discount")}
+                      >
+                        Add
+                      </button>
+                    )}
+                  </p>
+                  <p className="p-4 ">
+                    {shipping ? (
+                      shipping
+                    ) : (
+                      <button
+                        className=" text-blue-600 rounded-xl text-lg font-bold not-italic cursor-pointer"
+                        onClick={() => handleAdd("shipping")}
+                      >
+                        Add
+                      </button>
+                    )}
+                  </p>
+                  <p className="p-4">
+                    {otherAmount ? (
+                      otherAmount
+                    ) : (
+                      <button
+                        className=" text-blue-600 rounded-xl text-lg font-bold not-italic cursor-pointer"
+                        onClick={() => handleAdd("otherAmount")}
+                      >
+                        Add
+                      </button>
+                    )}
+                  </p>
+                  <p className="p-3 font-bold">$ {calculateTotal()}</p>
+                </div>
               </div>
             </div>
-          </div>
+          </form>
         </div>
       </div>
     </div>
