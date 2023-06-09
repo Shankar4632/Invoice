@@ -70,7 +70,11 @@ const InvoicePage = () => {
   };
 
   ///////////////////addiding the value field onsubmit events///////////////////
-
+  const handlesubmit = (e) => {
+    e.preventDefault();
+    handleSubmitsection3(e);
+    handleSubmitsection5(e);
+  };
   //section-3
   const handleSubmitsection3 = (e) => {
     e.preventDefault();
@@ -90,16 +94,21 @@ const InvoicePage = () => {
     }
   };
   //section-5
-
   const handleSubmitsection5 = (e) => {
     e.preventDefault();
     if (!inputuser5) {
       toast.error(<div className="">Please enter the values!</div>);
     } else {
+      const total = calculateTotal(); // Calculate the total value
+      const section5Data = {
+        inputuser5: inputuser5,
+        total: total,
+      };
+
       dataRef
         .ref()
         .child("section5")
-        .push(inputuser5, (err) => {
+        .push(section5Data, (err) => {
           if (err) {
             toast.error(err);
           } else {
@@ -108,6 +117,7 @@ const InvoicePage = () => {
         });
     }
   };
+
   const handleAdd = (section) => {
     const value = prompt("Enter the value:");
     if (value) {
@@ -226,7 +236,7 @@ const InvoicePage = () => {
             <button
               className="text-white bg-[#003087] px-9 py-3   mr-5 rounded-full    font-extrabold text-lg"
               type="submit"
-              onClick={handleSubmitsection5}
+              onClick={handlesubmit}
             >
               Send
             </button>
@@ -469,6 +479,7 @@ const InvoicePage = () => {
                 onChange={handleInputInvoice}
               >
                 <TextField
+                  type="number"
                   id="outlined-uncontrolled"
                   label="Invoice Number"
                   name="invoicenumber"

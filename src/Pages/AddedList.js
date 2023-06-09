@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import {
   BsFillQuestionCircleFill,
@@ -10,6 +10,8 @@ import { RiFileList2Fill } from "react-icons/ri";
 import { CiSliderHorizontal } from "react-icons/ci";
 import { RxCross1 } from "react-icons/rx";
 import { FaPaypal } from "react-icons/fa";
+//import from database
+import { dataRef } from "../firebase-config";
 
 //import react router
 import { Link, useNavigate } from "react-router-dom";
@@ -25,10 +27,31 @@ import { useState } from "react";
 const AddedList = () => {
   //states or hooks
   const [show, setShow] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  //get data from the db
+  const [data, setData] = useState({});
   const navigate = useNavigate();
   const showdropdown = () => {
     setShow((prevshow) => !prevshow);
   };
+
+  //data from db
+  useEffect(() => {
+    dataRef
+      .ref()
+      .child("section5")
+      .on("value", (snapshot) => {
+        if (snapshot.val() !== null) {
+          setData({ ...snapshot.val() });
+        } else {
+          setData({});
+        }
+        setIsLoading(false);
+      });
+    return () => {
+      setData({});
+    };
+  }, []);
   const receipt = [
     {
       value: "All",
@@ -47,6 +70,19 @@ const AddedList = () => {
       label: "in 10 days",
     },
   ];
+
+  //loading
+  if (isLoading) {
+    return (
+      <div className="text-center text-3xl text-black">
+        Loading<span className="text-yellow-500"> . . .</span>
+      </div>
+    );
+  }
+
+  if (data.length === 0) {
+    return <div>No data available</div>;
+  }
   return (
     <div className="mb-3">
       <div className="grid grid-cols-2 h-32  ">
@@ -125,154 +161,88 @@ const AddedList = () => {
         </button>
       </div>
       <div className="h-48 w-[90%] mx-auto">
-        <div className="relative  h-80  overflow-y-scroll hover:overflow-scroll shadow-md sm:rounded-lg">
+        <div className="relative  h-80  overflow-y-hidden hover:overflow-scroll overflow-x-hidden  shadow-md sm:rounded-lg">
           <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400 mt-5 ">
             <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
               <tr></tr>
             </thead>
-            <tbody className="relative">
-              <tr className="bg-white relative border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600  ">
-                <td className="w-4 p-6">
-                  <div className="flex items-center  ">
-                    <input
-                      id="checkbox-table-1"
-                      type="checkbox"
-                      className="w-6 h-6  bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                    />
-                    <label for="checkbox-table-1" className="sr-only">
-                      checkbox
-                    </label>
-                  </div>
-                </td>
-                <th
-                  scope="row"
-                  className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                >
-                  Apple MacBook Pro 17"
-                </th>
-                <td className="px-6 py-4">Silver</td>
-                <td className="px-6 py-4">Laptop</td>
-                <td className="px-6 py-4">$2999</td>
-                <td className="px-6 py-4">
-                  <Link className="font-medium text-blue-600 dark:text-blue-500 hover:underline">
-                    <BsThreeDotsVertical
-                      className="mr-8 text-[23px] text-gray-600"
-                      onClick={showdropdown}
-                    />
-                  </Link>
-                </td>
-                {show ? (
-                  <>
-                    <div className="absolute top-20 right-28">
-                      <ul className="border rounded-xl cursor-pointer">
-                        <li className="px-7 py-3 bg-white ">Send </li>
-                        <li className="px-7 py-3 bg-white ">Edit</li>
-                        <li className="px-7 py-3 bg-white  ">Copy</li>
-                        <li className="px-7 py-3 bg-white  ">Record payment</li>
-                        <li className="px-7 py-3 bg-white  ">Print</li>
-                        <li className="px-7 py-3 bg-white  ">Download PDF</li>
-                        <li className="px-7 py-3 bg-white  ">Share Link</li>
-                        <li className="px-7 py-3 bg-white  ">Delete </li>
-                        <li className="px-7 py-3 bg-white ">Archive</li>
-                      </ul>
-                    </div>
-                  </>
-                ) : null}
-              </tr>
-
-              {/* <tr className="bg-white relative border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 mb-10 ">
-                <td className="w-4 p-6">
-                  <div className="flex items-center">
-                    <input
-                      id="checkbox-table-1"
-                      type="checkbox"
-                      className="w-6 h-6 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                    />
-                    <label for="checkbox-table-1" className="sr-only">
-                      checkbox
-                    </label>
-                  </div>
-                </td>
-                <th
-                  scope="row"
-                  className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                >
-                  Apple MacBook Pro 17"
-                </th>
-                <td className="px-6 py-4">Silver</td>
-                <td className="px-6 py-4">Laptop</td>
-                <td className="px-6 py-4">$2999</td>
-                <td className="px-6 py-4">
-                  <Link className="font-medium text-blue-600 dark:text-blue-500 hover:underline">
-                    <BsThreeDotsVertical
-                      className="mr-8 text-[23px] text-gray-600"
-                      onClick={showdropdown}
-                    />
-                  </Link>
-                </td>
-              </tr> */}
-              {/* <tr className="bg-white relative border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                <td className="w-4 p-6">
-                  <div className="flex items-center">
-                    <input
-                      id="checkbox-table-1"
-                      type="checkbox"
-                      className="w-6 h-6 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                    />
-                    <label for="checkbox-table-1" className="sr-only">
-                      checkbox
-                    </label>
-                  </div>
-                </td>
-                <th
-                  scope="row"
-                  className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                >
-                  Apple MacBook Pro 17"
-                </th>
-                <td className="px-6 py-4">Silver</td>
-                <td className="px-6 py-4">Laptop</td>
-                <td className="px-6 py-4">$2999</td>
-                <td className="px-6 py-4">
-                  <Link className="font-medium text-blue-600 dark:text-blue-500 hover:underline">
-                    <BsThreeDotsVertical className="mr-8 text-[23px] text-gray-600" />
-                  </Link>
-                </td>
-              </tr> */}
-              {/* <tr className="bg-white relative border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                <td className="w-4 p-6">
-                  <div className="flex items-center">
-                    <input
-                      id="checkbox-table-1"
-                      type="checkbox"
-                      className="w-6 h-6 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                    />
-                    <label for="checkbox-table-1" className="sr-only">
-                      checkbox
-                    </label>
-                  </div>
-                </td>
-                <th
-                  scope="row"
-                  className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                >
-                  Apple MacBook Pro 17"
-                </th>
-                <td className="px-6 py-4">Silver</td>
-                <td className="px-6 py-4">Laptop</td>
-                <td className="px-6 py-4">$2999</td>
-                <td className="px-6 py-4">
-                  <Link className="font-medium text-blue-600 dark:text-blue-500 hover:underline">
-                    <BsThreeDotsVertical
-                      className="mr-8 text-[23px] text-gray-600 "
-                      onClick={showdropdown}
-                    />
-                  </Link>
-                </td>
-              </tr> */}
-            </tbody>
+            {Object.keys(data).map((id, index) => {
+              return (
+                <tbody key={index} className="relative">
+                  <tr className="bg-white relative border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600  ">
+                    <td className="w-4 p-6">
+                      <div className="flex items-center  ">
+                        <input
+                          id="checkbox-table-1"
+                          type="checkbox"
+                          className="w-6 h-6  bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                        />
+                        <label htmlFor="checkbox-table-1" className="sr-only">
+                          checkbox
+                        </label>
+                      </div>
+                    </td>
+                    <th
+                      scope="row"
+                      className="px-6 py-4 text-2xl font-semibold text-gray-900 whitespace-nowrap dark:text-white"
+                    >
+                      {data[id].inputuser5.invoicedate}
+                    </th>
+                    <td className="px-6 py-4 text-2xl font-bold text-black">
+                      {data[id].inputuser5.invoicenumber}
+                    </td>
+                    <td className="px-6 py-4 text-lg font-bold">
+                      Due-
+                      {data[id].inputuser5.invoicedue}
+                    </td>
+                    <td className="px-6 py-4 text-2xl font-bold text-black">
+                      ${data[id].total}
+                    </td>
+                    <td className="px-6 py-4">
+                      <Link className="font-medium text-blue-600 dark:text-blue-500 hover:underline">
+                        <BsThreeDotsVertical
+                          className="mr-8 text-[23px] text-gray-600"
+                          onClick={showdropdown}
+                        />
+                      </Link>
+                    </td>
+                    {show ? (
+                      <>
+                        <div className="absolute top-20 right-28">
+                          <ul className="border rounded-xl cursor-pointer">
+                            <li className="px-7 py-3 bg-white ">Send </li>
+                            <li className="px-7 py-3 bg-white ">Edit</li>
+                            <li className="px-7 py-3 bg-white  ">Copy</li>
+                            <li className="px-7 py-3 bg-white  ">
+                              Record payment
+                            </li>
+                            <li className="px-7 py-3 bg-white  ">Print</li>
+                            <li className="px-7 py-3 bg-white  ">
+                              Download PDF
+                            </li>
+                            <li className="px-7 py-3 bg-white  ">Share Link</li>
+                            <li className="px-7 py-3 bg-white  ">Delete </li>
+                            <li className="px-7 py-3 bg-white ">Archive</li>
+                          </ul>
+                        </div>
+                      </>
+                    ) : null}
+                  </tr>
+                </tbody>
+              );
+            })}
           </table>
         </div>
+        {/* {Object.keys(data).map((id, index) => {
+          return (
+            <div key={id}>
+              <h1 className="text-3xl text-black">{index + 1}</h1>
+              <h1 className="text-3xl text-black">{data[id].invoicedue}</h1>
+              <h1 className="text-3xl text-black">{data[id].invoicedate}</h1>
+              <h1 className="text-3xl text-black">{data[id].invoicenumber}</h1>
+            </div>
+          );
+        })} */}
         <div className=" h-96 mt-4  ">
           <div className="bg-white border-b">
             <div className="w-[80%] mx-auto  h-32 grid grid-cols-2">

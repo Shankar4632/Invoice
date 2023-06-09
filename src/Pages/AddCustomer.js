@@ -88,7 +88,7 @@ const AddCustomer = () => {
     } else {
       dataRef
         .ref()
-        .child("users")
+        .child("CustomerList")
         .push(state, (err) => {
           if (err) {
             toast.error(err);
@@ -103,7 +103,7 @@ const AddCustomer = () => {
   useEffect(() => {
     dataRef
       .ref()
-      .child("users")
+      .child("CustomerList")
       .on("value", (snapshot) => {
         if (snapshot.val() !== null) {
           setData({ ...snapshot.val() });
@@ -206,7 +206,7 @@ const AddCustomer = () => {
             {" "}
             <input
               id="outlined-search"
-              type="search"
+              type="email"
               name="email"
               onChange={handleinputchange}
               className="w-[98%] mt-3 border border-gray-400 rounded-md py-4 px-3 placeholder-black"
