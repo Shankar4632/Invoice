@@ -464,7 +464,39 @@ const InvoicePage = () => {
 
         <div className=" w-[25%] text-center ">
           <form onSubmit={handleSubmitsection5}>
-            <div className="h-[200px] border rounded-xl bg-white">1</div>
+            <div className="h-[200px] border rounded-xl bg-white">
+              <div className="grid grid-cols-2 items-center border w-full">
+                <div>
+                  <input
+                    type="file"
+                    placeholder="Add logo"
+                    className="px-3 py-4"
+                  />
+                </div>
+                <div>
+                  <button onClick={hideshow}>
+                    {" "}
+                    {showMemo ? (
+                      <IoIosArrowUp className="text-2xl text-gray-500" />
+                    ) : (
+                      <IoIosArrowDown className="text-2xl text-gray-500" />
+                    )}
+                  </button>
+                  <div>
+                    {showMemo && (
+                      <div className="flex items-center gap-5 text-center">
+                        <button className="text-blue-400 text-lg font-bold">
+                          Add Logo
+                        </button>
+                        <button className="text-blue-400 text-lg font-bold">
+                          Edit Business Information
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
             <div className="h-[700px] border rounded-xl bg-white mt-4 pt-8 ">
               <Box
                 component=""

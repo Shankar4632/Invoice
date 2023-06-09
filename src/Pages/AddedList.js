@@ -233,16 +233,7 @@ const AddedList = () => {
             })}
           </table>
         </div>
-        {/* {Object.keys(data).map((id, index) => {
-          return (
-            <div key={id}>
-              <h1 className="text-3xl text-black">{index + 1}</h1>
-              <h1 className="text-3xl text-black">{data[id].invoicedue}</h1>
-              <h1 className="text-3xl text-black">{data[id].invoicedate}</h1>
-              <h1 className="text-3xl text-black">{data[id].invoicenumber}</h1>
-            </div>
-          );
-        })} */}
+
         <div className=" h-96 mt-4  ">
           <div className="bg-white border-b">
             <div className="w-[80%] mx-auto  h-32 grid grid-cols-2">
