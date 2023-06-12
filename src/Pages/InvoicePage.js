@@ -223,24 +223,29 @@ const InvoicePage = () => {
   };
   // Handle save button click
   const handleSaveClick = () => {
-    // Process the form data
-    // You can access the values using the field names and perform further actions
     setSelectedFields(fields);
     setSelecteddescriptionFields(fields1);
-    // navigate("/", {
-    //   state: { selectedFields: fields, selectedDescriptionFields: fields1 },
-    // });
     setCustomisePopup(false);
   };
   // Render the form fields
   const renderFields = () => {
     return fields.map((field) => (
       <div key={field}>
-        <input
+        {/* <input
           id="outlined-search"
           type="text"
           className="w-36  ml-2 border border-gray-400 rounded-md py-4 px-3 placeholder-black"
           placeholder={field}
+          name={field}
+        /> */}
+        <TextField
+          id="outlined-search"
+          type="text"
+          label={field}
+          style={{
+            marginRight: "10px",
+            width: "100%",
+          }}
           name={field}
         />
       </div>
@@ -267,14 +272,16 @@ const InvoicePage = () => {
   const renderSelectedFields = () => {
     return selectedFields.map((field) => (
       <div key={field}>
-        <input
+        <TextField
           id="outlined-search"
           type="text"
-          className="w-36  ml-2 border border-gray-400 rounded-md py-4 px-3 placeholder-black"
-          placeholder={field}
+          label={field}
+          style={{
+            marginRight: "20px",
+            width: "100%",
+          }}
           name={field}
-          value={field}
-          readOnly
+          className="gap-3"
         />
       </div>
     ));
@@ -675,8 +682,8 @@ const InvoicePage = () => {
                 </div>
                 <div className="h-auto  w-[97%] mt-4  border-2 rounded-xl mx-auto  ">
                   <div className="flex items-center mx-auto  w-[97%] mt-3">
-                    {selectedFields}
-                    {selectedDescriptionFields}
+                    {/* {selectedFields}
+                    {selectedDescriptionFields} */}
                     <Box sx={{ width: 500, maxWidth: "25%" }}>
                       <FormControl fullWidth>
                         <InputLabel id="dropdown-label">Item Name</InputLabel>
