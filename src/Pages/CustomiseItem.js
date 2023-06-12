@@ -23,6 +23,7 @@ const CustomiseItem = () => {
   const [selecteddescriptionFields, setSelecteddescriptionFields] = useState(
     []
   );
+  const [isSaved, setIsSaved] = useState(false);
 
   //for selection on checkbox change
 
@@ -58,14 +59,19 @@ const CustomiseItem = () => {
     }
   };
   // Handle save button click
+  // const handleSaveClick = () => {
+  //   Process the form data
+  //   You can access the values using the field names and perform further actions
+  //   setSelectedFields(fields);
+  //   setSelecteddescriptionFields(fields1);
+  //   navigate("/", {
+  //     state: { selectedFields: fields, selectedDescriptionFields: fields1 },
+  //   });
+  // };
   const handleSaveClick = () => {
-    // Process the form data
-    // You can access the values using the field names and perform further actions
     setSelectedFields(fields);
     setSelecteddescriptionFields(fields1);
-    navigate("/", {
-      state: { selectedFields: fields, selectedDescriptionFields: fields1 },
-    });
+    setIsSaved(true);
   };
 
   // Render the form fields
@@ -245,23 +251,22 @@ const CustomiseItem = () => {
         </div>{" "}
       </form>
       <div className="text-center pb-10">
-        <button
-          className="px-8 py-3 rounded-3xl  bg-blue-900 text-white font-bold mx-auto "
-          type="submit"
-          onClick={handleSaveClick}
-        >
-          Save
-        </button>
-        {/* <InvoicePage state={renderSelectedFields()} /> */}
-        <div className="h-auto w-[95%] mx-auto mt-3 border-2 border-gray-300 rounded-xl">
-          <div className="p-3   ">
-            <div className="   flex items-center ">
-              {renderSelectedFields()}
-              {/* <InvoicePage state={renderSelectedFields()} /> */}
+        {isSaved ? (
+          <div className="h-auto w-[95%] mx-auto mt-3 border-2 border-gray-300 rounded-xl">
+            <div className="p-3">
+              <div className="flex items-center">{renderSelectedFields()}</div>
+              <div>{renderSelecteddescriptionFields()}</div>
             </div>
-            <div> {renderSelecteddescriptionFields()}</div>
           </div>
-        </div>
+        ) : (
+          <button
+            className="px-8 py-3 rounded-3xl bg-blue-900 text-white font-bold mx-auto"
+            type="submit"
+            onClick={handleSaveClick}
+          >
+            Save
+          </button>
+        )}
       </div>
     </div>
   );

@@ -1,67 +1,92 @@
-import React, { useState } from "react";
+import React from "react";
+//import reacticons
+import { FaPaypal } from "react-icons/fa";
+import { RxCross1 } from "react-icons/rx";
+//import Routes
+import { useNavigate } from "react-router-dom";
 
 const Demo = () => {
-  const [fields, setFields] = useState(["name", "username", "password"]);
-  const [selectedFields, setSelectedFields] = useState([]);
-
-  // Handle checkbox change
-  const handleCheckboxChange = (e) => {
-    const { value, checked } = e.target;
-
-    // Add or remove the field based on checkbox selection
-    if (checked) {
-      setFields((prevFields) => [...prevFields, value]);
-    } else {
-      setFields((prevFields) => prevFields.filter((field) => field !== value));
-    }
-  };
-
-  // Handle save button click
-  const handleSaveClick = () => {
-    // Process the form data
-    // You can access the values using the field names and perform further actions
-    setSelectedFields(fields);
-  };
-
-  // Render the form fields
-  const renderFields = () => {
-    return fields.map((field) => (
-      <div key={field}>
-        <label>{field}</label>
-        <input type="text" name={field} />
-      </div>
-    ));
-  };
-
-  // Render the selected fields below the form
-  const renderSelectedFields = () => {
-    return selectedFields.map((field) => (
-      <div key={field}>
-        <label>{field}</label>
-        <input type="text" name={field} value={field} readOnly />
-      </div>
-    ));
-  };
-
+  //function calling
+  const navigate = useNavigate();
   return (
-    <div>
-      <label>
-        <input type="checkbox" value="email" onChange={handleCheckboxChange} />
-        Email
-      </label>
-      <label>
-        <input
-          type="checkbox"
-          value="address"
-          onChange={handleCheckboxChange}
-        />
-        Address
-      </label>
-      {renderFields()}
-      <button onClick={handleSaveClick}>Save</button>
-      <div>
-        <h3>Selected Fields:</h3>
-        {renderSelectedFields()}
+    <div className="w-[700px] bg-white border  h-screen">
+      <div className="flex items-center  mt-4 ">
+        <i className="w-full flex justify-center text-blue-600  ">
+          <FaPaypal className="text-3xl" />
+        </i>
+        <i
+          className="flex  justify-end pr-3 cursor-pointer"
+          onClick={() => {
+            navigate("/");
+          }}
+        >
+          <RxCross1 className="text-xl" />
+        </i>
+      </div>
+      <p className="text-center text-[48px] mt-3 font-semibold">
+        {" "}
+        Business <br /> information{" "}
+      </p>
+      <div className="w-[70%] border mx-auto h-full">
+        {" "}
+        <div className="grid grid-cols-2 w-full mt-3 text-center">
+          <div className="">
+            {" "}
+            <input
+              id="outlined-search"
+              name="firstname"
+              type="search"
+              className=" w-[95%]  border border-gray-400 rounded-md py-5 px-3 placeholder-black focus:border-blue-400"
+              placeholder="First name"
+            />
+          </div>
+          <div className="">
+            {" "}
+            <input
+              id="outlined-search"
+              name="lastname"
+              type="search"
+              className=" w-[95%]  border border-gray-400 rounded-md py-5 px-3 placeholder-black"
+              placeholder="Last name"
+            />
+          </div>
+        </div>
+        <div className="flex  justify-center mt-3">
+          <input
+            id="outlined-search"
+            name="lastname"
+            type="search"
+            className=" w-[95%]  border border-gray-400  rounded-md py-5 px-3 placeholder-black"
+            placeholder="Business name"
+          />
+        </div>
+        <div className="flex  justify-center mt-3">
+          <input
+            id="outlined-search"
+            name="lastname"
+            type="text"
+            className=" w-[95%]  border border-gray-400  rounded-md py-5 px-3 placeholder-black"
+            placeholder="Website"
+          />
+        </div>
+        <div className="flex  justify-center mt-3">
+          <input
+            id="outlined-search"
+            name="lastname"
+            type="text"
+            className=" w-[95%]  border border-gray-400  rounded-md py-5 px-3 placeholder-black"
+            placeholder="TIN / PIN"
+          />
+        </div>
+        <div className="flex  justify-center mt-3">
+          <input
+            id="outlined-search"
+            name="lastname"
+            type="text"
+            className=" w-[95%]  border border-gray-400  rounded-md py-5 px-3 placeholder-black"
+            placeholder="Additional information"
+          />
+        </div>
       </div>
     </div>
   );

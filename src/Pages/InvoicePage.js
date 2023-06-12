@@ -14,6 +14,8 @@ import { AiOutlinePlus } from "react-icons/ai";
 import { RxDividerVertical } from "react-icons/rx";
 import { IoIosArrowUp, IoIosArrowDown } from "react-icons/io";
 import { BsArrowLeft, BsThreeDotsVertical, BsCamera } from "react-icons/bs";
+import { FaPaypal } from "react-icons/fa";
+import { RxCross1 } from "react-icons/rx";
 //Reat Router Dom
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
@@ -31,19 +33,28 @@ const initialState = {
 };
 const InvoicePage = () => {
   //hooks or States
-  const [selectedTemplate, setSelectedTemplate] = useState("");
+
   const [currency, setCurrency] = useState("");
-  const [selectedOption, setSelectedOption] = useState("");
   const [textareaValue, setTextareaValue] = useState("");
   const [showAddButton, setShowAddButton] = useState(false);
-  const [showAddTax, setShowAddTax] = useState(false);
   const [showMemo, setShowMemo] = useState(false);
+  const [showMemosection4, setShowMemosection4] = useState(false);
   const [subtotal, setSubtotal] = useState("$0.00");
   const [discount, setDiscount] = useState("");
   const [shipping, setShipping] = useState("");
   const [otherAmount, setOtherAmount] = useState("");
-  const [total, setTotal] = useState("");
   const [invoiceNumber, setInvoiceNumber] = useState("");
+  const [businesspopup, setBusinessPopup] = useState(false);
+  const [customisepopup, setCustomisePopup] = useState(false);
+  //Hooks or states
+  const [selectedTemplate, setSelectedTemplate] = useState("");
+  const [fields, setFields] = useState(["name", "username", "password"]);
+  const [fields1, setField1] = useState([]);
+  const [selectedFields, setSelectedFields] = useState([]);
+
+  const [selecteddescriptionFields, setSelecteddescriptionFields] = useState(
+    []
+  );
   //section-3
   const [input, setInput] = useState({
     section3messege: "",
@@ -51,7 +62,7 @@ const InvoicePage = () => {
   //section-5
   const [inputuser5, setInputuser5] = useState(initialState);
   //Function Calling
-  ////////////////////////input file onchange events
+  ////////////////////////  input file onchange events  ///////////////////////
   //section-3
   const handleChangesection3 = (event) => {
     const section3messege = event.target.name;
@@ -69,7 +80,7 @@ const InvoicePage = () => {
     setInputuser5({ ...inputuser5, [name]: value });
   };
 
-  ///////////////////addiding the value field onsubmit events///////////////////
+  ///////////////////  addiding the value field onsubmit events  ///////////////////
   const handlesubmit = (e) => {
     e.preventDefault();
     handleSubmitsection3(e);
@@ -151,47 +162,30 @@ const InvoicePage = () => {
 
   const fileInputRef = useRef(null);
   //handle click
-  const handleClickAllsections = () => {
-    handleSubmitsection3();
-    handleSubmitsection5();
-  };
+
   const handleButtonClick = () => {
     fileInputRef.current.click();
   };
 
   const handleFileChange = (event) => {
     const files = event.target.files;
-    // Do something with the selected files
   };
   const navigate = useNavigate();
   const location = useLocation();
-  const { selectedFields, selectedDescriptionFields } = location.state || {};
+  const { selectedFields1, selectedDescriptionFields } = location.state || {};
 
   const handleClick = () => {
     setShowAddButton(true);
   };
-  const handleClickTax = () => {
-    setShowAddTax(true);
-  };
+
   const handleTextareaChange = (event) => {
     setTextareaValue(event.target.value);
   };
 
-  const handleselectedTemplate = (event) => {
-    setSelectedTemplate(event.target.value);
-  };
   const handlecurrency = (event) => {
     setCurrency(event.target.value);
   };
-
-  const handleOptionChange = (event) => {
-    setSelectedOption(event.target.value);
-  };
-  const hideshow = () => {
-    setShowMemo((prevShowMemo) => !prevShowMemo);
-  };
-
-  const Tax = [
+  const currencies = [
     {
       value: "No Tax",
       label: "No Tax",
@@ -201,10 +195,327 @@ const InvoicePage = () => {
       label: "Tax able",
     },
   ];
+  const handleselectedTemplate = (event) => {
+    setSelectedTemplate(event.target.value);
+  };
+  // Handle checkbox change
+  const handleCheckboxChange = (e) => {
+    const { value, checked } = e.target;
+
+    // Add or remove the field based on checkbox selection
+    if (checked) {
+      setFields((prevFields) => [...prevFields, value]);
+    } else {
+      setFields((prevFields) => prevFields.filter((field) => field !== value));
+    }
+  };
+  const handleCheckboxChangedescription = (e) => {
+    const { value, checked } = e.target;
+
+    // Add or remove the field based on checkbox selection
+    if (checked) {
+      setField1((prevField1) => [...prevField1, value]);
+    } else {
+      setField1((prevField1) =>
+        prevField1.filter((fields1) => fields1 !== value)
+      );
+    }
+  };
+  // Handle save button click
+  const handleSaveClick = () => {
+    // Process the form data
+    // You can access the values using the field names and perform further actions
+    setSelectedFields(fields);
+    setSelecteddescriptionFields(fields1);
+    // navigate("/", {
+    //   state: { selectedFields: fields, selectedDescriptionFields: fields1 },
+    // });
+    setCustomisePopup(false);
+  };
+  // Render the form fields
+  const renderFields = () => {
+    return fields.map((field) => (
+      <div key={field}>
+        <input
+          id="outlined-search"
+          type="text"
+          className="w-36  ml-2 border border-gray-400 rounded-md py-4 px-3 placeholder-black"
+          placeholder={field}
+          name={field}
+        />
+      </div>
+    ));
+  };
+  const renderFieldsdescription = () => {
+    return fields1.map((fields1) => (
+      <div key={fields1}>
+        <textarea
+          className="peer block min-h-[auto] mb-3 w-[97%] mx-auto border border-gray-500 rounded mt-5 text-black px-3 py-[0.32rem]  "
+          id="exampleFormControlTextarea1"
+          rows="4"
+          type="text"
+          placeholder="Description(optional)"
+          name={fields1}
+        >
+          {" "}
+        </textarea>
+      </div>
+    ));
+  };
+
+  // Render the selected fields below the form
+  const renderSelectedFields = () => {
+    return selectedFields.map((field) => (
+      <div key={field}>
+        <input
+          id="outlined-search"
+          type="text"
+          className="w-36  ml-2 border border-gray-400 rounded-md py-4 px-3 placeholder-black"
+          placeholder={field}
+          name={field}
+          value={field}
+          readOnly
+        />
+      </div>
+    ));
+  };
+  const renderSelecteddescriptionFields = () => {
+    return selecteddescriptionFields.map((field) => (
+      <div key={field}>
+        <textarea
+          className="peer block min-h-[auto] mb-3 w-[97%] mx-auto border border-gray-500 rounded mt-5 text-black px-3 py-[0.32rem]  "
+          id="exampleFormControlTextarea1"
+          rows="4"
+          type="text"
+          placeholder="Description(optional)"
+          name={fields1}
+          value={fields1}
+          readOnly
+        >
+          {" "}
+        </textarea>
+      </div>
+    ));
+  };
+  /////////////////    hide and show on button click    ////////////////
+  const hideshow = () => {
+    setShowMemo((prevShowMemo) => !prevShowMemo);
+  };
+  const hideshowsection4 = () => {
+    setShowMemosection4((prevshowMemosection4) => !prevshowMemosection4);
+  };
 
   //Return Statements
   return (
     <div className="mb-3 ">
+      {businesspopup ? (
+        <>
+          <div className="w-full  mx-auto absolute inset-0 overflow-y-auto z-10  bg-gray-500 opacity-100   ">
+            <div className="w-[900px] bg-white border opacity-100  h-screen">
+              <div className="flex items-center  mt-4 ">
+                <i className="w-full flex justify-center text-blue-600  ">
+                  <FaPaypal className="text-3xl" />
+                </i>
+                <i
+                  className="flex  justify-end pr-3 cursor-pointer"
+                  onClick={() => setBusinessPopup(false)}
+                >
+                  <RxCross1 className="text-xl" />
+                </i>
+              </div>
+              <p className="text-center text-[48px] mt-3 font-semibold">
+                {" "}
+                Business <br /> information{" "}
+              </p>
+              <div className="w-[70%] border mx-auto ">
+                {" "}
+                <div className="grid grid-cols-2 w-full  mt-3 text-center">
+                  <div className="">
+                    {" "}
+                    <input
+                      id="outlined-search"
+                      name="firstname"
+                      type="search"
+                      className=" w-[95%]  border border-gray-400 rounded-md py-5 px-3 placeholder-black focus:border-blue-400"
+                      placeholder="First name"
+                    />
+                  </div>
+                  <div className="">
+                    {" "}
+                    <input
+                      id="outlined-search"
+                      name="lastname"
+                      type="search"
+                      className=" w-[95%]  border border-gray-400 rounded-md py-5 px-3 placeholder-black"
+                      placeholder="Last name"
+                    />
+                  </div>
+                </div>
+                <div className="flex  justify-center mt-3">
+                  <input
+                    id="outlined-search"
+                    name="lastname"
+                    type="search"
+                    className=" w-[95%]  border border-gray-400  rounded-md py-5 px-3 placeholder-black"
+                    placeholder="Business name"
+                  />
+                </div>
+                <div className="flex  justify-center mt-3">
+                  <input
+                    id="outlined-search"
+                    name="lastname"
+                    type="text"
+                    className=" w-[95%]  border border-gray-400  rounded-md py-5 px-3 placeholder-black"
+                    placeholder="Website"
+                  />
+                </div>
+                <div className="flex  justify-center mt-3">
+                  <input
+                    id="outlined-search"
+                    name="lastname"
+                    type="text"
+                    className=" w-[95%]  border border-gray-400  rounded-md py-5 px-3 placeholder-black"
+                    placeholder="TIN / PIN"
+                  />
+                </div>
+                <div className="flex  justify-center mt-3">
+                  <input
+                    id="outlined-search"
+                    name="lastname"
+                    type="text"
+                    className=" w-[95%]  border border-gray-400  rounded-md py-5 px-3 placeholder-black"
+                    placeholder="Additional information"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </>
+      ) : null}
+      {customisepopup ? (
+        <>
+          <div className="bg-black w-full h-full flex justify-center absolute z-20 ">
+            <div className="bg-white h-auto w-[70%] mx-auto  border">
+              <div className="flex items-center  mt-4">
+                <i className="w-full flex justify-center text-blue-600  ">
+                  <FaPaypal className="text-3xl" />
+                </i>
+                <i
+                  className="flex  justify-end pr-3 cursor-pointer"
+                  onClick={() => setCustomisePopup(false)}
+                >
+                  <RxCross1 className="text-xl" />
+                </i>
+              </div>
+              <p className="text-center text-3xl mt-3 font-semibold">
+                {" "}
+                Customise items
+              </p>
+              <form>
+                <p className=" mt-3 pl-8 text-lg font-bold  mb-2">Preview</p>
+                <Box sx={{ width: "40%", paddingLeft: "30px" }}>
+                  <FormControl fullWidth>
+                    <InputLabel id="template-select-label">
+                      Choose Type
+                    </InputLabel>
+
+                    <Select
+                      labelId="template-select-label"
+                      id="template-select"
+                      value={selectedTemplate}
+                      label="Choose Type"
+                      onChange={handleselectedTemplate}
+                    >
+                      <MenuItem value="template1">Amounts only</MenuItem>
+                      <MenuItem value="template2">Hours</MenuItem>
+                      <MenuItem value="template3">Quantity</MenuItem>
+                    </Select>
+                  </FormControl>
+                </Box>
+                <div className="h-auto w-[95%] mx-auto mt-3 border-2 border-gray-300 rounded-xl">
+                  <div className="p-3   ">
+                    <div className="   flex items-center ">
+                      <div className="flex">{renderFields()}</div>
+                    </div>
+                    <div>{renderFieldsdescription()}</div>
+                  </div>
+                </div>
+                <div className="w-[97%] p-5  mx-auto mt-5">
+                  <p className="text-lg font-semibold text-gray-700">
+                    Choose item field
+                  </p>
+                  <div>
+                    <input
+                      type="checkbox"
+                      value="Discount"
+                      className="mt-5 h-5 w-5 "
+                      onChange={handleCheckboxChange}
+                    />
+                    <label
+                      htmlFor="Item"
+                      className="text-lg font-semibold text-gray-700"
+                    >
+                      {" "}
+                      Discount
+                    </label>
+                    <br />
+                    <input
+                      type="checkbox"
+                      value="Tax"
+                      className="mt-5 h-5 w-5 "
+                      onChange={handleCheckboxChange}
+                    />
+                    <label
+                      htmlFor="Item"
+                      className="text-lg font-semibold text-gray-700"
+                    >
+                      {" "}
+                      Tax
+                    </label>
+                    <br />
+                    <input
+                      type="checkbox"
+                      value="date"
+                      className="mt-5 h-5 w-5 "
+                      onChange={handleCheckboxChange}
+                    />
+                    <label
+                      htmlFor="Item"
+                      className="text-lg font-semibold text-gray-700"
+                    >
+                      {" "}
+                      Date
+                    </label>
+                    <br />
+                    <input
+                      type="checkbox"
+                      value="description"
+                      className="mt-5 h-5 w-5 "
+                      onChange={handleCheckboxChangedescription}
+                    />
+                    <label
+                      htmlFor="Item"
+                      className="text-lg font-semibold text-gray-700"
+                    >
+                      {" "}
+                      description
+                    </label>
+                  </div>
+                </div>{" "}
+              </form>
+              <div className="text-center pb-10">
+                <button
+                  className="px-8 py-3 rounded-3xl  bg-blue-900 text-white font-bold mx-auto "
+                  type="submit"
+                  onClick={handleSaveClick}
+                >
+                  Save
+                </button>
+              </div>
+            </div>
+          </div>
+        </>
+      ) : null}
       <div className="grid grid-cols-2 h-40 ">
         <div className="  ">
           <div className="pt-8 pl-3  flex items-center">
@@ -213,13 +524,15 @@ const InvoicePage = () => {
                 navigate("/addedlist");
               }}
             >
-              <BsArrowLeft
-                className="text-2xl cursor-pointer "
-                // onClick={navigate("/")}
-              />
+              <BsArrowLeft className="text-2xl cursor-pointer " />
             </button>
 
-            <span className="font-bold text-blue-600 text-lg pl-2 ">
+            <span
+              className="font-bold text-blue-600 text-lg pl-2 cursor-pointer "
+              onClick={() => {
+                navigate("/addedlist");
+              }}
+            >
               Back to invoice
             </span>
           </div>
@@ -246,7 +559,7 @@ const InvoicePage = () => {
       <div className="flex   w-[97%]  mx-auto gap-5  ">
         <div className="w-[75%]">
           <div className="border  h-auto rounded-xl bg-white ">
-            {/* section-1 */}
+            {/*===================================   section-1  =============================== */}
             <form>
               <div className="">
                 <div className="  flex justify-end w-full mt-3 pr-4">
@@ -344,14 +657,18 @@ const InvoicePage = () => {
                 </div>
               </div>
             </form>
-            {/* section-2 */}
+            {/*==================================  section-2  =============================== */}
             <form>
               <div className="p-3 ">
                 <div className="flex items-center pl-3 pt-20">
                   <p className="font-bold text-xl ml-3">Items</p>
                   <button
                     className=" text-blue-500 text-xl font-bold  rounded-full w-full flex justify-end items-center mr-3"
-                    onClick={() => navigate("/customise")}
+                    // onClick={() => navigate("/customise")}
+                    onClick={(event) => {
+                      event.preventDefault();
+                      setCustomisePopup(true);
+                    }}
                   >
                     <MdModeEditOutline className="mr-1" /> Customise
                   </button>
@@ -360,7 +677,74 @@ const InvoicePage = () => {
                   <div className="flex items-center mx-auto  w-[97%] mt-3">
                     {selectedFields}
                     {selectedDescriptionFields}
+                    <Box sx={{ width: 500, maxWidth: "25%" }}>
+                      <FormControl fullWidth>
+                        <InputLabel id="dropdown-label">Item Name</InputLabel>
+                        <Select
+                          labelId="dropdown-label"
+                          id="dropdown-select"
+                          label="Dropdown"
+                        >
+                          <MenuItem value="">None</MenuItem>
+                          <MenuItem value="option1">Option 1</MenuItem>
+                          <MenuItem value="option2">Option 2</MenuItem>
+                          <MenuItem value="option3">Option 3</MenuItem>
+                        </Select>
+                      </FormControl>
+                    </Box>
+                    <Box
+                      component="form"
+                      sx={{
+                        "& > :not(style)": { m: 1, width: "70%" },
+                      }}
+                      noValidate
+                      autoComplete="off"
+                    >
+                      <TextField
+                        id="outlined-uncontrolled"
+                        label="Quantity"
+                        defaultValue="1"
+                      />
+                    </Box>
+                    <TextField
+                      id="outlined-search"
+                      label="Price"
+                      type="search"
+                      style={{
+                        marginRight: "10px",
+                        width: "25%",
+                      }}
+                    />
+                    <Box
+                      component="form"
+                      sx={{
+                        "& .MuiTextField-root": { m: 1, width: "25ch" },
+                      }}
+                      noValidate
+                      autoComplete="off"
+                    >
+                      <TextField
+                        id="outlined-select-currency"
+                        select
+                        label="Select"
+                        defaultValue="EUR"
+                      >
+                        {currencies.map((option) => (
+                          <MenuItem key={option.value} value={option.value}>
+                            {option.label}
+                          </MenuItem>
+                        ))}
+                      </TextField>
+                    </Box>
                   </div>
+                  <textarea
+                    className="peer block min-h-[auto] w-[97%] mx-auto border border-gray-500 rounded mb-4 mt-5 text-black px-3 py-[0.32rem]"
+                    id="exampleFormControlTextarea1"
+                    rows="5"
+                    placeholder="Description(optional)"
+                    value={textareaValue}
+                    onChange={handleTextareaChange}
+                  ></textarea>
                 </div>
 
                 <button
@@ -371,11 +755,20 @@ const InvoicePage = () => {
                 </button>
               </div>
             </form>
-            {/* section-3 */}
+            <div className="h-auto w-[95%] mx-auto mt-3 border-2 border-gray-300 rounded-xl">
+              <div className="p-3   ">
+                <div className="   flex items-center ">
+                  {renderSelectedFields()}
+                  {/* <InvoicePage state={renderSelectedFields()} /> */}
+                </div>
+                <div> {renderSelecteddescriptionFields()}</div>
+              </div>
+            </div>
+            {/*  ==============================  section-3  ============================= */}
             <form onSubmit={handleSubmitsection3}>
               <div className="p-3">
                 <p className="font-bold text-xl ml-5">Message To Customer</p>
-                <div className="relative mb-2" data-te-input-wrapper-init>
+                <div className=" mb-2" data-te-input-wrapper-init>
                   <textarea
                     className="peer block min-h-[auto] w-[97%] mx-auto border border-gray-500 rounded mt-5 text-black px-3 py-[0.32rem]  "
                     id="exampleFormControlTextarea1"
@@ -400,7 +793,7 @@ const InvoicePage = () => {
                 </div>
               </div>
             </form>
-            {/* section-4 */}
+            {/*===================================  section-4  =================================*/}
 
             <div className="  p-3 mt-10 ">
               <div className="flex items-center">
@@ -462,10 +855,10 @@ const InvoicePage = () => {
           </div>
         </div>
 
-        <div className=" w-[25%] text-center ">
+        <div className=" w-[25%]  text-center ">
           <form onSubmit={handleSubmitsection5}>
             <div className="h-[200px] border rounded-xl bg-white">
-              <div className="grid grid-cols-2 items-center border w-full">
+              <div className="flex items-center h-20   w-full">
                 <div>
                   <input
                     type="file"
@@ -474,27 +867,34 @@ const InvoicePage = () => {
                   />
                 </div>
                 <div>
-                  <button onClick={hideshow}>
+                  <button
+                    className=" flex justify-end  ml-10 "
+                    onClick={hideshowsection4}
+                  >
                     {" "}
-                    {showMemo ? (
-                      <IoIosArrowUp className="text-2xl text-gray-500" />
+                    {showMemosection4 ? (
+                      <IoIosArrowUp className="text-2xl  text-gray-500" />
                     ) : (
-                      <IoIosArrowDown className="text-2xl text-gray-500" />
+                      <IoIosArrowDown className="text-2xl  text-gray-500" />
                     )}
                   </button>
-                  <div>
-                    {showMemo && (
-                      <div className="flex items-center gap-5 text-center">
-                        <button className="text-blue-400 text-lg font-bold">
-                          Add Logo
-                        </button>
-                        <button className="text-blue-400 text-lg font-bold">
-                          Edit Business Information
-                        </button>
-                      </div>
-                    )}
-                  </div>
                 </div>
+              </div>
+              <div>
+                <div></div>
+                {showMemosection4 && (
+                  <div className="flex items-center mt-10  h-full     ">
+                    <button className="text-blue-600 w-full text-lg  font-bold">
+                      Add Logo |
+                    </button>
+                    <button
+                      className="text-blue-600 w-full    text-lg font-bold"
+                      onClick={() => setBusinessPopup(true)}
+                    >
+                      Edit Business Information
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
             <div className="h-[700px] border rounded-xl bg-white mt-4 pt-8 ">
