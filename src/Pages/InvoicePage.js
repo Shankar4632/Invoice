@@ -55,6 +55,7 @@ const InvoicePage = () => {
   const [selecteddescriptionFields, setSelecteddescriptionFields] = useState(
     []
   );
+  const [customiseui, setCustomiseui] = useState(true);
   //section-3
   const [input, setInput] = useState({
     section3messege: "",
@@ -185,16 +186,7 @@ const InvoicePage = () => {
   const handlecurrency = (event) => {
     setCurrency(event.target.value);
   };
-  const currencies = [
-    {
-      value: "No Tax",
-      label: "No Tax",
-    },
-    {
-      value: "Tax able",
-      label: "Tax able",
-    },
-  ];
+
   const handleselectedTemplate = (event) => {
     setSelectedTemplate(event.target.value);
   };
@@ -231,13 +223,6 @@ const InvoicePage = () => {
   const renderFields = () => {
     return fields.map((field) => (
       <div key={field}>
-        {/* <input
-          id="outlined-search"
-          type="text"
-          className="w-36  ml-2 border border-gray-400 rounded-md py-4 px-3 placeholder-black"
-          placeholder={field}
-          name={field}
-        /> */}
         <TextField
           id="outlined-search"
           type="text"
@@ -311,7 +296,10 @@ const InvoicePage = () => {
   const hideshowsection4 = () => {
     setShowMemosection4((prevshowMemosection4) => !prevshowMemosection4);
   };
-
+  const handlecustomiseui = () => {
+    setCustomiseui(false);
+    handleSaveClick();
+  };
   //Return Statements
   return (
     <div className="mb-3 ">
@@ -401,8 +389,8 @@ const InvoicePage = () => {
       ) : null}
       {customisepopup ? (
         <>
-          <div className="bg-black w-full h-full flex justify-center absolute z-20 ">
-            <div className="bg-white h-auto w-[70%] mx-auto  border">
+          <div className="bg-black  overflow-y-hidden  w-full h-full flex justify-center absolute z-20 ">
+            <div className="bg-white h-auto w-full mx-auto  border">
               <div className="flex items-center  mt-4">
                 <i className="w-full flex justify-center text-blue-600  ">
                   <FaPaypal className="text-3xl" />
@@ -514,7 +502,7 @@ const InvoicePage = () => {
                 <button
                   className="px-8 py-3 rounded-3xl  bg-blue-900 text-white font-bold mx-auto "
                   type="submit"
-                  onClick={handleSaveClick}
+                  onClick={handlecustomiseui}
                 >
                   Save
                 </button>
@@ -681,77 +669,18 @@ const InvoicePage = () => {
                   </button>
                 </div>
                 <div className="h-auto  w-[97%] mt-4  border-2 rounded-xl mx-auto  ">
-                  <div className="flex items-center mx-auto  w-[97%] mt-3">
-                    {/* {selectedFields}
-                    {selectedDescriptionFields} */}
-                    <Box sx={{ width: 500, maxWidth: "25%" }}>
-                      <FormControl fullWidth>
-                        <InputLabel id="dropdown-label">Item Name</InputLabel>
-                        <Select
-                          labelId="dropdown-label"
-                          id="dropdown-select"
-                          label="Dropdown"
-                        >
-                          <MenuItem value="">None</MenuItem>
-                          <MenuItem value="option1">Option 1</MenuItem>
-                          <MenuItem value="option2">Option 2</MenuItem>
-                          <MenuItem value="option3">Option 3</MenuItem>
-                        </Select>
-                      </FormControl>
-                    </Box>
-                    <Box
-                      component="form"
-                      sx={{
-                        "& > :not(style)": { m: 1, width: "70%" },
-                      }}
-                      noValidate
-                      autoComplete="off"
-                    >
-                      <TextField
-                        id="outlined-uncontrolled"
-                        label="Quantity"
-                        defaultValue="1"
-                      />
-                    </Box>
-                    <TextField
-                      id="outlined-search"
-                      label="Price"
-                      type="search"
-                      style={{
-                        marginRight: "10px",
-                        width: "25%",
-                      }}
-                    />
-                    <Box
-                      component="form"
-                      sx={{
-                        "& .MuiTextField-root": { m: 1, width: "25ch" },
-                      }}
-                      noValidate
-                      autoComplete="off"
-                    >
-                      <TextField
-                        id="outlined-select-currency"
-                        select
-                        label="Select"
-                        defaultValue="EUR"
-                      >
-                        {currencies.map((option) => (
-                          <MenuItem key={option.value} value={option.value}>
-                            {option.label}
-                          </MenuItem>
-                        ))}
-                      </TextField>
-                    </Box>
-                  </div>
-                  <textarea
-                    className="peer block min-h-[auto] w-[97%] mx-auto border border-gray-500 rounded mb-4 mt-5 text-black px-3 py-[0.32rem]"
-                    id="exampleFormControlTextarea1"
-                    rows="5"
-                    placeholder="Description(optional)"
-                    value={textareaValue}
-                    onChange={handleTextareaChange}
-                  ></textarea>
+                  {customiseui ? (
+                    <Customiseui1 />
+                  ) : (
+                    <div className="h-auto w-[95%] mx-auto mt-3 border-2 border-gray-300 rounded-xl">
+                      <div className="p-3   ">
+                        <div className="   flex items-center ">
+                          {renderSelectedFields()}
+                        </div>
+                        <div> {renderSelecteddescriptionFields()}</div>
+                      </div>
+                    </div>
+                  )}
                 </div>
 
                 <button
@@ -762,15 +691,7 @@ const InvoicePage = () => {
                 </button>
               </div>
             </form>
-            <div className="h-auto w-[95%] mx-auto mt-3 border-2 border-gray-300 rounded-xl">
-              <div className="p-3   ">
-                <div className="   flex items-center ">
-                  {renderSelectedFields()}
-                  {/* <InvoicePage state={renderSelectedFields()} /> */}
-                </div>
-                <div> {renderSelecteddescriptionFields()}</div>
-              </div>
-            </div>
+
             {/*  ==============================  section-3  ============================= */}
             <form onSubmit={handleSubmitsection3}>
               <div className="p-3">
@@ -1004,6 +925,97 @@ const InvoicePage = () => {
           </form>
         </div>
       </div>
+    </div>
+  );
+};
+const Customiseui1 = () => {
+  const [textareaValue, setTextareaValue] = useState("");
+  const currencies = [
+    {
+      value: "No Tax",
+      label: "No Tax",
+    },
+    {
+      value: "Tax able",
+      label: "Tax able",
+    },
+  ];
+  const handleTextareaChange = (event) => {
+    setTextareaValue(event.target.value);
+  };
+  return (
+    <div>
+      <div className="flex items-center mx-auto  w-[97%] mt-3">
+        {/* {selectedFields}
+                    {selectedDescriptionFields} */}
+        <Box sx={{ width: 500, maxWidth: "25%" }}>
+          <FormControl fullWidth>
+            <InputLabel id="dropdown-label">Item Name</InputLabel>
+            <Select
+              labelId="dropdown-label"
+              id="dropdown-select"
+              label="Dropdown"
+            >
+              <MenuItem value="">None</MenuItem>
+              <MenuItem value="option1">Option 1</MenuItem>
+              <MenuItem value="option2">Option 2</MenuItem>
+              <MenuItem value="option3">Option 3</MenuItem>
+            </Select>
+          </FormControl>
+        </Box>
+        <Box
+          component="form"
+          sx={{
+            "& > :not(style)": { m: 1, width: "70%" },
+          }}
+          noValidate
+          autoComplete="off"
+        >
+          <TextField
+            id="outlined-uncontrolled"
+            label="Quantity"
+            defaultValue="1"
+          />
+        </Box>
+        <TextField
+          id="outlined-search"
+          label="Price"
+          type="search"
+          style={{
+            marginRight: "10px",
+            width: "25%",
+          }}
+        />
+        <Box
+          component="form"
+          sx={{
+            "& .MuiTextField-root": { m: 1, width: "25ch" },
+          }}
+          noValidate
+          autoComplete="off"
+        >
+          <TextField
+            id="outlined-select-currency"
+            select
+            label="Select"
+            defaultValue="EUR"
+          >
+            {currencies.map((option) => (
+              <MenuItem key={option.value} value={option.value}>
+                {option.label}
+              </MenuItem>
+            ))}
+          </TextField>
+        </Box>
+      </div>
+      <textarea
+        className="peer block min-h-[auto] w-[97%] mx-auto border border-gray-500 rounded mb-4 mt-5 text-black px-3 py-[0.32rem]"
+        id="exampleFormControlTextarea1"
+        rows="5"
+        placeholder="Description(optional)"
+        value={textareaValue}
+        onChange={handleTextareaChange}
+      ></textarea>
     </div>
   );
 };
