@@ -12,10 +12,11 @@ import TextField from "@mui/material/TextField";
 import { MdModeEditOutline } from "react-icons/md";
 import { AiOutlinePlus } from "react-icons/ai";
 import { RxDividerVertical } from "react-icons/rx";
-import { IoIosArrowUp, IoIosArrowDown } from "react-icons/io";
+import { IoIosArrowUp, IoIosArrowDown, IoMdMail } from "react-icons/io";
 import { BsArrowLeft, BsThreeDotsVertical, BsCamera } from "react-icons/bs";
 import { FaPaypal } from "react-icons/fa";
 import { RxCross1 } from "react-icons/rx";
+
 //Reat Router Dom
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
@@ -33,7 +34,6 @@ const initialState = {
 };
 const InvoicePage = () => {
   //hooks or States
-
   const [currency, setCurrency] = useState("");
   const [textareaValue, setTextareaValue] = useState("");
   const [showAddButton, setShowAddButton] = useState(false);
@@ -46,7 +46,10 @@ const InvoicePage = () => {
   const [invoiceNumber, setInvoiceNumber] = useState("");
   const [businesspopup, setBusinessPopup] = useState(false);
   const [customisepopup, setCustomisePopup] = useState(false);
-  //Hooks or states
+  const [isLoading, setIsLoading] = useState(true);
+  const [data, setData] = useState([]);
+  const [lastData, setLastData] = useState(null);
+  //states for customise  items
   const [selectedTemplate, setSelectedTemplate] = useState("");
   const [fields, setFields] = useState(["name", "username", "password"]);
   const [fields1, setField1] = useState([]);
@@ -300,14 +303,67 @@ const InvoicePage = () => {
     setCustomiseui(false);
     handleSaveClick();
   };
+
+  //fetch data from db
+  // useEffect(() => {
+  //   dataRef
+  //     .ref()
+  //     .child("CustomerList")
+  //     .on("value", (snapshot) => {
+  //       if (snapshot.val() !== null) {
+  //         setData({ ...snapshot.val() });
+  //       } else {
+  //         setData({});
+  //       }
+  //       setIsLoading(false);
+  //     });
+  //   return () => {
+  //     setData({});
+  //   };
+  // }, []);
+  useEffect(() => {
+    dataRef
+      .ref()
+      .child("CustomerList")
+      .on("value", (snapshot) => {
+        const snapshotValue = snapshot.val();
+        if (snapshotValue !== null) {
+          const dataKeys = Object.keys(snapshotValue);
+          const lastKey = dataKeys[dataKeys.length - 1];
+          setLastData(snapshotValue[lastKey]);
+        } else {
+          setLastData(null);
+        }
+        setIsLoading(false);
+      });
+
+    return () => {
+      setLastData(null);
+    };
+  }, []);
+  //current data to fetch
+
+  //loading
+  if (isLoading) {
+    return (
+      <div className="text-center text-3xl text-black">
+        Loading<span className="text-yellow-500"> . . .</span>
+      </div>
+    );
+  }
+
+  if (lastData.length === 0) {
+    return <div>No data available</div>;
+  }
+
   //Return Statements
   return (
     <div className="mb-3 ">
       {businesspopup ? (
         <>
-          <div className="w-full  mx-auto absolute inset-0 overflow-y-auto z-10  bg-gray-500 opacity-100   ">
-            <div className="w-[900px] bg-white border opacity-100  h-screen">
-              <div className="flex items-center  mt-4 ">
+          <div className="w-full  mx-auto  overflow-y-hidden fixed z-20  bg-gray-200   ">
+            <div className="w-[900px] bg-white border opacity-100 relative  h-screen">
+              <div className="flex items-center relative  mt-4 ">
                 <i className="w-full flex justify-center text-blue-600  ">
                   <FaPaypal className="text-3xl" />
                 </i>
@@ -389,9 +445,9 @@ const InvoicePage = () => {
       ) : null}
       {customisepopup ? (
         <>
-          <div className="bg-black  overflow-y-hidden  w-full h-full flex justify-center absolute z-20 ">
-            <div className="bg-white h-auto w-full mx-auto  border">
-              <div className="flex items-center  mt-4">
+          <div className=" overflow-y-hidden  w-full h-full flex justify-center fixed z-20  bg-gray-200   ">
+            <div className="bg-white h-auto  w-[70%] mx-auto  relative border">
+              <div className="flex items-center relative  mt-4">
                 <i className="w-full flex justify-center text-blue-600  ">
                   <FaPaypal className="text-3xl" />
                 </i>
@@ -430,7 +486,7 @@ const InvoicePage = () => {
                 <div className="h-auto w-[95%] mx-auto mt-3 border-2 border-gray-300 rounded-xl">
                   <div className="p-3   ">
                     <div className="   flex items-center ">
-                      <div className="flex">{renderFields()}</div>
+                      <div className="flex gap-4">{renderFields()}</div>
                     </div>
                     <div>{renderFieldsdescription()}</div>
                   </div>
@@ -659,7 +715,6 @@ const InvoicePage = () => {
                   <p className="font-bold text-xl ml-3">Items</p>
                   <button
                     className=" text-blue-500 text-xl font-bold  rounded-full w-full flex justify-end items-center mr-3"
-                    // onClick={() => navigate("/customise")}
                     onClick={(event) => {
                       event.preventDefault();
                       setCustomisePopup(true);
@@ -668,25 +723,21 @@ const InvoicePage = () => {
                     <MdModeEditOutline className="mr-1" /> Customise
                   </button>
                 </div>
+
                 <div className="h-auto  w-[97%] mt-4  border-2 rounded-xl mx-auto  ">
                   {customiseui ? (
                     <Customiseui1 />
                   ) : (
-                    <div className="h-auto w-[95%] mx-auto mt-3 border-2 border-gray-300 rounded-xl">
-                      <div className="p-3   ">
-                        <div className="   flex items-center ">
-                          {renderSelectedFields()}
-                        </div>
-                        <div> {renderSelecteddescriptionFields()}</div>
+                    <div className="p-3   ">
+                      <div className="   flex items-center gap-5 ">
+                        {renderSelectedFields()}
                       </div>
+                      <div> {renderSelecteddescriptionFields()}</div>
                     </div>
                   )}
                 </div>
 
-                <button
-                  className="text-bold ml-4 mt-3 text-blue-600  font-bold flex items-center text-xl "
-                  onClick={() => navigate("/additems")}
-                >
+                <button className="text-bold ml-4 mt-3 text-blue-600  font-bold flex items-center text-xl ">
                   <AiOutlinePlus className="mr-2" /> Add items or Service
                 </button>
               </div>
@@ -809,9 +860,29 @@ const InvoicePage = () => {
                 </div>
               </div>
               <div>
-                <div></div>
+                {/* {Object.keys(data).map((id, index) => {
+                  return (
+                    <div
+                      key={id}
+                      className="text-2xl text-black flex items-center pl-2  gap-3 "
+                    >
+                      <span>
+                        <IoMdMail className="text-blue-900 " />
+                      </span>
+                      <span className="text-[20px] ">{data[id].email}</span>
+                    </div>
+                  );
+                })} */}
+                {lastData && (
+                  <div className="text-2xl text-black flex items-center pl-2 gap-3">
+                    <span>
+                      <IoMdMail className="text-blue-900" />
+                    </span>
+                    <span className="text-[20px]">{lastData.email}</span>
+                  </div>
+                )}
                 {showMemosection4 && (
-                  <div className="flex items-center mt-10  h-full     ">
+                  <div className="flex items-center mt-5  h-full     ">
                     <button className="text-blue-600 w-full text-lg  font-bold">
                       Add Logo |
                     </button>
@@ -945,9 +1016,7 @@ const Customiseui1 = () => {
   };
   return (
     <div>
-      <div className="flex items-center mx-auto  w-[97%] mt-3">
-        {/* {selectedFields}
-                    {selectedDescriptionFields} */}
+      <div className="flex items-center mx-auto  w-[97%] mt-3 ">
         <Box sx={{ width: 500, maxWidth: "25%" }}>
           <FormControl fullWidth>
             <InputLabel id="dropdown-label">Item Name</InputLabel>
@@ -982,7 +1051,7 @@ const Customiseui1 = () => {
           label="Price"
           type="search"
           style={{
-            marginRight: "10px",
+            marginLeft: "10px",
             width: "25%",
           }}
         />
@@ -999,6 +1068,7 @@ const Customiseui1 = () => {
             select
             label="Select"
             defaultValue="EUR"
+            className=""
           >
             {currencies.map((option) => (
               <MenuItem key={option.value} value={option.value}>
