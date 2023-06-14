@@ -303,24 +303,6 @@ const InvoicePage = () => {
     setCustomiseui(false);
     handleSaveClick();
   };
-
-  //fetch data from db
-  // useEffect(() => {
-  //   dataRef
-  //     .ref()
-  //     .child("CustomerList")
-  //     .on("value", (snapshot) => {
-  //       if (snapshot.val() !== null) {
-  //         setData({ ...snapshot.val() });
-  //       } else {
-  //         setData({});
-  //       }
-  //       setIsLoading(false);
-  //     });
-  //   return () => {
-  //     setData({});
-  //   };
-  // }, []);
   useEffect(() => {
     dataRef
       .ref()
@@ -696,14 +678,21 @@ const InvoicePage = () => {
                     onClick={handleClick}
                   />
                   {showAddButton && (
-                    <button
-                      className="mt-3 px-4 py-2 rounded bg-blue-900 text-white font-semibold"
-                      onClick={() => {
-                        navigate("/addcustomer");
-                      }}
-                    >
-                      Add Customer
-                    </button>
+                    <>
+                      {lastData && (
+                        <button className="px-4 py-2 bg-white text-blue-700 rounded-full border mt-2 flex items-center gap-2 ">
+                          {lastData.email} <RxCross1 />
+                        </button>
+                      )}
+                      <button
+                        className="mt-3 px-4 py-2 rounded bg-blue-900 text-white font-semibold"
+                        onClick={() => {
+                          navigate("/addcustomer");
+                        }}
+                      >
+                        Add Customer
+                      </button>
+                    </>
                   )}
                 </div>
               </div>

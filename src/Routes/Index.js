@@ -1,7 +1,7 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
 import InvoicePage from "../Pages/InvoicePage";
-import CustomiseItem from "../Pages/CustomiseItem";
+
 import AddItem from "../Pages/AddItem";
 import AddCustomer from "../Pages/AddCustomer";
 import AmountsOnly from "../Pages/AmountsOnly";
@@ -16,7 +16,7 @@ const Index = () => {
       <ToastContainer className="text-center" />
       <Routes>
         <Route exact path="/" element={<InvoicePage />} />
-        <Route path="/customise" element={<CustomiseItem />} />
+
         <Route path="/additems" element={<AddItem />} />
         <Route path="/addcustomer" element={<AddCustomer />} />
         <Route path="/amountsonly" element={<AmountsOnly />} />
