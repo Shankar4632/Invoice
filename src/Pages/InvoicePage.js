@@ -178,8 +178,10 @@ const InvoicePage = () => {
   const location = useLocation();
   const { selectedFields1, selectedDescriptionFields } = location.state || {};
 
-  const handleClick = () => {
+  const handleClick = (e) => {
+    e.preventDefault();
     setShowAddButton(true);
+    setLastData(lastData);
   };
 
   const handleTextareaChange = (event) => {
@@ -328,8 +330,114 @@ const InvoicePage = () => {
   //loading
   if (isLoading) {
     return (
-      <div className="text-center text-3xl text-black">
-        Loading<span className="text-yellow-500"> . . .</span>
+      // <div className="text-center text-3xl text-black">
+      //   Loading<span className="text-yellow-500"> . . .</span>
+      // </div>
+      <div className=" shadow  rounded-md p-4 w-full gap-5 flex h-screen ">
+        <div className="animate-pulse flex space-x-4 w-[70%]  mt-48">
+          <div className="flex-1 space-y-6 py-1">
+            <div className="grid grid-cols-2 gap-4">
+              <div className="h-4  bg-gray-300 rounded"></div>
+              <div className="h-4  bg-gray-300 rounded"></div>
+            </div>
+
+            <div className="space-y-3">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="h-4   bg-gray-300 rounded col-span-2"></div>
+                <div className="h-4   bg-gray-300 rounded col-span-2"></div>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="h-4  bg-gray-300 rounded"></div>
+                <div className="h-4  bg-gray-300 rounded"></div>
+              </div>
+            </div>
+            <div className=" mt-96 space-y-3 ">
+              <div className="h-4   bg-gray-300 rounded"></div>
+            </div>
+            <div className=" mt-96 space-y-3 border">
+              <div className="h-4   bg-gray-300 rounded"></div>
+            </div>
+            <div className=" mt-96 space-y-3 border">
+              <div className="h-4   bg-gray-300 rounded"></div>
+            </div>
+            <div className=" mt-96 space-y-3 border">
+              <div className="h-4   bg-gray-300 rounded"></div>
+            </div>
+            <div className=" mt-96 space-y-3 border">
+              <div className="h-4   bg-gray-300 rounded"></div>
+            </div>
+            <div className="grid grid-cols-4 gap-4">
+              <div className="h-4  bg-gray-300 rounded"></div>
+              <div className="h-4  bg-gray-300 rounded"></div>
+              <div className="h-4  bg-gray-300 rounded"></div>
+              <div className="h-4  bg-gray-300 rounded"></div>
+            </div>
+            <div className=" mt-96 space-y-3 border">
+              <div className="h-4   bg-gray-300 rounded"></div>
+            </div>
+            <div className=" mt-96 space-y-3 border">
+              <div className="h-4   bg-gray-300 rounded"></div>
+            </div>
+            <div className=" mt-96 space-y-3 border">
+              <div className="h-4   bg-gray-300 rounded"></div>
+            </div>
+            <div className=" mt-96 space-y-3 border">
+              <div className="h-4   bg-gray-300 rounded"></div>
+            </div>
+            <div className=" mt-96 space-y-3 border">
+              <div className="h-4   bg-gray-300 rounded"></div>
+            </div>
+          </div>
+        </div>
+        <div className="animate-pulse flex  w-[30%]  mt-48">
+          <div className="flex-1 space-y-6 py-1">
+            <div className="grid grid-cols-2 gap-4">
+              <div className="h-4  bg-gray-300 rounded"></div>
+              <div className="h-4  bg-gray-300 rounded"></div>
+            </div>
+
+            <div className="space-y-3">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="h-4   bg-gray-300 rounded col-span-2"></div>
+                <div className="h-4   bg-gray-300 rounded col-span-2"></div>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="h-4  bg-gray-300 rounded"></div>
+                <div className="h-4  bg-gray-300 rounded"></div>
+              </div>
+            </div>
+            <div className=" mt-96 space-y-3 ">
+              <div className="h-4   bg-gray-300 rounded"></div>
+            </div>
+            <div className=" mt-96 space-y-3 border">
+              <div className="h-4   bg-gray-300 rounded"></div>
+            </div>
+            <div className=" mt-96 space-y-3 border">
+              <div className="h-4   bg-gray-300 rounded"></div>
+            </div>
+            <div className=" mt-96 space-y-3 border">
+              <div className="h-4   bg-gray-300 rounded"></div>
+            </div>
+            <div className=" mt-96 space-y-3 border">
+              <div className="h-4   bg-gray-300 rounded"></div>
+            </div>
+            <div className=" mt-96 space-y-3 border">
+              <div className="h-4   bg-gray-300 rounded"></div>
+            </div>
+            <div className=" mt-96 space-y-3 border">
+              <div className="h-4   bg-gray-300 rounded"></div>
+            </div>
+            <div className=" mt-96 space-y-3 border">
+              <div className="h-4   bg-gray-300 rounded"></div>
+            </div>
+            <div className=" mt-96 space-y-3 border">
+              <div className="h-4   bg-gray-300 rounded"></div>
+            </div>
+            <div className=" mt-96 space-y-3 border">
+              <div className="h-4   bg-gray-300 rounded"></div>
+            </div>
+          </div>
+        </div>
       </div>
     );
   }
@@ -676,6 +784,7 @@ const InvoicePage = () => {
                     type="text"
                     placeholder="Email address or name"
                     onClick={handleClick}
+                    value={lastData && lastData.email}
                   />
                   {showAddButton && (
                     <>
@@ -849,19 +958,6 @@ const InvoicePage = () => {
                 </div>
               </div>
               <div>
-                {/* {Object.keys(data).map((id, index) => {
-                  return (
-                    <div
-                      key={id}
-                      className="text-2xl text-black flex items-center pl-2  gap-3 "
-                    >
-                      <span>
-                        <IoMdMail className="text-blue-900 " />
-                      </span>
-                      <span className="text-[20px] ">{data[id].email}</span>
-                    </div>
-                  );
-                })} */}
                 {lastData && (
                   <div className="text-2xl text-black flex items-center pl-2 gap-3">
                     <span>

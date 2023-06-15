@@ -122,8 +122,59 @@ const AddCustomer = () => {
   //loading
   if (isLoading) {
     return (
-      <div className="text-center text-3xl text-black">
-        Loading<span className="text-yellow-500"> . . .</span>
+      // <div className="text-center text-3xl text-black">
+      //   Loading<span className="text-yellow-500"> . . .</span>
+      // </div>
+      <div className=" shadow  rounded-md p-4 w-[70%] h-screen mx-auto">
+        <div className="animate-pulse flex space-x-4 w-[60%] mx-auto mt-28">
+          <div className="flex-1 space-y-6 py-1">
+            <div className="grid grid-cols-2 gap-4">
+              <div className="h-4  bg-gray-300 rounded"></div>
+              <div className="h-4  bg-gray-300 rounded"></div>
+            </div>
+
+            <div className="space-y-3">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="h-4   bg-gray-300 rounded col-span-2"></div>
+                <div className="h-4   bg-gray-300 rounded col-span-2"></div>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="h-4  bg-gray-300 rounded"></div>
+                <div className="h-4  bg-gray-300 rounded"></div>
+              </div>
+            </div>
+            <div className=" mt-96 space-y-3 ">
+              <div className="h-4   bg-gray-300 rounded"></div>
+            </div>
+            <div className=" mt-96 space-y-3 border">
+              <div className="h-4   bg-gray-300 rounded"></div>
+            </div>
+            <div className=" mt-96 space-y-3 border">
+              <div className="h-4   bg-gray-300 rounded"></div>
+            </div>
+            <div className=" mt-96 space-y-3 border">
+              <div className="h-4   bg-gray-300 rounded"></div>
+            </div>
+            <div className=" mt-96 space-y-3 border">
+              <div className="h-4   bg-gray-300 rounded"></div>
+            </div>
+            <div className=" mt-96 space-y-3 border">
+              <div className="h-4   bg-gray-300 rounded"></div>
+            </div>
+            <div className=" mt-96 space-y-3 border">
+              <div className="h-4   bg-gray-300 rounded"></div>
+            </div>
+            <div className=" mt-96 space-y-3 border">
+              <div className="h-4   bg-gray-300 rounded"></div>
+            </div>
+            <div className=" mt-96 space-y-3 border">
+              <div className="h-4   bg-gray-300 rounded"></div>
+            </div>
+            <div className=" mt-96 space-y-3 border">
+              <div className="h-4   bg-gray-300 rounded"></div>
+            </div>
+          </div>
+        </div>
       </div>
     );
   }
@@ -153,7 +204,7 @@ const AddCustomer = () => {
         Customer information{" "}
       </p>
 
-      {Object.keys(data).map((id, index) => {
+      {/* {Object.keys(data).map((id, index) => {
         return (
           <div key={id}>
             <h1 className="text-3xl text-black">{index + 1}</h1>
@@ -162,7 +213,7 @@ const AddCustomer = () => {
             <h1 className="text-3xl text-black">{data[id].email}</h1>
           </div>
         );
-      })}
+      })} */}
       <form className="" onSubmit={handlesubmit}>
         <div className="mx-auto w-[60%]  h-auto mt-10">
           <p className="font-bold text-md  "> Customer information</p>

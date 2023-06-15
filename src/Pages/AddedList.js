@@ -32,7 +32,7 @@ const AddedList = () => {
   const [data, setData] = useState({});
   const navigate = useNavigate();
   const showdropdown = () => {
-    setShow((prevshow) => !prevshow);
+    setShow(!show);
   };
 
   //data from db
@@ -206,29 +206,46 @@ const AddedList = () => {
                         />
                       </Link>
                     </td>
-                    {show ? (
-                      <>
-                        <div className="absolute top-20 right-28">
-                          <ul className="border rounded-xl cursor-pointer">
-                            <li className="px-7 py-3 bg-white ">Send </li>
-                            <li className="px-7 py-3 bg-white ">Edit</li>
-                            <li className="px-7 py-3 bg-white  ">Copy</li>
-                            <li className="px-7 py-3 bg-white  ">
-                              Record payment
-                            </li>
-                            <li className="px-7 py-3 bg-white  ">Print</li>
-                            <li className="px-7 py-3 bg-white  ">
-                              Download PDF
-                            </li>
-                            <li className="px-7 py-3 bg-white  ">Share Link</li>
-                            <li className="px-7 py-3 bg-white  ">Delete </li>
-                            <li className="px-7 py-3 bg-white ">Archive</li>
-                          </ul>
-                        </div>
-                      </>
-                    ) : null}
                   </tr>
                 </tbody>
+              );
+            })}
+            {/* {show && (
+              <>
+                <div key={id} className="absolute top-20 right-28">
+                  <ul className="border rounded-xl cursor-pointer">
+                    <li className="px-7 py-3 bg-white ">{index} </li>
+                    <li className="px-7 py-3 bg-white ">Send </li>
+                    <li className="px-7 py-3 bg-white ">Edit</li>
+                    <li className="px-7 py-3 bg-white  ">Copy</li>
+                    <li className="px-7 py-3 bg-white  ">Record payment</li>
+                    <li className="px-7 py-3 bg-white  ">Print</li>
+                    <li className="px-7 py-3 bg-white  ">Download PDF</li>
+                    <li className="px-7 py-3 bg-white  ">Share Link</li>
+                    <li className="px-7 py-3 bg-white  ">Delete </li>
+                    <li className="px-7 py-3 bg-white ">Archive</li>
+                  </ul>
+                </div>
+              </>
+            )} */}
+            {Object.keys(data).map((id, index) => {
+              return (
+                <>
+                  <div key={id} className="absolute top-20 right-28">
+                    <ul className="border rounded-xl cursor-pointer">
+                      <li className="px-7 py-3 bg-white ">{index} </li>
+                      <li className="px-7 py-3 bg-white ">Send </li>
+                      <li className="px-7 py-3 bg-white ">Edit</li>
+                      <li className="px-7 py-3 bg-white  ">Copy</li>
+                      <li className="px-7 py-3 bg-white  ">Record payment</li>
+                      <li className="px-7 py-3 bg-white  ">Print</li>
+                      <li className="px-7 py-3 bg-white  ">Download PDF</li>
+                      <li className="px-7 py-3 bg-white  ">Share Link</li>
+                      <li className="px-7 py-3 bg-white  ">Delete </li>
+                      <li className="px-7 py-3 bg-white ">Archive</li>
+                    </ul>
+                  </div>
+                </>
               );
             })}
           </table>
