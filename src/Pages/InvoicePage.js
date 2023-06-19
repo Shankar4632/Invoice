@@ -444,6 +444,11 @@ const InvoicePage = () => {
       label: "Tax able",
     },
   ];
+
+  const itemdata = location.state?.itemdata;
+
+  console.log(data); // Log the data to the console or use it as needed
+
   /////////////////    hide and show on button click    ////////////////
   const hideshow = () => {
     setShowMemo((prevShowMemo) => !prevShowMemo);
@@ -702,6 +707,7 @@ const InvoicePage = () => {
                 {" "}
                 Customise items
               </p>
+              <p>{JSON.stringify(itemdata, null, 2)}</p>
               <form>
                 <p className=" mt-3 pl-8 text-lg font-bold  mb-2">Preview</p>
                 <Box sx={{ width: "40%", paddingLeft: "30px" }}>

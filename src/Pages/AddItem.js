@@ -46,6 +46,7 @@ const AddItem = () => {
     };
     let str = JSON.stringify(data);
     console.log(str);
+    navigate("/", { state: { itemdata: str } });
   };
   return (
     <div className="bg-white  w-[70%] h-screen mx-auto border">
