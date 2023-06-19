@@ -334,10 +334,10 @@ const InvoicePage = () => {
             value={selectedOption}
             onChange={handleChange}
             name={fields3}
-            className="border border-gray-300 rounded-md px-8 py-4 mr-2 "
+            className="border border-gray-300 rounded-md w-72 py-4 mr-2 "
           >
             <option value="">Item Name</option>
-            <option value="option1">Option 1</option>
+            <option value="option1">Add Item</option>
             <option value="option2">Option 2</option>
             <option value="option3">Option 3</option>
           </select>
@@ -421,10 +421,10 @@ const InvoicePage = () => {
             value={fields3}
             onChange={handleChange}
             name={fields3}
-            className="border border-gray-300 rounded-md px-8 py-4 mr-2 "
+            className="border border-gray-300 rounded-md w-72 py-4 mr-2 "
           >
             <option value="">Item Name</option>
-            <option value="option1">Option 1</option>
+            <option value="option1">Add Item</option>
             <option value="option2">Option 2</option>
             <option value="option3">Option 3</option>
           </select>
@@ -1276,10 +1276,10 @@ const Customiseui1 = () => {
           <select
             value={selectedOption}
             onChange={handleChange}
-            className="border border-gray-300 rounded-md px-8 py-4 mr-2 "
+            className="border border-gray-300 rounded-md w-72 py-4   "
           >
             <option value="">Item Name</option>
-            <option value="option1">Option 1</option>
+            <option value="option1">Add Item</option>
             <option value="option2">Option 2</option>
             <option value="option3">Option 3</option>
           </select>
