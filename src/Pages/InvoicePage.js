@@ -51,13 +51,15 @@ const InvoicePage = () => {
   const [lastData, setLastData] = useState(null);
   //states for customise  items
   const [selectedTemplate, setSelectedTemplate] = useState("");
-  const [fields, setFields] = useState(["name", "username", "password"]);
+  const [fields, setFields] = useState(["Item Name", "Quantity", "Price"]);
   const [fields1, setField1] = useState([]);
+  const [fields2, setField2] = useState([]);
   const [selectedFields, setSelectedFields] = useState([]);
 
   const [selecteddescriptionFields, setSelecteddescriptionFields] = useState(
     []
   );
+  const [selectedtaxFields, setSelectedtaxFields] = useState([]);
   const [customiseui, setCustomiseui] = useState(true);
   //section-3
   const [input, setInput] = useState({
@@ -218,10 +220,23 @@ const InvoicePage = () => {
       );
     }
   };
+  const handleCheckboxChangetax = (e) => {
+    const { value, checked } = e.target;
+
+    // Add or remove the field based on checkbox selection
+    if (checked) {
+      setField2((prevField2) => [...prevField2, value]);
+    } else {
+      setField2((prevField2) =>
+        prevField2.filter((fields2) => fields2 !== value)
+      );
+    }
+  };
   // Handle save button click
   const handleSaveClick = () => {
     setSelectedFields(fields);
     setSelecteddescriptionFields(fields1);
+    setSelectedtaxFields(fields2);
     setCustomisePopup(false);
   };
   // Render the form fields
@@ -254,6 +269,34 @@ const InvoicePage = () => {
         >
           {" "}
         </textarea>
+      </div>
+    ));
+  };
+  const renderFieldstax = () => {
+    return fields2.map((fields2) => (
+      <div key={fields2}>
+        <Box
+          component="form"
+          sx={{
+            "& .MuiTextField-root": { m: 1, width: "25ch" },
+          }}
+          noValidate
+          autoComplete="off"
+        >
+          <TextField
+            id="outlined-select-currency"
+            select
+            label="Select"
+            defaultValue="select"
+            name={fields2}
+          >
+            {taxes.map((option) => (
+              <MenuItem key={option.value} value={option.value}>
+                {option.label}
+              </MenuItem>
+            ))}
+          </TextField>
+        </Box>
       </div>
     ));
   };
@@ -294,6 +337,46 @@ const InvoicePage = () => {
       </div>
     ));
   };
+  const renderSelectedtaxFields = () => {
+    return selectedtaxFields.map((field) => (
+      <div key={field}>
+        <Box
+          component="form"
+          sx={{
+            "& .MuiTextField-root": { m: 1, width: "25ch" },
+          }}
+          noValidate
+          autoComplete="off"
+        >
+          <TextField
+            id="outlined-select-currency"
+            select
+            label="Select"
+            defaultValue="select"
+            className=""
+            name={fields2}
+            value={fields2}
+          >
+            {taxes.map((option) => (
+              <MenuItem key={option.value} value={option.value}>
+                {option.label}
+              </MenuItem>
+            ))}
+          </TextField>
+        </Box>
+      </div>
+    ));
+  };
+  const taxes = [
+    {
+      value: "No Tax",
+      label: "No Tax",
+    },
+    {
+      value: "Tax able",
+      label: "Tax able",
+    },
+  ];
   /////////////////    hide and show on button click    ////////////////
   const hideshow = () => {
     setShowMemo((prevShowMemo) => !prevShowMemo);
@@ -576,7 +659,10 @@ const InvoicePage = () => {
                 <div className="h-auto w-[95%] mx-auto mt-3 border-2 border-gray-300 rounded-xl">
                   <div className="p-3   ">
                     <div className="   flex items-center ">
-                      <div className="flex gap-4">{renderFields()}</div>
+                      <div className="flex gap-4">
+                        {renderFields()}
+                        {renderFieldstax()}
+                      </div>
                     </div>
                     <div>{renderFieldsdescription()}</div>
                   </div>
@@ -604,7 +690,7 @@ const InvoicePage = () => {
                       type="checkbox"
                       value="Tax"
                       className="mt-5 h-5 w-5 "
-                      onChange={handleCheckboxChange}
+                      onChange={handleCheckboxChangetax}
                     />
                     <label
                       htmlFor="Item"
@@ -829,6 +915,7 @@ const InvoicePage = () => {
                     <div className="p-3   ">
                       <div className="   flex items-center gap-5 ">
                         {renderSelectedFields()}
+                        {renderSelectedtaxFields()}
                       </div>
                       <div> {renderSelecteddescriptionFields()}</div>
                     </div>
@@ -1086,6 +1173,7 @@ const InvoicePage = () => {
 };
 const Customiseui1 = () => {
   const [textareaValue, setTextareaValue] = useState("");
+
   const currencies = [
     {
       value: "No Tax",
@@ -1152,7 +1240,7 @@ const Customiseui1 = () => {
             id="outlined-select-currency"
             select
             label="Select"
-            defaultValue="EUR"
+            defaultValue="select"
             className=""
           >
             {currencies.map((option) => (
