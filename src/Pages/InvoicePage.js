@@ -74,6 +74,10 @@ const InvoicePage = () => {
   const [input, setInput] = useState({
     section3messege: "",
   });
+  //section-4
+  const [inputuser4, setInputuser4] = useState({
+    memo: "",
+  });
   //section-5
   const [inputuser5, setInputuser5] = useState(initialState);
   //Function Calling
@@ -97,8 +101,15 @@ const InvoicePage = () => {
     const inputValue = event.target.value;
     setInvoiceNumber(inputValue);
   };
-  //section-5
 
+  //section-4
+  const handleChangesection4 = (event) => {
+    const memo = event.target.name;
+    const value = event.target.value;
+    setInputuser4((values) => ({ ...values, memo: value }));
+    console.log(value);
+  };
+  //section-5
   const handleChangesection5 = (e) => {
     const { name, value } = e.target;
     setInputuser5({ ...inputuser5, [name]: value });
@@ -109,6 +120,7 @@ const InvoicePage = () => {
     e.preventDefault();
     handleSubmitsection2(e);
     handleSubmitsection3(e);
+    handleSubmitsection4(e);
     handleSubmitsection5(e);
   };
 
@@ -142,6 +154,24 @@ const InvoicePage = () => {
         .ref()
         .child("section3")
         .push(input, (err) => {
+          if (err) {
+            toast.error(err);
+          } else {
+            toast.success("Successfully added");
+          }
+        });
+    }
+  };
+  //section-4
+  const handleSubmitsection4 = (e) => {
+    e.preventDefault();
+    if (!inputuser4) {
+      toast.error(<div className="">Please enter the values!</div>);
+    } else {
+      dataRef
+        .ref()
+        .child("section4")
+        .push(inputuser4, (err) => {
           if (err) {
             toast.error(err);
           } else {
@@ -1036,7 +1066,7 @@ const InvoicePage = () => {
               <hr className="mt-3 w-[98%] mx-auto" />
               <div className="  ">
                 {showMemo && (
-                  <div>
+                  <form onSubmit={handleSubmitsection4}>
                     <div className="">
                       <p className="text-xl p-3 ml-1 font-bold">Attachments</p>
                       <input
@@ -1065,14 +1095,15 @@ const InvoicePage = () => {
                           className="peer block min-h-[auto] placeholder-gray-500  w-[98%] mx-auto border border-gray-500 rounded mt-5 text-black px-3 py-[0.32rem]  "
                           rows="6"
                           placeholder="Memo"
-                          value={textareaValue}
-                          onChange={handleTextareaChange}
+                          value={inputuser4.memo}
+                          name="memo"
+                          onChange={handleChangesection4}
                         >
                           {" "}
                         </textarea>
                       </div>
                     </div>
-                  </div>
+                  </form>
                 )}
               </div>
             </div>
