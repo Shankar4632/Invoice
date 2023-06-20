@@ -62,7 +62,14 @@ const InvoicePage = () => {
   const [selectedtaxFields, setSelectedtaxFields] = useState([]);
   const [selecteditemFields, setSelecteditemFields] = useState([]);
   const [customiseui, setCustomiseui] = useState(true);
-
+  //section-2
+  const [inputuser2, setInputuser2] = useState({
+    ItemName: "",
+    quantity: "",
+    price: "",
+    description: "",
+    tax: "",
+  });
   //section-3
   const [input, setInput] = useState({
     section3messege: "",
@@ -71,6 +78,15 @@ const InvoicePage = () => {
   const [inputuser5, setInputuser5] = useState(initialState);
   //Function Calling
   ////////////////////////  input file onchange events  ///////////////////////
+  //section-2
+  const handleChangesection2 = (event) => {
+    const fieldName = event.target.name;
+    const value = event.target.value;
+    console.log(fieldName, value); // Check if the values are being received correctly
+
+    setInputuser2((values) => ({ ...values, [fieldName]: value }));
+  };
+
   //section-3
   const handleChangesection3 = (event) => {
     const section3messege = event.target.name;
@@ -91,9 +107,31 @@ const InvoicePage = () => {
   ///////////////////  addiding the value field onsubmit events  ///////////////////
   const handlesubmit = (e) => {
     e.preventDefault();
+    handleSubmitsection2(e);
     handleSubmitsection3(e);
     handleSubmitsection5(e);
   };
+
+  const handleSubmitsection2 = (e) => {
+    e.preventDefault();
+    console.log("Submitting section 2 form");
+    console.log(inputuser2);
+    if (!inputuser2) {
+      toast.error(<div className="">Please enter the values!</div>);
+    } else {
+      dataRef
+        .ref()
+        .child("section2")
+        .push(inputuser2, (err) => {
+          if (err) {
+            toast.error(err);
+          } else {
+            toast.success("Successfully added");
+          }
+        });
+    }
+  };
+
   //section-3
   const handleSubmitsection3 = (e) => {
     e.preventDefault();
@@ -256,7 +294,8 @@ const InvoicePage = () => {
             marginRight: "10px",
             width: "100%",
           }}
-          name={field}
+          name={field.toLowerCase()}
+          onChange={handleChangesection2}
         />
       </div>
     ));
@@ -271,6 +310,7 @@ const InvoicePage = () => {
           type="text"
           placeholder="Description(optional)"
           name="description"
+          onChange={handleChangesection2}
         >
           {" "}
         </textarea>
@@ -293,7 +333,9 @@ const InvoicePage = () => {
             select
             label="Select"
             defaultValue="select"
-            name={fields2}
+            name="tax"
+            onChange={handleChangesection2}
+            value={inputuser2.tax}
           >
             {taxes.map((option) => (
               <MenuItem key={option.value} value={option.value}>
@@ -318,8 +360,9 @@ const InvoicePage = () => {
             marginRight: "20px",
             width: "100%",
           }}
-          name={field}
           className="gap-3"
+          name={field.toLowerCase()}
+          onChange={handleChangesection2}
         />
       </div>
     ));
@@ -334,8 +377,7 @@ const InvoicePage = () => {
           type="text"
           placeholder="Description(optional)"
           name="description"
-          value={fields1}
-          readOnly
+          onChange={handleChangesection2}
         >
           {" "}
         </textarea>
@@ -359,7 +401,8 @@ const InvoicePage = () => {
             label="Select"
             defaultValue="select"
             className=""
-            name={fields2}
+            name="tax"
+            onChange={handleChangesection2}
             value={fields2}
           >
             {taxes.map((option) => (
@@ -901,7 +944,7 @@ const InvoicePage = () => {
               </div>
             </form>
             {/*==================================  section-2  =============================== */}
-            <form>
+            <form onSubmit={handleSubmitsection2}>
               <div className="p-3 ">
                 <div className="flex items-center pl-3 pt-20">
                   <p className="font-bold text-xl ml-3">Items</p>
