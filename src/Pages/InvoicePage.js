@@ -51,10 +51,10 @@ const InvoicePage = () => {
   const [lastData, setLastData] = useState(null);
   //states for customise  items
   const [selectedTemplate, setSelectedTemplate] = useState("");
-  const [fields, setFields] = useState(["Quantity", "Price"]);
+  const [fields, setFields] = useState(["Item Name", "Quantity", "Price"]);
   const [fields1, setField1] = useState([]);
   const [fields2, setField2] = useState([]);
-  const [fields3, setField3] = useState(["Item Name"]);
+
   const [selectedFields, setSelectedFields] = useState([]);
   const [selecteddescriptionFields, setSelecteddescriptionFields] = useState(
     []
@@ -62,7 +62,6 @@ const InvoicePage = () => {
   const [selectedtaxFields, setSelectedtaxFields] = useState([]);
   const [selecteditemFields, setSelecteditemFields] = useState([]);
   const [customiseui, setCustomiseui] = useState(true);
-  const [selectedOption, setSelectedOption] = useState("");
 
   //section-3
   const [input, setInput] = useState({
@@ -200,16 +199,7 @@ const InvoicePage = () => {
   const handleselectedTemplate = (event) => {
     setSelectedTemplate(event.target.value);
   };
-  const handleChange = (event) => {
-    setSelectedOption(event.target.value);
-  };
 
-  const handleButtonClicked = () => {
-    if (selectedOption === "option1") {
-      alert("Button clicked for Option 1");
-      // Perform any other actions you want for Option 1
-    }
-  };
   // Handle checkbox change
   const handleCheckboxChange = (e) => {
     const { value, checked } = e.target;
@@ -245,24 +235,13 @@ const InvoicePage = () => {
       );
     }
   };
-  const handleCheckboxChangeitem = (e) => {
-    const { value, checked } = e.target;
 
-    // Add or remove the field based on checkbox selection
-    if (checked) {
-      setField3((prevField3) => [...prevField3, value]);
-    } else {
-      setField3((prevField3) =>
-        prevField3.filter((fields3) => fields3 !== value)
-      );
-    }
-  };
   // Handle save button click
   const handleSaveClick = () => {
     setSelectedFields(fields);
     setSelecteddescriptionFields(fields1);
     setSelectedtaxFields(fields2);
-    setSelecteditemFields(fields3);
+
     setCustomisePopup(false);
   };
   // Render the form fields
@@ -323,26 +302,6 @@ const InvoicePage = () => {
             ))}
           </TextField>
         </Box>
-      </div>
-    ));
-  };
-  const renderFieldsitem = () => {
-    return fields3.map((fields3) => (
-      <div key={fields3}>
-        <div>
-          <select
-            value={selectedOption}
-            onChange={handleChange}
-            name={fields3}
-            className="border border-gray-300 rounded-md w-72 py-4 mr-2 "
-          >
-            <option value="">Item Name</option>
-            <option value="option1">Add Item</option>
-            <option value="option2">Option 2</option>
-            <option value="option3">Option 3</option>
-          </select>
-          {selectedOption === "option1" && navigate("/additems")}
-        </div>
       </div>
     ));
   };
@@ -413,26 +372,6 @@ const InvoicePage = () => {
       </div>
     ));
   };
-  const renderSelecteditemFields = () => {
-    return selecteditemFields.map((field) => (
-      <div key={field}>
-        <div>
-          <select
-            value={fields3}
-            onChange={handleChange}
-            name={fields3}
-            className="border border-gray-300 rounded-md w-72 py-4 mr-2 "
-          >
-            <option value="">Item Name</option>
-            <option value="option1">Add Item</option>
-            <option value="option2">Option 2</option>
-            <option value="option3">Option 3</option>
-          </select>
-          {selectedOption === "option1" && navigate("/additems")}
-        </div>
-      </div>
-    ));
-  };
 
   const taxes = [
     {
@@ -444,10 +383,6 @@ const InvoicePage = () => {
       label: "Tax able",
     },
   ];
-
-  const itemdata = location.state?.itemdata;
-
-  console.log(data); // Log the data to the console or use it as needed
 
   /////////////////    hide and show on button click    ////////////////
   const hideshow = () => {
@@ -707,7 +642,7 @@ const InvoicePage = () => {
                 {" "}
                 Customise items
               </p>
-              <p>{JSON.stringify(itemdata, null, 2)}</p>
+
               <form>
                 <p className=" mt-3 pl-8 text-lg font-bold  mb-2">Preview</p>
                 <Box sx={{ width: "40%", paddingLeft: "30px" }}>
@@ -733,7 +668,6 @@ const InvoicePage = () => {
                   <div className="p-3   ">
                     <div className="   flex items-center ">
                       <div className="flex gap-4">
-                        {renderFieldsitem()}
                         {renderFields()}
                         {renderFieldstax()}
                       </div>
@@ -988,7 +922,6 @@ const InvoicePage = () => {
                   ) : (
                     <div className="p-3   ">
                       <div className="   flex items-center gap-5 ">
-                        {renderSelecteditemFields()}
                         {renderSelectedFields()}
                         {renderSelectedtaxFields()}
                       </div>
@@ -1248,18 +1181,6 @@ const InvoicePage = () => {
 };
 const Customiseui1 = () => {
   const [textareaValue, setTextareaValue] = useState("");
-  const [selectedOption, setSelectedOption] = useState("");
-
-  const handleChange = (event) => {
-    setSelectedOption(event.target.value);
-  };
-  const navigate = useNavigate();
-  const handleButtonClick = () => {
-    if (selectedOption === "option1") {
-      alert("Button clicked for Option 1");
-      // Perform any other actions you want for Option 1
-    }
-  };
 
   const currencies = [
     {
@@ -1278,20 +1199,15 @@ const Customiseui1 = () => {
   return (
     <div>
       <div className="flex items-center mx-auto  w-[97%] mt-3 ">
-        <div>
-          <select
-            value={selectedOption}
-            onChange={handleChange}
-            className="border border-gray-300 rounded-md w-72 py-4   "
-          >
-            <option value="">Item Name</option>
-            <option value="option1">Add Item</option>
-            <option value="option2">Option 2</option>
-            <option value="option3">Option 3</option>
-          </select>
-          {selectedOption === "option1" && navigate("/additems")}
-        </div>
-
+        <TextField
+          id="outlined-search"
+          label="Item Name"
+          type="text"
+          style={{
+            marginLeft: "",
+            width: "25%",
+          }}
+        />
         <Box
           component="form"
           sx={{
