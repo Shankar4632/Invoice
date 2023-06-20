@@ -615,7 +615,7 @@ const InvoicePage = () => {
       {businesspopup ? (
         <>
           <div className="w-full  mx-auto  overflow-y-hidden fixed z-20  bg-gray-200   ">
-            <div className="w-[900px] bg-white border opacity-100 relative  h-screen">
+            <div className="w-[900px] bg-white  opacity-100 relative  h-screen">
               <div className="flex items-center relative  mt-4 ">
                 <i className="w-full flex justify-center text-blue-600  ">
                   <FaPaypal className="text-3xl" />
@@ -627,11 +627,11 @@ const InvoicePage = () => {
                   <RxCross1 className="text-xl" />
                 </i>
               </div>
-              <p className="text-center text-[48px] mt-3 font-semibold">
+              <p className="text-center text-[40px]  font-semibold">
                 {" "}
-                Business <br /> information{" "}
+                Business information{" "}
               </p>
-              <div className="w-[70%] border mx-auto ">
+              <div className="w-[70%]  mx-auto ">
                 {" "}
                 <div className="grid grid-cols-2 w-full  mt-3 text-center">
                   <div className="">
@@ -640,17 +640,18 @@ const InvoicePage = () => {
                       id="outlined-search"
                       name="firstname"
                       type="search"
-                      className=" w-[95%]  border border-gray-400 rounded-md py-5 px-3 placeholder-black focus:border-blue-400"
+                      className=" w-[90%]  border border-gray-400 rounded-md py-5 px-3 placeholder-black focus:border-blue-400"
                       placeholder="First name"
                     />
                   </div>
+
                   <div className="">
                     {" "}
                     <input
                       id="outlined-search"
                       name="lastname"
                       type="search"
-                      className=" w-[95%]  border border-gray-400 rounded-md py-5 px-3 placeholder-black"
+                      className=" w-[90%]  border border-gray-400 rounded-md py-5 px-3 placeholder-black"
                       placeholder="Last name"
                     />
                   </div>
@@ -663,6 +664,51 @@ const InvoicePage = () => {
                     className=" w-[95%]  border border-gray-400  rounded-md py-5 px-3 placeholder-black"
                     placeholder="Business name"
                   />
+                </div>
+                <div className="flex  justify-center mt-3">
+                  <select
+                    id="dropdown-select"
+                    className="w-[95%] py-5  px-3  text-base border border-gray-500 rounded-md box-border"
+                  >
+                    {" "}
+                    <option defaultValue disabled value="Dont Show in Invoice">
+                      ---select Due---
+                    </option>
+                    <option value="option1">Dont Show in Invoice</option>
+                    <option value="option2">option 2</option>
+                    <option value="option3">option 3</option>
+                    <option value="option4">option 4</option>
+                  </select>
+                </div>
+                <div className="flex  justify-center mt-3">
+                  <select
+                    id="dropdown-select"
+                    className="w-[95%] py-5  px-3  text-base border border-gray-500 rounded-md box-border"
+                  >
+                    {" "}
+                    <option defaultValue disabled value="Dont Show in Invoice">
+                      ---select Due---
+                    </option>
+                    <option value="option1">Dont Show in Invoice</option>
+                    <option value="option2">option 2</option>
+                    <option value="option3">option 3</option>
+                    <option value="option4">option 4</option>
+                  </select>
+                </div>
+                <div className="flex  justify-center mt-3">
+                  <select
+                    id="dropdown-select"
+                    className="w-[95%] py-5  px-3  text-base border border-gray-500 rounded-md box-border"
+                  >
+                    {" "}
+                    <option defaultValue disabled value="Dont Show in Invoice">
+                      ---select Due---
+                    </option>
+                    <option value="option1">Email</option>
+                    <option value="option2">option 2</option>
+                    <option value="option3">option 3</option>
+                    <option value="option4">option 4</option>
+                  </select>
                 </div>
                 <div className="flex  justify-center mt-3">
                   <input
@@ -690,6 +736,14 @@ const InvoicePage = () => {
                     className=" w-[95%]  border border-gray-400  rounded-md py-5 px-3 placeholder-black"
                     placeholder="Additional information"
                   />
+                </div>
+                <div className="flex justify-center  mt-10">
+                  <button
+                    className="text-white bg-[#003087] px-9 py-3  rounded-full    font-extrabold text-lg"
+                    type="submit"
+                  >
+                    Save
+                  </button>
                 </div>
               </div>
             </div>
@@ -1079,7 +1133,7 @@ const InvoicePage = () => {
                       />
                       <button
                         type="button"
-                        className="text-[#003087] ml-3 font-bold border-2 border-[#003087] px-4 py-1 rounded-full text-sm"
+                        className="text-[#05070a] ml-3 font-bold border-2 border-[#003087] px-4 py-1 rounded-full text-sm"
                         onClick={handleButtonClick}
                       >
                         Upload files
@@ -1111,54 +1165,55 @@ const InvoicePage = () => {
         </div>
 
         <div className=" w-[25%]  text-center ">
-          <form onSubmit={handleSubmitsection5}>
-            <div className="h-[200px] border rounded-xl bg-white">
-              <div className="flex items-center h-20   w-full">
-                <div>
-                  <input
-                    type="file"
-                    placeholder="Add logo"
-                    className="px-3 py-4"
-                  />
-                </div>
-                <div>
-                  <button
-                    className=" flex justify-end  ml-10 "
-                    onClick={hideshowsection4}
-                  >
-                    {" "}
-                    {showMemosection4 ? (
-                      <IoIosArrowUp className="text-2xl  text-gray-500" />
-                    ) : (
-                      <IoIosArrowDown className="text-2xl  text-gray-500" />
-                    )}
-                  </button>
-                </div>
+          <div className="h-[200px] border rounded-xl bg-white">
+            <div className="flex items-center h-20   w-full">
+              <div>
+                <input
+                  type="file"
+                  placeholder="Add logo"
+                  className="px-3 py-4"
+                />
               </div>
               <div>
-                {lastData && (
-                  <div className="text-2xl text-black flex items-center pl-2 gap-3">
-                    <span>
-                      <IoMdMail className="text-blue-900" />
-                    </span>
-                    <span className="text-[20px]">{lastData.email}</span>
-                  </div>
-                )}
-                {showMemosection4 && (
-                  <div className="flex items-center mt-5  h-full     ">
-                    <button className="text-blue-600 w-full text-lg  font-bold">
-                      Add Logo |
-                    </button>
-                    <button
-                      className="text-blue-600 w-full    text-lg font-bold"
-                      onClick={() => setBusinessPopup(true)}
-                    >
-                      Edit Business Information
-                    </button>
-                  </div>
-                )}
+                <button
+                  className=" flex justify-end  ml-10 "
+                  onClick={hideshowsection4}
+                >
+                  {" "}
+                  {showMemosection4 ? (
+                    <IoIosArrowUp className="text-2xl  text-gray-500" />
+                  ) : (
+                    <IoIosArrowDown className="text-2xl  text-gray-500" />
+                  )}
+                </button>
               </div>
             </div>
+            <div>
+              {lastData && (
+                <div className="text-2xl text-black flex items-center pl-2 gap-3">
+                  <span>
+                    <IoMdMail className="text-blue-900" />
+                  </span>
+                  <span className="text-[20px]">{lastData.email}</span>
+                </div>
+              )}
+              {showMemosection4 && (
+                <div className="flex items-center mt-5  h-full     ">
+                  <button className="text-blue-600 w-full text-lg  font-bold">
+                    Add Logo |
+                  </button>
+                  <button
+                    className="text-blue-600 w-full    text-lg font-bold"
+                    onClick={() => setBusinessPopup(true)}
+                  >
+                    Edit Business Information
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
+
+          <form onSubmit={handleSubmitsection5}>
             <div className="h-[700px] border rounded-xl bg-white mt-4 pt-8 ">
               <Box
                 component=""
