@@ -78,8 +78,22 @@ const InvoicePage = () => {
   const [inputuser4, setInputuser4] = useState({
     memo: "",
   });
+
   //section-5
   const [inputuser5, setInputuser5] = useState(initialState);
+  //section-6 business information
+  const [inputbusiness, setInputbusiness] = useState({
+    fname: "",
+    lname: "",
+    businessname: "",
+    billhide1: "",
+    billhide2: "",
+    email: "",
+    website: "",
+    pin: "",
+    additionalinfo: "",
+  });
+
   //Function Calling
   ////////////////////////  input file onchange events  ///////////////////////
   //section-2
@@ -114,6 +128,10 @@ const InvoicePage = () => {
     const { name, value } = e.target;
     setInputuser5({ ...inputuser5, [name]: value });
   };
+  const handleChangesection6 = (e) => {
+    const { name, value } = e.target;
+    setInputbusiness({ ...inputbusiness, [name]: value });
+  };
 
   ///////////////////  addiding the value field onsubmit events  ///////////////////
   const handlesubmit = (e) => {
@@ -122,6 +140,7 @@ const InvoicePage = () => {
     handleSubmitsection3(e);
     handleSubmitsection4(e);
     handleSubmitsection5(e);
+    handleSubmitsection6(e);
   };
 
   const handleSubmitsection2 = (e) => {
@@ -152,7 +171,7 @@ const InvoicePage = () => {
     } else {
       dataRef
         .ref()
-        .child("section3")
+        .child("section3message")
         .push(input, (err) => {
           if (err) {
             toast.error(err);
@@ -170,7 +189,7 @@ const InvoicePage = () => {
     } else {
       dataRef
         .ref()
-        .child("section4")
+        .child("section4memo")
         .push(inputuser4, (err) => {
           if (err) {
             toast.error(err);
@@ -194,8 +213,27 @@ const InvoicePage = () => {
 
       dataRef
         .ref()
-        .child("section5")
+        .child("section5total")
         .push(section5Data, (err) => {
+          if (err) {
+            toast.error(err);
+          } else {
+            toast.success("Successfully added");
+          }
+        });
+    }
+  };
+  //section-6 business information
+  //section-4
+  const handleSubmitsection6 = (e) => {
+    e.preventDefault();
+    if (!inputbusiness) {
+      toast.error(<div className="">Please enter the values!</div>);
+    } else {
+      dataRef
+        .ref()
+        .child("section6Businessinformation")
+        .push(inputbusiness, (err) => {
           if (err) {
             toast.error(err);
           } else {
@@ -614,140 +652,166 @@ const InvoicePage = () => {
     <div className="mb-3 ">
       {businesspopup ? (
         <>
-          <div className="w-full  mx-auto  overflow-y-hidden fixed z-20  bg-gray-200   ">
-            <div className="w-[900px] bg-white  opacity-100 relative  h-screen">
-              <div className="flex items-center relative  mt-4 ">
-                <i className="w-full flex justify-center text-blue-600  ">
-                  <FaPaypal className="text-3xl" />
-                </i>
-                <i
-                  className="flex  justify-end pr-3 cursor-pointer"
-                  onClick={() => setBusinessPopup(false)}
-                >
-                  <RxCross1 className="text-xl" />
-                </i>
-              </div>
-              <p className="text-center text-[40px]  font-semibold">
-                {" "}
-                Business information{" "}
-              </p>
-              <div className="w-[70%]  mx-auto ">
-                {" "}
-                <div className="grid grid-cols-2 w-full  mt-3 text-center">
-                  <div className="">
-                    {" "}
-                    <input
-                      id="outlined-search"
-                      name="firstname"
-                      type="search"
-                      className=" w-[90%]  border border-gray-400 rounded-md py-5 px-3 placeholder-black focus:border-blue-400"
-                      placeholder="First name"
-                    />
-                  </div>
+          <form onSubmit={handleSubmitsection6}>
+            <div className="w-full  mx-auto  overflow-y-hidden fixed z-20  bg-gray-200   ">
+              <div className="w-[900px] bg-white  opacity-100 relative  h-screen">
+                <div className="flex items-center relative  mt-4 ">
+                  <i className="w-full flex justify-center text-blue-600  ">
+                    <FaPaypal className="text-3xl" />
+                  </i>
+                  <i
+                    className="flex  justify-end pr-3 cursor-pointer"
+                    onClick={() => setBusinessPopup(false)}
+                  >
+                    <RxCross1 className="text-xl" />
+                  </i>
+                </div>
+                <p className="text-center text-[40px]  font-semibold">
+                  {" "}
+                  Business information{" "}
+                </p>
+                <div className="w-[70%]  mx-auto ">
+                  {" "}
+                  <div className="grid grid-cols-2 w-full  mt-3 text-center">
+                    <div className="">
+                      {" "}
+                      <input
+                        id="outlined-search"
+                        name="fname"
+                        type="search"
+                        className=" w-[90%]  border border-gray-400 rounded-md py-5 px-3 placeholder-black focus:border-blue-400"
+                        placeholder="First name"
+                        onChange={handleChangesection6}
+                      />
+                    </div>
 
-                  <div className="">
-                    {" "}
+                    <div className="">
+                      {" "}
+                      <input
+                        id="outlined-search"
+                        name="lname"
+                        type="search"
+                        className=" w-[90%]  border border-gray-400 rounded-md py-5 px-3 placeholder-black"
+                        placeholder="Last name"
+                        onChange={handleChangesection6}
+                      />
+                    </div>
+                  </div>
+                  <div className="flex  justify-center mt-3">
                     <input
                       id="outlined-search"
-                      name="lastname"
+                      name="businessname"
                       type="search"
-                      className=" w-[90%]  border border-gray-400 rounded-md py-5 px-3 placeholder-black"
-                      placeholder="Last name"
+                      className=" w-[95%]  border border-gray-400  rounded-md py-5 px-3 placeholder-black"
+                      placeholder="Business name"
+                      onChange={handleChangesection6}
                     />
                   </div>
-                </div>
-                <div className="flex  justify-center mt-3">
-                  <input
-                    id="outlined-search"
-                    name="lastname"
-                    type="search"
-                    className=" w-[95%]  border border-gray-400  rounded-md py-5 px-3 placeholder-black"
-                    placeholder="Business name"
-                  />
-                </div>
-                <div className="flex  justify-center mt-3">
-                  <select
-                    id="dropdown-select"
-                    className="w-[95%] py-5  px-3  text-base border border-gray-500 rounded-md box-border"
-                  >
-                    {" "}
-                    <option defaultValue disabled value="Dont Show in Invoice">
-                      ---select Due---
-                    </option>
-                    <option value="option1">Dont Show in Invoice</option>
-                    <option value="option2">option 2</option>
-                    <option value="option3">option 3</option>
-                    <option value="option4">option 4</option>
-                  </select>
-                </div>
-                <div className="flex  justify-center mt-3">
-                  <select
-                    id="dropdown-select"
-                    className="w-[95%] py-5  px-3  text-base border border-gray-500 rounded-md box-border"
-                  >
-                    {" "}
-                    <option defaultValue disabled value="Dont Show in Invoice">
-                      ---select Due---
-                    </option>
-                    <option value="option1">Dont Show in Invoice</option>
-                    <option value="option2">option 2</option>
-                    <option value="option3">option 3</option>
-                    <option value="option4">option 4</option>
-                  </select>
-                </div>
-                <div className="flex  justify-center mt-3">
-                  <select
-                    id="dropdown-select"
-                    className="w-[95%] py-5  px-3  text-base border border-gray-500 rounded-md box-border"
-                  >
-                    {" "}
-                    <option defaultValue disabled value="Dont Show in Invoice">
-                      ---select Due---
-                    </option>
-                    <option value="option1">Email</option>
-                    <option value="option2">option 2</option>
-                    <option value="option3">option 3</option>
-                    <option value="option4">option 4</option>
-                  </select>
-                </div>
-                <div className="flex  justify-center mt-3">
-                  <input
-                    id="outlined-search"
-                    name="lastname"
-                    type="text"
-                    className=" w-[95%]  border border-gray-400  rounded-md py-5 px-3 placeholder-black"
-                    placeholder="Website"
-                  />
-                </div>
-                <div className="flex  justify-center mt-3">
-                  <input
-                    id="outlined-search"
-                    name="lastname"
-                    type="text"
-                    className=" w-[95%]  border border-gray-400  rounded-md py-5 px-3 placeholder-black"
-                    placeholder="TIN / PIN"
-                  />
-                </div>
-                <div className="flex  justify-center mt-3">
-                  <input
-                    id="outlined-search"
-                    name="lastname"
-                    type="text"
-                    className=" w-[95%]  border border-gray-400  rounded-md py-5 px-3 placeholder-black"
-                    placeholder="Additional information"
-                  />
-                </div>
-                <div className="flex justify-center  mt-10">
-                  <button
-                    className="text-white bg-[#003087] px-9 py-3  rounded-full    font-extrabold text-lg"
-                    type="submit"
-                  >
-                    Save
-                  </button>
+                  <div className="flex  justify-center mt-3">
+                    <select
+                      id="dropdown-select"
+                      className="w-[95%] py-5  px-3  text-base border border-gray-500 rounded-md box-border"
+                      name="billhide1"
+                      onChange={handleChangesection6}
+                    >
+                      {" "}
+                      <option
+                        defaultValue
+                        disabled
+                        value="Dont Show in Invoice"
+                      >
+                        ---select Due---
+                      </option>
+                      <option value="option1">Dont Show in Invoice</option>
+                      <option value="option2">option 2</option>
+                      <option value="option3">option 3</option>
+                      <option value="option4">option 4</option>
+                    </select>
+                  </div>
+                  <div className="flex  justify-center mt-3">
+                    <select
+                      id="dropdown-select"
+                      className="w-[95%] py-5  px-3  text-base border border-gray-500 rounded-md box-border"
+                      name="billhide2"
+                      onChange={handleChangesection6}
+                    >
+                      {" "}
+                      <option
+                        defaultValue
+                        disabled
+                        value="Dont Show in Invoice"
+                      >
+                        ---select Due---
+                      </option>
+                      <option value="option1">Dont Show in Invoice</option>
+                      <option value="option2">option 2</option>
+                      <option value="option3">option 3</option>
+                      <option value="option4">option 4</option>
+                    </select>
+                  </div>
+                  <div className="flex  justify-center mt-3">
+                    <select
+                      id="dropdown-select"
+                      className="w-[95%] py-5  px-3  text-base border border-gray-500 rounded-md box-border"
+                      name="email"
+                      onChange={handleChangesection6}
+                    >
+                      {" "}
+                      <option
+                        defaultValue
+                        disabled
+                        value="Dont Show in Invoice"
+                      >
+                        ---select Due---
+                      </option>
+                      <option value="option1">Email</option>
+                      <option value="option2">option 2</option>
+                      <option value="option3">option 3</option>
+                      <option value="option4">option 4</option>
+                    </select>
+                  </div>
+                  <div className="flex  justify-center mt-3">
+                    <input
+                      id="outlined-search"
+                      name="website"
+                      type="text"
+                      className=" w-[95%]  border border-gray-400  rounded-md py-5 px-3 placeholder-black"
+                      placeholder="Website"
+                      onChange={handleChangesection6}
+                    />
+                  </div>
+                  <div className="flex  justify-center mt-3">
+                    <input
+                      id="outlined-search"
+                      name="pin"
+                      type="text"
+                      className=" w-[95%]  border border-gray-400  rounded-md py-5 px-3 placeholder-black"
+                      placeholder="TIN / PIN"
+                      onChange={handleChangesection6}
+                    />
+                  </div>
+                  <div className="flex  justify-center mt-3">
+                    <input
+                      id="outlined-search"
+                      name="additionalinfo"
+                      type="text"
+                      className=" w-[95%]  border border-gray-400  rounded-md py-5 px-3 placeholder-black"
+                      placeholder="Additional information"
+                      onChange={handleChangesection6}
+                    />
+                  </div>
+                  <div className="flex justify-center  mt-10">
+                    <button
+                      className="text-white bg-[#003087] px-9 py-3  rounded-full    font-extrabold text-lg"
+                      type="submit"
+                    >
+                      Save
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+          </form>
         </>
       ) : null}
       {customisepopup ? (
