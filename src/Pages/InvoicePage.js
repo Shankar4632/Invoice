@@ -52,7 +52,7 @@ const InvoicePage = () => {
   //states for customise  items
   const [selectedTemplate, setSelectedTemplate] = useState("");
   const [fields, setFields] = useState(["Item Name", "Quantity", "Price"]);
-  const [fields1, setField1] = useState([]);
+  const [fields1, setField1] = useState(["description"]);
   const [fields2, setField2] = useState([]);
 
   const [selectedFields, setSelectedFields] = useState([]);
@@ -270,7 +270,7 @@ const InvoicePage = () => {
           rows="4"
           type="text"
           placeholder="Description(optional)"
-          name={fields1}
+          name="description"
         >
           {" "}
         </textarea>
@@ -333,7 +333,7 @@ const InvoicePage = () => {
           rows="4"
           type="text"
           placeholder="Description(optional)"
-          name={fields1}
+          name="description"
           value={fields1}
           readOnly
         >
@@ -918,7 +918,16 @@ const InvoicePage = () => {
 
                 <div className="h-auto  w-[97%] mt-4  border-2 rounded-xl mx-auto  ">
                   {customiseui ? (
-                    <Customiseui1 />
+                    // <Customiseui1 />
+                    <div className="p-3   ">
+                      <div className="   flex items-center ">
+                        <div className="flex gap-4">
+                          {renderFields()}
+                          {renderFieldstax()}
+                        </div>
+                      </div>
+                      <div>{renderFieldsdescription()}</div>
+                    </div>
                   ) : (
                     <div className="p-3   ">
                       <div className="   flex items-center gap-5 ">
