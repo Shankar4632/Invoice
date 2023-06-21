@@ -49,6 +49,7 @@ const InvoicePage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState([]);
   const [lastData, setLastData] = useState(null);
+
   //states for customise  items
   const [selectedTemplate, setSelectedTemplate] = useState("");
   const [fields, setFields] = useState(["Item Name", "Quantity", "Price"]);
@@ -93,6 +94,8 @@ const InvoicePage = () => {
     pin: "",
     additionalinfo: "",
   });
+  //fetch
+  const [businessdata, setBusinessdata] = useState({});
 
   //Function Calling
   ////////////////////////  input file onchange events  ///////////////////////
@@ -506,6 +509,7 @@ const InvoicePage = () => {
     setCustomiseui(false);
     handleSaveClick();
   };
+  //fetched data
   useEffect(() => {
     dataRef
       .ref()
@@ -526,6 +530,28 @@ const InvoicePage = () => {
       setLastData(null);
     };
   }, []);
+  //fetch data from db of business information
+  useEffect(() => {
+    dataRef
+      .ref()
+      .child("section6Businessinformation")
+      .on("value", (snapshot) => {
+        const snapshotValue = snapshot.val();
+        if (snapshotValue !== null) {
+          const dataKeys = Object.keys(snapshotValue);
+          const lastKey = dataKeys[dataKeys.length - 1];
+          setBusinessdata(snapshotValue[lastKey]);
+        } else {
+          setBusinessdata(null);
+        }
+        setIsLoading(false);
+      });
+
+    return () => {
+      setBusinessdata(null);
+    };
+  }, []);
+
   //current data to fetch
 
   //loading
@@ -653,7 +679,7 @@ const InvoicePage = () => {
       {businesspopup ? (
         <>
           <form onSubmit={handleSubmitsection6}>
-            <div className="w-full  mx-auto  overflow-y-hidden fixed z-20  bg-gray-200   ">
+            <div className="w-full h-full  mx-auto  overflow-y-hidden fixed z-20  bg-gray-200   ">
               <div className="w-[900px] bg-white  opacity-100 relative  h-screen">
                 <div className="flex items-center relative  mt-4 ">
                   <i className="w-full flex justify-center text-blue-600  ">
@@ -750,25 +776,14 @@ const InvoicePage = () => {
                     </select>
                   </div>
                   <div className="flex  justify-center mt-3">
-                    <select
-                      id="dropdown-select"
-                      className="w-[95%] py-5  px-3  text-base border border-gray-500 rounded-md box-border"
+                    <input
+                      id="outlined-search"
                       name="email"
+                      type="email"
+                      className=" w-[95%]  border border-gray-400  rounded-md py-5 px-3 placeholder-black"
+                      placeholder="Email"
                       onChange={handleChangesection6}
-                    >
-                      {" "}
-                      <option
-                        defaultValue
-                        disabled
-                        value="Dont Show in Invoice"
-                      >
-                        ---select Due---
-                      </option>
-                      <option value="option1">Email</option>
-                      <option value="option2">option 2</option>
-                      <option value="option3">option 3</option>
-                      <option value="option4">option 4</option>
-                    </select>
+                    />
                   </div>
                   <div className="flex  justify-center mt-3">
                     <input
@@ -1253,12 +1268,16 @@ const InvoicePage = () => {
               </div>
             </div>
             <div>
-              {lastData && (
-                <div className="text-2xl text-black flex items-center pl-2 gap-3">
-                  <span>
-                    <IoMdMail className="text-blue-900" />
-                  </span>
-                  <span className="text-[20px]">{lastData.email}</span>
+              {businessdata && (
+                <div>
+                  <div className="text-2xl text-black flex items-center pl-2 gap-3">
+                    <span>
+                      <IoMdMail className="text-blue-900" />
+                    </span>
+                    <span className="text-[20px] text-black ">
+                      {businessdata.email}
+                    </span>
+                  </div>
                 </div>
               )}
               {showMemosection4 && (

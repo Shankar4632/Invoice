@@ -39,7 +39,7 @@ const AddedList = () => {
   useEffect(() => {
     dataRef
       .ref()
-      .child("section5")
+      .child("section5total")
       .on("value", (snapshot) => {
         if (snapshot.val() !== null) {
           setData({ ...snapshot.val() });
