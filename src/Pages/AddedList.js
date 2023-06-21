@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 
 import {
   BsFillQuestionCircleFill,
@@ -15,6 +15,8 @@ import { dataRef } from "../firebase-config";
 
 //import react router
 import { Link, useNavigate } from "react-router-dom";
+//import from pdf
+import { useReactToPrint } from "react-to-print";
 
 //materialUI imports
 import Box from "@mui/material/Box";
@@ -23,17 +25,64 @@ import MenuItem from "@mui/material/MenuItem";
 
 import TextField from "@mui/material/TextField";
 import { useState } from "react";
+import { toast } from "react-toastify";
 
 const AddedList = () => {
   //states or hooks
   const [show, setShow] = useState(false);
+  const [selectedId, setSelectedId] = useState(null);
+
   const [isLoading, setIsLoading] = useState(true);
   //get data from the db
-  const [data, setData] = useState({});
+  const [data, setData] = useState([]);
   const navigate = useNavigate();
-  const showdropdown = () => {
+  const showdropdown = (id) => {
+    setSelectedId(id);
     setShow(!show);
   };
+
+  //pdf
+  const componentpdf = useRef();
+  const generatepdf = useReactToPrint({
+    content: () => componentpdf.current,
+    documentTitle: "Userdata",
+    onafterprint: () => alert("data saved in pdf"),
+  });
+  //delete
+  const handleDelete = (id) => {
+    if (window.confirm("Are you sure you want to delete")) {
+      dataRef
+        .ref()
+        .child(`section5total/${id}`)
+        .remove((err) => {
+          if (err) {
+            toast.error(err);
+          } else {
+            toast.success("Success");
+          }
+        });
+    }
+  };
+  // const handleDelete = (id) => {
+  //   if (window.confirm("Are you sure you want to delete?")) {
+  //     dataRef
+  //       .ref()
+  //       .child("section5total")
+  //       .orderByChild("inputuser5/invoicenumber")
+  //       .equalTo(id)
+  //       .once("value", (snapshot) => {
+  //         snapshot.forEach((childSnapshot) => {
+  //           childSnapshot.ref.remove((err) => {
+  //             if (err) {
+  //               toast.error(err);
+  //             } else {
+  //               toast.success("Success");
+  //             }
+  //           });
+  //         });
+  //       });
+  //   }
+  // };
 
   //data from db
   useEffect(() => {
@@ -42,14 +91,14 @@ const AddedList = () => {
       .child("section5total")
       .on("value", (snapshot) => {
         if (snapshot.val() !== null) {
-          setData({ ...snapshot.val() });
+          setData(Object.values(snapshot.val()));
         } else {
-          setData({});
+          setData([]);
         }
         setIsLoading(false);
       });
     return () => {
-      setData({});
+      setData([]);
     };
   }, []);
   const receipt = [
@@ -83,6 +132,7 @@ const AddedList = () => {
   if (data.length === 0) {
     return <div>No data available</div>;
   }
+
   return (
     <div className="mb-3">
       <div className="grid grid-cols-2 h-32  ">
@@ -150,7 +200,10 @@ const AddedList = () => {
           <CiSliderHorizontal className="font-extrabold" />
           Filter
         </button>
-        <button className="flex items-center text-xl text-blue-900">
+        <button
+          className="flex items-center text-xl text-blue-900"
+          onClick={generatepdf}
+        >
           <AiOutlineDownload className="text-3xl font-bold ml-5" />
         </button>
       </div>
@@ -162,93 +215,93 @@ const AddedList = () => {
       </div>
       <div className="h-48 w-[90%] mx-auto">
         <div className="relative  h-80  overflow-y-hidden hover:overflow-scroll overflow-x-hidden  shadow-md sm:rounded-lg">
-          <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400 mt-5 ">
-            <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-              <tr></tr>
-            </thead>
-            {Object.keys(data).map((id, index) => {
-              return (
-                <tbody key={index} className="relative">
-                  <tr className="bg-white relative border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600  ">
-                    <td className="w-4 p-6">
-                      <div className="flex items-center  ">
-                        <input
-                          id="checkbox-table-1"
-                          type="checkbox"
-                          className="w-6 h-6  bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                        />
-                        <label htmlFor="checkbox-table-1" className="sr-only">
-                          checkbox
-                        </label>
-                      </div>
-                    </td>
-                    <th
-                      scope="row"
-                      className="px-6 py-4 text-2xl font-semibold text-gray-900 whitespace-nowrap dark:text-white"
+          <div ref={componentpdf} className="w-full">
+            <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400 mt-5 ">
+              <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <tr></tr>
+              </thead>
+              {data.map((e, i) => {
+                return (
+                  <tbody key={i} className="relative">
+                    <tr
+                      key={i}
+                      className="bg-white relative border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600  "
                     >
-                      {data[id].inputuser5.invoicedate}
-                    </th>
-                    <td className="px-6 py-4 text-2xl font-bold text-black">
-                      {data[id].inputuser5.invoicenumber}
-                    </td>
-                    <td className="px-6 py-4 text-lg font-bold">
-                      Due-
-                      {data[id].inputuser5.invoicedue}
-                    </td>
-                    <td className="px-6 py-4 text-2xl font-bold text-black">
-                      ${data[id].total}
-                    </td>
-                    <td className="px-6 py-4">
-                      <Link className="font-medium text-blue-600 dark:text-blue-500 hover:underline">
-                        <BsThreeDotsVertical
-                          className="mr-8 text-[23px] text-gray-600"
-                          onClick={showdropdown}
-                        />
-                      </Link>
-                    </td>
-                  </tr>
-                </tbody>
-              );
-            })}
-            {/* {show && (
-              <>
-                <div key={id} className="absolute top-20 right-28">
-                  <ul className="border rounded-xl cursor-pointer">
-                    <li className="px-7 py-3 bg-white ">{index} </li>
-                    <li className="px-7 py-3 bg-white ">Send </li>
-                    <li className="px-7 py-3 bg-white ">Edit</li>
-                    <li className="px-7 py-3 bg-white  ">Copy</li>
-                    <li className="px-7 py-3 bg-white  ">Record payment</li>
-                    <li className="px-7 py-3 bg-white  ">Print</li>
-                    <li className="px-7 py-3 bg-white  ">Download PDF</li>
-                    <li className="px-7 py-3 bg-white  ">Share Link</li>
-                    <li className="px-7 py-3 bg-white  ">Delete </li>
-                    <li className="px-7 py-3 bg-white ">Archive</li>
-                  </ul>
-                </div>
-              </>
-            )} */}
-            {Object.keys(data).map((id, index) => {
-              return (
+                      <td className="w-4 p-6">
+                        <div className="flex items-center  ">
+                          <input
+                            id="checkbox-table-1"
+                            type="checkbox"
+                            className="w-6 h-6  bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                          />
+                          <label htmlFor="checkbox-table-1" className="sr-only">
+                            checkbox
+                          </label>
+                        </div>
+                      </td>
+                      <th
+                        scope="row"
+                        className="px-6 py-4 text-2xl font-semibold text-gray-900 whitespace-nowrap dark:text-white"
+                      >
+                        {e.inputuser5.invoicedate}
+                      </th>
+                      <td className="px-6 py-4 text-2xl font-bold text-black">
+                        {e.inputuser5.invoicenumber}
+                      </td>
+                      <td className="px-6 py-4 text-lg font-bold">
+                        Due-
+                        {e.inputuser5.invoicedue}
+                      </td>
+                      <td className="px-6 py-4 text-2xl font-bold text-black">
+                        ${e.total}
+                      </td>
+                      <td className="px-6 py-4">
+                        <Link className="font-medium text-blue-600 dark:text-blue-500 hover:underline">
+                          <BsThreeDotsVertical
+                            className="mr-8 text-[23px] text-gray-600"
+                            onClick={() => showdropdown(e.id)}
+                          />
+                        </Link>
+                      </td>
+                    </tr>
+                  </tbody>
+                );
+              })}
+              {show && (
                 <>
-                  <div key={id} className="absolute top-20 right-28">
+                  <div className="absolute top-20 right-28">
                     <ul className="border rounded-xl cursor-pointer">
-                      <li className="px-7 py-3 bg-white ">{index} </li>
+                      <li className="px-7 py-3 bg-white "> </li>
                       <li className="px-7 py-3 bg-white ">Send </li>
                       <li className="px-7 py-3 bg-white ">Edit</li>
                       <li className="px-7 py-3 bg-white  ">Copy</li>
                       <li className="px-7 py-3 bg-white  ">Record payment</li>
-                      <li className="px-7 py-3 bg-white  ">Print</li>
-                      <li className="px-7 py-3 bg-white  ">Download PDF</li>
+                      <li
+                        className="px-7 py-3 bg-white  "
+                        onClick={generatepdf}
+                      >
+                        Print
+                      </li>
+                      <li
+                        className="px-7 py-3 bg-white  "
+                        onClick={generatepdf}
+                      >
+                        Download PDF
+                      </li>
                       <li className="px-7 py-3 bg-white  ">Share Link</li>
-                      <li className="px-7 py-3 bg-white  ">Delete </li>
+                      <li
+                        className="px-7 py-3 bg-white  "
+                        onClick={(e) => handleDelete(e.id)}
+                      >
+                        Delete{" "}
+                      </li>
                       <li className="px-7 py-3 bg-white ">Archive</li>
                     </ul>
                   </div>
                 </>
-              );
-            })}
-          </table>
+              )}
+            </table>
+          </div>
         </div>
 
         <div className=" h-96 mt-4  ">

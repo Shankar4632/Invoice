@@ -63,6 +63,9 @@ const InvoicePage = () => {
   const [selectedtaxFields, setSelectedtaxFields] = useState([]);
   const [selecteditemFields, setSelecteditemFields] = useState([]);
   const [customiseui, setCustomiseui] = useState(true);
+  //image state
+  const [selectedImage, setSelectedImage] = useState(null);
+
   //section-2
   const [inputuser2, setInputuser2] = useState({
     ItemName: "",
@@ -99,12 +102,13 @@ const InvoicePage = () => {
 
   //Function Calling
   ////////////////////////  input file onchange events  ///////////////////////
+  //section-1
+
   //section-2
   const handleChangesection2 = (event) => {
     const fieldName = event.target.name;
     const value = event.target.value;
     console.log(fieldName, value); // Check if the values are being received correctly
-
     setInputuser2((values) => ({ ...values, [fieldName]: value }));
   };
 
@@ -139,11 +143,32 @@ const InvoicePage = () => {
   ///////////////////  addiding the value field onsubmit events  ///////////////////
   const handlesubmit = (e) => {
     e.preventDefault();
+    handleSubmitsection1(e);
     handleSubmitsection2(e);
     handleSubmitsection3(e);
     handleSubmitsection4(e);
     handleSubmitsection5(e);
     handleSubmitsection6(e);
+  };
+
+  const handleSubmitsection1 = (e) => {
+    e.preventDefault();
+    console.log("Submitting section 1 form");
+    const email = lastData.email;
+    if (!email) {
+      toast.error(<div className="">Please enter the values!</div>);
+    } else {
+      dataRef
+        .ref()
+        .child("section1")
+        .push(email, (err) => {
+          if (err) {
+            toast.error(err);
+          } else {
+            toast.success("Successfully added");
+          }
+        });
+    }
   };
 
   const handleSubmitsection2 = (e) => {
@@ -672,6 +697,19 @@ const InvoicePage = () => {
   if (lastData.length === 0) {
     return <div>No data available</div>;
   }
+  //logo image
+  const handleImageUpload = (event) => {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      setSelectedImage(reader.result);
+    };
+
+    if (file) {
+      reader.readAsDataURL(file);
+    }
+  };
 
   //Return Statements
   return (
@@ -1001,7 +1039,7 @@ const InvoicePage = () => {
         <div className="w-[75%]">
           <div className="border  h-auto rounded-xl bg-white ">
             {/*===================================   section-1  =============================== */}
-            <form>
+            <form onSubmit={handleSubmitsection1}>
               <div className="">
                 <div className="  flex justify-end w-full mt-3 pr-4">
                   <Box sx={{ minWidth: 150, marginRight: "20px" }}>
@@ -1077,6 +1115,7 @@ const InvoicePage = () => {
                     invoice multiple customer
                   </button>
                 </div>
+
                 <div className="mx-auto w-[97%] ">
                   <input
                     id="outlined-required"
@@ -1247,15 +1286,27 @@ const InvoicePage = () => {
           <div className="h-[200px] border rounded-xl bg-white">
             <div className="flex items-center h-20   w-full">
               <div>
-                <input
+                {/* <input
                   type="file"
                   placeholder="Add logo"
                   className="px-3 py-4"
-                />
+                /> */}
               </div>
+
+              <div className="flex items-center justify-start ml-3 mt-3 w-full">
+                {selectedImage && (
+                  <img
+                    src={selectedImage}
+                    alt="Uploaded"
+                    // style={{ maxWidth: "300px" }}
+                    className="w-20 h-20"
+                  />
+                )}
+              </div>
+
               <div>
                 <button
-                  className=" flex justify-end  ml-10 "
+                  className=" flex justify-end  mr-2 "
                   onClick={hideshowsection4}
                 >
                   {" "}
@@ -1270,7 +1321,7 @@ const InvoicePage = () => {
             <div>
               {businessdata && (
                 <div>
-                  <div className="text-2xl text-black flex items-center pl-2 gap-3">
+                  <div className="text-2xl text-black flex items-center mt-2 pl-2 gap-3">
                     <span>
                       <IoMdMail className="text-blue-900" />
                     </span>
@@ -1282,9 +1333,11 @@ const InvoicePage = () => {
               )}
               {showMemosection4 && (
                 <div className="flex items-center mt-5  h-full     ">
-                  <button className="text-blue-600 w-full text-lg  font-bold">
-                    Add Logo |
-                  </button>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageUpload}
+                  />
                   <button
                     className="text-blue-600 w-full    text-lg font-bold"
                     onClick={() => setBusinessPopup(true)}
