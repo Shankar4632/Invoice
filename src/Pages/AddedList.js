@@ -48,47 +48,42 @@ const AddedList = () => {
     documentTitle: "Userdata",
     onafterprint: () => alert("data saved in pdf"),
   });
-  //delete
-  const handleDelete = (id) => {
-    if (window.confirm("Are you sure you want to delete")) {
-      dataRef
-        .ref()
-        .child(`section5total/${id}`)
-        .remove((err) => {
-          if (err) {
-            toast.error(err);
-          } else {
-            toast.success("Success");
-          }
-        });
-    }
-  };
+  // delete
   // const handleDelete = (id) => {
-  //   if (window.confirm("Are you sure you want to delete?")) {
+  //   if (window.confirm("Are you sure you want to delete")) {
   //     dataRef
   //       .ref()
-  //       .child("section5total")
-  //       .orderByChild("inputuser5/invoicenumber")
-  //       .equalTo(id)
-  //       .once("value", (snapshot) => {
-  //         snapshot.forEach((childSnapshot) => {
-  //           childSnapshot.ref.remove((err) => {
-  //             if (err) {
-  //               toast.error(err);
-  //             } else {
-  //               toast.success("Success");
-  //             }
-  //           });
-  //         });
+  //       .child(`section3message/${id}`)
+
+  //       .remove((err) => {
+  //         if (err) {
+  //           toast.error(err);
+  //         } else {
+  //           toast.success("Success");
+  //           console.log(id);
+  //         }
   //       });
   //   }
   // };
+  const handleDelete = (id) => {
+    dataRef
+      .ref("section3message")
+      .child(id)
+      .remove()
+      .then(() => {
+        toast.success("Data deleted successfully.");
+      })
+      .catch((error) => {
+        toast.error("Failed to delete data.");
+        console.log(error);
+      });
+  };
 
   //data from db
   useEffect(() => {
     dataRef
       .ref()
-      .child("section5total")
+      .child("section3message")
       .on("value", (snapshot) => {
         if (snapshot.val() !== null) {
           setData(Object.values(snapshot.val()));
@@ -220,13 +215,10 @@ const AddedList = () => {
               <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr></tr>
               </thead>
-              {data.map((e, i) => {
+              {Object.keys(data).map((id, index) => {
                 return (
-                  <tbody key={i} className="relative">
-                    <tr
-                      key={i}
-                      className="bg-white relative border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600  "
-                    >
+                  <tbody key={index} className="relative">
+                    <tr className="bg-white relative border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600  ">
                       <td className="w-4 p-6">
                         <div className="flex items-center  ">
                           <input
@@ -243,63 +235,73 @@ const AddedList = () => {
                         scope="row"
                         className="px-6 py-4 text-2xl font-semibold text-gray-900 whitespace-nowrap dark:text-white"
                       >
-                        {e.inputuser5.invoicedate}
+                        {id}
                       </th>
-                      <td className="px-6 py-4 text-2xl font-bold text-black">
-                        {e.inputuser5.invoicenumber}
+                      <th
+                        scope="row"
+                        className="px-6 py-4 text-2xl font-semibold text-gray-900 whitespace-nowrap dark:text-white"
+                      >
+                        {data[id].section3messege}
+                      </th>
+                      {/* <td className="px-6 py-4 text-2xl font-bold text-black">
+                        {data[id].inputuser5.invoicenumber}
                       </td>
                       <td className="px-6 py-4 text-lg font-bold">
                         Due-
-                        {e.inputuser5.invoicedue}
+                        {data[id].inputuser5.invoicedue}
                       </td>
                       <td className="px-6 py-4 text-2xl font-bold text-black">
-                        ${e.total}
-                      </td>
+                        ${data[id].total}
+                      </td> */}
                       <td className="px-6 py-4">
                         <Link className="font-medium text-blue-600 dark:text-blue-500 hover:underline">
                           <BsThreeDotsVertical
                             className="mr-8 text-[23px] text-gray-600"
-                            onClick={() => showdropdown(e.id)}
+                            onClick={showdropdown}
                           />
                         </Link>
+                        {/* <button>Delete</button> */}
                       </td>
                     </tr>
                   </tbody>
                 );
               })}
-              {show && (
-                <>
-                  <div className="absolute top-20 right-28">
-                    <ul className="border rounded-xl cursor-pointer">
-                      <li className="px-7 py-3 bg-white "> </li>
-                      <li className="px-7 py-3 bg-white ">Send </li>
-                      <li className="px-7 py-3 bg-white ">Edit</li>
-                      <li className="px-7 py-3 bg-white  ">Copy</li>
-                      <li className="px-7 py-3 bg-white  ">Record payment</li>
-                      <li
-                        className="px-7 py-3 bg-white  "
-                        onClick={generatepdf}
-                      >
-                        Print
-                      </li>
-                      <li
-                        className="px-7 py-3 bg-white  "
-                        onClick={generatepdf}
-                      >
-                        Download PDF
-                      </li>
-                      <li className="px-7 py-3 bg-white  ">Share Link</li>
-                      <li
-                        className="px-7 py-3 bg-white  "
-                        onClick={(e) => handleDelete(e.id)}
-                      >
-                        Delete{" "}
-                      </li>
-                      <li className="px-7 py-3 bg-white ">Archive</li>
-                    </ul>
-                  </div>
-                </>
-              )}
+
+              {Object.keys(data).map((id, index) => {
+                return (
+                  <>
+                    <div key={id} className="absolute top-20 right-28">
+                      <ul className="border rounded-xl cursor-pointer">
+                        <li className="px-7 py-3 bg-white ">{index} </li>
+                        <li className="px-7 py-3 bg-white ">Send </li>
+                        <li className="px-7 py-3 bg-white ">Edit</li>
+                        <li className="px-7 py-3 bg-white  ">Copy</li>
+                        <li className="px-7 py-3 bg-white  ">Record payment</li>
+                        <li
+                          className="px-7 py-3 bg-white  "
+                          onClick={generatepdf}
+                        >
+                          Print
+                        </li>
+                        <li
+                          className="px-7 py-3 bg-white  "
+                          onClick={generatepdf}
+                        >
+                          Download PDF
+                        </li>
+                        <li className="px-7 py-3 bg-white  ">Share Link</li>
+                        <li
+                          className="px-7 py-3 bg-white  "
+                          onClick={() => handleDelete(id)}
+                        >
+                          Delete{" "}
+                        </li>
+                        <li className="px-7 py-3 bg-white ">Archive</li>
+                      </ul>
+                    </div>
+                  </>
+                );
+              })}
             </table>
           </div>
         </div>
