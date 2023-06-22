@@ -130,6 +130,12 @@ const AddedList = () => {
 
   return (
     <div className="mb-3">
+      {/* {profileid ? (
+        <>
+          <div></div>
+        </>
+      ) : null} */}
+
       <div className="grid grid-cols-2 h-32  ">
         <div className=" flex items-center pl-10">
           <RiFileList2Fill className="text-[35px] flex items-center  h-full" />
@@ -266,8 +272,49 @@ const AddedList = () => {
                   </tbody>
                 );
               })}
+              {show &&
+                Object.keys(data).map((selectedId, index) => {
+                  return (
+                    <>
+                      <div
+                        key={selectedId}
+                        className="absolute top-20 right-28"
+                      >
+                        <ul className="border rounded-xl cursor-pointer">
+                          <li className="px-7 py-3 bg-white ">{selectedId} </li>
+                          <li className="px-7 py-3 bg-white ">Send </li>
+                          <li className="px-7 py-3 bg-white ">Edit</li>
+                          <li className="px-7 py-3 bg-white  ">Copy</li>
+                          <li className="px-7 py-3 bg-white  ">
+                            Record payment
+                          </li>
+                          <li
+                            className="px-7 py-3 bg-white  "
+                            onClick={generatepdf}
+                          >
+                            Print
+                          </li>
+                          <li
+                            className="px-7 py-3 bg-white  "
+                            onClick={generatepdf}
+                          >
+                            Download PDF
+                          </li>
+                          <li className="px-7 py-3 bg-white  ">Share Link</li>
+                          <li
+                            className="px-7 py-3 bg-white  "
+                            onClick={() => handleDelete(selectedId)}
+                          >
+                            Delete{" "}
+                          </li>
+                          <li className="px-7 py-3 bg-white ">Archive</li>
+                        </ul>
+                      </div>
+                    </>
+                  );
+                })}
 
-              {Object.keys(data).map((id, index) => {
+              {/* {Object.keys(data).map((id, index) => {
                 return (
                   <>
                     <div key={id} className="absolute top-20 right-28">
@@ -301,7 +348,7 @@ const AddedList = () => {
                     </div>
                   </>
                 );
-              })}
+              })} */}
             </table>
           </div>
         </div>
