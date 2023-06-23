@@ -8,6 +8,7 @@ import AmountsOnly from "../Pages/AmountsOnly";
 import Hours from "../Pages/Hours";
 import AddTax from "../Pages/AddTax";
 import AddedList from "../Pages/AddedList";
+import Downloadpdf from "../Pages/Downloadpdf";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 const Index = () => {
@@ -23,6 +24,7 @@ const Index = () => {
         <Route path="/hours" element={<Hours />} />
         <Route path="/addtax" element={<AddTax />} />
         <Route path="/addedlist" element={<AddedList />} />
+        <Route path="/downloadpdf/:id" element={<Downloadpdf />} />
       </Routes>
     </div>
   );

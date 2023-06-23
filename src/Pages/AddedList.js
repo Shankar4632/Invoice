@@ -146,6 +146,7 @@ const AddedList = () => {
                 <p className="text-2xl font-semibold p-1">Website :</p>
               </div>
             </div>
+
             <div className="h-48 w-[95%] mx-auto bg-gray-200">
               <div className="grid grid-cols-2  h-full">
                 <div className="  ">
@@ -194,114 +195,120 @@ const AddedList = () => {
                     <th className="p-3">AMOUNTS$</th>
                   </tr>
                 </thead>
-                <tbody className="border-b dark:bg-gray-900 dark:border-gray-700">
-                  <tr>
-                    <td className="px-3 text-2xl font-medium dark:text-gray-400">
-                      1
-                    </td>
-                    <td className="px-3 py-2">
-                      <p>Item 1</p>
-                    </td>
-                    <td className="px-3 py-2">
-                      <span>2</span>
-                      <p className="dark:text-gray-400"></p>
-                    </td>
-                    <td className="px-3 py-2">
-                      <p>$100</p>
-                    </td>
-                    <td className="px-3 py-2">
-                      <p>$20</p>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="px-3 text-2xl font-medium dark:text-gray-400"></td>
-                    <td className="px-3 py-2">
-                      <p>Description 1</p>
-                    </td>
-                    <td className="px-3 py-2">
-                      <span></span>
-                      <p className="dark:text-gray-400"></p>
-                    </td>
-                    <td className="px-3 py-2">
-                      <p></p>
-                    </td>
-                    <td className="px-3 py-2">
-                      <p></p>
-                    </td>
-                  </tr>
-                </tbody>
-                <tbody className="border-b dark:bg-gray-900 dark:border-gray-700">
-                  <tr>
-                    <td className="px-3 text-2xl font-medium dark:text-gray-400">
-                      2
-                    </td>
-                    <td className="px-3 py-2">
-                      <p>Item 2</p>
-                    </td>
-                    <td className="px-3 py-2">
-                      <span>5</span>
-                      <p className="dark:text-gray-400"></p>
-                    </td>
-                    <td className="px-3 py-2">
-                      <p>$100</p>
-                    </td>
-                    <td className="px-3 py-2">
-                      <p>$20</p>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="px-3 text-2xl font-medium dark:text-gray-400"></td>
-                    <td className="px-3 py-2">
-                      <p>Description 1</p>
-                    </td>
-                    <td className="px-3 py-2">
-                      <span></span>
-                      <p className="dark:text-gray-400"></p>
-                    </td>
-                    <td className="px-3 py-2">
-                      <p></p>
-                    </td>
-                    <td className="px-3 py-2">
-                      <p></p>
-                    </td>
-                  </tr>
-                </tbody>
-                <tbody className="border-b dark:bg-gray-900 dark:border-gray-700">
-                  <tr>
-                    <td className="px-3 text-2xl font-medium dark:text-gray-400">
-                      3
-                    </td>
-                    <td className="px-3 py-2">
-                      <p>Item 3</p>
-                    </td>
-                    <td className="px-3 py-2">
-                      <span>10</span>
-                      <p className="dark:text-gray-400"></p>
-                    </td>
-                    <td className="px-3 py-2">
-                      <p>$300</p>
-                    </td>
-                    <td className="px-3 py-2">
-                      <p>$50</p>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="px-3 text-2xl font-medium dark:text-gray-400"></td>
-                    <td className="px-3 py-2">
-                      <p>Description 3</p>
-                    </td>
-                    <td className="px-3 py-2">
-                      <span></span>
-                      <p className="dark:text-gray-400"></p>
-                    </td>
-                    <td className="px-3 py-2">
-                      <p></p>
-                    </td>
-                    <td className="px-3 py-2">
-                      <p></p>
-                    </td>
-                  </tr>
-                </tbody>
+                {Object.keys(data).map((id, index) => {
+                  return (
+                    <>
+                      <tbody className="border-b dark:bg-gray-900 dark:border-gray-700">
+                        <tr>
+                          <td className="px-3 text-2xl font-medium dark:text-gray-400">
+                            {id}
+                          </td>
+                          <td className="px-3 py-2">
+                            <p>{data[id].section3messege}</p>
+                          </td>
+                          <td className="px-3 py-2">
+                            <span>2</span>
+                            <p className="dark:text-gray-400"></p>
+                          </td>
+                          <td className="px-3 py-2">
+                            <p>$100</p>
+                          </td>
+                          <td className="px-10 py-2">
+                            <p>$20</p>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td className="px-3 text-2xl font-medium dark:text-gray-400"></td>
+                          <td className="px-3 py-2">
+                            <p>Description 1</p>
+                          </td>
+                          <td className="px-3 py-2">
+                            <span></span>
+                            <p className="dark:text-gray-400"></p>
+                          </td>
+                          <td className="px-3 py-2">
+                            <p></p>
+                          </td>
+                          <td className="px-3 py-2">
+                            <p></p>
+                          </td>
+                        </tr>
+                      </tbody>
+                      <tbody className="border-b dark:bg-gray-900 dark:border-gray-700">
+                        <tr>
+                          <td className="px-3 text-2xl font-medium dark:text-gray-400">
+                            2
+                          </td>
+                          <td className="px-3 py-2">
+                            <p>Item 2</p>
+                          </td>
+                          <td className="px-3 py-2">
+                            <span>5</span>
+                            <p className="dark:text-gray-400"></p>
+                          </td>
+                          <td className="px-3 py-2">
+                            <p>$100</p>
+                          </td>
+                          <td className="px-10 py-2">
+                            <p>$20</p>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td className="px-3 text-2xl font-medium dark:text-gray-400"></td>
+                          <td className="px-3 py-2">
+                            <p>Description 1</p>
+                          </td>
+                          <td className="px-3 py-2">
+                            <span></span>
+                            <p className="dark:text-gray-400"></p>
+                          </td>
+                          <td className="px-3 py-2">
+                            <p></p>
+                          </td>
+                          <td className="px-3 py-2">
+                            <p></p>
+                          </td>
+                        </tr>
+                      </tbody>
+                      <tbody className="border-b dark:bg-gray-900 dark:border-gray-700">
+                        <tr>
+                          <td className="px-3 text-2xl font-medium dark:text-gray-400">
+                            3
+                          </td>
+                          <td className="px-3 py-2">
+                            <p>Item 3</p>
+                          </td>
+                          <td className="px-3 py-2">
+                            <span>10</span>
+                            <p className="dark:text-gray-400"></p>
+                          </td>
+                          <td className="px-3 py-2">
+                            <p>$300</p>
+                          </td>
+                          <td className="px-10 py-2">
+                            <p>$50</p>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td className="px-3 text-2xl font-medium dark:text-gray-400"></td>
+                          <td className="px-3 py-2">
+                            <p>Description 3</p>
+                          </td>
+                          <td className="px-3 py-2">
+                            <span></span>
+                            <p className="dark:text-gray-400"></p>
+                          </td>
+                          <td className="px-3 py-2">
+                            <p></p>
+                          </td>
+                          <td className="px-3 py-2">
+                            <p></p>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </>
+                  );
+                })}
               </table>
             </div>
             <div className="">
@@ -497,11 +504,11 @@ const AddedList = () => {
                             >
                               <button>Print</button>
                             </li>
-                            <li
-                              className="px-4 py-2 text-black hover:bg-gray-100 dark:hover:bg-gray-700  "
-                              onClick={handlegeneratepdf}
-                            >
-                              <button>Download PDF</button>
+                            <li className="px-4 py-2 text-black hover:bg-gray-100 dark:hover:bg-gray-700  ">
+                              <Link to={`/downloadpdf/${id}`}>
+                                {" "}
+                                <button>Download PDF</button>
+                              </Link>
                             </li>
                             <li className="px-4 py-2 text-black hover:bg-gray-100 dark:hover:bg-gray-700  ">
                               {" "}
