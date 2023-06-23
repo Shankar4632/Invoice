@@ -1,13 +1,13 @@
 import "./App.css";
-// import Index from "./Routes/Index";
-import Demo from "./Pages/Demo";
+import Index from "./Routes/Index";
+// import Demo from "./Pages/Demo";
 // import New from "./Pages/New";
 
 function App() {
   return (
     <div className="App">
-      {/* <Index /> */}
-      <Demo />
+      <Index />
+      {/* <Demo /> */}
       {/* <New /> */}
     </div>
   );
