@@ -30,16 +30,12 @@ import { toast } from "react-toastify";
 const AddedList = () => {
   //states or hooks
   const [show, setShow] = useState(false);
-  const [selectedId, setSelectedId] = useState(null);
+  const [isOpen, setIsOpen] = useState({});
 
   const [isLoading, setIsLoading] = useState(true);
   //get data from the db
   const [data, setData] = useState([]);
   const navigate = useNavigate();
-  const showdropdown = (id) => {
-    setSelectedId(id);
-    setShow(!show);
-  };
 
   //pdf
   const componentpdf = useRef();
@@ -49,29 +45,14 @@ const AddedList = () => {
     onafterprint: () => alert("data saved in pdf"),
   });
   // delete
-  // const handleDelete = (id) => {
-  //   if (window.confirm("Are you sure you want to delete")) {
-  //     dataRef
-  //       .ref()
-  //       .child(`section3message/${id}`)
 
-  //       .remove((err) => {
-  //         if (err) {
-  //           toast.error(err);
-  //         } else {
-  //           toast.success("Success");
-  //           console.log(id);
-  //         }
-  //       });
-  //   }
-  // };
   const handleDelete = (id) => {
     dataRef
-      .ref("section3message")
+      .child("section3message")
       .child(id)
       .remove()
-      .then(() => {
-        toast.success("Data deleted successfully.");
+      .then((section3message) => {
+        toast.success(`Data deleted successfully ${id}.`);
       })
       .catch((error) => {
         toast.error("Failed to delete data.");
@@ -130,12 +111,6 @@ const AddedList = () => {
 
   return (
     <div className="mb-3">
-      {/* {profileid ? (
-        <>
-          <div></div>
-        </>
-      ) : null} */}
-
       <div className="grid grid-cols-2 h-32  ">
         <div className=" flex items-center pl-10">
           <RiFileList2Fill className="text-[35px] flex items-center  h-full" />
@@ -223,8 +198,8 @@ const AddedList = () => {
               </thead>
               {Object.keys(data).map((id, index) => {
                 return (
-                  <tbody key={index} className="relative">
-                    <tr className="bg-white relative border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600  ">
+                  <tbody key={index} className="">
+                    <tr className="bg-white  border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600  ">
                       <td className="w-4 p-6">
                         <div className="flex items-center  ">
                           <input
@@ -249,106 +224,65 @@ const AddedList = () => {
                       >
                         {data[id].section3messege}
                       </th>
-                      {/* <td className="px-6 py-4 text-2xl font-bold text-black">
-                        {data[id].inputuser5.invoicenumber}
-                      </td>
-                      <td className="px-6 py-4 text-lg font-bold">
-                        Due-
-                        {data[id].inputuser5.invoicedue}
-                      </td>
-                      <td className="px-6 py-4 text-2xl font-bold text-black">
-                        ${data[id].total}
-                      </td> */}
+
                       <td className="px-6 py-4">
-                        <Link className="font-medium text-blue-600 dark:text-blue-500 hover:underline">
-                          <BsThreeDotsVertical
-                            className="mr-8 text-[23px] text-gray-600"
-                            onClick={showdropdown}
-                          />
+                        <Link
+                          className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                          onClick={() =>
+                            setIsOpen({ ...isOpen, [id]: !isOpen[id] })
+                          }
+                        >
+                          <BsThreeDotsVertical className="mr-8 text-[23px] text-gray-600" />
                         </Link>
-                        {/* <button>Delete</button> */}
+                        {isOpen[id] && (
+                          <ul className="absolute  right-40 mt-2 py-2 w-48 bg-white border dark:bg-gray-800 dark:border-gray-700 rounded shadow-lg">
+                            <li className="px-4 py-2 text-black hover:bg-gray-100 dark:hover:bg-gray-700">
+                              <button>{id}</button>
+                            </li>
+                            <li className="px-4 py-2 text-black hover:bg-gray-100 dark:hover:bg-gray-700">
+                              <button>Edit</button>
+                            </li>
+                            <li className="px-4 py-2 text-black hover:bg-gray-100 dark:hover:bg-gray-700">
+                              <button onClick={() => handleDelete(id)}>
+                                Delete {id}
+                              </button>
+                            </li>
+                            <li className="px-4 py-2 text-black hover:bg-gray-100 dark:hover:bg-gray-700 ">
+                              <button>Send</button>{" "}
+                            </li>
+                            <li className="px-4 py-2 text-black hover:bg-gray-100 dark:hover:bg-gray-700 ">
+                              {" "}
+                              <button>Edit</button>
+                            </li>
+                            <li className="px-4 py-2 text-black hover:bg-gray-100 dark:hover:bg-gray-700  ">
+                              <button>Copy</button>
+                            </li>
+                            <li className="px-4 py-2 text-black hover:bg-gray-100 dark:hover:bg-gray-700  ">
+                              <button>Record payment</button>
+                            </li>
+                            <li
+                              className="px-4 py-2 text-black hover:bg-gray-100 dark:hover:bg-gray-700  "
+                              onClick={generatepdf}
+                            >
+                              <button>Print</button>
+                            </li>
+                            <li
+                              className="px-4 py-2 text-black hover:bg-gray-100 dark:hover:bg-gray-700  "
+                              onClick={generatepdf}
+                            >
+                              <button>Download PDF</button>
+                            </li>
+                            <li className="px-4 py-2 text-black hover:bg-gray-100 dark:hover:bg-gray-700  ">
+                              {" "}
+                              <button>Share Link</button>{" "}
+                            </li>
+                          </ul>
+                        )}
                       </td>
                     </tr>
                   </tbody>
                 );
               })}
-              {show &&
-                Object.keys(data).map((selectedId, index) => {
-                  return (
-                    <>
-                      <div
-                        key={selectedId}
-                        className="absolute top-20 right-28"
-                      >
-                        <ul className="border rounded-xl cursor-pointer">
-                          <li className="px-7 py-3 bg-white ">{selectedId} </li>
-                          <li className="px-7 py-3 bg-white ">Send </li>
-                          <li className="px-7 py-3 bg-white ">Edit</li>
-                          <li className="px-7 py-3 bg-white  ">Copy</li>
-                          <li className="px-7 py-3 bg-white  ">
-                            Record payment
-                          </li>
-                          <li
-                            className="px-7 py-3 bg-white  "
-                            onClick={generatepdf}
-                          >
-                            Print
-                          </li>
-                          <li
-                            className="px-7 py-3 bg-white  "
-                            onClick={generatepdf}
-                          >
-                            Download PDF
-                          </li>
-                          <li className="px-7 py-3 bg-white  ">Share Link</li>
-                          <li
-                            className="px-7 py-3 bg-white  "
-                            onClick={() => handleDelete(selectedId)}
-                          >
-                            Delete{" "}
-                          </li>
-                          <li className="px-7 py-3 bg-white ">Archive</li>
-                        </ul>
-                      </div>
-                    </>
-                  );
-                })}
-
-              {/* {Object.keys(data).map((id, index) => {
-                return (
-                  <>
-                    <div key={id} className="absolute top-20 right-28">
-                      <ul className="border rounded-xl cursor-pointer">
-                        <li className="px-7 py-3 bg-white ">{index} </li>
-                        <li className="px-7 py-3 bg-white ">Send </li>
-                        <li className="px-7 py-3 bg-white ">Edit</li>
-                        <li className="px-7 py-3 bg-white  ">Copy</li>
-                        <li className="px-7 py-3 bg-white  ">Record payment</li>
-                        <li
-                          className="px-7 py-3 bg-white  "
-                          onClick={generatepdf}
-                        >
-                          Print
-                        </li>
-                        <li
-                          className="px-7 py-3 bg-white  "
-                          onClick={generatepdf}
-                        >
-                          Download PDF
-                        </li>
-                        <li className="px-7 py-3 bg-white  ">Share Link</li>
-                        <li
-                          className="px-7 py-3 bg-white  "
-                          onClick={() => handleDelete(id)}
-                        >
-                          Delete{" "}
-                        </li>
-                        <li className="px-7 py-3 bg-white ">Archive</li>
-                      </ul>
-                    </div>
-                  </>
-                );
-              })} */}
             </table>
           </div>
         </div>
