@@ -125,6 +125,8 @@ const AddedList = () => {
       .on("value", (snapshot) => {
         if (snapshot.val() !== null) {
           setData(Object.values(snapshot.val()));
+          const ids = Object.keys(snapshot.val());
+          setData(ids);
         } else {
           setData([]);
         }
@@ -154,6 +156,10 @@ const AddedList = () => {
 
   //   fetchData();
   // }, []);
+  const handleClick = (id) => {
+    //  navigate(`/route/${id}`);
+    console.log(`my is is ${id}`);
+  };
 
   const receipt = [
     {
@@ -625,9 +631,11 @@ const AddedList = () => {
                         scope="row"
                         className="px-6 py-4 text-2xl font-semibold text-gray-900 whitespace-nowrap dark:text-white"
                       >
-                        <button onClick={() => handleDelete(id)}>
+                        /{" "}
+                        {/* <button onClick={() => handleDelete(id)}>
                           Delete {index}
-                        </button>
+                        </button> */}
+                        <button onClick={() => handleClick(id)}>Delete</button>
                       </th>
 
                       <td className="px-6 py-4">

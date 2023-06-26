@@ -14,8 +14,9 @@ import { AiOutlinePlus } from "react-icons/ai";
 import { RxDividerVertical } from "react-icons/rx";
 import { IoIosArrowUp, IoIosArrowDown, IoMdMail } from "react-icons/io";
 import { BsArrowLeft, BsThreeDotsVertical, BsCamera } from "react-icons/bs";
-import { FaPaypal } from "react-icons/fa";
+import { FaPaypal, FaRegAddressCard } from "react-icons/fa";
 import { RxCross1 } from "react-icons/rx";
+import { CgWebsite } from "react-icons/cg";
 
 //Reat Router Dom
 import { useNavigate } from "react-router-dom";
@@ -141,13 +142,13 @@ const InvoicePage = () => {
 
   ///////////////////  addiding the value field onsubmit events  ///////////////////
   const handlesubmit = (e) => {
-    e.preventDefault();
     handleSubmitsection1(e);
     handleSubmitsection2(e);
     handleSubmitsection3(e);
     handleSubmitsection4(e);
     handleSubmitsection5(e);
     handleSubmitsection6(e);
+    navigate("/addedlist");
   };
 
   const handleSubmitsection1 = (e) => {
@@ -297,8 +298,9 @@ const InvoicePage = () => {
     const discountValue = parseFloat(discount) || 0;
     const shippingValue = parseFloat(shipping) || 0;
     const otherAmountValue = parseFloat(otherAmount) || 0;
+    const itemTotal = parseFloat(inputuser2.price * inputuser2.quantity) || 0;
 
-    return discountValue + shippingValue + otherAmountValue;
+    return discountValue + shippingValue + otherAmountValue + itemTotal;
   };
 
   const fileInputRef = useRef(null);
@@ -856,6 +858,7 @@ const InvoicePage = () => {
                     <button
                       className="text-white bg-[#003087] px-9 py-3  rounded-full    font-extrabold text-lg"
                       type="submit"
+                      onClick={() => navigate("/")}
                     >
                       Save
                     </button>
@@ -1181,6 +1184,15 @@ const InvoicePage = () => {
                       <div> {renderSelecteddescriptionFields()}</div>
                     </div>
                   )}
+                  <div className="flex justify-end pr-7 pb-3">
+                    {inputuser2 && (
+                      <>
+                        <p className="font-bold">
+                          Amounts:$ {inputuser2.price * inputuser2.quantity}
+                        </p>
+                      </>
+                    )}
+                  </div>
                 </div>
 
                 <button className="text-bold ml-4 mt-3 text-blue-600  font-bold flex items-center text-xl ">
@@ -1282,7 +1294,7 @@ const InvoicePage = () => {
         </div>
 
         <div className=" w-[25%]  text-center ">
-          <div className="h-[200px] border rounded-xl bg-white">
+          <div className="h-auto border rounded-xl bg-white">
             <div className="flex items-center h-20   w-full">
               <div>
                 {/* <input
@@ -1293,14 +1305,26 @@ const InvoicePage = () => {
               </div>
 
               <div className="flex items-center justify-start ml-3 mt-3 w-full">
-                {selectedImage && (
-                  <img
-                    src={selectedImage}
-                    alt="Uploaded"
-                    // style={{ maxWidth: "300px" }}
-                    className="w-20 h-20"
-                  />
-                )}
+                <div>
+                  {selectedImage && (
+                    <img
+                      src={selectedImage}
+                      alt="Uploaded"
+                      // style={{ maxWidth: "300px" }}
+                      className="w-20 h-20"
+                    />
+                  )}
+                </div>
+                <div>
+                  {businessdata && (
+                    <>
+                      <div className="text-lg font-bold">
+                        {" "}
+                        {businessdata.businessname}
+                      </div>
+                    </>
+                  )}
+                </div>
               </div>
 
               <div>
@@ -1319,19 +1343,32 @@ const InvoicePage = () => {
             </div>
             <div>
               {businessdata && (
-                <div>
-                  <div className="text-2xl text-black flex items-center mt-2 pl-2 gap-3">
-                    <span>
-                      <IoMdMail className="text-blue-900" />
-                    </span>
-                    <span className="text-[20px] text-black ">
+                <div className="flex items-center">
+                  <div className="text-2xl text-black  mt-2 pl-2 gap-3">
+                    <p className="text-[20px] text-black flex  items-center mt-3">
+                      <i>
+                        {" "}
+                        <FaRegAddressCard className="text-blue-900 mr-3 " />
+                      </i>{" "}
+                      {businessdata.pin}
+                    </p>
+                    <p className="text-[20px] text-black flex  items-center mt-3">
+                      <i>
+                        {" "}
+                        <IoMdMail className="text-blue-900 mr-3  " />
+                      </i>{" "}
                       {businessdata.email}
-                    </span>
+                    </p>
+
+                    <p className="text-[20px] text-black flex items-center mt-3 mb-4 ">
+                      <CgWebsite className="text-blue-900 mr-3 " />
+                      {businessdata.website}
+                    </p>
                   </div>
                 </div>
               )}
               {showMemosection4 && (
-                <div className="flex items-center mt-5  h-full     ">
+                <div className="flex items-center mt-5  h-full pb-5 pl-2    ">
                   <input
                     type="file"
                     accept="image/*"
@@ -1405,7 +1442,14 @@ const InvoicePage = () => {
                   </p>
                 </div>
                 <div className="">
-                  <p className="p-3">{subtotal}</p>
+                  {/* <p className="p-3">{subtotal}</p> */}
+                  {inputuser2 && (
+                    <>
+                      <p className="font-bold mt-5">
+                        $ {inputuser2.price * inputuser2.quantity}
+                      </p>
+                    </>
+                  )}
                   <p className="p-3">
                     {discount ? (
                       discount
