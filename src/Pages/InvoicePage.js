@@ -90,8 +90,10 @@ const InvoicePage = () => {
     fname: "",
     lname: "",
     businessname: "",
-    billhide1: "",
-    billhide2: "",
+    // billhide1: "",
+    // billhide2: "",
+    address1: "",
+    address2: "",
     email: "",
     website: "",
     pin: "",
@@ -252,6 +254,10 @@ const InvoicePage = () => {
     }
   };
   //section-6 business information
+  const handlesavebusinessinfo = (e) => {
+    handleSubmitsection6(e);
+    setBusinessPopup(false);
+  };
   //section-4
   const handleSubmitsection6 = (e) => {
     e.preventDefault();
@@ -773,7 +779,7 @@ const InvoicePage = () => {
                     />
                   </div>
                   <div className="flex  justify-center mt-3">
-                    <select
+                    {/* <select
                       id="dropdown-select"
                       className="w-[95%] py-5  px-3  text-base border border-gray-500 rounded-md box-border"
                       name="billhide1"
@@ -791,10 +797,18 @@ const InvoicePage = () => {
                       <option value="option2">option 2</option>
                       <option value="option3">option 3</option>
                       <option value="option4">option 4</option>
-                    </select>
+                    </select> */}
+                    <input
+                      id="outlined-search"
+                      name="address1"
+                      type="text"
+                      className=" w-[95%]  border border-gray-400  rounded-md py-5 px-3 placeholder-black"
+                      placeholder="Address 1"
+                      onChange={handleChangesection6}
+                    />
                   </div>
                   <div className="flex  justify-center mt-3">
-                    <select
+                    {/* <select
                       id="dropdown-select"
                       className="w-[95%] py-5  px-3  text-base border border-gray-500 rounded-md box-border"
                       name="billhide2"
@@ -812,7 +826,15 @@ const InvoicePage = () => {
                       <option value="option2">option 2</option>
                       <option value="option3">option 3</option>
                       <option value="option4">option 4</option>
-                    </select>
+                    </select> */}
+                    <input
+                      id="outlined-search"
+                      name="address2"
+                      type="text"
+                      className=" w-[95%]  border border-gray-400  rounded-md py-5 px-3 placeholder-black"
+                      placeholder="Address 2"
+                      onChange={handleChangesection6}
+                    />
                   </div>
                   <div className="flex  justify-center mt-3">
                     <input
@@ -858,7 +880,7 @@ const InvoicePage = () => {
                     <button
                       className="text-white bg-[#003087] px-9 py-3  rounded-full    font-extrabold text-lg"
                       type="submit"
-                      onClick={() => navigate("/")}
+                      onClick={handlesavebusinessinfo}
                     >
                       Save
                     </button>
@@ -1318,7 +1340,7 @@ const InvoicePage = () => {
                 <div>
                   {businessdata && (
                     <>
-                      <div className="text-lg font-bold">
+                      <div className="text-lg font-bold pl-5">
                         {" "}
                         {businessdata.businessname}
                       </div>
@@ -1345,11 +1367,17 @@ const InvoicePage = () => {
               {businessdata && (
                 <div className="flex items-center">
                   <div className="text-2xl text-black  mt-2 pl-2 gap-3">
-                    <p className="text-[20px] text-black flex  items-center mt-3">
+                    <p className="text-[20px] text-black flex  items-center mt-3 pl-8">
+                      {businessdata.address1}
+                    </p>
+                    <p className="text-[20px] text-black flex  items-center ">
                       <i>
                         {" "}
                         <FaRegAddressCard className="text-blue-900 mr-3 " />
                       </i>{" "}
+                      {businessdata.address2}
+                    </p>
+                    <p className="text-[20px] text-black flex  items-center  pl-8">
                       {businessdata.pin}
                     </p>
                     <p className="text-[20px] text-black flex  items-center mt-3">
