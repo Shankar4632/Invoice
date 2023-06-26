@@ -1170,8 +1170,8 @@ const InvoicePage = () => {
               </div>
             </form>
             {/*==================================  section-2  =============================== */}
-            <form onSubmit={handleSubmitsection2}>
-              <div className="p-3 ">
+            <div className="p-3 ">
+              <form onSubmit={handleSubmitsection2}>
                 <div className="flex items-center pl-3 pt-20">
                   <p className="font-bold text-xl ml-3">Items</p>
                   <button
@@ -1216,12 +1216,11 @@ const InvoicePage = () => {
                     )}
                   </div>
                 </div>
-
-                <button className="text-bold ml-4 mt-3 text-blue-600  font-bold flex items-center text-xl ">
-                  <AiOutlinePlus className="mr-2" /> Add items or Service
-                </button>
-              </div>
-            </form>
+              </form>
+              <button className="text-bold ml-4 mt-3 text-blue-600  font-bold flex items-center text-xl ">
+                <AiOutlinePlus className="mr-2" /> Add items or Service
+              </button>
+            </div>
 
             {/*  ==============================  section-3  ============================= */}
             <form onSubmit={handleSubmitsection3}>
@@ -1239,19 +1238,20 @@ const InvoicePage = () => {
                   >
                     {" "}
                   </textarea>
-                  <div className="flex items-center ml-5 ">
-                    <button className="text-bold  mt-3 text-blue-600  font-bold flex items-center text-xl ">
-                      Add terms and conditions
-                    </button>
-
-                    <button className="text-bold  ml-1 mt-3 text-blue-600  font-bold flex items-center text-xl ">
-                      <RxDividerVertical className="text-black flex item-center text-xl" />{" "}
-                      Add reference number
-                    </button>
-                  </div>
                 </div>
               </div>
             </form>
+            <div className="flex items-center ml-7 ">
+              <button className="text-bold  mt-3 text-blue-600  font-bold flex items-center text-xl ">
+                Add terms and conditions
+              </button>
+
+              <button className="text-bold  ml-1 mt-3 text-blue-600  font-bold flex items-center text-xl ">
+                <RxDividerVertical className="text-black flex item-center text-xl" />{" "}
+                Add reference number
+              </button>
+            </div>
+
             {/*===================================  section-4  =================================*/}
 
             <div className="  p-3 mt-10 ">
@@ -1414,7 +1414,7 @@ const InvoicePage = () => {
           </div>
 
           <form onSubmit={handleSubmitsection5}>
-            <div className="h-[700px] border rounded-xl bg-white mt-4 pt-8 ">
+            <div className="h-[550px] border rounded-xl bg-white mt-4 pt-8 ">
               <Box
                 component=""
                 sx={{
@@ -1441,13 +1441,14 @@ const InvoicePage = () => {
                 name="invoicedate"
                 className="p-4 border flex items-start ml-6 border-gray-300"
                 onChange={handleChangesection5}
+                value={inputuser5.invoicedate}
               />{" "}
               <select
                 id="dropdown-select"
                 className="w-[90%] py-4 mt-2 px-3 text-base border border-gray-500 rounded-md box-border"
                 onChange={handleChangesection5}
                 name="invoicedue"
-                value={initialState.invoicedue}
+                value={inputuser5.invoicedue}
               >
                 <option defaultValue disabled value="">
                   ---select Due---
@@ -1456,7 +1457,7 @@ const InvoicePage = () => {
                   <option key={index}>{days.value}</option>
                 ))}
               </select>
-              <div className="mx-auto mt-3 border h-[350px] grid grid-cols-2">
+              <div className="mx-auto mt-3  h-[300px] grid grid-cols-2">
                 <div>
                   <p className="font-semibold w-full text-lg p-3">Subtotal </p>
                   <p className="font-semibold text-lg p-3">Other Discounts </p>
@@ -1470,7 +1471,6 @@ const InvoicePage = () => {
                   </p>
                 </div>
                 <div className="">
-                  {/* <p className="p-3">{subtotal}</p> */}
                   {inputuser2 && (
                     <>
                       <p className="font-bold mt-5">
