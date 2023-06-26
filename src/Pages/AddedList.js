@@ -57,17 +57,63 @@ const AddedList = () => {
   };
   // delete
 
+  // const handleDelete = (id) => {
+  //   dataRef
+  //     .child("section3message")
+  //     .child(id)
+  //     .remove()
+  //     .then((section3message) => {
+  //       toast.success(`Data deleted successfully ${id}.`);
+  //     })
+  //     .catch((error) => {
+  //       toast.error("Failed to delete data.");
+  //       console.log(error);
+  //     });
+  // };
+  // const handleDelete = (id) => {
+  //   dataRef
+  //     .ref()
+  //     .child(`section3message/${id}`)
+  //     .remove()
+  //     .then(() => {
+  //       console.log(`Data with ID ${id} deleted successfully.`);
+  //     })
+  //     .catch((error) => {
+  //       console.log("Error deleting data:", error);
+  //     });
+  // };
+  // const handleDelete = (id) => {
+  //   console.log("Deleting data with ID:", id);
+  //   dataRef
+  //     .ref()
+  //     .child(`section3message/${id}`)
+  //     .remove()
+  //     .then(() => {
+  //       console.log(`Data with ID ${id} deleted successfully.`);
+  //       console.log("Data after deletion:");
+  //     })
+  //     .catch((error) => {
+  //       console.log("Error deleting data:", error);
+  //     });
+  // };
   const handleDelete = (id) => {
+    console.log("Deleting data with ID:", id);
     dataRef
+      .ref()
       .child("section3message")
-      .child(id)
-      .remove()
-      .then((section3message) => {
-        toast.success(`Data deleted successfully ${id}.`);
+      .orderByChild("id")
+      .equalTo(id)
+      .once("value", (snapshot) => {
+        snapshot.forEach((childSnapshot) => {
+          childSnapshot.ref.remove();
+        });
+      })
+      .then(() => {
+        console.log(`Data with ID ${id} deleted successfully.`);
+        console.log("Data after deletion:");
       })
       .catch((error) => {
-        toast.error("Failed to delete data.");
-        console.log(error);
+        console.log("Error deleting data:", error);
       });
   };
 
@@ -88,6 +134,27 @@ const AddedList = () => {
       setData([]);
     };
   }, []);
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     // Fetch data from the database
+  //     try {
+  //       const snapshot = await dataRef
+  //         .ref()
+  //         .child("section3message")
+  //         .once("value");
+  //       if (snapshot.exists()) {
+  //         setData(Object.values(snapshot.val()));
+  //       } else {
+  //         setData([]);
+  //       }
+  //     } catch (error) {
+  //       console.log("Error fetching data:", error);
+  //     }
+  //   };
+
+  //   fetchData();
+  // }, []);
+
   const receipt = [
     {
       value: "All",
@@ -434,7 +501,7 @@ const AddedList = () => {
               <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr></tr>
               </thead>
-              {Object.keys(data).map((id, index) => {
+              {/* {Object.keys(data).map((id, index) => {
                 return (
                   <tbody key={index} className="">
                     <tr className="bg-white  border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600  ">
@@ -454,7 +521,7 @@ const AddedList = () => {
                         scope="row"
                         className="px-6 py-4 text-2xl font-semibold text-gray-900 whitespace-nowrap dark:text-white"
                       >
-                        {id}
+                        {index + 1}
                       </th>
                       <th
                         scope="row"
@@ -475,14 +542,14 @@ const AddedList = () => {
                         {isOpen[id] && (
                           <ul className="absolute  right-40 mt-2 py-2 w-48 bg-white border dark:bg-gray-800 dark:border-gray-700 rounded shadow-lg">
                             <li className="px-4 py-2 text-black hover:bg-gray-100 dark:hover:bg-gray-700">
-                              <button>{id}</button>
+                              <button>{index + 1}</button>
                             </li>
                             <li className="px-4 py-2 text-black hover:bg-gray-100 dark:hover:bg-gray-700">
                               <button>Edit</button>
                             </li>
                             <li className="px-4 py-2 text-black hover:bg-gray-100 dark:hover:bg-gray-700">
                               <button onClick={() => handleDelete(id)}>
-                                Delete {id}
+                                Delete {index + 1}
                               </button>
                             </li>
                             <li className="px-4 py-2 text-black hover:bg-gray-100 dark:hover:bg-gray-700 ">
@@ -490,6 +557,105 @@ const AddedList = () => {
                             </li>
                             <li className="px-4 py-2 text-black hover:bg-gray-100 dark:hover:bg-gray-700 ">
                               {" "}
+                              <button>Edit</button>
+                            </li>
+                            <li className="px-4 py-2 text-black hover:bg-gray-100 dark:hover:bg-gray-700  ">
+                              <button>Copy</button>
+                            </li>
+                            <li className="px-4 py-2 text-black hover:bg-gray-100 dark:hover:bg-gray-700  ">
+                              <button>Record payment</button>
+                            </li>
+                            <li
+                              className="px-4 py-2 text-black hover:bg-gray-100 dark:hover:bg-gray-700  "
+                              onClick={generatepdf}
+                            >
+                              <button>Print</button>
+                            </li>
+                            <li className="px-4 py-2 text-black hover:bg-gray-100 dark:hover:bg-gray-700  ">
+                              <Link to={`/downloadpdf/${id}`}>
+                                {" "}
+                                <button>Download PDF</button>
+                              </Link>
+                            </li>
+                            <li className="px-4 py-2 text-black hover:bg-gray-100 dark:hover:bg-gray-700  ">
+                              {" "}
+                              <button>Share Link</button>{" "}
+                            </li>
+                          </ul>
+                        )}
+                      </td>
+                    </tr>
+                  </tbody>
+                );
+              })} */}
+              {Object.keys(data).map((id, index) => {
+                console.log("ID:", id);
+                const item = data[id];
+                return (
+                  <tbody key={id} className="">
+                    <tr className="bg-white  border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600  ">
+                      <td className="w-4 p-6">
+                        <div className="flex items-center  ">
+                          <input
+                            id={`checkbox-table-${id}`}
+                            type="checkbox"
+                            className="w-6 h-6  bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                          />
+                          <label
+                            htmlFor={`checkbox-table-${id}`}
+                            className="sr-only"
+                          >
+                            checkbox
+                          </label>
+                        </div>
+                      </td>
+                      <th
+                        scope="row"
+                        className="px-6 py-4 text-2xl font-semibold text-gray-900 whitespace-nowrap dark:text-white"
+                      >
+                        {index}
+                      </th>
+                      <th
+                        scope="row"
+                        className="px-6 py-4 text-2xl font-semibold text-gray-900 whitespace-nowrap dark:text-white"
+                      >
+                        {item.section3messege}
+                      </th>
+                      <th
+                        scope="row"
+                        className="px-6 py-4 text-2xl font-semibold text-gray-900 whitespace-nowrap dark:text-white"
+                      >
+                        <button onClick={() => handleDelete(id)}>
+                          Delete {index}
+                        </button>
+                      </th>
+
+                      <td className="px-6 py-4">
+                        <Link
+                          className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                          onClick={() =>
+                            setIsOpen({ ...isOpen, [id]: !isOpen[id] })
+                          }
+                        >
+                          <BsThreeDotsVertical className="mr-8 text-[23px] text-gray-600" />
+                        </Link>
+                        {isOpen[id] && (
+                          <ul className="absolute  right-40 mt-2 py-2 w-48 bg-white border dark:bg-gray-800 dark:border-gray-700 rounded shadow-lg">
+                            <li className="px-4 py-2 text-black hover:bg-gray-100 dark:hover:bg-gray-700">
+                              <button>{index + 1}</button>
+                            </li>
+                            <li className="px-4 py-2 text-black hover:bg-gray-100 dark:hover:bg-gray-700">
+                              <button>Edit</button>
+                            </li>
+                            <li className="px-4 py-2 text-black hover:bg-gray-100 dark:hover:bg-gray-700">
+                              <button onClick={() => handleDelete(id)}>
+                                Delete {index + 1}
+                              </button>
+                            </li>
+                            <li className="px-4 py-2 text-black hover:bg-gray-100 dark:hover:bg-gray-700 ">
+                              <button>Send</button>{" "}
+                            </li>
+                            <li className="px-4 py-2 text-black hover:bg-gray-100 dark:hover:bg-gray-700 ">
                               <button>Edit</button>
                             </li>
                             <li className="px-4 py-2 text-black hover:bg-gray-100 dark:hover:bg-gray-700  ">

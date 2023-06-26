@@ -47,7 +47,6 @@ const InvoicePage = () => {
   const [businesspopup, setBusinessPopup] = useState(false);
   const [customisepopup, setCustomisePopup] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [data, setData] = useState([]);
   const [lastData, setLastData] = useState(null);
 
   //states for customise  items
