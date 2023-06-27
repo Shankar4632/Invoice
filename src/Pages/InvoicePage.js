@@ -65,6 +65,14 @@ const InvoicePage = () => {
   const [customiseui, setCustomiseui] = useState(true);
   //image state
   const [selectedImage, setSelectedImage] = useState(null);
+  //section-1
+  const [inputValue, setInputValue] = useState("");
+
+  const handleClick1 = () => {
+    if (lastData && lastData.email) {
+      setInputValue(lastData.email);
+    }
+  };
 
   //section-2
   const [inputuser2, setInputuser2] = useState({
@@ -73,6 +81,7 @@ const InvoicePage = () => {
     price: "",
     description: "",
     tax: "",
+    discount: "",
   });
   const { ItemName, quantity, price, description } = inputuser2;
   //section-3
@@ -168,7 +177,6 @@ const InvoicePage = () => {
   const handlesubmit = (e) => {
     e.preventDefault();
 
-    const section1Result = handleSubmitsection1(e);
     const section2Result = handleSubmitsection2(e);
     const section3Result = handleSubmitsection3(e);
     const section4Result = handleSubmitsection4(e);
@@ -176,7 +184,6 @@ const InvoicePage = () => {
     const section6Result = handleSubmitsection6(e);
 
     if (
-      section1Result &&
       section2Result &&
       section3Result &&
       section4Result &&
@@ -341,8 +348,13 @@ const InvoicePage = () => {
     const shippingValue = parseFloat(shipping) || 0;
     const otherAmountValue = parseFloat(otherAmount) || 0;
     const itemTotal = parseFloat(inputuser2.price * inputuser2.quantity) || 0;
+    const itemTotal1 =
+      parseFloat(
+        (inputuser2.price * inputuser2.quantity * inputuser2.discount) / 100
+      ) || 0;
+    const subtotalfinal = itemTotal1 ? itemTotal1 : itemTotal;
 
-    return discountValue + shippingValue + otherAmountValue + itemTotal;
+    return discountValue + shippingValue + otherAmountValue + subtotalfinal;
   };
 
   const fileInputRef = useRef(null);
@@ -357,16 +369,11 @@ const InvoicePage = () => {
   };
   const navigate = useNavigate();
   const location = useLocation();
-  const { selectedFields1, selectedDescriptionFields } = location.state || {};
 
   const handleClick = (e) => {
     e.preventDefault();
     setShowAddButton(true);
     setLastData(lastData);
-  };
-
-  const handleTextareaChange = (event) => {
-    setTextareaValue(event.target.value);
   };
 
   const handlecurrency = (event) => {
@@ -1099,96 +1106,97 @@ const InvoicePage = () => {
         <div className="w-[75%]">
           <div className="border  h-auto rounded-xl bg-white ">
             {/*===================================   section-1  =============================== */}
-            <form onSubmit={handleSubmitsection1}>
-              <div className="">
-                <div className="  flex justify-end w-full mt-3 pr-4">
-                  <Box sx={{ minWidth: 150, marginRight: "20px" }}>
-                    <FormControl fullWidth>
-                      <InputLabel id="template-select-label">
-                        Templete
-                      </InputLabel>
 
-                      <Select
-                        labelId="template-select-label"
-                        id="template-select"
-                        value={selectedTemplate}
-                        label="Templete"
-                        onChange={handleselectedTemplate}
+            <div className="">
+              <div className="  flex justify-end w-full mt-3 pr-4">
+                <Box sx={{ minWidth: 150, marginRight: "20px" }}>
+                  <FormControl fullWidth>
+                    <InputLabel id="template-select-label">Templete</InputLabel>
+
+                    <Select
+                      labelId="template-select-label"
+                      id="template-select"
+                      value={selectedTemplate}
+                      label="Templete"
+                      onChange={handleselectedTemplate}
+                    >
+                      <MenuItem
+                        value="template1 "
+                        onClick={() => {
+                          navigate("/amountsonly");
+                        }}
                       >
-                        <MenuItem
-                          value="template1 "
-                          onClick={() => {
-                            navigate("/amountsonly");
-                          }}
-                        >
-                          Amounts only
-                        </MenuItem>
-                        <MenuItem
-                          value="template2"
-                          onClick={() => {
-                            navigate("/hours");
-                          }}
-                        >
-                          Hours
-                        </MenuItem>
-                        <MenuItem
-                          value="template3"
-                          onClick={() => {
-                            navigate("/");
-                          }}
-                        >
-                          Quantity{" "}
-                        </MenuItem>
-                      </Select>
-                    </FormControl>
-                  </Box>
-                  <Box sx={{ minWidth: 120 }}>
-                    <FormControl fullWidth>
-                      <InputLabel id="currency-select-label">
-                        Currency
-                      </InputLabel>
-
-                      <Select
-                        labelId="currency-select-label"
-                        id="currency-select"
-                        value={currency}
-                        label="Currency"
-                        onChange={handlecurrency}
+                        Amounts only
+                      </MenuItem>
+                      <MenuItem
+                        value="template2"
+                        onClick={() => {
+                          navigate("/hours");
+                        }}
                       >
-                        <MenuItem value="">None</MenuItem>
-                        {Currencydata.map((codes, index) => (
-                          <MenuItem value={codes.code} key={index}>
-                            {codes.code}
-                          </MenuItem>
-                        ))}
-                      </Select>
-                    </FormControl>
-                  </Box>
-                </div>
-                <hr className="mt-3 w-[97%] mx-auto" />
-                <div className="flex items-center p-3 ml-5">
-                  <p className="font-bold text-xl">Bill To</p>
-                  <button className="rounded-full bg-[#003087] px-3 py-1 text-white font-bold ml-3">
-                    invoice single customer
-                  </button>
-                  <button className="rounded-full border-2 border-[#003087]  px-3 py-1 text-[#003087] font-bold ml-3">
-                    invoice multiple customer
-                  </button>
-                </div>
+                        Hours
+                      </MenuItem>
+                      <MenuItem
+                        value="template3"
+                        onClick={() => {
+                          navigate("/");
+                        }}
+                      >
+                        Quantity{" "}
+                      </MenuItem>
+                    </Select>
+                  </FormControl>
+                </Box>
+                <Box sx={{ minWidth: 120 }}>
+                  <FormControl fullWidth>
+                    <InputLabel id="currency-select-label">Currency</InputLabel>
 
-                <div className="mx-auto w-[97%] ">
+                    <Select
+                      labelId="currency-select-label"
+                      id="currency-select"
+                      value={currency}
+                      label="Currency"
+                      onChange={handlecurrency}
+                    >
+                      <MenuItem value="">None</MenuItem>
+                      {Currencydata.map((codes, index) => (
+                        <MenuItem value={codes.code} key={index}>
+                          {codes.code}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </Box>
+              </div>
+              <hr className="mt-3 w-[97%] mx-auto" />
+              <div className="flex items-center p-3 ml-5">
+                <p className="font-bold text-xl">Bill To</p>
+                <button className="rounded-full bg-[#003087] px-3 py-1 text-white font-bold ml-3">
+                  invoice single customer
+                </button>
+                <button className="rounded-full border-2 border-[#003087]  px-3 py-1 text-[#003087] font-bold ml-3">
+                  invoice multiple customer
+                </button>
+              </div>
+
+              <form onSubmit={handleSubmitsection1}>
+                <div className="mx-auto w-[97%]">
                   <input
                     id="outlined-required"
                     className="w-full mt-3 py-4 px-3 border border-gray-500 rounded-md"
                     type="text"
                     placeholder="Email address or name"
                     onClick={handleClick}
-                    value={lastData && lastData.email}
+                    value={inputValue}
+                    onChange={(e) => setInputValue(e.target.value)}
                   />
                   {showAddButton && (
                     <>
                       {lastData && (
-                        <button className="px-4 py-2 bg-white text-blue-700 rounded-full border mt-2 flex items-center gap-2 ">
+                        <button
+                          className="px-4 py-2 bg-white text-blue-700 rounded-full border mt-2 flex items-center gap-2"
+                          onClick={handleClick1}
+                        >
                           {lastData.email} <RxCross1 />
                         </button>
                       )}
@@ -1203,8 +1211,9 @@ const InvoicePage = () => {
                     </>
                   )}
                 </div>
-              </div>
-            </form>
+              </form>
+            </div>
+
             {/*==================================  section-2  =============================== */}
             <div className="p-3 ">
               <form onSubmit={handleSubmitsection2}>
@@ -1246,7 +1255,13 @@ const InvoicePage = () => {
                     {inputuser2 && (
                       <>
                         <p className="font-bold text-md">
-                          Amounts:$ {inputuser2.price * inputuser2.quantity}
+                          Amounts: $
+                          {inputuser2.discount
+                            ? (inputuser2.price *
+                                inputuser2.quantity *
+                                inputuser2.discount) /
+                              100
+                            : inputuser2.price * inputuser2.quantity}
                         </p>
                       </>
                     )}
@@ -1506,11 +1521,16 @@ const InvoicePage = () => {
                     </span>{" "}
                   </p>
                 </div>
-                <div className="">
+                <div className="mt-3">
                   {inputuser2 && (
                     <>
-                      <p className="font-bold mt-5">
-                        $ {inputuser2.price * inputuser2.quantity}
+                      <p className="font-bold text-md">
+                        {inputuser2.discount
+                          ? (inputuser2.price *
+                              inputuser2.quantity *
+                              inputuser2.discount) /
+                            100
+                          : inputuser2.price * inputuser2.quantity}
                       </p>
                     </>
                   )}

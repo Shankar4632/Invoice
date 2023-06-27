@@ -189,9 +189,9 @@ const AddedList = () => {
     );
   }
 
-  if (data.length === 0) {
-    return <div>No data available</div>;
-  }
+  // if (data.length === 0) {
+  //   return <div>No data available</div>;
+  // }
 
   return (
     <div className="mb-3">
