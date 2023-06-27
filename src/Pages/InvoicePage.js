@@ -74,10 +74,12 @@ const InvoicePage = () => {
     description: "",
     tax: "",
   });
+  const { ItemName, quantity, price, description } = inputuser2;
   //section-3
   const [input, setInput] = useState({
     section3messege: "",
   });
+  const { section3messege } = input;
   //section-4
   const [inputuser4, setInputuser4] = useState({
     memo: "",
@@ -99,6 +101,17 @@ const InvoicePage = () => {
     pin: "",
     additionalinfo: "",
   });
+  const {
+    fname,
+    lname,
+    businessname,
+    address1,
+    address2,
+    email,
+    website,
+    pin,
+    additionalinfo,
+  } = inputbusiness;
   //fetch
   const [businessdata, setBusinessdata] = useState({});
 
@@ -143,14 +156,37 @@ const InvoicePage = () => {
   };
 
   ///////////////////  addiding the value field onsubmit events  ///////////////////
+  // const handlesubmit = (e) => {
+  //   handleSubmitsection1(e);
+  //   handleSubmitsection2(e);
+  //   handleSubmitsection3(e);
+  //   handleSubmitsection4(e);
+  //   handleSubmitsection5(e);
+  //   handleSubmitsection6(e);
+  //   navigate("/addedlist");
+  // };
   const handlesubmit = (e) => {
-    handleSubmitsection1(e);
-    handleSubmitsection2(e);
-    handleSubmitsection3(e);
-    handleSubmitsection4(e);
-    handleSubmitsection5(e);
-    handleSubmitsection6(e);
-    navigate("/addedlist");
+    e.preventDefault();
+
+    const section1Result = handleSubmitsection1(e);
+    const section2Result = handleSubmitsection2(e);
+    const section3Result = handleSubmitsection3(e);
+    const section4Result = handleSubmitsection4(e);
+    const section5Result = handleSubmitsection5(e);
+    const section6Result = handleSubmitsection6(e);
+
+    if (
+      section1Result &&
+      section2Result &&
+      section3Result &&
+      section4Result &&
+      section5Result &&
+      section6Result
+    ) {
+      navigate("/addedlist");
+    } else {
+      toast.error("Please fill in all the required fields.");
+    }
   };
 
   const handleSubmitsection1 = (e) => {
@@ -158,7 +194,7 @@ const InvoicePage = () => {
     console.log("Submitting section 1 form");
     const email = lastData.email;
     if (!email) {
-      toast.error(<div className="">Please enter the values!</div>);
+      // toast.error(<div className="">Please enter the values!</div>);
     } else {
       dataRef
         .ref()
@@ -177,8 +213,8 @@ const InvoicePage = () => {
     e.preventDefault();
     console.log("Submitting section 2 form");
     console.log(inputuser2);
-    if (!inputuser2) {
-      toast.error(<div className="">Please enter the values!</div>);
+    if (!ItemName || !quantity || !price || !description) {
+      // toast.error(<div className="">Please enter the values!</div>);
     } else {
       dataRef
         .ref()
@@ -196,8 +232,8 @@ const InvoicePage = () => {
   //section-3
   const handleSubmitsection3 = (e) => {
     e.preventDefault();
-    if (!input) {
-      toast.error(<div className="">Please enter the values!</div>);
+    if (!section3messege) {
+      // toast.error(<div className="">Please enter the values!</div>);
     } else {
       dataRef
         .ref()
@@ -214,8 +250,8 @@ const InvoicePage = () => {
   //section-4
   const handleSubmitsection4 = (e) => {
     e.preventDefault();
-    if (!inputuser4) {
-      toast.error(<div className="">Please enter the values!</div>);
+    if (inputuser4) {
+      // toast.error(<div className="">Please enter the values!</div>);
     } else {
       dataRef
         .ref()
@@ -232,8 +268,8 @@ const InvoicePage = () => {
   //section-5
   const handleSubmitsection5 = (e) => {
     e.preventDefault();
-    if (!inputuser5) {
-      toast.error(<div className="">Please enter the values!</div>);
+    if (inputuser5) {
+      // toast.error(<div className="">Please enter the values!</div>);
     } else {
       const total = calculateTotal(); // Calculate the total value
       const section5Data = {
@@ -261,8 +297,8 @@ const InvoicePage = () => {
   //section-4
   const handleSubmitsection6 = (e) => {
     e.preventDefault();
-    if (!inputbusiness) {
-      toast.error(<div className="">Please enter the values!</div>);
+    if (!fname || !lname || !businessname) {
+      // toast.error(<div className="">Please enter the values!</div>);
     } else {
       dataRef
         .ref()
@@ -506,7 +542,7 @@ const InvoicePage = () => {
             className=""
             name="tax"
             onChange={handleChangesection2}
-            value={fields2}
+            value={inputuser2.tax}
           >
             {taxes.map((option) => (
               <MenuItem key={option.value} value={option.value}>
@@ -1209,7 +1245,7 @@ const InvoicePage = () => {
                   <div className="flex justify-end pr-7 pb-3">
                     {inputuser2 && (
                       <>
-                        <p className="font-bold">
+                        <p className="font-bold text-md">
                           Amounts:$ {inputuser2.price * inputuser2.quantity}
                         </p>
                       </>
