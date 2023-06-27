@@ -84,6 +84,7 @@ const InvoicePage = () => {
     discount: "",
   });
   const { ItemName, quantity, price, description } = inputuser2;
+  const [additem, setAdditem] = useState([]);
   //section-3
   const [input, setInput] = useState({
     section3messege: "",
@@ -760,6 +761,38 @@ const InvoicePage = () => {
       reader.readAsDataURL(file);
     }
   };
+  //handle add items
+
+  const additems = (e) => {
+    return (
+      <div className="h-auto  w-[95%] mt-4  border-2 rounded-xl mx-auto  ">
+        {customiseui ? (
+          <div className="p-3   ">
+            <div className="   flex items-center ">
+              <div className="flex gap-4">
+                {renderFields()}
+                {renderFieldstax()}
+              </div>
+            </div>
+            <div>{renderFieldsdescription()}</div>
+          </div>
+        ) : (
+          <div className="p-3   ">
+            <div className="   flex items-center gap-5 ">
+              {renderSelectedFields()}
+              {renderSelectedtaxFields()}
+            </div>
+            <div> {renderSelecteddescriptionFields()}</div>
+          </div>
+        )}
+      </div>
+    );
+  };
+
+  const handleAddItem = () => {
+    // setAdditem((additems) => [...additems, true]);
+    setAdditem((additems) => [...additems, true]);
+  };
 
   //Return Statements
   return (
@@ -1232,7 +1265,6 @@ const InvoicePage = () => {
 
                 <div className="h-auto  w-[97%] mt-4  border-2 rounded-xl mx-auto  ">
                   {customiseui ? (
-                    // <Customiseui1 />
                     <div className="p-3   ">
                       <div className="   flex items-center ">
                         <div className="flex gap-4">
@@ -1268,10 +1300,19 @@ const InvoicePage = () => {
                   </div>
                 </div>
               </form>
-              <button className="text-bold ml-4 mt-3 text-blue-600  font-bold flex items-center text-xl ">
+              <button
+                className="text-bold ml-4 mt-3 text-blue-600  font-bold flex items-center text-xl "
+                onClick={handleAddItem}
+              >
                 <AiOutlinePlus className="mr-2" /> Add items or Service
               </button>
             </div>
+            {additem.map((item, index) => (
+              <div key={index} className="">
+                {" "}
+                <div className="flex gap-4">{additems(item)}</div>
+              </div>
+            ))}
 
             {/*  ==============================  section-3  ============================= */}
             <form onSubmit={handleSubmitsection3}>
