@@ -83,7 +83,16 @@ const InvoicePage = () => {
     tax: "",
     discount: "",
   });
+  const [inputuserall, setInputuserall] = useState({
+    ItemName1: "",
+    quantity1: "",
+    price1: "",
+    description1: "",
+    tax1: "",
+    discount1: "",
+  });
   const { ItemName, quantity, price, description } = inputuser2;
+  const { ItemName1, quantity1, price1, description1 } = inputuserall;
   const [additem, setAdditem] = useState([]);
   //section-3
   const [input, setInput] = useState({
@@ -135,6 +144,7 @@ const InvoicePage = () => {
     const value = event.target.value;
     console.log(fieldName, value); // Check if the values are being received correctly
     setInputuser2((values) => ({ ...values, [fieldName]: value }));
+    setInputuserall((values) => ({ ...values, [fieldName]: value }));
   };
 
   //section-3
@@ -227,7 +237,7 @@ const InvoicePage = () => {
       dataRef
         .ref()
         .child("section2")
-        .push(inputuser2, (err) => {
+        .push((inputuser2, inputuserall), (err) => {
           if (err) {
             toast.error(err);
           } else {
@@ -354,6 +364,23 @@ const InvoicePage = () => {
         (inputuser2.price * inputuser2.quantity * inputuser2.discount) / 100
       ) || 0;
     const subtotalfinal = itemTotal1 ? itemTotal1 : itemTotal;
+
+    return discountValue + shippingValue + otherAmountValue + subtotalfinal;
+  };
+  const calculateTotalitem = () => {
+    const discountValue = parseFloat(discount) || 0;
+    const shippingValue = parseFloat(shipping) || 0;
+    const otherAmountValue = parseFloat(otherAmount) || 0;
+    const itemTotalitem =
+      parseFloat(inputuserall.price1 * inputuserall.quantity1) || 0;
+    const itemTotal1item =
+      parseFloat(
+        (inputuserall.price1 *
+          inputuserall.quantity1 *
+          inputuserall.discount1) /
+          100
+      ) || 0;
+    const subtotalfinal = itemTotal1item ? itemTotal1item : itemTotalitem;
 
     return discountValue + shippingValue + otherAmountValue + subtotalfinal;
   };
@@ -785,12 +812,26 @@ const InvoicePage = () => {
             <div> {renderSelecteddescriptionFields()}</div>
           </div>
         )}
+        <div className="flex justify-end pr-7 pb-3">
+          {inputuserall && (
+            <>
+              <p className="font-bold text-md">
+                Amounts: $
+                {inputuserall.discount1
+                  ? (inputuserall.price1 *
+                      inputuserall.quantity1 *
+                      inputuserall.discount1) /
+                    100
+                  : inputuserall.price1 * inputuserall.quantity1}
+              </p>
+            </>
+          )}
+        </div>
       </div>
     );
   };
 
   const handleAddItem = () => {
-    // setAdditem((additems) => [...additems, true]);
     setAdditem((additems) => [...additems, true]);
   };
 
