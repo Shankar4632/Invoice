@@ -35,6 +35,7 @@ const AddedList = () => {
   const [billpdf, setBillpdf] = useState(false);
   //get data from the db
   const [data, setData] = useState([]);
+  const [values, setValues] = useState([]);
   const navigate = useNavigate();
 
   //pdf
@@ -57,60 +58,22 @@ const AddedList = () => {
   };
   // delete
 
-  // const handleDelete = (id) => {
-  //   dataRef
-  //     .child("section3message")
-  //     .child(id)
-  //     .remove()
-  //     .then((section3message) => {
-  //       toast.success(`Data deleted successfully ${id}.`);
-  //     })
-  //     .catch((error) => {
-  //       toast.error("Failed to delete data.");
-  //       console.log(error);
-  //     });
-  // };
-  // const handleDelete = (id) => {
-  //   dataRef
-  //     .ref()
-  //     .child(`section3message/${id}`)
-  //     .remove()
-  //     .then(() => {
-  //       console.log(`Data with ID ${id} deleted successfully.`);
-  //     })
-  //     .catch((error) => {
-  //       console.log("Error deleting data:", error);
-  //     });
-  // };
-  // const handleDelete = (id) => {
-  //   console.log("Deleting data with ID:", id);
-  //   dataRef
-  //     .ref()
-  //     .child(`section3message/${id}`)
-  //     .remove()
-  //     .then(() => {
-  //       console.log(`Data with ID ${id} deleted successfully.`);
-  //       console.log("Data after deletion:");
-  //     })
-  //     .catch((error) => {
-  //       console.log("Error deleting data:", error);
-  //     });
-  // };
-  const handleDelete = (id) => {
-    console.log("Deleting data with ID:", id);
+  const handleDelete = (key) => {
+    console.log("Deleting data with key:", key);
     dataRef
       .ref()
       .child("section3message")
-      .orderByChild("id")
-      .equalTo(id)
-      .once("value", (snapshot) => {
-        snapshot.forEach((childSnapshot) => {
-          childSnapshot.ref.remove();
-        });
-      })
+      .child(key) // Use the key directly to access the child node
+      .remove()
       .then(() => {
-        console.log(`Data with ID ${id} deleted successfully.`);
+        console.log(`Data with key ${key} deleted successfully.`);
         console.log("Data after deletion:");
+        // Update the state by removing the deleted item
+        setData((prevData) => {
+          const newData = { ...prevData };
+          delete newData[key];
+          return newData;
+        });
       })
       .catch((error) => {
         console.log("Error deleting data:", error);
@@ -118,44 +81,34 @@ const AddedList = () => {
   };
 
   //data from db
+
   useEffect(() => {
-    dataRef
-      .ref()
-      .child("section3message")
-      .on("value", (snapshot) => {
-        if (snapshot.val() !== null) {
-          setData(Object.values(snapshot.val()));
-          const ids = Object.keys(snapshot.val());
-          setData(ids);
+    const fetchData = async () => {
+      try {
+        const snapshot = await dataRef
+          .ref()
+          .child("section3message")
+          .once("value");
+        const data = snapshot.val();
+        if (data !== null) {
+          setData(data);
         } else {
-          setData([]);
+          setData({});
         }
         setIsLoading(false);
-      });
+      } catch (error) {
+        console.log(error);
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+
     return () => {
-      setData([]);
+      setData({});
     };
   }, []);
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     // Fetch data from the database
-  //     try {
-  //       const snapshot = await dataRef
-  //         .ref()
-  //         .child("section3message")
-  //         .once("value");
-  //       if (snapshot.exists()) {
-  //         setData(Object.values(snapshot.val()));
-  //       } else {
-  //         setData([]);
-  //       }
-  //     } catch (error) {
-  //       console.log("Error fetching data:", error);
-  //     }
-  //   };
 
-  //   fetchData();
-  // }, []);
   const handleClick = (id) => {
     //  navigate(`/route/${id}`);
     console.log(`my is is ${id}`);
@@ -188,10 +141,6 @@ const AddedList = () => {
       </div>
     );
   }
-
-  // if (data.length === 0) {
-  //   return <div>No data available</div>;
-  // }
 
   return (
     <div className="mb-3">
@@ -507,93 +456,7 @@ const AddedList = () => {
               <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr></tr>
               </thead>
-              {/* {Object.keys(data).map((id, index) => {
-                return (
-                  <tbody key={index} className="">
-                    <tr className="bg-white  border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600  ">
-                      <td className="w-4 p-6">
-                        <div className="flex items-center  ">
-                          <input
-                            id="checkbox-table-1"
-                            type="checkbox"
-                            className="w-6 h-6  bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                          />
-                          <label htmlFor="checkbox-table-1" className="sr-only">
-                            checkbox
-                          </label>
-                        </div>
-                      </td>
-                      <th
-                        scope="row"
-                        className="px-6 py-4 text-2xl font-semibold text-gray-900 whitespace-nowrap dark:text-white"
-                      >
-                        {index + 1}
-                      </th>
-                      <th
-                        scope="row"
-                        className="px-6 py-4 text-2xl font-semibold text-gray-900 whitespace-nowrap dark:text-white"
-                      >
-                        {data[id].section3messege}
-                      </th>
 
-                      <td className="px-6 py-4">
-                        <Link
-                          className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                          onClick={() =>
-                            setIsOpen({ ...isOpen, [id]: !isOpen[id] })
-                          }
-                        >
-                          <BsThreeDotsVertical className="mr-8 text-[23px] text-gray-600" />
-                        </Link>
-                        {isOpen[id] && (
-                          <ul className="absolute  right-40 mt-2 py-2 w-48 bg-white border dark:bg-gray-800 dark:border-gray-700 rounded shadow-lg">
-                            <li className="px-4 py-2 text-black hover:bg-gray-100 dark:hover:bg-gray-700">
-                              <button>{index + 1}</button>
-                            </li>
-                            <li className="px-4 py-2 text-black hover:bg-gray-100 dark:hover:bg-gray-700">
-                              <button>Edit</button>
-                            </li>
-                            <li className="px-4 py-2 text-black hover:bg-gray-100 dark:hover:bg-gray-700">
-                              <button onClick={() => handleDelete(id)}>
-                                Delete {index + 1}
-                              </button>
-                            </li>
-                            <li className="px-4 py-2 text-black hover:bg-gray-100 dark:hover:bg-gray-700 ">
-                              <button>Send</button>{" "}
-                            </li>
-                            <li className="px-4 py-2 text-black hover:bg-gray-100 dark:hover:bg-gray-700 ">
-                              {" "}
-                              <button>Edit</button>
-                            </li>
-                            <li className="px-4 py-2 text-black hover:bg-gray-100 dark:hover:bg-gray-700  ">
-                              <button>Copy</button>
-                            </li>
-                            <li className="px-4 py-2 text-black hover:bg-gray-100 dark:hover:bg-gray-700  ">
-                              <button>Record payment</button>
-                            </li>
-                            <li
-                              className="px-4 py-2 text-black hover:bg-gray-100 dark:hover:bg-gray-700  "
-                              onClick={generatepdf}
-                            >
-                              <button>Print</button>
-                            </li>
-                            <li className="px-4 py-2 text-black hover:bg-gray-100 dark:hover:bg-gray-700  ">
-                              <Link to={`/downloadpdf/${id}`}>
-                                {" "}
-                                <button>Download PDF</button>
-                              </Link>
-                            </li>
-                            <li className="px-4 py-2 text-black hover:bg-gray-100 dark:hover:bg-gray-700  ">
-                              {" "}
-                              <button>Share Link</button>{" "}
-                            </li>
-                          </ul>
-                        )}
-                      </td>
-                    </tr>
-                  </tbody>
-                );
-              })} */}
               {Object.keys(data).map((id, index) => {
                 console.log("ID:", id);
                 const item = data[id];
@@ -603,12 +466,12 @@ const AddedList = () => {
                       <td className="w-4 p-6">
                         <div className="flex items-center  ">
                           <input
-                            id={`checkbox-table-${id}`}
+                            id={`checkbox-table-${id}-${index}`}
                             type="checkbox"
                             className="w-6 h-6  bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                           />
                           <label
-                            htmlFor={`checkbox-table-${id}`}
+                            htmlFor={`checkbox-table-${id}-${index}`}
                             className="sr-only"
                           >
                             checkbox
@@ -632,10 +495,7 @@ const AddedList = () => {
                         className="px-6 py-4 text-2xl font-semibold text-gray-900 whitespace-nowrap dark:text-white"
                       >
                         /{" "}
-                        {/* <button onClick={() => handleDelete(id)}>
-                          Delete {index}
-                        </button> */}
-                        <button onClick={() => handleClick(id)}>Delete</button>
+                        <button onClick={() => handleDelete(id)}>Delete</button>
                       </th>
 
                       <td className="px-6 py-4">

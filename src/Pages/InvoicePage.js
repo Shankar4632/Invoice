@@ -103,6 +103,7 @@ const InvoicePage = () => {
   const [inputuser4, setInputuser4] = useState({
     memo: "",
   });
+  const { memo } = inputuser4;
 
   //section-5
   const [inputuser5, setInputuser5] = useState(initialState);
@@ -144,7 +145,6 @@ const InvoicePage = () => {
     const value = event.target.value;
     console.log(fieldName, value); // Check if the values are being received correctly
     setInputuser2((values) => ({ ...values, [fieldName]: value }));
-    setInputuserall((values) => ({ ...values, [fieldName]: value }));
   };
 
   //section-3
@@ -231,13 +231,13 @@ const InvoicePage = () => {
     e.preventDefault();
     console.log("Submitting section 2 form");
     console.log(inputuser2);
-    if (!ItemName || !quantity || !price || !description) {
+    if (!ItemName || !quantity | !price || !description) {
       // toast.error(<div className="">Please enter the values!</div>);
     } else {
       dataRef
         .ref()
         .child("section2")
-        .push((inputuser2, inputuserall), (err) => {
+        .push(inputuser2, (err) => {
           if (err) {
             toast.error(err);
           } else {
@@ -268,7 +268,7 @@ const InvoicePage = () => {
   //section-4
   const handleSubmitsection4 = (e) => {
     e.preventDefault();
-    if (inputuser4) {
+    if (!memo) {
       // toast.error(<div className="">Please enter the values!</div>);
     } else {
       dataRef
@@ -896,25 +896,6 @@ const InvoicePage = () => {
                     />
                   </div>
                   <div className="flex  justify-center mt-3">
-                    {/* <select
-                      id="dropdown-select"
-                      className="w-[95%] py-5  px-3  text-base border border-gray-500 rounded-md box-border"
-                      name="billhide1"
-                      onChange={handleChangesection6}
-                    >
-                      {" "}
-                      <option
-                        defaultValue
-                        disabled
-                        value="Dont Show in Invoice"
-                      >
-                        ---select Due---
-                      </option>
-                      <option value="option1">Dont Show in Invoice</option>
-                      <option value="option2">option 2</option>
-                      <option value="option3">option 3</option>
-                      <option value="option4">option 4</option>
-                    </select> */}
                     <input
                       id="outlined-search"
                       name="address1"
@@ -925,25 +906,6 @@ const InvoicePage = () => {
                     />
                   </div>
                   <div className="flex  justify-center mt-3">
-                    {/* <select
-                      id="dropdown-select"
-                      className="w-[95%] py-5  px-3  text-base border border-gray-500 rounded-md box-border"
-                      name="billhide2"
-                      onChange={handleChangesection6}
-                    >
-                      {" "}
-                      <option
-                        defaultValue
-                        disabled
-                        value="Dont Show in Invoice"
-                      >
-                        ---select Due---
-                      </option>
-                      <option value="option1">Dont Show in Invoice</option>
-                      <option value="option2">option 2</option>
-                      <option value="option3">option 3</option>
-                      <option value="option4">option 4</option>
-                    </select> */}
                     <input
                       id="outlined-search"
                       name="address2"
