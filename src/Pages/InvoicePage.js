@@ -286,27 +286,36 @@ const InvoicePage = () => {
   //section-5
   const handleSubmitsection5 = (e) => {
     e.preventDefault();
-    if (inputuser5) {
-      // toast.error(<div className="">Please enter the values!</div>);
-    } else {
-      const total = calculateTotal(); // Calculate the total value
-      const section5Data = {
-        inputuser5: inputuser5,
-        total: total,
-      };
 
+    const { invoicedue, invoicedate, invoicenumber } = inputuser5;
+
+    if (!invoicedue || !invoicedate || !invoicenumber) {
+      // toast.error("Please enter all the values!");
+      return;
+    }
+
+    const total = calculateTotal(); // Calculate the total value
+    const section5Data = {
+      inputuser5: inputuser5,
+      total: total,
+    };
+
+    try {
       dataRef
         .ref()
         .child("section5total")
-        .push(section5Data, (err) => {
-          if (err) {
-            toast.error(err);
+        .push(section5Data, (error) => {
+          if (error) {
+            toast.error(error.message);
           } else {
             toast.success("Successfully added");
           }
         });
+    } catch (error) {
+      toast.error(error.message);
     }
   };
+
   //section-6 business information
   const handlesavebusinessinfo = (e) => {
     handleSubmitsection6(e);
