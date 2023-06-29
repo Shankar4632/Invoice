@@ -30,7 +30,7 @@ import { toast } from "react-toastify";
 const AddedList = () => {
   //states or hooks
   const [show, setShow] = useState(false);
-  const [isOpen, setIsOpen] = useState({});
+  const [isOpen, setIsOpen] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [billpdf, setBillpdf] = useState(false);
   const [selectedKey, setSelectedKey] = useState(null);
@@ -39,6 +39,11 @@ const AddedList = () => {
   const [data, setData] = useState([]);
   const [values, setValues] = useState([]);
   const navigate = useNavigate();
+
+  //toggle button
+  const handleMenuToggle = (id) => {
+    setIsOpen((prevId) => (prevId === id ? null : id));
+  };
 
   //pdf
   const componentpdf = useRef();
@@ -464,13 +469,11 @@ const AddedList = () => {
                       <td className="px-6 py-4">
                         <Link
                           className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                          onClick={() =>
-                            setIsOpen({ ...isOpen, [id]: !isOpen[id] })
-                          }
+                          onClick={() => handleMenuToggle(id)}
                         >
                           <BsThreeDotsVertical className="mr-8 text-[23px] text-gray-600" />
                         </Link>
-                        {isOpen[id] && (
+                        {isOpen === id && (
                           <ul className="absolute  right-40 mt-2 py-2 w-48 bg-white border dark:bg-gray-800 dark:border-gray-700 rounded shadow-lg">
                             <li className="px-4 py-2 text-black hover:bg-gray-100 dark:hover:bg-gray-700">
                               <button>{index + 1}</button>
