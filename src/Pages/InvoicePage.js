@@ -52,7 +52,7 @@ const InvoicePage = () => {
 
   //states for customise  items
   const [selectedTemplate, setSelectedTemplate] = useState("");
-  const [fields, setFields] = useState(["Item Name", "Quantity", "Price"]);
+  const [fields, setFields] = useState(["ItemName", "Quantity", "Price"]);
   const [fields1, setField1] = useState(["description"]);
   const [fields2, setField2] = useState([]);
 
@@ -231,7 +231,7 @@ const InvoicePage = () => {
     e.preventDefault();
     console.log("Submitting section 2 form");
     console.log(inputuser2);
-    if (!ItemName || !quantity | !price || !description) {
+    if (!inputuser2) {
       // toast.error(<div className="">Please enter the values!</div>);
     } else {
       dataRef
