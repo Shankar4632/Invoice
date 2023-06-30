@@ -114,7 +114,7 @@ const Hours = () => {
                     <MenuItem
                       value="template3"
                       onClick={() => {
-                        navigate("/");
+                        navigate("/invoicepage");
                       }}
                     >
                       Quantity{" "}

@@ -68,10 +68,9 @@ const InvoicePage = () => {
   //section-1
   const [inputValue, setInputValue] = useState("");
 
-  const handleClick1 = () => {
-    if (lastData && lastData.email) {
-      setInputValue(lastData.email);
-    }
+  const handleClick1 = (event) => {
+    event.preventDefault();
+    setInputValue(lastData.email);
   };
 
   //section-2
@@ -171,6 +170,7 @@ const InvoicePage = () => {
   const handlesubmit = (e) => {
     e.preventDefault();
 
+    const section1Result = handleSubmitsection1(e);
     const section2Result = handleSubmitsection2(e);
     const section3Result = handleSubmitsection3(e);
     const section4Result = handleSubmitsection4(e);
@@ -178,6 +178,7 @@ const InvoicePage = () => {
     const section6Result = handleSubmitsection6(e);
 
     if (
+      section1Result &&
       section2Result &&
       section3Result &&
       section4Result &&
