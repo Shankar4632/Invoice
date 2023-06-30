@@ -116,11 +116,6 @@ const AddedList = () => {
     };
   }, []);
 
-  const handleClick = (id) => {
-    //  navigate(`/route/${id}`);
-    console.log(`my is is ${id}`);
-  };
-
   const receipt = [
     {
       value: "All",
@@ -347,7 +342,7 @@ const AddedList = () => {
             <button
               className="text-white bg-[#003087] px-9 py-3   mr-5 rounded-full    font-extrabold text-xl"
               onClick={() => {
-                navigate("/");
+                navigate("/invoicepage");
               }}
             >
               Create Invoice
@@ -474,7 +469,7 @@ const AddedList = () => {
                           <BsThreeDotsVertical className="mr-8 text-[23px] text-gray-600" />
                         </Link>
                         {isOpen === id && (
-                          <ul className="absolute  right-40 mt-2 py-2 w-48 bg-white border dark:bg-gray-800 dark:border-gray-700 rounded shadow-lg">
+                          <ul className="absolute  right-[65px] mt-2 py-2 w-48 bg-white border dark:bg-gray-800 dark:border-gray-700 rounded shadow-lg">
                             <li className="px-4 py-2 text-black hover:bg-gray-100 dark:hover:bg-gray-700">
                               <button>{index + 1}</button>
                             </li>

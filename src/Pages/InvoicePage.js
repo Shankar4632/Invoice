@@ -83,16 +83,9 @@ const InvoicePage = () => {
     tax: "",
     discount: "",
   });
-  const [inputuserall, setInputuserall] = useState({
-    ItemName1: "",
-    quantity1: "",
-    price1: "",
-    description1: "",
-    tax1: "",
-    discount1: "",
-  });
+
   const { ItemName, quantity, price, description } = inputuser2;
-  const { ItemName1, quantity1, price1, description1 } = inputuserall;
+
   const [additem, setAdditem] = useState([]);
   //section-3
   const [input, setInput] = useState({
@@ -175,16 +168,6 @@ const InvoicePage = () => {
     setInputbusiness({ ...inputbusiness, [name]: value });
   };
 
-  ///////////////////  addiding the value field onsubmit events  ///////////////////
-  // const handlesubmit = (e) => {
-  //   handleSubmitsection1(e);
-  //   handleSubmitsection2(e);
-  //   handleSubmitsection3(e);
-  //   handleSubmitsection4(e);
-  //   handleSubmitsection5(e);
-  //   handleSubmitsection6(e);
-  //   navigate("/addedlist");
-  // };
   const handlesubmit = (e) => {
     e.preventDefault();
 
@@ -201,7 +184,7 @@ const InvoicePage = () => {
       section5Result &&
       section6Result
     ) {
-      navigate("/addedlist");
+      navigate("/");
     } else {
       toast.error("Please fill in all the required fields.");
     }
@@ -373,23 +356,6 @@ const InvoicePage = () => {
         (inputuser2.price * inputuser2.quantity * inputuser2.discount) / 100
       ) || 0;
     const subtotalfinal = itemTotal1 ? itemTotal1 : itemTotal;
-
-    return discountValue + shippingValue + otherAmountValue + subtotalfinal;
-  };
-  const calculateTotalitem = () => {
-    const discountValue = parseFloat(discount) || 0;
-    const shippingValue = parseFloat(shipping) || 0;
-    const otherAmountValue = parseFloat(otherAmount) || 0;
-    const itemTotalitem =
-      parseFloat(inputuserall.price1 * inputuserall.quantity1) || 0;
-    const itemTotal1item =
-      parseFloat(
-        (inputuserall.price1 *
-          inputuserall.quantity1 *
-          inputuserall.discount1) /
-          100
-      ) || 0;
-    const subtotalfinal = itemTotal1item ? itemTotal1item : itemTotalitem;
 
     return discountValue + shippingValue + otherAmountValue + subtotalfinal;
   };
@@ -822,19 +788,9 @@ const InvoicePage = () => {
           </div>
         )}
         <div className="flex justify-end pr-7 pb-3">
-          {inputuserall && (
-            <>
-              <p className="font-bold text-md">
-                Amounts: $
-                {inputuserall.discount1
-                  ? (inputuserall.price1 *
-                      inputuserall.quantity1 *
-                      inputuserall.discount1) /
-                    100
-                  : inputuserall.price1 * inputuserall.quantity1}
-              </p>
-            </>
-          )}
+          <>
+            <p className="font-bold text-md">Amounts: $</p>
+          </>
         </div>
       </div>
     );
@@ -1112,7 +1068,7 @@ const InvoicePage = () => {
           <div className="pt-8 pl-3  flex items-center">
             <button
               onClick={() => {
-                navigate("/addedlist");
+                navigate("/");
               }}
             >
               <BsArrowLeft className="text-2xl cursor-pointer " />
@@ -1121,7 +1077,7 @@ const InvoicePage = () => {
             <span
               className="font-bold text-blue-600 text-lg pl-2 cursor-pointer "
               onClick={() => {
-                navigate("/addedlist");
+                navigate("/");
               }}
             >
               Back to invoice
@@ -1184,7 +1140,7 @@ const InvoicePage = () => {
                       <MenuItem
                         value="template3"
                         onClick={() => {
-                          navigate("/");
+                          navigate("/invoicepage");
                         }}
                       >
                         Quantity{" "}
@@ -1218,9 +1174,6 @@ const InvoicePage = () => {
                 <p className="font-bold text-xl">Bill To</p>
                 <button className="rounded-full bg-[#003087] px-3 py-1 text-white font-bold ml-3">
                   invoice single customer
-                </button>
-                <button className="rounded-full border-2 border-[#003087]  px-3 py-1 text-[#003087] font-bold ml-3">
-                  invoice multiple customer
                 </button>
               </div>
 

@@ -16,14 +16,14 @@ const Index = () => {
     <div>
       <ToastContainer className="text-center" />
       <Routes>
-        <Route exact path="/" element={<InvoicePage />} />
+        <Route exact path="/invoicepage" element={<InvoicePage />} />
 
         <Route path="/additems" element={<AddItem />} />
         <Route path="/addcustomer" element={<AddCustomer />} />
         <Route path="/amountsonly" element={<AmountsOnly />} />
         <Route path="/hours" element={<Hours />} />
         <Route path="/addtax" element={<AddTax />} />
-        <Route path="/addedlist" element={<AddedList />} />
+        <Route path="/" element={<AddedList />} />
         <Route path="/downloadpdf/:id" element={<Downloadpdf />} />
       </Routes>
     </div>
