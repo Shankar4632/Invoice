@@ -233,6 +233,17 @@ const InvoicePage = () => {
         });
     }
   };
+  const handleAddItem = () => {
+    setAdditem((additems) => [...additems, true]);
+  };
+
+  const renderItems = () => {
+    return additem.map((item, index) => (
+      <div key={index} className="">
+        <div className="flex gap-4">{additems(item)}</div>
+      </div>
+    ));
+  };
 
   //section-3
   const handleSubmitsection3 = (e) => {
@@ -308,7 +319,7 @@ const InvoicePage = () => {
     handleSubmitsection6(e);
     setBusinessPopup(false);
   };
-  //section-4
+  //section-6
   const handleSubmitsection6 = (e) => {
     e.preventDefault();
     if (!fname || !lname || !businessname) {
@@ -327,23 +338,19 @@ const InvoicePage = () => {
     }
   };
 
-  const handleAdd = (section) => {
-    // const value = prompt("Enter the value:");
-    const value = <input type="text" className="w-14 border border-black" />;
-    if (value) {
-      switch (section) {
-        case "discount":
-          setDiscount(value);
-          break;
-        case "shipping":
-          setShipping(value);
-          break;
-        case "otherAmount":
-          setOtherAmount(value);
-          break;
-        default:
-          break;
-      }
+  const handleAdd = (section, value) => {
+    switch (section) {
+      case "discount":
+        setDiscount(value);
+        break;
+      case "shipping":
+        setShipping(value);
+        break;
+      case "otherAmount":
+        setOtherAmount(value);
+        break;
+      default:
+        break;
     }
   };
 
@@ -800,10 +807,6 @@ const InvoicePage = () => {
         </div>
       </div>
     );
-  };
-
-  const handleAddItem = () => {
-    setAdditem((additems) => [...additems, true]);
   };
 
   //Return Statements
@@ -1277,13 +1280,14 @@ const InvoicePage = () => {
               >
                 <AiOutlinePlus className="mr-2" /> Add items or Service
               </button>
+              {renderItems()}
             </div>
-            {additem.map((item, index) => (
+            {/* {additem.map((item, index) => (
               <div key={index} className="">
                 {" "}
                 <div className="flex gap-4">{additems(item)}</div>
               </div>
-            ))}
+            ))} */}
 
             {/*  ==============================  section-3  ============================= */}
             <form onSubmit={handleSubmitsection3}>
@@ -1550,36 +1554,48 @@ const InvoicePage = () => {
                     {discount ? (
                       discount
                     ) : (
-                      <button
-                        className=" text-blue-600 rounded-xl text-lg font-bold not-italic cursor-pointer"
-                        onClick={() => handleAdd("discount")}
-                      >
-                        Add
-                      </button>
+                      <>
+                        <input
+                          type="number"
+                          className="w-28 border border-black"
+                          value={discount}
+                          onChange={(e) =>
+                            handleAdd("discount", e.target.value)
+                          }
+                        />
+                      </>
                     )}
                   </p>
-                  <p className="p-4 ">
+                  <p className="p-4">
                     {shipping ? (
                       shipping
                     ) : (
-                      <button
-                        className=" text-blue-600 rounded-xl text-lg font-bold not-italic cursor-pointer"
-                        onClick={() => handleAdd("shipping")}
-                      >
-                        Add
-                      </button>
+                      <>
+                        <input
+                          type="number"
+                          className="w-28 border border-black"
+                          value={shipping}
+                          onChange={(e) =>
+                            handleAdd("shipping", e.target.value)
+                          }
+                        />
+                      </>
                     )}
                   </p>
                   <p className="p-4">
                     {otherAmount ? (
                       otherAmount
                     ) : (
-                      <button
-                        className=" text-blue-600 rounded-xl text-lg font-bold not-italic cursor-pointer"
-                        onClick={() => handleAdd("otherAmount")}
-                      >
-                        Add
-                      </button>
+                      <>
+                        <input
+                          type="number"
+                          className="w-28 border border-black"
+                          value={otherAmount}
+                          onChange={(e) =>
+                            handleAdd("otherAmount", e.target.value)
+                          }
+                        />
+                      </>
                     )}
                   </p>
                   <p className="p-3 font-bold">$ {calculateTotal()}</p>
