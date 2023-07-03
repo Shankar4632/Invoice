@@ -195,9 +195,7 @@ const InvoicePage = () => {
     e.preventDefault();
     console.log("Submitting section 1 form");
     const email = lastData.email;
-    if (!email) {
-      // toast.error(<div className="">Please enter the values!</div>);
-    } else {
+    if (email === inputValue) {
       dataRef
         .ref()
         .child("section1")
@@ -208,15 +206,20 @@ const InvoicePage = () => {
             toast.success("Successfully added");
           }
         });
+    } else {
+      // toast.error("Email mismatch. Please enter a valid email.");
     }
   };
 
   const handleSubmitsection2 = (e) => {
     e.preventDefault();
-    console.log("Submitting section 2 form");
     console.log(inputuser2);
-    if (!inputuser2) {
-      // toast.error(<div className="">Please enter the values!</div>);
+
+    const { quantity, price, description } = inputuser2;
+
+    if (!quantity || !price || !description) {
+      // Handle error when any of the fields are empty
+      // toast.error("Please fill in all the fields");
     } else {
       dataRef
         .ref()
@@ -325,7 +328,8 @@ const InvoicePage = () => {
   };
 
   const handleAdd = (section) => {
-    const value = prompt("Enter the value:");
+    // const value = prompt("Enter the value:");
+    const value = <input type="text" className="w-14 border border-black" />;
     if (value) {
       switch (section) {
         case "discount":
@@ -342,6 +346,7 @@ const InvoicePage = () => {
       }
     }
   };
+
   useEffect(() => {}, [discount]);
 
   useEffect(() => {}, [shipping]);
