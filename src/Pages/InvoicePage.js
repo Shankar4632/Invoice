@@ -372,6 +372,11 @@ const InvoicePage = () => {
 
     return discountValue + shippingValue + otherAmountValue + subtotalfinal;
   };
+  const handleKeyDown = (event, section) => {
+    if (event.key === "Enter") {
+      handleAdd(section, event.target.value);
+    }
+  };
 
   const fileInputRef = useRef(null);
   //handle click
@@ -1550,54 +1555,69 @@ const InvoicePage = () => {
                       </p>
                     </>
                   )}
-                  <p className="p-3">
-                    {discount ? (
-                      discount
-                    ) : (
-                      <>
-                        <input
-                          type="number"
-                          className="w-28 border border-black"
-                          value={discount}
-                          onChange={(e) =>
-                            handleAdd("discount", e.target.value)
-                          }
-                        />
-                      </>
-                    )}
-                  </p>
-                  <p className="p-4">
-                    {shipping ? (
-                      shipping
-                    ) : (
-                      <>
-                        <input
-                          type="number"
-                          className="w-28 border border-black"
-                          value={shipping}
-                          onChange={(e) =>
-                            handleAdd("shipping", e.target.value)
-                          }
-                        />
-                      </>
-                    )}
-                  </p>
-                  <p className="p-4">
-                    {otherAmount ? (
-                      otherAmount
-                    ) : (
-                      <>
-                        <input
-                          type="number"
-                          className="w-28 border border-black"
-                          value={otherAmount}
-                          onChange={(e) =>
-                            handleAdd("otherAmount", e.target.value)
-                          }
-                        />
-                      </>
-                    )}
-                  </p>
+                  <form onSubmit={(e) => e.preventDefault()}>
+                    <p className="p-3">
+                      {discount ? (
+                        discount
+                      ) : (
+                        <div>
+                          <input
+                            type="text"
+                            className="w-14 border border-black"
+                            onKeyDown={(e) => handleKeyDown(e, "discount")}
+                          />
+                          <button
+                            className="text-blue-600 rounded-xl text-lg font-bold not-italic cursor-pointer"
+                            onClick={() => handleAdd("discount")}
+                          >
+                            Add
+                          </button>
+                        </div>
+                      )}
+                    </p>
+                  </form>
+                  <form onSubmit={(e) => e.preventDefault()}>
+                    <p className="p-4">
+                      {shipping ? (
+                        shipping
+                      ) : (
+                        <div>
+                          <input
+                            type="text"
+                            className="w-14 border border-black"
+                            onKeyDown={(e) => handleKeyDown(e, "shipping")}
+                          />
+                          <button
+                            className="text-blue-600 rounded-xl text-lg font-bold not-italic cursor-pointer"
+                            onClick={() => handleAdd("shipping")}
+                          >
+                            Add
+                          </button>
+                        </div>
+                      )}
+                    </p>
+                  </form>
+                  <form onSubmit={(e) => e.preventDefault()}>
+                    <p className="p-4">
+                      {otherAmount ? (
+                        otherAmount
+                      ) : (
+                        <div>
+                          <input
+                            type="text"
+                            className="w-14 border border-black"
+                            onKeyDown={(e) => handleKeyDown(e, "otherAmount")}
+                          />
+                          <button
+                            className="text-blue-600 rounded-xl text-lg font-bold not-italic cursor-pointer"
+                            onClick={() => handleAdd("otherAmount")}
+                          >
+                            Add
+                          </button>
+                        </div>
+                      )}
+                    </p>
+                  </form>
                   <p className="p-3 font-bold">$ {calculateTotal()}</p>
                 </div>
               </div>
