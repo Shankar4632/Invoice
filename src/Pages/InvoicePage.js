@@ -44,6 +44,9 @@ const InvoicePage = () => {
   const [discount, setDiscount] = useState("");
   const [shipping, setShipping] = useState("");
   const [otherAmount, setOtherAmount] = useState("");
+  const [showDiscountField, setShowDiscountField] = useState(false);
+  const [showShippingField, setShowShippingField] = useState(false);
+  const [showOtherAmountField, setShowOtherAmountField] = useState(false);
   const [invoiceNumber, setInvoiceNumber] = useState("");
   const [businesspopup, setBusinessPopup] = useState(false);
   const [customisepopup, setCustomisePopup] = useState(false);
@@ -76,11 +79,11 @@ const InvoicePage = () => {
   //section-2
   const [inputuser2, setInputuser2] = useState({
     ItemName: "",
-    quantity: "",
-    price: "",
+    quantity: 0,
+    price: 0,
     description: "",
     tax: "",
-    discount: "",
+    discount: 0,
   });
 
   const { ItemName, quantity, price, description } = inputuser2;
@@ -342,12 +345,15 @@ const InvoicePage = () => {
     switch (section) {
       case "discount":
         setDiscount(value);
+        setShowDiscountField(false);
         break;
       case "shipping":
         setShipping(value);
+        setShowShippingField(false);
         break;
       case "otherAmount":
         setOtherAmount(value);
+        setShowOtherAmountField(false);
         break;
       default:
         break;
@@ -363,15 +369,17 @@ const InvoicePage = () => {
     const discountValue = parseFloat(discount) || 0;
     const shippingValue = parseFloat(shipping) || 0;
     const otherAmountValue = parseFloat(otherAmount) || 0;
-    const itemTotal = parseFloat(inputuser2.price * inputuser2.quantity) || 0;
-    const itemTotal1 =
-      parseFloat(
-        (inputuser2.price * inputuser2.quantity * inputuser2.discount) / 100
-      ) || 0;
-    const subtotalfinal = itemTotal1 ? itemTotal1 : itemTotal;
+    const itemTotal =
+      parseFloat(inputuser2.price) * parseFloat(inputuser2.quantity) || 0;
+    const itemTotalWithDiscount =
+      (itemTotal * parseFloat(inputuser2.discount)) / 100 || 0;
+    const subtotalFinal = inputuser2.discount
+      ? itemTotalWithDiscount
+      : itemTotal;
 
-    return discountValue + shippingValue + otherAmountValue + subtotalfinal;
+    return discountValue + shippingValue + otherAmountValue + subtotalFinal;
   };
+
   const handleKeyDown = (event, section) => {
     if (event.key === "Enter") {
       handleAdd(section, event.target.value);
@@ -1557,64 +1565,67 @@ const InvoicePage = () => {
                   )}
                   <form onSubmit={(e) => e.preventDefault()}>
                     <p className="p-3">
-                      {discount ? (
-                        discount
-                      ) : (
+                      {showDiscountField ? (
                         <div>
                           <input
                             type="text"
                             className="w-14 border border-black"
+                            value={discount}
+                            onChange={(e) => setDiscount(e.target.value)}
                             onKeyDown={(e) => handleKeyDown(e, "discount")}
                           />
-                          <button
-                            className="text-blue-600 rounded-xl text-lg font-bold not-italic cursor-pointer"
-                            onClick={() => handleAdd("discount")}
-                          >
-                            Add
-                          </button>
                         </div>
+                      ) : (
+                        <button
+                          className="text-blue-600 rounded-xl text-lg font-bold not-italic cursor-pointer"
+                          onClick={() => setShowDiscountField(true)}
+                        >
+                          Add
+                        </button>
                       )}
                     </p>
                   </form>
                   <form onSubmit={(e) => e.preventDefault()}>
                     <p className="p-4">
-                      {shipping ? (
-                        shipping
-                      ) : (
+                      {showShippingField ? (
                         <div>
                           <input
                             type="text"
                             className="w-14 border border-black"
+                            value={shipping}
+                            onChange={(e) => setShipping(e.target.value)}
                             onKeyDown={(e) => handleKeyDown(e, "shipping")}
                           />
-                          <button
-                            className="text-blue-600 rounded-xl text-lg font-bold not-italic cursor-pointer"
-                            onClick={() => handleAdd("shipping")}
-                          >
-                            Add
-                          </button>
                         </div>
+                      ) : (
+                        <button
+                          className="text-blue-600 rounded-xl text-lg font-bold not-italic cursor-pointer"
+                          onClick={() => setShowShippingField(true)}
+                        >
+                          Add
+                        </button>
                       )}
                     </p>
                   </form>
                   <form onSubmit={(e) => e.preventDefault()}>
                     <p className="p-4">
-                      {otherAmount ? (
-                        otherAmount
-                      ) : (
+                      {showOtherAmountField ? (
                         <div>
                           <input
                             type="text"
                             className="w-14 border border-black"
+                            value={otherAmount}
+                            onChange={(e) => setOtherAmount(e.target.value)}
                             onKeyDown={(e) => handleKeyDown(e, "otherAmount")}
                           />
-                          <button
-                            className="text-blue-600 rounded-xl text-lg font-bold not-italic cursor-pointer"
-                            onClick={() => handleAdd("otherAmount")}
-                          >
-                            Add
-                          </button>
                         </div>
+                      ) : (
+                        <button
+                          className="text-blue-600 rounded-xl text-lg font-bold not-italic cursor-pointer"
+                          onClick={() => setShowOtherAmountField(true)}
+                        >
+                          Add
+                        </button>
                       )}
                     </p>
                   </form>
