@@ -58,7 +58,6 @@ const InvoicePage = () => {
   const [fields, setFields] = useState(["ItemName", "Quantity", "Price"]);
   const [fields1, setField1] = useState(["description"]);
   const [fields2, setField2] = useState([]);
-
   const [selectedFields, setSelectedFields] = useState([]);
   const [selecteddescriptionFields, setSelecteddescriptionFields] = useState(
     []
@@ -68,6 +67,10 @@ const InvoicePage = () => {
   const [customiseui, setCustomiseui] = useState(true);
   //image state
   const [selectedImage, setSelectedImage] = useState(null);
+  //hide and show
+  const [isVisibleinvoicepage, setIsVisibleinvoicepage] = useState(null);
+  const [isVisibleaccount, setIsVisibleaccount] = useState(null);
+  const [isVisiblehours, setIsVisiblehours] = useState(null);
   //section-1
   const [inputValue, setInputValue] = useState("");
 
@@ -613,6 +616,23 @@ const InvoicePage = () => {
     setCustomiseui(false);
     handleSaveClick();
   };
+  const toggleVisibilityofamounts = () => {
+    setIsVisibleaccount(true);
+    setIsVisiblehours(false);
+    setIsVisibleinvoicepage(false);
+  };
+  const toggleVisibilityofhours = () => {
+    setIsVisibleaccount(false);
+    setIsVisiblehours(true);
+    setIsVisibleinvoicepage(false);
+  };
+
+  const toggleVisibilityofQuantity = () => {
+    setIsVisibleaccount(false);
+    setIsVisiblehours(false);
+    setIsVisibleinvoicepage(true);
+  };
+
   //fetched data
   useEffect(() => {
     dataRef
@@ -655,8 +675,6 @@ const InvoicePage = () => {
       setBusinessdata(null);
     };
   }, []);
-
-  //current data to fetch
 
   //loading
   if (isLoading) {
@@ -1129,7 +1147,6 @@ const InvoicePage = () => {
         <div className="w-[75%]">
           <div className="border  h-auto rounded-xl bg-white ">
             {/*===================================   section-1  =============================== */}
-
             <div className="">
               <div className="  flex justify-end w-full mt-3 pr-4">
                 <Box sx={{ minWidth: 150, marginRight: "20px" }}>
@@ -1145,25 +1162,19 @@ const InvoicePage = () => {
                     >
                       <MenuItem
                         value="template1 "
-                        onClick={() => {
-                          navigate("/amountsonly");
-                        }}
+                        onClick={toggleVisibilityofamounts}
                       >
                         Amounts only
                       </MenuItem>
                       <MenuItem
                         value="template2"
-                        onClick={() => {
-                          navigate("/hours");
-                        }}
+                        onClick={toggleVisibilityofhours}
                       >
                         Hours
                       </MenuItem>
                       <MenuItem
                         value="template3"
-                        onClick={() => {
-                          navigate("/invoicepage");
-                        }}
+                        onClick={toggleVisibilityofQuantity}
                       >
                         Quantity{" "}
                       </MenuItem>
@@ -1233,165 +1244,252 @@ const InvoicePage = () => {
                 </div>
               </form>
             </div>
-
             {/*==================================  section-2  =============================== */}
-            <div className="p-3 ">
-              <form onSubmit={handleSubmitsection2}>
-                <div className="flex items-center pl-3 pt-20">
-                  <p className="font-bold text-xl ml-3">Items</p>
+            {isVisibleinvoicepage && (
+              <>
+                <div className="p-3 ">
+                  <form onSubmit={handleSubmitsection2}>
+                    <div className="flex items-center pl-3 pt-20">
+                      <p className="font-bold text-xl ml-3">Items</p>
+                      <button
+                        className=" text-blue-500 text-xl font-bold  rounded-full w-full flex justify-end items-center mr-3"
+                        onClick={(event) => {
+                          event.preventDefault();
+                          setCustomisePopup(true);
+                        }}
+                      >
+                        <MdModeEditOutline className="mr-1" /> Customise
+                      </button>
+                    </div>
+
+                    <div className="h-auto  w-[97%] mt-4  border-2 rounded-xl mx-auto  ">
+                      {customiseui ? (
+                        <div className="p-3   ">
+                          <div className="   flex items-center ">
+                            <div className="flex gap-4">
+                              {renderFields()}
+                              {renderFieldstax()}
+                            </div>
+                          </div>
+                          <div>{renderFieldsdescription()}</div>
+                        </div>
+                      ) : (
+                        <div className="p-3   ">
+                          <div className="   flex items-center gap-5 ">
+                            {renderSelectedFields()}
+                            {renderSelectedtaxFields()}
+                          </div>
+                          <div> {renderSelecteddescriptionFields()}</div>
+                        </div>
+                      )}
+                      <div className="flex justify-end pr-7 pb-3">
+                        {inputuser2 && (
+                          <>
+                            <p className="font-bold text-md">
+                              Amounts: $
+                              {inputuser2.discount
+                                ? (inputuser2.price *
+                                    inputuser2.quantity *
+                                    inputuser2.discount) /
+                                  100
+                                : inputuser2.price * inputuser2.quantity}
+                            </p>
+                          </>
+                        )}
+                      </div>
+                    </div>
+                  </form>
                   <button
-                    className=" text-blue-500 text-xl font-bold  rounded-full w-full flex justify-end items-center mr-3"
-                    onClick={(event) => {
-                      event.preventDefault();
-                      setCustomisePopup(true);
-                    }}
+                    className="text-bold ml-4 mt-3 text-blue-600  font-bold flex items-center text-xl "
+                    onClick={handleAddItem}
                   >
-                    <MdModeEditOutline className="mr-1" /> Customise
+                    <AiOutlinePlus className="mr-2" /> Add items or Service
+                  </button>
+                  {renderItems()}
+                </div>
+                {/*  ==============================  section-3  ============================= */}
+                <form onSubmit={handleSubmitsection3}>
+                  <div className="p-3">
+                    <p className="font-bold text-xl ml-5">
+                      Message To Customer
+                    </p>
+                    <div className=" mb-2" data-te-input-wrapper-init>
+                      <textarea
+                        className="peer block min-h-[auto] w-[97%] mx-auto border border-gray-500 rounded mt-5 text-black px-3 py-[0.32rem]  "
+                        id="exampleFormControlTextarea1"
+                        rows="6"
+                        value={input.section3messege}
+                        name="section3messege"
+                        placeholder="Seller note to customer"
+                        onChange={handleChangesection3}
+                      >
+                        {" "}
+                      </textarea>
+                    </div>
+                  </div>
+                </form>
+                <div className="flex items-center ml-7 ">
+                  <button className="text-bold  mt-3 text-blue-600  font-bold flex items-center text-xl ">
+                    Add terms and conditions
+                  </button>
+
+                  <button className="text-bold  ml-1 mt-3 text-blue-600  font-bold flex items-center text-xl ">
+                    <RxDividerVertical className="text-black flex item-center text-xl" />{" "}
+                    Add reference number
                   </button>
                 </div>
-
-                <div className="h-auto  w-[97%] mt-4  border-2 rounded-xl mx-auto  ">
-                  {customiseui ? (
-                    <div className="p-3   ">
-                      <div className="   flex items-center ">
-                        <div className="flex gap-4">
-                          {renderFields()}
-                          {renderFieldstax()}
+                {/*===================================  section-4  =================================*/}
+                <div className="  p-3 mt-10 ">
+                  <div className="flex items-center">
+                    <p className=" text-[27px]  ml-3 font-semibold w-full">
+                      More Options
+                    </p>
+                    <button onClick={hideshow}>
+                      {" "}
+                      {showMemo ? (
+                        <IoIosArrowUp className="text-2xl text-gray-500" />
+                      ) : (
+                        <IoIosArrowDown className="text-2xl text-gray-500" />
+                      )}
+                    </button>
+                  </div>
+                  <hr className="mt-3 w-[98%] mx-auto" />
+                  <div className="  ">
+                    {showMemo && (
+                      <form onSubmit={handleSubmitsection4}>
+                        <div className="">
+                          <p className="text-xl p-3 ml-1 font-bold">
+                            Attachments
+                          </p>
+                          <input
+                            ref={fileInputRef}
+                            type="file"
+                            name="files"
+                            id="files"
+                            className="hidden"
+                            onChange={handleFileChange}
+                          />
+                          <button
+                            type="button"
+                            className="text-[#05070a] ml-3 font-bold border-2 border-[#003087] px-4 py-1 rounded-full text-sm"
+                            onClick={handleButtonClick}
+                          >
+                            Upload files
+                          </button>
+                          <p className="text-sm font-semibold p-3 text-gray-800">
+                            JPG GIF PNG PDF | Up to 5 files , 4MB per file
+                          </p>
                         </div>
-                      </div>
-                      <div>{renderFieldsdescription()}</div>
-                    </div>
-                  ) : (
-                    <div className="p-3   ">
-                      <div className="   flex items-center gap-5 ">
-                        {renderSelectedFields()}
-                        {renderSelectedtaxFields()}
-                      </div>
-                      <div> {renderSelecteddescriptionFields()}</div>
-                    </div>
-                  )}
-                  <div className="flex justify-end pr-7 pb-3">
-                    {inputuser2 && (
-                      <>
-                        <p className="font-bold text-md">
-                          Amounts: $
-                          {inputuser2.discount
-                            ? (inputuser2.price *
-                                inputuser2.quantity *
-                                inputuser2.discount) /
-                              100
-                            : inputuser2.price * inputuser2.quantity}
-                        </p>
-                      </>
+                        <div className=" p-3 mt-10 mb-4">
+                          <p className="font-bold text-xl ml-2">Memo To Self</p>
+                          <div className=" mb-2">
+                            <textarea
+                              className="peer block min-h-[auto] placeholder-gray-500  w-[98%] mx-auto border border-gray-500 rounded mt-5 text-black px-3 py-[0.32rem]  "
+                              rows="6"
+                              placeholder="Memo"
+                              value={inputuser4.memo}
+                              name="memo"
+                              onChange={handleChangesection4}
+                            >
+                              {" "}
+                            </textarea>
+                          </div>
+                        </div>
+                      </form>
                     )}
                   </div>
                 </div>
-              </form>
-              <button
-                className="text-bold ml-4 mt-3 text-blue-600  font-bold flex items-center text-xl "
-                onClick={handleAddItem}
-              >
-                <AiOutlinePlus className="mr-2" /> Add items or Service
-              </button>
-              {renderItems()}
-            </div>
+              </>
+            )}
+            {isVisiblehours && (
+              <>
+                <div className="h-64 w-[97%] mt-4  border-2 rounded-xl mx-auto  ">
+                  <div className="flex items-center mx-auto  w-[97%] mt-3 gap-10">
+                    <Box sx={{ width: 500, maxWidth: "100%", border: "" }}>
+                      <FormControl fullWidth>
+                        <InputLabel id="dropdown-label">Item Name</InputLabel>
+                        <Select
+                          labelId="dropdown-label"
+                          id="dropdown-select"
+                          label="Dropdown"
+                        >
+                          <MenuItem value="">None</MenuItem>
+                          <MenuItem value="option1">Option 1</MenuItem>
+                          <MenuItem value="option2">Option 2</MenuItem>
+                          <MenuItem value="option3">Option 3</MenuItem>
+                        </Select>
+                      </FormControl>
+                    </Box>
+                    <TextField
+                      id="outlined-uncontrolled"
+                      label="Hours"
+                      defaultValue="1"
+                      style={{
+                        width: "20%",
+                      }}
+                    />
+
+                    <TextField
+                      id="outlined-search"
+                      label="Rate"
+                      type="search"
+                      style={{
+                        width: "25%",
+                      }}
+                    />
+                  </div>
+                  <textarea
+                    className="peer block min-h-[auto] w-[97%] mx-auto border border-gray-500 rounded mt-5 text-black px-3 py-[0.32rem]"
+                    id="exampleFormControlTextarea1"
+                    rows="5"
+                    placeholder="Description(optional)"
+                    value={textareaValue}
+                  ></textarea>
+                </div>
+              </>
+            )}
+            {isVisibleaccount && (
+              <>
+                <div className="h-28 w-[97%] mt-4  border-2 rounded-xl mx-auto  ">
+                  <div className="flex items-center mx-auto  w-[97%] mt-3 gap-10">
+                    <Box sx={{ width: 500, maxWidth: "100%", border: "" }}>
+                      <FormControl fullWidth>
+                        <InputLabel id="dropdown-label">Item Name</InputLabel>
+                        <Select
+                          labelId="dropdown-label"
+                          id="dropdown-select"
+                          label="Dropdown"
+                        >
+                          <MenuItem value="">None</MenuItem>
+                          <MenuItem value="option1">Option 1</MenuItem>
+                          <MenuItem value="option2">Option 2</MenuItem>
+                          <MenuItem value="option3">Option 3</MenuItem>
+                        </Select>
+                      </FormControl>
+                    </Box>
+
+                    <TextField
+                      id="outlined-search"
+                      label="Price"
+                      type="search"
+                      style={{
+                        width: "35%",
+                      }}
+                    />
+                  </div>
+                </div>
+                <button className="text-bold ml-4 mt-3 text-blue-600  font-bold flex items-center text-xl ">
+                  <AiOutlinePlus className="mr-2" /> Add items or Service
+                </button>
+              </>
+            )}
+
             {/* {additem.map((item, index) => (
               <div key={index} className="">
                 {" "}
                 <div className="flex gap-4">{additems(item)}</div>
               </div>
             ))} */}
-
-            {/*  ==============================  section-3  ============================= */}
-            <form onSubmit={handleSubmitsection3}>
-              <div className="p-3">
-                <p className="font-bold text-xl ml-5">Message To Customer</p>
-                <div className=" mb-2" data-te-input-wrapper-init>
-                  <textarea
-                    className="peer block min-h-[auto] w-[97%] mx-auto border border-gray-500 rounded mt-5 text-black px-3 py-[0.32rem]  "
-                    id="exampleFormControlTextarea1"
-                    rows="6"
-                    value={input.section3messege}
-                    name="section3messege"
-                    placeholder="Seller note to customer"
-                    onChange={handleChangesection3}
-                  >
-                    {" "}
-                  </textarea>
-                </div>
-              </div>
-            </form>
-            <div className="flex items-center ml-7 ">
-              <button className="text-bold  mt-3 text-blue-600  font-bold flex items-center text-xl ">
-                Add terms and conditions
-              </button>
-
-              <button className="text-bold  ml-1 mt-3 text-blue-600  font-bold flex items-center text-xl ">
-                <RxDividerVertical className="text-black flex item-center text-xl" />{" "}
-                Add reference number
-              </button>
-            </div>
-
-            {/*===================================  section-4  =================================*/}
-
-            <div className="  p-3 mt-10 ">
-              <div className="flex items-center">
-                <p className=" text-[27px]  ml-3 font-semibold w-full">
-                  More Options
-                </p>
-                <button onClick={hideshow}>
-                  {" "}
-                  {showMemo ? (
-                    <IoIosArrowUp className="text-2xl text-gray-500" />
-                  ) : (
-                    <IoIosArrowDown className="text-2xl text-gray-500" />
-                  )}
-                </button>
-              </div>
-              <hr className="mt-3 w-[98%] mx-auto" />
-              <div className="  ">
-                {showMemo && (
-                  <form onSubmit={handleSubmitsection4}>
-                    <div className="">
-                      <p className="text-xl p-3 ml-1 font-bold">Attachments</p>
-                      <input
-                        ref={fileInputRef}
-                        type="file"
-                        name="files"
-                        id="files"
-                        className="hidden"
-                        onChange={handleFileChange}
-                      />
-                      <button
-                        type="button"
-                        className="text-[#05070a] ml-3 font-bold border-2 border-[#003087] px-4 py-1 rounded-full text-sm"
-                        onClick={handleButtonClick}
-                      >
-                        Upload files
-                      </button>
-                      <p className="text-sm font-semibold p-3 text-gray-800">
-                        JPG GIF PNG PDF | Up to 5 files , 4MB per file
-                      </p>
-                    </div>
-                    <div className=" p-3 mt-10 mb-4">
-                      <p className="font-bold text-xl ml-2">Memo To Self</p>
-                      <div className=" mb-2">
-                        <textarea
-                          className="peer block min-h-[auto] placeholder-gray-500  w-[98%] mx-auto border border-gray-500 rounded mt-5 text-black px-3 py-[0.32rem]  "
-                          rows="6"
-                          placeholder="Memo"
-                          value={inputuser4.memo}
-                          name="memo"
-                          onChange={handleChangesection4}
-                        >
-                          {" "}
-                        </textarea>
-                      </div>
-                    </div>
-                  </form>
-                )}
-              </div>
-            </div>
           </div>
         </div>
 

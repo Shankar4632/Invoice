@@ -228,10 +228,7 @@ const Hours = () => {
                 onChange={handleTextareaChange}
               ></textarea>
             </div>
-            <button
-              className="text-bold ml-4 mt-3 text-blue-600  font-bold flex items-center text-xl "
-              onClick={() => navigate("/additems")}
-            >
+            <button className="text-bold ml-4 mt-3 text-blue-600  font-bold flex items-center text-xl ">
               <AiOutlinePlus className="mr-2" /> Add items or Service
             </button>
           </div>
