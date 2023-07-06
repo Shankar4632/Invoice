@@ -1406,37 +1406,24 @@ const InvoicePage = () => {
                 <div className="p-3 ">
                   <div className="flex items-center pl-3 pt-20">
                     <p className="font-bold w-full  text-xl ml-3">Items</p>
-                    <button
-                      className=" text-blue-500 text-xl font-bold  rounded-full flex justify-end items-center mr-3"
-                      onClick={(event) => {
-                        event.preventDefault();
-                        setCustomisePopup(true);
-                      }}
-                    >
+                    <button className=" text-blue-500 text-xl font-bold  rounded-full flex justify-end items-center mr-3">
                       <MdModeEditOutline className="mr-1" /> Customise
                     </button>
                   </div>
                   <div className="h-64 w-[97%] mt-4  border-2 rounded-xl mx-auto  ">
                     <div className="flex items-center mx-auto  w-[97%] mt-3 gap-10">
-                      <Box sx={{ width: 500, maxWidth: "100%", border: "" }}>
-                        <FormControl fullWidth>
-                          <InputLabel id="dropdown-label">Item Name</InputLabel>
-                          <Select
-                            labelId="dropdown-label"
-                            id="dropdown-select"
-                            label="Dropdown"
-                          >
-                            <MenuItem value="">None</MenuItem>
-                            <MenuItem value="option1">Option 1</MenuItem>
-                            <MenuItem value="option2">Option 2</MenuItem>
-                            <MenuItem value="option3">Option 3</MenuItem>
-                          </Select>
-                        </FormControl>
-                      </Box>
+                      <TextField
+                        id="outlined-search"
+                        label="Item Name"
+                        type="search"
+                        style={{
+                          width: "50%",
+                        }}
+                      />
                       <TextField
                         id="outlined-uncontrolled"
                         label="Hours"
-                        defaultValue="1"
+                        defaultValue="0"
                         style={{
                           width: "20%",
                         }}
@@ -1459,6 +1446,21 @@ const InvoicePage = () => {
                       value={textareaValue}
                     ></textarea>
                   </div>
+                  <div className="flex justify-end pr-7 pb-3">
+                    {inputuser2 && (
+                      <>
+                        <p className="font-bold text-md mt-3">
+                          Amounts: $
+                          {inputuser2.discount
+                            ? (inputuser2.price *
+                                inputuser2.quantity *
+                                inputuser2.discount) /
+                              100
+                            : inputuser2.price * inputuser2.quantity}
+                        </p>
+                      </>
+                    )}
+                  </div>
                 </div>
               </>
             )}
@@ -1467,33 +1469,20 @@ const InvoicePage = () => {
                 <div className="p-3 ">
                   <div className="flex items-center pl-3 pt-20">
                     <p className="font-bold text-xl w-full ml-3">Items</p>
-                    <button
-                      className=" text-blue-500 text-xl font-bold  rounded-full  flex justify-end items-center mr-3"
-                      onClick={(event) => {
-                        event.preventDefault();
-                        setCustomisePopup(true);
-                      }}
-                    >
+                    <button className=" text-blue-500 text-xl font-bold  rounded-full  flex justify-end items-center mr-3">
                       <MdModeEditOutline className="mr-1" /> Customise
                     </button>
                   </div>
                   <div className="h-28 w-[97%] mt-4  border-2 rounded-xl mx-auto  ">
                     <div className="flex items-center mx-auto  w-[97%] mt-3 gap-10">
-                      <Box sx={{ width: 500, maxWidth: "100%", border: "" }}>
-                        <FormControl fullWidth>
-                          <InputLabel id="dropdown-label">Item Name</InputLabel>
-                          <Select
-                            labelId="dropdown-label"
-                            id="dropdown-select"
-                            label="Dropdown"
-                          >
-                            <MenuItem value="">None</MenuItem>
-                            <MenuItem value="option1">Option 1</MenuItem>
-                            <MenuItem value="option2">Option 2</MenuItem>
-                            <MenuItem value="option3">Option 3</MenuItem>
-                          </Select>
-                        </FormControl>
-                      </Box>
+                      <TextField
+                        id="outlined-search"
+                        label="Item Name"
+                        type="search"
+                        style={{
+                          width: "75%",
+                        }}
+                      />
 
                       <TextField
                         id="outlined-search"
@@ -1505,6 +1494,19 @@ const InvoicePage = () => {
                       />
                     </div>
                   </div>
+                  {inputuser2 && (
+                    <>
+                      <p className="font-bold float-right mr-3 mt-3 text-md">
+                        Amounts: $
+                        {inputuser2.discount
+                          ? (inputuser2.price *
+                              inputuser2.quantity *
+                              inputuser2.discount) /
+                            100
+                          : inputuser2.price * inputuser2.quantity}
+                      </p>
+                    </>
+                  )}
                 </div>
                 <button className="text-bold ml-4 mt-3 text-blue-600  font-bold flex items-center text-xl ">
                   <AiOutlinePlus className="mr-2" /> Add items or Service
