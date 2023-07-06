@@ -68,7 +68,7 @@ const InvoicePage = () => {
   //image state
   const [selectedImage, setSelectedImage] = useState(null);
   //hide and show
-  const [isVisibleinvoicepage, setIsVisibleinvoicepage] = useState(null);
+  const [isVisibleinvoicepage, setIsVisibleinvoicepage] = useState(true);
   const [isVisibleaccount, setIsVisibleaccount] = useState(null);
   const [isVisiblehours, setIsVisiblehours] = useState(null);
   //section-1
@@ -1250,9 +1250,9 @@ const InvoicePage = () => {
                 <div className="p-3 ">
                   <form onSubmit={handleSubmitsection2}>
                     <div className="flex items-center pl-3 pt-20">
-                      <p className="font-bold text-xl ml-3">Items</p>
+                      <p className="font-bold text-xl w-full ml-3">Items</p>
                       <button
-                        className=" text-blue-500 text-xl font-bold  rounded-full w-full flex justify-end items-center mr-3"
+                        className=" text-blue-500 text-xl font-bold  rounded-full  flex justify-end items-center mr-3"
                         onClick={(event) => {
                           event.preventDefault();
                           setCustomisePopup(true);
@@ -1403,79 +1403,107 @@ const InvoicePage = () => {
             )}
             {isVisiblehours && (
               <>
-                <div className="h-64 w-[97%] mt-4  border-2 rounded-xl mx-auto  ">
-                  <div className="flex items-center mx-auto  w-[97%] mt-3 gap-10">
-                    <Box sx={{ width: 500, maxWidth: "100%", border: "" }}>
-                      <FormControl fullWidth>
-                        <InputLabel id="dropdown-label">Item Name</InputLabel>
-                        <Select
-                          labelId="dropdown-label"
-                          id="dropdown-select"
-                          label="Dropdown"
-                        >
-                          <MenuItem value="">None</MenuItem>
-                          <MenuItem value="option1">Option 1</MenuItem>
-                          <MenuItem value="option2">Option 2</MenuItem>
-                          <MenuItem value="option3">Option 3</MenuItem>
-                        </Select>
-                      </FormControl>
-                    </Box>
-                    <TextField
-                      id="outlined-uncontrolled"
-                      label="Hours"
-                      defaultValue="1"
-                      style={{
-                        width: "20%",
+                <div className="p-3 ">
+                  <div className="flex items-center pl-3 pt-20">
+                    <p className="font-bold w-full  text-xl ml-3">Items</p>
+                    <button
+                      className=" text-blue-500 text-xl font-bold  rounded-full flex justify-end items-center mr-3"
+                      onClick={(event) => {
+                        event.preventDefault();
+                        setCustomisePopup(true);
                       }}
-                    />
-
-                    <TextField
-                      id="outlined-search"
-                      label="Rate"
-                      type="search"
-                      style={{
-                        width: "25%",
-                      }}
-                    />
+                    >
+                      <MdModeEditOutline className="mr-1" /> Customise
+                    </button>
                   </div>
-                  <textarea
-                    className="peer block min-h-[auto] w-[97%] mx-auto border border-gray-500 rounded mt-5 text-black px-3 py-[0.32rem]"
-                    id="exampleFormControlTextarea1"
-                    rows="5"
-                    placeholder="Description(optional)"
-                    value={textareaValue}
-                  ></textarea>
+                  <div className="h-64 w-[97%] mt-4  border-2 rounded-xl mx-auto  ">
+                    <div className="flex items-center mx-auto  w-[97%] mt-3 gap-10">
+                      <Box sx={{ width: 500, maxWidth: "100%", border: "" }}>
+                        <FormControl fullWidth>
+                          <InputLabel id="dropdown-label">Item Name</InputLabel>
+                          <Select
+                            labelId="dropdown-label"
+                            id="dropdown-select"
+                            label="Dropdown"
+                          >
+                            <MenuItem value="">None</MenuItem>
+                            <MenuItem value="option1">Option 1</MenuItem>
+                            <MenuItem value="option2">Option 2</MenuItem>
+                            <MenuItem value="option3">Option 3</MenuItem>
+                          </Select>
+                        </FormControl>
+                      </Box>
+                      <TextField
+                        id="outlined-uncontrolled"
+                        label="Hours"
+                        defaultValue="1"
+                        style={{
+                          width: "20%",
+                        }}
+                      />
+
+                      <TextField
+                        id="outlined-search"
+                        label="Rate"
+                        type="search"
+                        style={{
+                          width: "25%",
+                        }}
+                      />
+                    </div>
+                    <textarea
+                      className="peer block min-h-[auto] w-[97%] mx-auto border border-gray-500 rounded mt-5 text-black px-3 py-[0.32rem]"
+                      id="exampleFormControlTextarea1"
+                      rows="5"
+                      placeholder="Description(optional)"
+                      value={textareaValue}
+                    ></textarea>
+                  </div>
                 </div>
               </>
             )}
             {isVisibleaccount && (
               <>
-                <div className="h-28 w-[97%] mt-4  border-2 rounded-xl mx-auto  ">
-                  <div className="flex items-center mx-auto  w-[97%] mt-3 gap-10">
-                    <Box sx={{ width: 500, maxWidth: "100%", border: "" }}>
-                      <FormControl fullWidth>
-                        <InputLabel id="dropdown-label">Item Name</InputLabel>
-                        <Select
-                          labelId="dropdown-label"
-                          id="dropdown-select"
-                          label="Dropdown"
-                        >
-                          <MenuItem value="">None</MenuItem>
-                          <MenuItem value="option1">Option 1</MenuItem>
-                          <MenuItem value="option2">Option 2</MenuItem>
-                          <MenuItem value="option3">Option 3</MenuItem>
-                        </Select>
-                      </FormControl>
-                    </Box>
-
-                    <TextField
-                      id="outlined-search"
-                      label="Price"
-                      type="search"
-                      style={{
-                        width: "35%",
+                <div className="p-3 ">
+                  <div className="flex items-center pl-3 pt-20">
+                    <p className="font-bold text-xl w-full ml-3">Items</p>
+                    <button
+                      className=" text-blue-500 text-xl font-bold  rounded-full  flex justify-end items-center mr-3"
+                      onClick={(event) => {
+                        event.preventDefault();
+                        setCustomisePopup(true);
                       }}
-                    />
+                    >
+                      <MdModeEditOutline className="mr-1" /> Customise
+                    </button>
+                  </div>
+                  <div className="h-28 w-[97%] mt-4  border-2 rounded-xl mx-auto  ">
+                    <div className="flex items-center mx-auto  w-[97%] mt-3 gap-10">
+                      <Box sx={{ width: 500, maxWidth: "100%", border: "" }}>
+                        <FormControl fullWidth>
+                          <InputLabel id="dropdown-label">Item Name</InputLabel>
+                          <Select
+                            labelId="dropdown-label"
+                            id="dropdown-select"
+                            label="Dropdown"
+                          >
+                            <MenuItem value="">None</MenuItem>
+                            <MenuItem value="option1">Option 1</MenuItem>
+                            <MenuItem value="option2">Option 2</MenuItem>
+                            <MenuItem value="option3">Option 3</MenuItem>
+                          </Select>
+                        </FormControl>
+                      </Box>
+
+                      <TextField
+                        id="outlined-search"
+                        label="Price"
+                        type="search"
+                        style={{
+                          width: "35%",
+                        }}
+                      />
+                    </div>
                   </div>
                 </div>
                 <button className="text-bold ml-4 mt-3 text-blue-600  font-bold flex items-center text-xl ">
