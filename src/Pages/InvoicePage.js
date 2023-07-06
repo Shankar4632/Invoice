@@ -99,6 +99,11 @@ const InvoicePage = () => {
     description: "",
     tax: "",
     discount: 0,
+    itemnamehours: "",
+    hours: 0,
+    rate: 0,
+    itemnameaccount: "",
+    price: 0,
   });
 
   const { ItemName, quantity, price, description } = inputuser2;
@@ -639,6 +644,7 @@ const InvoicePage = () => {
           id="outlined-search"
           type="text"
           label="Discount"
+          name="discount"
           style={{
             marginRight: "10px",
             width: "100%",
@@ -654,6 +660,7 @@ const InvoicePage = () => {
         <TextField
           id="outlined-search"
           type="date"
+          name="date"
           style={{
             marginRight: "10px",
             width: "100%",
@@ -1631,81 +1638,95 @@ const InvoicePage = () => {
                       <MdModeEditOutline className="mr-1" /> Customise
                     </button>
                   </div>
-                  <div className="h-64 w-[97%] mt-4  border-2 rounded-xl mx-auto  ">
-                    <div className="flex items-center mx-auto  w-[97%] mt-3 gap-10">
-                      {customiseui ? (
-                        <>
-                          <TextField
-                            id="outlined-search"
-                            label="Item Name"
-                            type="search"
-                            style={{
-                              width: "50%",
-                            }}
-                          />
-                          <TextField
-                            id="outlined-uncontrolled"
-                            label="Hours"
-                            defaultValue="0"
-                            style={{
-                              width: "20%",
-                            }}
-                          />
+                  <form onSubmit={handleSubmitsection2}>
+                    <div className="h-64 w-[97%] mt-4  border-2 rounded-xl mx-auto  ">
+                      <div className="flex items-center mx-auto  w-[97%] mt-3 gap-10">
+                        {customiseui ? (
+                          <>
+                            <TextField
+                              id="outlined-search"
+                              label="Item Name"
+                              type="search"
+                              style={{
+                                width: "50%",
+                              }}
+                              name="itemnamehours"
+                              onChange={handleChangesection2}
+                            />
+                            <TextField
+                              id="outlined-uncontrolled"
+                              label="Hours"
+                              defaultValue="0"
+                              style={{
+                                width: "20%",
+                              }}
+                              name="hours"
+                              onChange={handleChangesection2}
+                            />
 
-                          <TextField
-                            id="outlined-search"
-                            label="Rate"
-                            type="search"
-                            style={{
-                              width: "25%",
-                            }}
-                          />
-                        </>
-                      ) : (
-                        <>
-                          <TextField
-                            id="outlined-search"
-                            label="Item Name"
-                            type="search"
-                            style={{
-                              width: "50%",
-                            }}
-                          />
-                          <TextField
-                            id="outlined-uncontrolled"
-                            label="Hours"
-                            defaultValue="0"
-                            style={{
-                              width: "20%",
-                            }}
-                          />
+                            <TextField
+                              id="outlined-search"
+                              label="Rate"
+                              type="search"
+                              style={{
+                                width: "25%",
+                              }}
+                              name="rate"
+                              onChange={handleChangesection2}
+                            />
+                          </>
+                        ) : (
+                          <>
+                            <TextField
+                              id="outlined-search"
+                              label="Item Name"
+                              type="search"
+                              style={{
+                                width: "50%",
+                              }}
+                              name="itemnamehours"
+                              onChange={handleChangesection2}
+                            />
+                            <TextField
+                              id="outlined-uncontrolled"
+                              label="Hours"
+                              defaultValue="0"
+                              style={{
+                                width: "20%",
+                              }}
+                              name="hours"
+                              onChange={handleChangesection2}
+                            />
 
-                          <TextField
-                            id="outlined-search"
-                            label="Rate"
-                            type="search"
-                            style={{
-                              width: "25%",
-                            }}
-                          />
-                          <div className="p-3   ">
-                            <div className="   flex items-center gap-5 ">
-                              {renderSelectedtaxFields()}
-                              {renderSelecteddiscountFields()}
-                              {renderSelecteddateFields()}
+                            <TextField
+                              id="outlined-search"
+                              label="Rate"
+                              type="search"
+                              style={{
+                                width: "25%",
+                              }}
+                              name="rate"
+                              onChange={handleChangesection2}
+                            />
+                            <div className="p-3   ">
+                              <div className="   flex items-center gap-5 ">
+                                {renderSelectedtaxFields()}
+                                {renderSelecteddiscountFields()}
+                                {renderSelecteddateFields()}
+                              </div>
                             </div>
-                          </div>
-                        </>
-                      )}
+                          </>
+                        )}
+                      </div>
+                      <textarea
+                        className="peer block min-h-[auto] w-[97%] mx-auto border border-gray-500 rounded mt-5 text-black px-3 py-[0.32rem]"
+                        id="exampleFormControlTextarea1"
+                        rows="5"
+                        placeholder="Description(optional)"
+                        value={textareaValue}
+                      ></textarea>
                     </div>
-                    <textarea
-                      className="peer block min-h-[auto] w-[97%] mx-auto border border-gray-500 rounded mt-5 text-black px-3 py-[0.32rem]"
-                      id="exampleFormControlTextarea1"
-                      rows="5"
-                      placeholder="Description(optional)"
-                      value={textareaValue}
-                    ></textarea>
-                  </div>
+                  </form>
                   <div className="flex justify-end pr-7 pb-3">
                     {inputuser2 && (
                       <>
@@ -1727,83 +1748,93 @@ const InvoicePage = () => {
             {isVisibleaccount && (
               <>
                 <div className="p-3 ">
-                  <div className="flex items-center pl-3 pt-20">
-                    <p className="font-bold text-xl w-full ml-3">Items</p>
-                    <button
-                      className=" text-blue-500 text-xl font-bold  rounded-full  flex justify-end items-center mr-3"
-                      onClick={(event) => {
-                        event.preventDefault();
-                        setCustomisePopup(true);
-                      }}
-                    >
-                      <MdModeEditOutline className="mr-1" /> Customise
-                    </button>
-                  </div>
-                  <div className="h-28 w-[97%] mt-4  border-2 rounded-xl mx-auto  ">
-                    <div className="flex items-center mx-auto  w-[97%] mt-3 gap-10">
-                      {customiseui ? (
-                        <>
-                          {" "}
-                          <TextField
-                            id="outlined-search"
-                            label="Item Name"
-                            type="search"
-                            style={{
-                              width: "75%",
-                            }}
-                          />
-                          <TextField
-                            id="outlined-search"
-                            label="Price"
-                            type="search"
-                            style={{
-                              width: "35%",
-                            }}
-                          />
-                        </>
-                      ) : (
-                        <>
-                          {" "}
-                          <TextField
-                            id="outlined-search"
-                            label="Item Name"
-                            type="search"
-                            style={{
-                              width: "75%",
-                            }}
-                          />
-                          <TextField
-                            id="outlined-search"
-                            label="Price"
-                            type="search"
-                            style={{
-                              width: "35%",
-                            }}
-                          />
-                          <div className="p-3   ">
-                            <div className="   flex items-center gap-5 ">
-                              {renderSelectedtaxFields()}
-                              {renderSelecteddiscountFields()}
-                              {renderSelecteddateFields()}
-                            </div>
-                          </div>
-                        </>
-                      )}
+                  <form onSubmit={handleSubmitsection2}>
+                    <div className="flex items-center pl-3 pt-20">
+                      <p className="font-bold text-xl w-full ml-3">Items</p>
+                      <button
+                        className=" text-blue-500 text-xl font-bold  rounded-full  flex justify-end items-center mr-3"
+                        onClick={(event) => {
+                          event.preventDefault();
+                          setCustomisePopup(true);
+                        }}
+                      >
+                        <MdModeEditOutline className="mr-1" /> Customise
+                      </button>
                     </div>
-                  </div>
-                  {inputuser2 && (
-                    <>
-                      <p className="font-bold float-right mr-3 mt-3 text-md">
-                        Amounts: $
-                        {inputuser2.discount
-                          ? (inputuser2.price *
-                              inputuser2.quantity *
-                              inputuser2.discount) /
-                            100
-                          : inputuser2.price * inputuser2.quantity}
-                      </p>
-                    </>
-                  )}
+                    <div className="h-28 w-[97%] mt-4  border-2 rounded-xl mx-auto  ">
+                      <div className="flex items-center mx-auto  w-[97%] mt-3 gap-10">
+                        {customiseui ? (
+                          <>
+                            {" "}
+                            <TextField
+                              id="outlined-search"
+                              label="Item Name"
+                              type="search"
+                              style={{
+                                width: "75%",
+                              }}
+                              name="itemnameaccount"
+                              onChange={handleChangesection2}
+                            />
+                            <TextField
+                              id="outlined-search"
+                              label="Price"
+                              type="search"
+                              style={{
+                                width: "35%",
+                              }}
+                              name="price"
+                              onChange={handleChangesection2}
+                            />
+                          </>
+                        ) : (
+                          <>
+                            {" "}
+                            <TextField
+                              id="outlined-search"
+                              label="Item Name"
+                              type="search"
+                              style={{
+                                width: "75%",
+                              }}
+                              name="itemnameaccount"
+                              onChange={handleChangesection2}
+                            />
+                            <TextField
+                              id="outlined-search"
+                              label="Price"
+                              type="search"
+                              style={{
+                                width: "35%",
+                              }}
+                              name="price"
+                              onChange={handleChangesection2}
+                            />
+                            <div className="p-3   ">
+                              <div className="   flex items-center gap-5 ">
+                                {renderSelectedtaxFields()}
+                                {renderSelecteddiscountFields()}
+                                {renderSelecteddateFields()}
+                              </div>
+                            </div>
+                          </>
+                        )}
+                      </div>
+                    </div>
+                    {inputuser2 && (
+                      <>
+                        <p className="font-bold float-right mr-3 mt-3 text-md">
+                          Amounts: $
+                          {inputuser2.discount
+                            ? (inputuser2.price *
+                                inputuser2.quantity *
+                                inputuser2.discount) /
+                              100
+                            : inputuser2.price * inputuser2.quantity}
+                        </p>
+                      </>
+                    )}
+                  </form>
                 </div>
                 <button className="text-bold ml-4 mt-3 text-blue-600  font-bold flex items-center text-xl ">
                   <AiOutlinePlus className="mr-2" /> Add items or Service
