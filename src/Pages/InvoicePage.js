@@ -103,7 +103,6 @@ const InvoicePage = () => {
     hours: 0,
     rate: 0,
     itemnameaccount: "",
-    price: 0,
   });
 
   const { ItemName, quantity, price, description } = inputuser2;
@@ -377,7 +376,7 @@ const InvoicePage = () => {
         break;
     }
   };
-
+  //Total for amount field
   useEffect(() => {}, [discount]);
 
   useEffect(() => {}, [shipping]);
@@ -387,6 +386,7 @@ const InvoicePage = () => {
     const discountValue = parseFloat(discount) || 0;
     const shippingValue = parseFloat(shipping) || 0;
     const otherAmountValue = parseFloat(otherAmount) || 0;
+    //quantity
     const itemTotal =
       parseFloat(inputuser2.price) * parseFloat(inputuser2.quantity) || 0;
     const itemTotalWithDiscount =
@@ -394,8 +394,32 @@ const InvoicePage = () => {
     const subtotalFinal = inputuser2.discount
       ? itemTotalWithDiscount
       : itemTotal;
+    //hours
+    const itemTotalhours =
+      parseFloat(inputuser2.hours) * parseFloat(inputuser2.rate) || 0;
+    const itemTotalWithDiscounthours =
+      (itemTotalhours * parseFloat(inputuser2.discounthours)) / 100 || 0;
 
-    return discountValue + shippingValue + otherAmountValue + subtotalFinal;
+    const subtotalFinalhours = inputuser2.discount
+      ? itemTotalWithDiscounthours
+      : itemTotalhours;
+    //amountonly
+    const itemTotalamountonly = parseFloat(inputuser2.price) || 0;
+    const itemTotalWithDiscountamountsonly =
+      (itemTotalamountonly * parseFloat(inputuser2.discount)) / 100 || 0;
+    const itemTotalamountsonly = inputuser2.discount
+      ? itemTotalWithDiscountamountsonly
+      : itemTotalamountonly;
+
+    //total
+    return (
+      discountValue +
+      shippingValue +
+      otherAmountValue +
+      subtotalFinal +
+      subtotalFinalhours +
+      itemTotalamountsonly
+    );
   };
 
   const handleKeyDown = (event, section) => {
@@ -498,7 +522,6 @@ const InvoicePage = () => {
     setSelectedtaxFields(fields2);
     setSelecteddiscountFields(fields3);
     setSelecteddateFields(fields4);
-
     setCustomisePopup(false);
   };
   // Render the form fields
@@ -1850,14 +1873,6 @@ const InvoicePage = () => {
         <div className=" w-[25%]  text-center ">
           <div className="h-auto border rounded-xl bg-white">
             <div className="flex items-center h-20   w-full">
-              <div>
-                {/* <input
-                  type="file"
-                  placeholder="Add logo"
-                  className="px-3 py-4"
-                /> */}
-              </div>
-
               <div className="flex items-center justify-start ml-3 mt-3 w-full">
                 <div>
                   {selectedImage && (
@@ -2003,18 +2018,54 @@ const InvoicePage = () => {
                   </p>
                 </div>
                 <div className="mt-3">
-                  {inputuser2 && (
+                  {isVisibleinvoicepage && (
                     <>
-                      <p className="font-bold text-md">
-                        {inputuser2.discount
-                          ? (inputuser2.price *
-                              inputuser2.quantity *
-                              inputuser2.discount) /
-                            100
-                          : inputuser2.price * inputuser2.quantity}
-                      </p>
+                      {inputuser2 && (
+                        <>
+                          <p className="font-bold text-md">
+                            {inputuser2.discount
+                              ? (inputuser2.price *
+                                  inputuser2.quantity *
+                                  inputuser2.discount) /
+                                100
+                              : inputuser2.price * inputuser2.quantity}
+                          </p>
+                        </>
+                      )}
                     </>
                   )}
+                  {isVisiblehours && (
+                    <>
+                      {inputuser2 && (
+                        <>
+                          <p className="font-bold text-md">
+                            {inputuser2.discount
+                              ? (inputuser2.hours *
+                                  inputuser2.rate *
+                                  inputuser2.discount) /
+                                100
+                              : inputuser2.hours * inputuser2.rate}
+                          </p>
+                        </>
+                      )}
+                    </>
+                  )}
+
+                  {isVisibleaccount && (
+                    <>
+                      {" "}
+                      {inputuser2 && (
+                        <>
+                          <p className="font-bold text-md">
+                            {inputuser2.discount
+                              ? (inputuser2.price * inputuser2.discount) / 100
+                              : inputuser2.price}
+                          </p>
+                        </>
+                      )}
+                    </>
+                  )}
+
                   <form onSubmit={(e) => e.preventDefault()}>
                     <p className="p-3">
                       {showDiscountField ? (
