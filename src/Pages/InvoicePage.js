@@ -238,9 +238,7 @@ const InvoicePage = () => {
     e.preventDefault();
     console.log(inputuser2);
 
-    const { quantity, price, description } = inputuser2;
-
-    if (!quantity || !price || !description) {
+    if (!inputuser2) {
       // Handle error when any of the fields are empty
       // toast.error("Please fill in all the fields");
     } else {
@@ -525,12 +523,13 @@ const InvoicePage = () => {
     return fields1.map((fields1) => (
       <div key={fields1}>
         <textarea
-          className="peer block min-h-[auto] mb-3 w-[97%] mx-auto border border-gray-500 rounded mt-5 text-black px-3 py-[0.32rem]  "
+          className="peer block h-auto mb-3 w-[97%] mx-auto border border-gray-500 rounded mt-5 text-black px-3 py-[0.32rem]  "
           id="exampleFormControlTextarea1"
           rows="4"
           type="text"
           placeholder="Description(optional)"
           name="description"
+          value={textareaValue}
           onChange={handleChangesection2}
         >
           {" "}
@@ -624,12 +623,13 @@ const InvoicePage = () => {
     return selecteddescriptionFields.map((field) => (
       <div key={field}>
         <textarea
-          className="peer block min-h-[auto] mb-3 w-[97%] mx-auto border border-gray-500 rounded mt-5 text-black px-3 py-[0.32rem]  "
+          className="peer block h-auto mb-3 w-[97%] mx-auto border border-gray-500 rounded mt-5 text-black px-3 py-[0.32rem]  "
           id="exampleFormControlTextarea1"
           rows="4"
           type="text"
           placeholder="Description(optional)"
           name="description"
+          value={textareaValue}
           onChange={handleChangesection2}
         >
           {" "}
@@ -1222,7 +1222,7 @@ const InvoicePage = () => {
                         </div>
 
                         <textarea
-                          className="peer block min-h-[auto] w-[97%] mx-auto border border-gray-500 rounded mt-5 text-black px-3 py-[0.32rem]"
+                          className="peer block h-auto w-[97%] mx-auto border border-gray-500 rounded mt-5 text-black px-3 py-[0.32rem]"
                           id="exampleFormControlTextarea1"
                           rows="5"
                           placeholder="Description(optional)"
@@ -1719,25 +1719,24 @@ const InvoicePage = () => {
                         )}
                       </div>
                       <textarea
-                        className="peer block min-h-[auto] w-[97%] mx-auto border border-gray-500 rounded mt-5 text-black px-3 py-[0.32rem]"
+                        className="peer block h-auto w-[97%] mx-auto border border-gray-500 rounded mt-5 text-black px-3 py-[0.32rem]"
                         id="exampleFormControlTextarea1"
                         rows="5"
                         placeholder="Description(optional)"
-                        value={textareaValue}
                       ></textarea>
                     </div>
                   </form>
                   <div className="flex justify-end pr-7 pb-3">
                     {inputuser2 && (
                       <>
-                        <p className="font-bold text-md mt-3">
+                        <p className="font-bold text-md">
                           Amounts: $
                           {inputuser2.discount
-                            ? (inputuser2.price *
-                                inputuser2.quantity *
+                            ? (inputuser2.hours *
+                                inputuser2.rate *
                                 inputuser2.discount) /
                               100
-                            : inputuser2.price * inputuser2.quantity}
+                            : inputuser2.hours * inputuser2.rate}
                         </p>
                       </>
                     )}
@@ -1826,11 +1825,8 @@ const InvoicePage = () => {
                         <p className="font-bold float-right mr-3 mt-3 text-md">
                           Amounts: $
                           {inputuser2.discount
-                            ? (inputuser2.price *
-                                inputuser2.quantity *
-                                inputuser2.discount) /
-                              100
-                            : inputuser2.price * inputuser2.quantity}
+                            ? (inputuser2.price * inputuser2.discount) / 100
+                            : inputuser2.price}
                         </p>
                       </>
                     )}
