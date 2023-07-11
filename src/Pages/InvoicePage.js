@@ -552,7 +552,6 @@ const InvoicePage = () => {
           type="text"
           placeholder="Description(optional)"
           name="description"
-          value={textareaValue}
           onChange={handleChangesection2}
         >
           {" "}
@@ -652,7 +651,6 @@ const InvoicePage = () => {
           type="text"
           placeholder="Description(optional)"
           name="description"
-          value={textareaValue}
           onChange={handleChangesection2}
         >
           {" "}
