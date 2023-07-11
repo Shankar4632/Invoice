@@ -1541,6 +1541,7 @@ const InvoicePage = () => {
                         )}
                       </div>
                     </div>
+                    {renderItems()}
                   </form>
                   <button
                     className="text-bold ml-4 mt-3 text-blue-600  font-bold flex items-center text-xl "
@@ -1548,7 +1549,6 @@ const InvoicePage = () => {
                   >
                     <AiOutlinePlus className="mr-2" /> Add items or Service
                   </button>
-                  {renderItems()}
                 </div>
                 {/*  ==============================  section-3  ============================= */}
                 <form onSubmit={handleSubmitsection3}>
