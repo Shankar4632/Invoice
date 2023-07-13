@@ -1,14 +1,12 @@
 import "./App.css";
-import Index from "./Routes/Index";
-// import Demo from "./Pages/Demo";
-// import New from "./Pages/New";
+import Usereducer from "./Pages/Usereducer";
+// import Index from "./Routes/Index";
 
 function App() {
   return (
     <div className="App">
-      <Index />
-      {/* <Demo /> */}
-      {/* <New /> */}
+      {/* <Index /> */}
+      <Usereducer />
     </div>
   );
 }

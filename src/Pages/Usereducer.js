@@ -27,13 +27,26 @@ import { toast } from "react-toastify";
 // import currencies json
 import Currencydata from "../json file/currencies.json";
 import days from "../json file/days.json";
+import { useReducer } from "react";
 
 const initialState = {
-  invoicedue: "",
-  invoicedate: "",
-  invoicenumber: "",
+  items: [],
 };
-const InvoicePage = () => {
+
+const reducer = (state, action) => {
+  switch (action.type) {
+    case "ADD_ITEM":
+      return {
+        ...state,
+        items: [...state.items, action.payload],
+      };
+    default:
+      return state;
+  }
+};
+
+const Usereducer = () => {
+  const [state, dispatch] = useReducer(reducer, initialState);
   //hooks or States
   const [currency, setCurrency] = useState("");
   const [textareaValue, setTextareaValue] = useState("");
@@ -83,14 +96,6 @@ const InvoicePage = () => {
     useState(null);
   const [isVisiblecustomisehours, setVisiblecustomisehours] = useState(null);
 
-  //section-1
-  const [inputValue, setInputValue] = useState("");
-
-  const handleClick1 = (event) => {
-    event.preventDefault();
-    setInputValue(lastData.email);
-  };
-
   //section-2
   const [inputuser2, setInputuser2] = useState({
     ItemName: "",
@@ -108,46 +113,6 @@ const InvoicePage = () => {
   const { ItemName, quantity, price, description } = inputuser2;
 
   const [additem, setAdditem] = useState([]);
-  //section-3
-  const [input, setInput] = useState({
-    section3messege: "",
-  });
-  const { section3messege } = input;
-  //section-4
-  const [inputuser4, setInputuser4] = useState({
-    memo: "",
-  });
-  const { memo } = inputuser4;
-
-  //section-5
-  const [inputuser5, setInputuser5] = useState(initialState);
-  //section-6 business information
-  const [inputbusiness, setInputbusiness] = useState({
-    fname: "",
-    lname: "",
-    businessname: "",
-    // billhide1: "",
-    // billhide2: "",
-    address1: "",
-    address2: "",
-    email: "",
-    website: "",
-    pin: "",
-    additionalinfo: "",
-  });
-  const {
-    fname,
-    lname,
-    businessname,
-    address1,
-    address2,
-    email,
-    website,
-    pin,
-    additionalinfo,
-  } = inputbusiness;
-  //fetch
-  const [businessdata, setBusinessdata] = useState({});
 
   //Function Calling
   ////////////////////////  input file onchange events  ///////////////////////
@@ -161,75 +126,15 @@ const InvoicePage = () => {
     setInputuser2((values) => ({ ...values, [fieldName]: value }));
   };
 
-  //section-3
-  const handleChangesection3 = (event) => {
-    const section3messege = event.target.name;
-    const value = event.target.value;
-    setInput((values) => ({ ...values, [section3messege]: value }));
-  };
-  const handleInputInvoice = (event) => {
-    const inputValue = event.target.value;
-    setInvoiceNumber(inputValue);
-  };
-
-  //section-4
-  const handleChangesection4 = (event) => {
-    const memo = event.target.name;
-    const value = event.target.value;
-    setInputuser4((values) => ({ ...values, memo: value }));
-    console.log(value);
-  };
-  //section-5
-  const handleChangesection5 = (e) => {
-    const { name, value } = e.target;
-    setInputuser5({ ...inputuser5, [name]: value });
-  };
-  const handleChangesection6 = (e) => {
-    const { name, value } = e.target;
-    setInputbusiness({ ...inputbusiness, [name]: value });
-  };
-
   const handlesubmit = (e) => {
     e.preventDefault();
 
-    const section1Result = handleSubmitsection1(e);
     const section2Result = handleSubmitsection2(e);
-    const section3Result = handleSubmitsection3(e);
-    const section4Result = handleSubmitsection4(e);
-    const section5Result = handleSubmitsection5(e);
-    const section6Result = handleSubmitsection6(e);
 
-    if (
-      section1Result &&
-      section2Result &&
-      section3Result &&
-      section4Result &&
-      section5Result &&
-      section6Result
-    ) {
+    if (section2Result) {
       navigate("/");
     } else {
       toast.error("Please fill in all the required fields.");
-    }
-  };
-
-  const handleSubmitsection1 = (e) => {
-    e.preventDefault();
-    console.log("Submitting section 1 form");
-    const email = lastData.email;
-    if (email === inputValue) {
-      dataRef
-        .ref()
-        .child("section1")
-        .push(email, (err) => {
-          if (err) {
-            toast.error(err);
-          } else {
-            toast.success("Successfully added");
-          }
-        });
-    } else {
-      // toast.error("Email mismatch. Please enter a valid email.");
     }
   };
 
@@ -253,180 +158,34 @@ const InvoicePage = () => {
         });
     }
   };
+  //   const handleAddItem = () => {
+  //     // Create a new item object here or modify as per your requirement
+  //     const newItem = {
+  //       id: Math.random().toString(),
+  //       name: "New Item",
+  //     };
+
+  //     dispatch({ type: "ADD_ITEM", payload: newItem });
+  //   };
   const handleAddItem = () => {
-    setAdditem((additems) => [...additems, true]);
-  };
-
-  const renderItems = () => {
-    return additem.map((item, index) => (
-      <div key={index} className="">
-        <div className="flex gap-4">{additems(item)}</div>
-      </div>
-    ));
-  };
-
-  //section-3
-  const handleSubmitsection3 = (e) => {
-    e.preventDefault();
-    if (!section3messege) {
-      // toast.error(<div className="">Please enter the values!</div>);
-    } else {
-      dataRef
-        .ref()
-        .child("section3message")
-        .push(input, (err) => {
-          if (err) {
-            toast.error(err);
-          } else {
-            toast.success("Successfully added");
-          }
-        });
-    }
-  };
-  //section-4
-  const handleSubmitsection4 = (e) => {
-    e.preventDefault();
-    if (!memo) {
-      // toast.error(<div className="">Please enter the values!</div>);
-    } else {
-      dataRef
-        .ref()
-        .child("section4memo")
-        .push(inputuser4, (err) => {
-          if (err) {
-            toast.error(err);
-          } else {
-            toast.success("Successfully added");
-          }
-        });
-    }
-  };
-  //section-5
-  const handleSubmitsection5 = (e) => {
-    e.preventDefault();
-
-    const { invoicedue, invoicedate, invoicenumber } = inputuser5;
-
-    if (!invoicedue || !invoicedate || !invoicenumber) {
-      // toast.error("Please enter all the values!");
-      return;
-    }
-
-    const total = calculateTotal(); // Calculate the total value
-    const section5Data = {
-      inputuser5: inputuser5,
-      total: total,
+    // Get form values here or modify as per your requirement
+    const newItem = {
+      id: Math.random().toString(),
+      formId: 1, // Assign a unique formId for the new item
+      name: "New Item",
+      // Include other form values here
     };
 
-    try {
-      dataRef
-        .ref()
-        .child("section5total")
-        .push(section5Data, (error) => {
-          if (error) {
-            toast.error(error.message);
-          } else {
-            toast.success("Successfully added");
-          }
-        });
-    } catch (error) {
-      toast.error(error.message);
-    }
+    dispatch({ type: "ADD_ITEM", payload: newItem });
   };
 
-  //section-6 business information
-  const handlesavebusinessinfo = (e) => {
-    handleSubmitsection6(e);
-    setBusinessPopup(false);
-  };
-  //section-6
-  const handleSubmitsection6 = (e) => {
-    e.preventDefault();
-    if (!fname || !lname || !businessname) {
-      // toast.error(<div className="">Please enter the values!</div>);
-    } else {
-      dataRef
-        .ref()
-        .child("section6Businessinformation")
-        .push(inputbusiness, (err) => {
-          if (err) {
-            toast.error(err);
-          } else {
-            toast.success("Successfully added");
-          }
-        });
-    }
-  };
-
-  const handleAdd = (section, value) => {
-    switch (section) {
-      case "discount":
-        setDiscount(value);
-        setShowDiscountField(false);
-        break;
-      case "shipping":
-        setShipping(value);
-        setShowShippingField(false);
-        break;
-      case "otherAmount":
-        setOtherAmount(value);
-        setShowOtherAmountField(false);
-        break;
-      default:
-        break;
-    }
-  };
-  //Total for amount field
-  useEffect(() => {}, [discount]);
-
-  useEffect(() => {}, [shipping]);
-
-  useEffect(() => {}, [otherAmount]);
-  const calculateTotal = () => {
-    const discountValue = parseFloat(discount) || 0;
-    const shippingValue = parseFloat(shipping) || 0;
-    const otherAmountValue = parseFloat(otherAmount) || 0;
-    //quantity
-    const itemTotal =
-      parseFloat(inputuser2.price) * parseFloat(inputuser2.quantity) || 0;
-    const itemTotalWithDiscount =
-      (itemTotal * parseFloat(inputuser2.discount)) / 100 || 0;
-    const subtotalFinal = inputuser2.discount
-      ? itemTotalWithDiscount
-      : itemTotal;
-    //hours
-    const itemTotalhours =
-      parseFloat(inputuser2.hours) * parseFloat(inputuser2.rate) || 0;
-    const itemTotalWithDiscounthours =
-      (itemTotalhours * parseFloat(inputuser2.discounthours)) / 100 || 0;
-
-    const subtotalFinalhours = inputuser2.discount
-      ? itemTotalWithDiscounthours
-      : itemTotalhours;
-    //amountonly
-    const itemTotalamountonly = parseFloat(inputuser2.price) || 0;
-    const itemTotalWithDiscountamountsonly =
-      (itemTotalamountonly * parseFloat(inputuser2.discount)) / 100 || 0;
-    const itemTotalamountsonly = inputuser2.discount
-      ? itemTotalWithDiscountamountsonly
-      : itemTotalamountonly;
-
-    //total
-    return (
-      discountValue +
-      shippingValue +
-      otherAmountValue +
-      subtotalFinal +
-      subtotalFinalhours +
-      itemTotalamountsonly
-    );
-  };
-
-  const handleKeyDown = (event, section) => {
-    if (event.key === "Enter") {
-      handleAdd(section, event.target.value);
-    }
-  };
+  //   const renderItems = () => {
+  //     return additem.map((item, index) => (
+  //       <div key={index} className="">
+  //         <div className="flex gap-4">{additems(item)}</div>
+  //       </div>
+  //     ));
+  //   };
 
   const fileInputRef = useRef(null);
   //handle click
@@ -781,350 +540,48 @@ const InvoicePage = () => {
   };
 
   //fetched data
-  useEffect(() => {
-    dataRef
-      .ref()
-      .child("CustomerList")
-      .on("value", (snapshot) => {
-        const snapshotValue = snapshot.val();
-        if (snapshotValue !== null) {
-          const dataKeys = Object.keys(snapshotValue);
-          const lastKey = dataKeys[dataKeys.length - 1];
-          setLastData(snapshotValue[lastKey]);
-        } else {
-          setLastData(null);
-        }
-        setIsLoading(false);
-      });
-
-    return () => {
-      setLastData(null);
-    };
-  }, []);
-  //fetch data from db of business information
-  useEffect(() => {
-    dataRef
-      .ref()
-      .child("section6Businessinformation")
-      .on("value", (snapshot) => {
-        const snapshotValue = snapshot.val();
-        if (snapshotValue !== null) {
-          const dataKeys = Object.keys(snapshotValue);
-          const lastKey = dataKeys[dataKeys.length - 1];
-          setBusinessdata(snapshotValue[lastKey]);
-        } else {
-          setBusinessdata(null);
-        }
-        setIsLoading(false);
-      });
-
-    return () => {
-      setBusinessdata(null);
-    };
-  }, []);
 
   //loading
-  if (isLoading) {
-    return (
-      // <div className="text-center text-3xl text-black">
-      //   Loading<span className="text-yellow-500"> . . .</span>
-      // </div>
-      <div className=" shadow  rounded-md p-4 w-full gap-5 flex h-screen ">
-        <div className="animate-pulse flex space-x-4 w-[70%]  mt-48">
-          <div className="flex-1 space-y-6 py-1">
-            <div className="grid grid-cols-2 gap-4">
-              <div className="h-4  bg-gray-300 rounded"></div>
-              <div className="h-4  bg-gray-300 rounded"></div>
-            </div>
 
-            <div className="space-y-3">
-              <div className="grid grid-cols-2 gap-4">
-                <div className="h-4   bg-gray-300 rounded col-span-2"></div>
-                <div className="h-4   bg-gray-300 rounded col-span-2"></div>
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="h-4  bg-gray-300 rounded"></div>
-                <div className="h-4  bg-gray-300 rounded"></div>
-              </div>
-            </div>
-            <div className=" mt-96 space-y-3 ">
-              <div className="h-4   bg-gray-300 rounded"></div>
-            </div>
-            <div className=" mt-96 space-y-3 border">
-              <div className="h-4   bg-gray-300 rounded"></div>
-            </div>
-            <div className=" mt-96 space-y-3 border">
-              <div className="h-4   bg-gray-300 rounded"></div>
-            </div>
-            <div className=" mt-96 space-y-3 border">
-              <div className="h-4   bg-gray-300 rounded"></div>
-            </div>
-            <div className=" mt-96 space-y-3 border">
-              <div className="h-4   bg-gray-300 rounded"></div>
-            </div>
-            <div className="grid grid-cols-4 gap-4">
-              <div className="h-4  bg-gray-300 rounded"></div>
-              <div className="h-4  bg-gray-300 rounded"></div>
-              <div className="h-4  bg-gray-300 rounded"></div>
-              <div className="h-4  bg-gray-300 rounded"></div>
-            </div>
-            <div className=" mt-96 space-y-3 border">
-              <div className="h-4   bg-gray-300 rounded"></div>
-            </div>
-            <div className=" mt-96 space-y-3 border">
-              <div className="h-4   bg-gray-300 rounded"></div>
-            </div>
-            <div className=" mt-96 space-y-3 border">
-              <div className="h-4   bg-gray-300 rounded"></div>
-            </div>
-            <div className=" mt-96 space-y-3 border">
-              <div className="h-4   bg-gray-300 rounded"></div>
-            </div>
-            <div className=" mt-96 space-y-3 border">
-              <div className="h-4   bg-gray-300 rounded"></div>
-            </div>
-          </div>
-        </div>
-        <div className="animate-pulse flex  w-[30%]  mt-48">
-          <div className="flex-1 space-y-6 py-1">
-            <div className="grid grid-cols-2 gap-4">
-              <div className="h-4  bg-gray-300 rounded"></div>
-              <div className="h-4  bg-gray-300 rounded"></div>
-            </div>
-
-            <div className="space-y-3">
-              <div className="grid grid-cols-2 gap-4">
-                <div className="h-4   bg-gray-300 rounded col-span-2"></div>
-                <div className="h-4   bg-gray-300 rounded col-span-2"></div>
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="h-4  bg-gray-300 rounded"></div>
-                <div className="h-4  bg-gray-300 rounded"></div>
-              </div>
-            </div>
-            <div className=" mt-96 space-y-3 ">
-              <div className="h-4   bg-gray-300 rounded"></div>
-            </div>
-            <div className=" mt-96 space-y-3 border">
-              <div className="h-4   bg-gray-300 rounded"></div>
-            </div>
-            <div className=" mt-96 space-y-3 border">
-              <div className="h-4   bg-gray-300 rounded"></div>
-            </div>
-            <div className=" mt-96 space-y-3 border">
-              <div className="h-4   bg-gray-300 rounded"></div>
-            </div>
-            <div className=" mt-96 space-y-3 border">
-              <div className="h-4   bg-gray-300 rounded"></div>
-            </div>
-            <div className=" mt-96 space-y-3 border">
-              <div className="h-4   bg-gray-300 rounded"></div>
-            </div>
-            <div className=" mt-96 space-y-3 border">
-              <div className="h-4   bg-gray-300 rounded"></div>
-            </div>
-            <div className=" mt-96 space-y-3 border">
-              <div className="h-4   bg-gray-300 rounded"></div>
-            </div>
-            <div className=" mt-96 space-y-3 border">
-              <div className="h-4   bg-gray-300 rounded"></div>
-            </div>
-            <div className=" mt-96 space-y-3 border">
-              <div className="h-4   bg-gray-300 rounded"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  if (lastData.length === 0) {
-    return <div>No data available</div>;
-  }
   //logo image
-  const handleImageUpload = (event) => {
-    const file = event.target.files[0];
-    const reader = new FileReader();
 
-    reader.onload = () => {
-      setSelectedImage(reader.result);
-    };
-
-    if (file) {
-      reader.readAsDataURL(file);
-    }
-  };
   //handle add items
 
-  const additems = (e) => {
-    return (
-      <div className="h-auto  w-[95%] mt-4  border-2 rounded-xl mx-auto  ">
-        {customiseui ? (
-          <div className="p-3   ">
-            <div className="   flex items-center ">
-              <div className="flex gap-4">
-                {renderFields()}
-                {renderFieldstax()}
-                {renderFieldsdate()}
-                {renderFieldsdiscount()}
-              </div>
-            </div>
-            <div>{renderFieldsdescription()}</div>
-          </div>
-        ) : (
-          <div className="p-3   ">
-            <div className="   flex items-center gap-5 ">
-              {renderSelectedFields()}
-              {renderSelectedtaxFields()}
-              {renderSelecteddiscountFields()}
-            </div>
-            <div> {renderSelecteddescriptionFields()}</div>
-          </div>
-        )}
-        <div className="flex justify-end pr-7 pb-3">
-          <>
-            <p className="font-bold text-md">Amounts: $</p>
-          </>
-        </div>
-      </div>
-    );
-  };
+  //   const additems = (e) => {
+  //     return (
+  //       <div className="h-auto  w-[95%] mt-4  border-2 rounded-xl mx-auto  ">
+  //         {customiseui ? (
+  //           <div className="p-3   ">
+  //             <div className="   flex items-center ">
+  //               <div className="flex gap-4">
+  //                 {renderFields()}
+  //                 {renderFieldstax()}
+  //                 {renderFieldsdate()}
+  //               </div>
+  //             </div>
+  //             <div>{renderFieldsdescription()}</div>
+  //           </div>
+  //         ) : (
+  //           <div className="p-3   ">
+  //             <div className="   flex items-center gap-5 ">
+  //               {renderSelectedFields()}
+  //               {renderSelectedtaxFields()}
+  //             </div>
+  //             <div> {renderSelecteddescriptionFields()}</div>
+  //           </div>
+  //         )}
+  //         <div className="flex justify-end pr-7 pb-3">
+  //           <>
+  //             <p className="font-bold text-md">Amounts: $</p>
+  //           </>
+  //         </div>
+  //       </div>
+  //     );
+  //   };
 
   //Return Statements
   return (
     <div className="mb-3 ">
-      {businesspopup ? (
-        <>
-          <form onSubmit={handleSubmitsection6}>
-            <div className="w-full h-full  mx-auto  overflow-y-hidden fixed z-20  bg-gray-200   ">
-              <div className="w-[900px] bg-white  opacity-100 relative  h-screen">
-                <div className="flex items-center relative  mt-4 ">
-                  <i className="w-full flex justify-center text-blue-600  ">
-                    <FaPaypal className="text-3xl" />
-                  </i>
-                  <i
-                    className="flex  justify-end pr-3 cursor-pointer"
-                    onClick={() => setBusinessPopup(false)}
-                  >
-                    <RxCross1 className="text-xl" />
-                  </i>
-                </div>
-                <p className="text-center text-[40px]  font-semibold">
-                  {" "}
-                  Business information{" "}
-                </p>
-                <div className="w-[70%]  mx-auto ">
-                  {" "}
-                  <div className="grid grid-cols-2 w-full  mt-3 text-center">
-                    <div className="">
-                      {" "}
-                      <input
-                        id="outlined-search"
-                        name="fname"
-                        type="search"
-                        className=" w-[90%]  border border-gray-400 rounded-md py-5 px-3 placeholder-black focus:border-blue-400"
-                        placeholder="First name"
-                        onChange={handleChangesection6}
-                      />
-                    </div>
-
-                    <div className="">
-                      {" "}
-                      <input
-                        id="outlined-search"
-                        name="lname"
-                        type="search"
-                        className=" w-[90%]  border border-gray-400 rounded-md py-5 px-3 placeholder-black"
-                        placeholder="Last name"
-                        onChange={handleChangesection6}
-                      />
-                    </div>
-                  </div>
-                  <div className="flex  justify-center mt-3">
-                    <input
-                      id="outlined-search"
-                      name="businessname"
-                      type="search"
-                      className=" w-[95%]  border border-gray-400  rounded-md py-5 px-3 placeholder-black"
-                      placeholder="Business name"
-                      onChange={handleChangesection6}
-                    />
-                  </div>
-                  <div className="flex  justify-center mt-3">
-                    <input
-                      id="outlined-search"
-                      name="address1"
-                      type="text"
-                      className=" w-[95%]  border border-gray-400  rounded-md py-5 px-3 placeholder-black"
-                      placeholder="Address 1"
-                      onChange={handleChangesection6}
-                    />
-                  </div>
-                  <div className="flex  justify-center mt-3">
-                    <input
-                      id="outlined-search"
-                      name="address2"
-                      type="text"
-                      className=" w-[95%]  border border-gray-400  rounded-md py-5 px-3 placeholder-black"
-                      placeholder="Address 2"
-                      onChange={handleChangesection6}
-                    />
-                  </div>
-                  <div className="flex  justify-center mt-3">
-                    <input
-                      id="outlined-search"
-                      name="email"
-                      type="email"
-                      className=" w-[95%]  border border-gray-400  rounded-md py-5 px-3 placeholder-black"
-                      placeholder="Email"
-                      onChange={handleChangesection6}
-                    />
-                  </div>
-                  <div className="flex  justify-center mt-3">
-                    <input
-                      id="outlined-search"
-                      name="website"
-                      type="text"
-                      className=" w-[95%]  border border-gray-400  rounded-md py-5 px-3 placeholder-black"
-                      placeholder="Website"
-                      onChange={handleChangesection6}
-                    />
-                  </div>
-                  <div className="flex  justify-center mt-3">
-                    <input
-                      id="outlined-search"
-                      name="pin"
-                      type="text"
-                      className=" w-[95%]  border border-gray-400  rounded-md py-5 px-3 placeholder-black"
-                      placeholder="TIN / PIN"
-                      onChange={handleChangesection6}
-                    />
-                  </div>
-                  <div className="flex  justify-center mt-3">
-                    <input
-                      id="outlined-search"
-                      name="additionalinfo"
-                      type="text"
-                      className=" w-[95%]  border border-gray-400  rounded-md py-5 px-3 placeholder-black"
-                      placeholder="Additional information"
-                      onChange={handleChangesection6}
-                    />
-                  </div>
-                  <div className="flex justify-center  mt-10">
-                    <button
-                      className="text-white bg-[#003087] px-9 py-3  rounded-full    font-extrabold text-lg"
-                      type="submit"
-                      onClick={handlesavebusinessinfo}
-                    >
-                      Save
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </form>
-        </>
-      ) : null}
       {customisepopup ? (
         <>
           <div className=" overflow-y-hidden  w-full h-full flex justify-center fixed z-20  bg-gray-200   ">
@@ -1451,40 +908,6 @@ const InvoicePage = () => {
                   invoice single customer
                 </button>
               </div>
-
-              <form onSubmit={handleSubmitsection1}>
-                <div className="mx-auto w-[97%]">
-                  <input
-                    id="outlined-required"
-                    className="w-full mt-3 py-4 px-3 border border-gray-500 rounded-md"
-                    type="text"
-                    placeholder="Email address or name"
-                    onClick={handleClick}
-                    value={inputValue}
-                    onChange={(e) => setInputValue(e.target.value)}
-                  />
-                  {showAddButton && (
-                    <>
-                      {lastData && (
-                        <button
-                          className="px-4 py-2 bg-white text-blue-700 rounded-full border mt-2 flex items-center gap-2"
-                          onClick={handleClick1}
-                        >
-                          {lastData.email} <RxCross1 />
-                        </button>
-                      )}
-                      <button
-                        className="mt-3 px-4 py-2 rounded bg-blue-900 text-white font-semibold"
-                        onClick={() => {
-                          navigate("/addcustomer");
-                        }}
-                      >
-                        Add Customer
-                      </button>
-                    </>
-                  )}
-                </div>
-              </form>
             </div>
             {/*==================================  section-2  =============================== */}
             {isVisibleinvoicepage && (
@@ -1543,7 +966,7 @@ const InvoicePage = () => {
                         )}
                       </div>
                     </div>
-                    {renderItems()}
+                    {/* {renderItems()} */}
                   </form>
                   <button
                     className="text-bold ml-4 mt-3 text-blue-600  font-bold flex items-center text-xl "
@@ -1551,99 +974,37 @@ const InvoicePage = () => {
                   >
                     <AiOutlinePlus className="mr-2" /> Add items or Service
                   </button>
+                  {state.items.map((item) => (
+                    <div key={item.id}>
+                      {" "}
+                      {customiseui ? (
+                        <div className="p-3   ">
+                          <div className="   flex items-center ">
+                            <div className="flex gap-4">
+                              {renderFields()}
+                              {renderFieldstax()}
+                              {renderFieldsdate()}
+                              {renderFieldsdiscount()}
+                            </div>
+                          </div>
+                          <div>{renderFieldsdescription()}</div>
+                        </div>
+                      ) : (
+                        <div className="p-3   ">
+                          <div className="   flex items-center gap-5 ">
+                            {renderSelectedFields()}
+                            {renderSelectedtaxFields()}
+                            {renderSelecteddiscountFields()}
+                          </div>
+                          <div> {renderSelecteddescriptionFields()}</div>
+                        </div>
+                      )}
+                    </div>
+                  ))}
                 </div>
                 {/*  ==============================  section-3  ============================= */}
-                <form onSubmit={handleSubmitsection3}>
-                  <div className="p-3">
-                    <p className="font-bold text-xl ml-5">
-                      Message To Customer
-                    </p>
-                    <div className=" mb-2" data-te-input-wrapper-init>
-                      <textarea
-                        className="peer block min-h-[auto] w-[97%] mx-auto border border-gray-500 rounded mt-5 text-black px-3 py-[0.32rem]  "
-                        id="exampleFormControlTextarea1"
-                        rows="6"
-                        value={input.section3messege}
-                        name="section3messege"
-                        placeholder="Seller note to customer"
-                        onChange={handleChangesection3}
-                      >
-                        {" "}
-                      </textarea>
-                    </div>
-                  </div>
-                </form>
-                <div className="flex items-center ml-7 ">
-                  <button className="text-bold  mt-3 text-blue-600  font-bold flex items-center text-xl ">
-                    Add terms and conditions
-                  </button>
 
-                  <button className="text-bold  ml-1 mt-3 text-blue-600  font-bold flex items-center text-xl ">
-                    <RxDividerVertical className="text-black flex item-center text-xl" />{" "}
-                    Add reference number
-                  </button>
-                </div>
                 {/*===================================  section-4  =================================*/}
-                <div className="  p-3 mt-10 ">
-                  <div className="flex items-center">
-                    <p className=" text-[27px]  ml-3 font-semibold w-full">
-                      More Options
-                    </p>
-                    <button onClick={hideshow}>
-                      {" "}
-                      {showMemo ? (
-                        <IoIosArrowUp className="text-2xl text-gray-500" />
-                      ) : (
-                        <IoIosArrowDown className="text-2xl text-gray-500" />
-                      )}
-                    </button>
-                  </div>
-                  <hr className="mt-3 w-[98%] mx-auto" />
-                  <div className="  ">
-                    {showMemo && (
-                      <form onSubmit={handleSubmitsection4}>
-                        <div className="">
-                          <p className="text-xl p-3 ml-1 font-bold">
-                            Attachments
-                          </p>
-                          <input
-                            ref={fileInputRef}
-                            type="file"
-                            name="files"
-                            id="files"
-                            className="hidden"
-                            onChange={handleFileChange}
-                          />
-                          <button
-                            type="button"
-                            className="text-[#05070a] ml-3 font-bold border-2 border-[#003087] px-4 py-1 rounded-full text-sm"
-                            onClick={handleButtonClick}
-                          >
-                            Upload files
-                          </button>
-                          <p className="text-sm font-semibold p-3 text-gray-800">
-                            JPG GIF PNG PDF | Up to 5 files , 4MB per file
-                          </p>
-                        </div>
-                        <div className=" p-3 mt-10 mb-4">
-                          <p className="font-bold text-xl ml-2">Memo To Self</p>
-                          <div className=" mb-2">
-                            <textarea
-                              className="peer block min-h-[auto] placeholder-gray-500  w-[98%] mx-auto border border-gray-500 rounded mt-5 text-black px-3 py-[0.32rem]  "
-                              rows="6"
-                              placeholder="Memo"
-                              value={inputuser4.memo}
-                              name="memo"
-                              onChange={handleChangesection4}
-                            >
-                              {" "}
-                            </textarea>
-                          </div>
-                        </div>
-                      </form>
-                    )}
-                  </div>
-                </div>
               </>
             )}
             {isVisiblehours && (
@@ -1869,364 +1230,9 @@ const InvoicePage = () => {
             ))} */}
           </div>
         </div>
-
-        <div className=" w-[25%]  text-center ">
-          <div className="h-auto border rounded-xl bg-white">
-            <div className="flex items-center h-20   w-full">
-              <div className="flex items-center justify-start ml-3 mt-3 w-full">
-                <div>
-                  {selectedImage && (
-                    <img
-                      src={selectedImage}
-                      alt="Uploaded"
-                      // style={{ maxWidth: "300px" }}
-                      className="w-20 h-20"
-                    />
-                  )}
-                </div>
-                <div>
-                  {businessdata && (
-                    <>
-                      <div className="text-lg font-bold pl-5">
-                        {" "}
-                        {businessdata.businessname}
-                      </div>
-                    </>
-                  )}
-                </div>
-              </div>
-
-              <div>
-                <button
-                  className=" flex justify-end  mr-2 "
-                  onClick={hideshowsection4}
-                >
-                  {" "}
-                  {showMemosection4 ? (
-                    <IoIosArrowUp className="text-2xl  text-gray-500" />
-                  ) : (
-                    <IoIosArrowDown className="text-2xl  text-gray-500" />
-                  )}
-                </button>
-              </div>
-            </div>
-            <div>
-              {businessdata && (
-                <div className="flex items-center">
-                  <div className="text-2xl text-black  mt-2 pl-2 gap-3">
-                    <p className="text-[20px] text-black flex  items-center mt-3 pl-8">
-                      {businessdata.address1}
-                    </p>
-                    <p className="text-[20px] text-black flex  items-center ">
-                      <i>
-                        {" "}
-                        <FaRegAddressCard className="text-blue-900 mr-3 " />
-                      </i>{" "}
-                      {businessdata.address2}
-                    </p>
-                    <p className="text-[20px] text-black flex  items-center  pl-8">
-                      {businessdata.pin}
-                    </p>
-                    <p className="text-[20px] text-black flex  items-center mt-3">
-                      <i>
-                        {" "}
-                        <IoMdMail className="text-blue-900 mr-3  " />
-                      </i>{" "}
-                      {businessdata.email}
-                    </p>
-
-                    <p className="text-[20px] text-black flex items-center mt-3 mb-4 ">
-                      <CgWebsite className="text-blue-900 mr-3 " />
-                      {businessdata.website}
-                    </p>
-                  </div>
-                </div>
-              )}
-              {showMemosection4 && (
-                <div className="flex items-center mt-5  h-full pb-5 pl-2    ">
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleImageUpload}
-                  />
-                  <button
-                    className="text-blue-600 w-full    text-lg font-bold"
-                    onClick={() => setBusinessPopup(true)}
-                  >
-                    Edit Business Information
-                  </button>
-                </div>
-              )}
-            </div>
-          </div>
-
-          <form onSubmit={handleSubmitsection5}>
-            <div className="h-[550px] border rounded-xl bg-white mt-4 pt-8 ">
-              <Box
-                component=""
-                sx={{
-                  "& > :not(style)": { m: 1, width: "90%" },
-                }}
-                noValidate
-                autoComplete="off"
-                className="flex items-start pl-4"
-                name="invoicenumber"
-                value={invoiceNumber.invoiceNumber}
-                onChange={handleInputInvoice}
-              >
-                <TextField
-                  type="number"
-                  id="outlined-uncontrolled"
-                  label="Invoice Number"
-                  name="invoicenumber"
-                  value={invoiceNumber}
-                  onChange={handleChangesection5}
-                />
-              </Box>
-              <input
-                type="date"
-                name="invoicedate"
-                className="p-4 border flex items-start ml-6 border-gray-300"
-                onChange={handleChangesection5}
-                value={inputuser5.invoicedate}
-              />{" "}
-              <select
-                id="dropdown-select"
-                className="w-[90%] py-4 mt-2 px-3 text-base border border-gray-500 rounded-md box-border"
-                onChange={handleChangesection5}
-                name="invoicedue"
-                value={inputuser5.invoicedue}
-              >
-                <option defaultValue disabled value="">
-                  ---select Due---
-                </option>
-                {days.map((days, index) => (
-                  <option key={index}>{days.value}</option>
-                ))}
-              </select>
-              <div className="mx-auto mt-3  h-[300px] grid grid-cols-2">
-                <div>
-                  <p className="font-semibold w-full text-lg p-3">Subtotal </p>
-                  <p className="font-semibold text-lg p-3">Other Discounts </p>
-                  <p className="font-semibold text-lg p-3">Shipping </p>
-                  <p className="font-semibold text-lg p-3">Other Amount </p>
-                  <p className="font-bold text-lg p-3">
-                    Total{" "}
-                    <span className="text-sm text-blue-500 font-bold">
-                      (Tax Excl.)
-                    </span>{" "}
-                  </p>
-                </div>
-                <div className="mt-3">
-                  {isVisibleinvoicepage && (
-                    <>
-                      {inputuser2 && (
-                        <>
-                          <p className="font-bold text-md">
-                            {inputuser2.discount
-                              ? (inputuser2.price *
-                                  inputuser2.quantity *
-                                  inputuser2.discount) /
-                                100
-                              : inputuser2.price * inputuser2.quantity}
-                          </p>
-                        </>
-                      )}
-                    </>
-                  )}
-                  {isVisiblehours && (
-                    <>
-                      {inputuser2 && (
-                        <>
-                          <p className="font-bold text-md">
-                            {inputuser2.discount
-                              ? (inputuser2.hours *
-                                  inputuser2.rate *
-                                  inputuser2.discount) /
-                                100
-                              : inputuser2.hours * inputuser2.rate}
-                          </p>
-                        </>
-                      )}
-                    </>
-                  )}
-
-                  {isVisibleaccount && (
-                    <>
-                      {" "}
-                      {inputuser2 && (
-                        <>
-                          <p className="font-bold text-md">
-                            {inputuser2.discount
-                              ? (inputuser2.price * inputuser2.discount) / 100
-                              : inputuser2.price}
-                          </p>
-                        </>
-                      )}
-                    </>
-                  )}
-
-                  <form onSubmit={(e) => e.preventDefault()}>
-                    <p className="p-3">
-                      {showDiscountField ? (
-                        <div>
-                          <input
-                            type="text"
-                            className="w-14 border border-black"
-                            value={discount}
-                            onChange={(e) => setDiscount(e.target.value)}
-                            onKeyDown={(e) => handleKeyDown(e, "discount")}
-                          />
-                        </div>
-                      ) : (
-                        <button
-                          className="text-blue-600 rounded-xl text-lg font-bold not-italic cursor-pointer"
-                          onClick={() => setShowDiscountField(true)}
-                        >
-                          Add
-                        </button>
-                      )}
-                    </p>
-                  </form>
-                  <form onSubmit={(e) => e.preventDefault()}>
-                    <p className="p-4">
-                      {showShippingField ? (
-                        <div>
-                          <input
-                            type="text"
-                            className="w-14 border border-black"
-                            value={shipping}
-                            onChange={(e) => setShipping(e.target.value)}
-                            onKeyDown={(e) => handleKeyDown(e, "shipping")}
-                          />
-                        </div>
-                      ) : (
-                        <button
-                          className="text-blue-600 rounded-xl text-lg font-bold not-italic cursor-pointer"
-                          onClick={() => setShowShippingField(true)}
-                        >
-                          Add
-                        </button>
-                      )}
-                    </p>
-                  </form>
-                  <form onSubmit={(e) => e.preventDefault()}>
-                    <p className="p-4">
-                      {showOtherAmountField ? (
-                        <div>
-                          <input
-                            type="text"
-                            className="w-14 border border-black"
-                            value={otherAmount}
-                            onChange={(e) => setOtherAmount(e.target.value)}
-                            onKeyDown={(e) => handleKeyDown(e, "otherAmount")}
-                          />
-                        </div>
-                      ) : (
-                        <button
-                          className="text-blue-600 rounded-xl text-lg font-bold not-italic cursor-pointer"
-                          onClick={() => setShowOtherAmountField(true)}
-                        >
-                          Add
-                        </button>
-                      )}
-                    </p>
-                  </form>
-                  <p className="p-3 font-bold">$ {calculateTotal()}</p>
-                </div>
-              </div>
-            </div>
-          </form>
-        </div>
       </div>
     </div>
   );
 };
-const Customiseui1 = () => {
-  const [textareaValue, setTextareaValue] = useState("");
 
-  const currencies = [
-    {
-      value: "No Tax",
-      label: "No Tax",
-    },
-    {
-      value: "Tax able",
-      label: "Tax able",
-    },
-  ];
-  const handleTextareaChange = (event) => {
-    setTextareaValue(event.target.value);
-  };
-
-  return (
-    <div>
-      <div className="flex items-center mx-auto  w-[97%] mt-3 ">
-        <TextField
-          id="outlined-search"
-          label="Item Name"
-          type="text"
-          style={{
-            marginLeft: "",
-            width: "25%",
-          }}
-        />
-        <Box
-          component="form"
-          sx={{
-            "& > :not(style)": { m: 1, width: "70%" },
-          }}
-          noValidate
-          autoComplete="off"
-        >
-          <TextField
-            id="outlined-uncontrolled"
-            label="Quantity"
-            defaultValue="1"
-          />
-        </Box>
-        <TextField
-          id="outlined-search"
-          label="Price"
-          type="search"
-          style={{
-            marginLeft: "",
-            width: "25%",
-          }}
-        />
-        <Box
-          component="form"
-          sx={{
-            "& .MuiTextField-root": { m: 1, width: "25ch" },
-          }}
-          noValidate
-          autoComplete="off"
-        >
-          <TextField
-            id="outlined-select-currency"
-            select
-            label="Select"
-            defaultValue="select"
-            className=""
-          >
-            {currencies.map((option) => (
-              <MenuItem key={option.value} value={option.value}>
-                {option.label}
-              </MenuItem>
-            ))}
-          </TextField>
-        </Box>
-      </div>
-      <textarea
-        className="peer block min-h-[auto] w-[97%] mx-auto border border-gray-500 rounded mb-4 mt-5 text-black px-3 py-[0.32rem]"
-        id="exampleFormControlTextarea1"
-        rows="5"
-        placeholder="Description(optional)"
-        value={textareaValue}
-        onChange={handleTextareaChange}
-      ></textarea>
-    </div>
-  );
-};
-
-export default InvoicePage;
+export default Usereducer;
