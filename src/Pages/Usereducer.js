@@ -1,6 +1,9 @@
 //Reactjs Library imports
 import * as React from "react";
 import { useState, useRef, useEffect } from "react";
+import database from "../firebase-config";
+import { v4 as uuidv4 } from "uuid";
+
 //materialUI imports
 import Box from "@mui/material/Box";
 import InputLabel from "@mui/material/InputLabel";
@@ -138,18 +141,61 @@ const Usereducer = () => {
     }
   };
 
+  // const handleSubmitsection2 = (e) => {
+  //   console.log(inputuser2);
+
+  //   if (!inputuser2) {
+  //     // Handle error when any of the fields are empty
+  //     // toast.error("Please fill in all the fields");
+  //   } else {
+  //     dataRef
+  //       .ref()
+  //       .child("section2")
+  //       .push(inputuser2, (err) => {
+  //         if (err) {
+  //           toast.error(err);
+  //         } else {
+  //           toast.success("Successfully added");
+  //         }
+  //       });
+  //   }
+  // };
+
+  // const handleSubmitsection2 = (e) => {
+  //   e.preventDefault();
+
+  //   if (state.items.length === 0) {
+  //     // Handle error when no items are present
+  //     // toast.error("No items to submit");
+  //   } else {
+  //     const existingFormData = state.items;
+  //     const newData = {
+  //       existingFormData: [existingFormData[0], inputuser2],
+  //     };
+
+  //     dataRef.ref("section2").push(newData, (err) => {
+  //       if (err) {
+  //         toast.error(err);
+  //       } else {
+  //         toast.success("Successfully added");
+  //       }
+  //     });
+  //   }
+  // };
+
   const handleSubmitsection2 = (e) => {
     e.preventDefault();
-    console.log(inputuser2);
 
     if (!inputuser2) {
       // Handle error when any of the fields are empty
       // toast.error("Please fill in all the fields");
     } else {
+      const newData = { ...state.items };
+
       dataRef
         .ref()
         .child("section2")
-        .push(inputuser2, (err) => {
+        .push(newData, (err) => {
           if (err) {
             toast.error(err);
           } else {
@@ -158,26 +204,34 @@ const Usereducer = () => {
         });
     }
   };
-  //   const handleAddItem = () => {
-  //     // Create a new item object here or modify as per your requirement
-  //     const newItem = {
-  //       id: Math.random().toString(),
-  //       name: "New Item",
-  //     };
 
-  //     dispatch({ type: "ADD_ITEM", payload: newItem });
-  //   };
-  const handleAddItem = () => {
-    // Get form values here or modify as per your requirement
+  const handleAddItem = (e) => {
+    const inputValue = e.target.value;
+
     const newItem = {
-      id: Math.random().toString(),
-      formId: 1, // Assign a unique formId for the new item
-      name: "New Item",
-      // Include other form values here
+      // id: uuidv4(), // Use uuidv4() to generate a unique ID
+      ItemName: inputValue,
+      quantity: 0,
+      price: 0,
+      description: "",
+      tax: "",
+      discount: 0,
+      itemnamehours: "",
+      hours: 0,
+      rate: 0,
+      itemnameaccount: "",
     };
 
     dispatch({ type: "ADD_ITEM", payload: newItem });
   };
+  // const handleAddItem = () => {
+  //   // Get form values here or modify as per your requirement
+  //   const newItem = {
+  //     id: Math.random().toString(),
+  //     formId: 1, // Assign a unique formId for the new item
+  //     name: "New Item",
+  //     // Include other form values here
+  //   };
 
   //   const renderItems = () => {
   //     return additem.map((item, index) => (
@@ -539,46 +593,6 @@ const Usereducer = () => {
     setVisiblecustomiseaccount(false);
   };
 
-  //fetched data
-
-  //loading
-
-  //logo image
-
-  //handle add items
-
-  //   const additems = (e) => {
-  //     return (
-  //       <div className="h-auto  w-[95%] mt-4  border-2 rounded-xl mx-auto  ">
-  //         {customiseui ? (
-  //           <div className="p-3   ">
-  //             <div className="   flex items-center ">
-  //               <div className="flex gap-4">
-  //                 {renderFields()}
-  //                 {renderFieldstax()}
-  //                 {renderFieldsdate()}
-  //               </div>
-  //             </div>
-  //             <div>{renderFieldsdescription()}</div>
-  //           </div>
-  //         ) : (
-  //           <div className="p-3   ">
-  //             <div className="   flex items-center gap-5 ">
-  //               {renderSelectedFields()}
-  //               {renderSelectedtaxFields()}
-  //             </div>
-  //             <div> {renderSelecteddescriptionFields()}</div>
-  //           </div>
-  //         )}
-  //         <div className="flex justify-end pr-7 pb-3">
-  //           <>
-  //             <p className="font-bold text-md">Amounts: $</p>
-  //           </>
-  //         </div>
-  //       </div>
-  //     );
-  //   };
-
   //Return Statements
   return (
     <div className="mb-3 ">
@@ -835,7 +849,7 @@ const Usereducer = () => {
             <button
               className="text-white bg-[#003087] px-9 py-3   mr-5 rounded-full    font-extrabold text-lg"
               type="submit"
-              onClick={handlesubmit}
+              onClick={handleSubmitsection2}
             >
               Send
             </button>
@@ -967,6 +981,33 @@ const Usereducer = () => {
                       </div>
                     </div>
                     {/* {renderItems()} */}
+                    {state.items.map((item) => (
+                      <div key={item.id}>
+                        {" "}
+                        {customiseui ? (
+                          <div className="p-3   ">
+                            <div className="   flex items-center ">
+                              <div className="flex gap-4">
+                                {renderFields()}
+                                {renderFieldstax()}
+                                {renderFieldsdate()}
+                                {renderFieldsdiscount()}
+                              </div>
+                            </div>
+                            <div>{renderFieldsdescription()}</div>
+                          </div>
+                        ) : (
+                          <div className="p-3   ">
+                            <div className="   flex items-center gap-5 ">
+                              {renderSelectedFields()}
+                              {renderSelectedtaxFields()}
+                              {renderSelecteddiscountFields()}
+                            </div>
+                            <div> {renderSelecteddescriptionFields()}</div>
+                          </div>
+                        )}
+                      </div>
+                    ))}
                   </form>
                   <button
                     className="text-bold ml-4 mt-3 text-blue-600  font-bold flex items-center text-xl "
@@ -974,33 +1015,6 @@ const Usereducer = () => {
                   >
                     <AiOutlinePlus className="mr-2" /> Add items or Service
                   </button>
-                  {state.items.map((item) => (
-                    <div key={item.id}>
-                      {" "}
-                      {customiseui ? (
-                        <div className="p-3   ">
-                          <div className="   flex items-center ">
-                            <div className="flex gap-4">
-                              {renderFields()}
-                              {renderFieldstax()}
-                              {renderFieldsdate()}
-                              {renderFieldsdiscount()}
-                            </div>
-                          </div>
-                          <div>{renderFieldsdescription()}</div>
-                        </div>
-                      ) : (
-                        <div className="p-3   ">
-                          <div className="   flex items-center gap-5 ">
-                            {renderSelectedFields()}
-                            {renderSelectedtaxFields()}
-                            {renderSelecteddiscountFields()}
-                          </div>
-                          <div> {renderSelecteddescriptionFields()}</div>
-                        </div>
-                      )}
-                    </div>
-                  ))}
                 </div>
                 {/*  ==============================  section-3  ============================= */}
 
