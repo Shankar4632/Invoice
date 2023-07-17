@@ -32,16 +32,53 @@ import Currencydata from "../json file/currencies.json";
 import days from "../json file/days.json";
 import { useReducer } from "react";
 
-const initialState = {
-  items: [],
+const initialFields = ["ItemName", "Quantity", "Price"];
+const initialFieldsNew = ["ItemName1", "Quantity1", "Price1"];
+const initialInputuser2 = {
+  ItemName: "",
+  quantity: 0,
+  price: 0,
+  description: "",
+  tax: "",
+  discount: 0,
+  itemnamehours: "",
+  hours: 0,
+  rate: 0,
+  itemnameaccount: "",
+};
+const initialInputuser2New = {
+  ItemName1: "",
+  quantity1: 0,
+  price1: 0,
+  description1: "",
+  tax1: "",
+  discount1: 0,
+  itemnamehours1: "",
+  hours1: 0,
+  rate1: 0,
+  itemnameaccount1: "",
 };
 
+// const reducer = (state, action) => {
+//   switch (action.type) {
+//     case "ADD_ITEM":
+//       return {
+//         ...state,
+//         items: [...state.items, action.payload],
+//       };
+//     default:
+//       return state;
+//   }
+// };
+const initialState = {
+  items: [],
+  displayNewItemForm: false,
+};
 const reducer = (state, action) => {
   switch (action.type) {
-    case "ADD_ITEM":
+    case "TOGGLE_NEW_ITEM_FORM":
       return {
-        ...state,
-        items: [...state.items, action.payload],
+        displayNewItemForm: initialInputuser2New,
       };
     default:
       return state;
@@ -71,7 +108,9 @@ const Usereducer = () => {
 
   //states for customise  items
   const [selectedTemplate, setSelectedTemplate] = useState("");
-  const [fields, setFields] = useState(["ItemName", "Quantity", "Price"]);
+  const [fields, setFields] = useState(initialFields);
+  const [fieldsnew, setFieldsnew] = useState(initialFieldsNew);
+  const [isButtonClicked, setIsButtonClicked] = useState(false);
   const [fields1, setField1] = useState(["description"]);
   const [fields2, setField2] = useState([]);
   const [fields3, setField3] = useState([]);
@@ -100,18 +139,8 @@ const Usereducer = () => {
   const [isVisiblecustomisehours, setVisiblecustomisehours] = useState(null);
 
   //section-2
-  const [inputuser2, setInputuser2] = useState({
-    ItemName: "",
-    quantity: 0,
-    price: 0,
-    description: "",
-    tax: "",
-    discount: 0,
-    itemnamehours: "",
-    hours: 0,
-    rate: 0,
-    itemnameaccount: "",
-  });
+  const [inputuser2, setInputuser2] = useState(initialInputuser2);
+  const [inputuser2new, setInputuser2new] = useState(initialInputuser2New);
 
   const { ItemName, quantity, price, description } = inputuser2;
 
@@ -129,29 +158,36 @@ const Usereducer = () => {
     setInputuser2((values) => ({ ...values, [fieldName]: value }));
   };
 
-  const handlesubmit = (e) => {
-    e.preventDefault();
-
-    const section2Result = handleSubmitsection2(e);
-
-    if (section2Result) {
-      navigate("/");
-    } else {
-      toast.error("Please fill in all the required fields.");
-    }
+  const handleChangesection2new = (event) => {
+    const fieldName = event.target.name;
+    const value = event.target.value;
+    console.log(fieldName, value); // Check if the values are being received correctly
+    setInputuser2new((values) => ({ ...values, [fieldName]: value }));
   };
 
-  // const handleSubmitsection2 = (e) => {
-  //   console.log(inputuser2);
+  // const handlesubmit = (e) => {
+  //   e.preventDefault();
 
-  //   if (!inputuser2) {
+  //   const section2Result = handleSubmitsection2(e);
+
+  //   if (section2Result) {
+  //     navigate("/");
+  //   } else {
+  //     toast.error("Please fill in all the required fields.");
+  //   }
+  // };
+
+  // const handleSubmitsection2 = (e) => {
+  //   console.log(inputuser2new);
+
+  //   if (!inputuser2new) {
   //     // Handle error when any of the fields are empty
   //     // toast.error("Please fill in all the fields");
   //   } else {
   //     dataRef
   //       .ref()
   //       .child("section2")
-  //       .push(inputuser2, (err) => {
+  //       .push(inputuser2new, (err) => {
   //         if (err) {
   //           toast.error(err);
   //         } else {
@@ -160,42 +196,17 @@ const Usereducer = () => {
   //       });
   //   }
   // };
-
-  // const handleSubmitsection2 = (e) => {
-  //   e.preventDefault();
-
-  //   if (state.items.length === 0) {
-  //     // Handle error when no items are present
-  //     // toast.error("No items to submit");
-  //   } else {
-  //     const existingFormData = state.items;
-  //     const newData = {
-  //       existingFormData: [existingFormData[0], inputuser2],
-  //     };
-
-  //     dataRef.ref("section2").push(newData, (err) => {
-  //       if (err) {
-  //         toast.error(err);
-  //       } else {
-  //         toast.success("Successfully added");
-  //       }
-  //     });
-  //   }
-  // };
-
   const handleSubmitsection2 = (e) => {
-    e.preventDefault();
+    console.log(inputuser2, inputuser2new);
 
-    if (!inputuser2) {
+    if (!inputuser2 || !inputuser2new) {
       // Handle error when any of the fields are empty
       // toast.error("Please fill in all the fields");
     } else {
-      const newData = { ...state.items };
-
       dataRef
         .ref()
         .child("section2")
-        .push(newData, (err) => {
+        .push({ inputuser2, inputuser2new }, (err) => {
           if (err) {
             toast.error(err);
           } else {
@@ -205,41 +216,14 @@ const Usereducer = () => {
     }
   };
 
+  // const handleAddItem = (e) => {
+  //   const newfield = setIsButtonClicked(true);
+
+  //   dispatch({ type: "ADD_ITEM", payload: newfield });
+  // };
   const handleAddItem = (e) => {
-    const inputValue = e.target.value;
-
-    const newItem = {
-      // id: uuidv4(), // Use uuidv4() to generate a unique ID
-      ItemName: inputValue,
-      quantity: 0,
-      price: 0,
-      description: "",
-      tax: "",
-      discount: 0,
-      itemnamehours: "",
-      hours: 0,
-      rate: 0,
-      itemnameaccount: "",
-    };
-
-    dispatch({ type: "ADD_ITEM", payload: newItem });
+    dispatch({ type: "TOGGLE_NEW_ITEM_FORM" });
   };
-  // const handleAddItem = () => {
-  //   // Get form values here or modify as per your requirement
-  //   const newItem = {
-  //     id: Math.random().toString(),
-  //     formId: 1, // Assign a unique formId for the new item
-  //     name: "New Item",
-  //     // Include other form values here
-  //   };
-
-  //   const renderItems = () => {
-  //     return additem.map((item, index) => (
-  //       <div key={index} className="">
-  //         <div className="flex gap-4">{additems(item)}</div>
-  //       </div>
-  //     ));
-  //   };
 
   const fileInputRef = useRef(null);
   //handle click
@@ -338,23 +322,121 @@ const Usereducer = () => {
     setCustomisePopup(false);
   };
   // Render the form fields
+  // const renderFields = () => {
+  //   return fields.map((field) => (
+  //     <div key={field}>
+  //       <TextField
+  //         id="outlined-search"
+  //         type="text"
+  //         label={field}
+  //         style={{
+  //           marginRight: "10px",
+  //           width: "100%",
+  //         }}
+  //         name={field}
+  //         onChange={handleChangesection2}
+  //       />
+  //     </div>
+  //   ));
+
+  // };
+  // const renderFields = () => {
+  //   if (isButtonClicked) {
+  //     return fieldsnew.map((field) => (
+  //       <div key={field}>
+  //         <TextField
+  //           id="outlined-search"
+  //           type="text"
+  //           label={field}
+  //           style={{
+  //             marginRight: "10px",
+  //             width: "100%",
+  //           }}
+  //           name={field}
+  //           onChange={handleChangesection2new}
+  //         />
+  //       </div>
+  //     ));
+  //   } else {
+  //     return fields.map((field) => (
+  //       <div key={field}>
+  //         <TextField
+  //           id="outlined-search"
+  //           type="text"
+  //           label={field}
+  //           style={{
+  //             marginRight: "10px",
+  //             width: "100%",
+  //           }}
+  //           name={field}
+  //           onChange={handleChangesection2}
+  //         />
+  //       </div>
+  //     ));
+  //   }
+  // };
+  // const renderFields = () => {
+  //   return (isButtonClicked ? fieldsnew || fields : fields).map((field) => (
+  //     <div key={field}>
+  //       <TextField
+  //         id="outlined-search"
+  //         type="text"
+  //         label={field}
+  //         style={{
+  //           marginRight: "10px",
+  //           width: "100%",
+  //         }}
+  //         name={field}
+  //         onChange={
+  //           isButtonClicked
+  //             ? handleChangesection2new || handleChangesection2
+  //             : handleChangesection2
+  //         }
+  //       />
+  //     </div>
+  //   ));
+  // };
   const renderFields = () => {
-    return fields.map((field) => (
-      <div key={field}>
-        <TextField
-          id="outlined-search"
-          type="text"
-          label={field}
-          style={{
-            marginRight: "10px",
-            width: "100%",
-          }}
-          name={field.toLowerCase()}
-          onChange={handleChangesection2}
-        />
-      </div>
-    ));
+    return (
+      <>
+        {fields.map((field) => (
+          <div key={field}>
+            <TextField
+              id="outlined-search"
+              type="text"
+              label={field}
+              style={{
+                marginRight: "10px",
+                width: "100%",
+              }}
+              name={field}
+              onChange={handleChangesection2}
+            />
+          </div>
+        ))}
+        {state.displayNewItemForm && (
+          <>
+            {fieldsnew.map((field) => (
+              <div key={field}>
+                <TextField
+                  id="outlined-search"
+                  type="text"
+                  label={field}
+                  style={{
+                    marginRight: "10px",
+                    width: "100%",
+                  }}
+                  name={field}
+                  onChange={handleChangesection2new}
+                />
+              </div>
+            ))}
+          </>
+        )}
+      </>
+    );
   };
+
   const renderFieldsdescription = () => {
     return fields1.map((fields1) => (
       <div key={fields1}>
@@ -366,6 +448,7 @@ const Usereducer = () => {
           placeholder="Description(optional)"
           name="description"
           onChange={handleChangesection2}
+          value={description}
         >
           {" "}
         </textarea>
@@ -448,7 +531,7 @@ const Usereducer = () => {
             width: "100%",
           }}
           className="gap-3"
-          name={field.toLowerCase()}
+          name={field}
           onChange={handleChangesection2}
         />
       </div>
@@ -981,8 +1064,8 @@ const Usereducer = () => {
                       </div>
                     </div>
                     {/* {renderItems()} */}
-                    {state.items.map((item) => (
-                      <div key={item.id}>
+                    {state.displayNewItemForm && (
+                      <div>
                         {" "}
                         {customiseui ? (
                           <div className="p-3   ">
@@ -1007,7 +1090,7 @@ const Usereducer = () => {
                           </div>
                         )}
                       </div>
-                    ))}
+                    )}
                   </form>
                   <button
                     className="text-bold ml-4 mt-3 text-blue-600  font-bold flex items-center text-xl "
