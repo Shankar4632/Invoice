@@ -74,11 +74,21 @@ const initialState = {
   items: [],
   displayNewItemForm: false,
 };
+// const reducer = (state, action) => {
+//   switch (action.type) {
+//     case "TOGGLE_NEW_ITEM_FORM":
+//       return {
+//         displayNewItemForm: initialInputuser2New,
+//       };
+//     default:
+//       return state;
+//   }
+// };
 const reducer = (state, action) => {
   switch (action.type) {
     case "TOGGLE_NEW_ITEM_FORM":
       return {
-        displayNewItemForm: initialInputuser2New,
+        displayNewItemForm: { ...initialFieldsNew },
       };
     default:
       return state;
@@ -414,6 +424,12 @@ const Usereducer = () => {
             />
           </div>
         ))}
+      </>
+    );
+  };
+  const renderFieldsnew = () => {
+    return (
+      <>
         {state.displayNewItemForm && (
           <>
             {fieldsnew.map((field) => (
@@ -1071,10 +1087,11 @@ const Usereducer = () => {
                           <div className="p-3   ">
                             <div className="   flex items-center ">
                               <div className="flex gap-4">
-                                {renderFields()}
+                                {renderFieldsnew()}
+                                {/* {renderFields()}
                                 {renderFieldstax()}
                                 {renderFieldsdate()}
-                                {renderFieldsdiscount()}
+                                {renderFieldsdiscount()} */}
                               </div>
                             </div>
                             <div>{renderFieldsdescription()}</div>
