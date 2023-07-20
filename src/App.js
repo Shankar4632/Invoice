@@ -1,4 +1,5 @@
 import "./App.css";
+// import Demo from "./Pages/Demo";
 import Usereducer from "./Pages/Usereducer";
 // import Index from "./Routes/Index";
 
@@ -7,6 +8,7 @@ function App() {
     <div className="App">
       {/* <Index /> */}
       <Usereducer />
+      {/* <Demo /> */}
     </div>
   );
 }
