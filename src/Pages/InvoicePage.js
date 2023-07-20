@@ -33,6 +33,19 @@ const initialState = {
   invoicedate: "",
   invoicenumber: "",
 };
+const initialFields = ["ItemName", "Quantity", "Price"];
+const initialInputuser2 = {
+  ItemName: "",
+  quantity: 0,
+  price: 0,
+  description: "",
+  tax: "",
+  discount: 0,
+  itemnamehours: "",
+  hours: 0,
+  rate: 0,
+  itemnameaccount: "",
+};
 const InvoicePage = () => {
   //hooks or States
   const [currency, setCurrency] = useState("");
@@ -55,7 +68,7 @@ const InvoicePage = () => {
 
   //states for customise  items
   const [selectedTemplate, setSelectedTemplate] = useState("");
-  const [fields, setFields] = useState(["ItemName", "Quantity", "Price"]);
+  const [fields, setFields] = useState(initialFields);
   const [fields1, setField1] = useState(["description"]);
   const [fields2, setField2] = useState([]);
   const [fields3, setField3] = useState([]);
@@ -92,22 +105,10 @@ const InvoicePage = () => {
   };
 
   //section-2
-  const [inputuser2, setInputuser2] = useState({
-    ItemName: "",
-    quantity: 0,
-    price: 0,
-    description: "",
-    tax: "",
-    discount: 0,
-    itemnamehours: "",
-    hours: 0,
-    rate: 0,
-    itemnameaccount: "",
-  });
+  const [inputuser2, setInputuser2] = useState(initialInputuser2);
 
-  const { ItemName, quantity, price, description } = inputuser2;
-
-  const [additem, setAdditem] = useState([]);
+  const [itemlist, setItemlist] = useState([{ additems: "" }]);
+  console.log(itemlist);
   //section-3
   const [input, setInput] = useState({
     section3messege: "",
@@ -159,6 +160,15 @@ const InvoicePage = () => {
     const value = event.target.value;
     console.log(fieldName, value); // Check if the values are being received correctly
     setInputuser2((values) => ({ ...values, [fieldName]: value }));
+  };
+  const handlechangeadditemlist = (e, index) => {
+    const { name, value } = e.target;
+    const list = [...itemlist];
+    list[index][name] = value;
+    setItemlist(list);
+  };
+  const handleAddItem = () => {
+    setItemlist([...itemlist, { additems: "" }]);
   };
 
   //section-3
@@ -234,17 +244,16 @@ const InvoicePage = () => {
   };
 
   const handleSubmitsection2 = (e) => {
-    e.preventDefault();
-    console.log(inputuser2);
+    console.log();
 
-    if (!inputuser2) {
+    if (!itemlist) {
       // Handle error when any of the fields are empty
       // toast.error("Please fill in all the fields");
     } else {
       dataRef
         .ref()
         .child("section2")
-        .push(inputuser2, (err) => {
+        .push(itemlist, (err) => {
           if (err) {
             toast.error(err);
           } else {
@@ -252,17 +261,6 @@ const InvoicePage = () => {
           }
         });
     }
-  };
-  const handleAddItem = () => {
-    setAdditem((additems) => [...additems, true]);
-  };
-
-  const renderItems = () => {
-    return additem.map((item, index) => (
-      <div key={index} className="">
-        <div className="flex gap-4">{additems(item)}</div>
-      </div>
-    ));
   };
 
   //section-3
@@ -525,7 +523,7 @@ const InvoicePage = () => {
     setCustomisePopup(false);
   };
   // Render the form fields
-  const renderFields = () => {
+  const renderFields = ({ singleItem, index }) => {
     return fields.map((field) => (
       <div key={field}>
         <TextField
@@ -536,13 +534,14 @@ const InvoicePage = () => {
             marginRight: "10px",
             width: "100%",
           }}
-          name={field.toLowerCase()}
-          onChange={handleChangesection2}
+          name={field}
+          value={singleItem[field]}
+          onChange={(e) => handlechangeadditemlist(e, index)}
         />
       </div>
     ));
   };
-  const renderFieldsdescription = () => {
+  const renderFieldsdescription = ({ singleItem, index }) => {
     return fields1.map((fields1) => (
       <div key={fields1}>
         <textarea
@@ -552,14 +551,15 @@ const InvoicePage = () => {
           type="text"
           placeholder="Description(optional)"
           name="description"
-          onChange={handleChangesection2}
+          value={singleItem[fields1]}
+          onChange={(e) => handlechangeadditemlist(e, index)}
         >
           {" "}
         </textarea>
       </div>
     ));
   };
-  const renderFieldstax = () => {
+  const renderFieldstax = ({ singleItem, index }) => {
     return fields2.map((fields2) => (
       <div key={fields2}>
         <Box
@@ -576,8 +576,8 @@ const InvoicePage = () => {
             label="Select"
             defaultValue="select"
             name="tax"
-            onChange={handleChangesection2}
-            value={inputuser2.tax}
+            value={singleItem[fields2]}
+            onChange={(e) => handlechangeadditemlist(e, index)}
           >
             {taxes.map((option) => (
               <MenuItem key={option.value} value={option.value}>
@@ -955,40 +955,6 @@ const InvoicePage = () => {
     }
   };
   //handle add items
-
-  const additems = (e) => {
-    return (
-      <div className="h-auto  w-[95%] mt-4  border-2 rounded-xl mx-auto  ">
-        {customiseui ? (
-          <div className="p-3   ">
-            <div className="   flex items-center ">
-              <div className="flex gap-4">
-                {renderFields()}
-                {renderFieldstax()}
-                {renderFieldsdate()}
-                {renderFieldsdiscount()}
-              </div>
-            </div>
-            <div>{renderFieldsdescription()}</div>
-          </div>
-        ) : (
-          <div className="p-3   ">
-            <div className="   flex items-center gap-5 ">
-              {renderSelectedFields()}
-              {renderSelectedtaxFields()}
-              {renderSelecteddiscountFields()}
-            </div>
-            <div> {renderSelecteddescriptionFields()}</div>
-          </div>
-        )}
-        <div className="flex justify-end pr-7 pb-3">
-          <>
-            <p className="font-bold text-md">Amounts: $</p>
-          </>
-        </div>
-      </div>
-    );
-  };
 
   //Return Statements
   return (
@@ -1504,53 +1470,69 @@ const InvoicePage = () => {
                       </button>
                     </div>
 
-                    <div className="h-auto  w-[97%] mt-4  border-2 rounded-xl mx-auto  ">
-                      {customiseui ? (
-                        <div className="p-3   ">
-                          <div className="   flex items-center ">
-                            <div className="flex gap-4">
-                              {renderFields()}
-                              {renderFieldstax()}
-                              {renderFieldsdiscount()}
+                    {itemlist.map((singleItem, index) => {
+                      return (
+                        <div key={index}>
+                          <div
+                            className="h-auto  w-[97%] mt-4  border-2 rounded-xl mx-auto  "
+                            id="additems"
+                          >
+                            {customiseui ? (
+                              <div className="p-3   ">
+                                <div className="   flex items-center ">
+                                  <div className="flex gap-4">
+                                    {renderFields({ singleItem, index })}
+                                    {renderFieldstax({ singleItem, index })}
+                                    {renderFieldsdiscount()}
+                                  </div>
+                                </div>
+                                <div>
+                                  {renderFieldsdescription({
+                                    singleItem,
+                                    index,
+                                  })}
+                                </div>
+                              </div>
+                            ) : (
+                              <div className="p-3   ">
+                                <div className="   flex items-center gap-5 ">
+                                  {renderSelectedFields()}
+                                  {renderSelectedtaxFields()}
+                                  {renderSelecteddiscountFields()}
+                                  {renderSelecteddateFields()}
+                                </div>
+                                <div> {renderSelecteddescriptionFields()}</div>
+                              </div>
+                            )}
+                            <div className="flex justify-end pr-7 pb-3">
+                              {inputuser2 && (
+                                <>
+                                  <p className="font-bold text-md">
+                                    Amounts: $
+                                    {inputuser2.discount
+                                      ? (inputuser2.price *
+                                          inputuser2.quantity *
+                                          inputuser2.discount) /
+                                        100
+                                      : inputuser2.price * inputuser2.quantity}
+                                  </p>
+                                </>
+                              )}
                             </div>
                           </div>
-                          <div>{renderFieldsdescription()}</div>
+                          {itemlist.length - 1 === index && (
+                            <button
+                              className="text-bold ml-4 mt-3 text-blue-600  font-bold flex items-center text-xl "
+                              onClick={handleAddItem}
+                            >
+                              <AiOutlinePlus className="mr-2" /> Add items or
+                              Service
+                            </button>
+                          )}
                         </div>
-                      ) : (
-                        <div className="p-3   ">
-                          <div className="   flex items-center gap-5 ">
-                            {renderSelectedFields()}
-                            {renderSelectedtaxFields()}
-                            {renderSelecteddiscountFields()}
-                            {renderSelecteddateFields()}
-                          </div>
-                          <div> {renderSelecteddescriptionFields()}</div>
-                        </div>
-                      )}
-                      <div className="flex justify-end pr-7 pb-3">
-                        {inputuser2 && (
-                          <>
-                            <p className="font-bold text-md">
-                              Amounts: $
-                              {inputuser2.discount
-                                ? (inputuser2.price *
-                                    inputuser2.quantity *
-                                    inputuser2.discount) /
-                                  100
-                                : inputuser2.price * inputuser2.quantity}
-                            </p>
-                          </>
-                        )}
-                      </div>
-                    </div>
-                    {renderItems()}
+                      );
+                    })}
                   </form>
-                  <button
-                    className="text-bold ml-4 mt-3 text-blue-600  font-bold flex items-center text-xl "
-                    onClick={handleAddItem}
-                  >
-                    <AiOutlinePlus className="mr-2" /> Add items or Service
-                  </button>
                 </div>
                 {/*  ==============================  section-3  ============================= */}
                 <form onSubmit={handleSubmitsection3}>

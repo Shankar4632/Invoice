@@ -72,7 +72,7 @@ const AddedList = () => {
     console.log("Deleting data with key:", key);
     dataRef
       .ref()
-      .child("section2")
+      .child("section3")
       .child(key) // Use the key directly to access the child node
       .remove()
       .then(() => {
@@ -95,12 +95,13 @@ const AddedList = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const snapshot = await dataRef.ref().child("section2").once("value");
+        const snapshot = await dataRef.ref().child("section3").once("value");
         const data = snapshot.val();
         if (data !== null) {
           setData(data);
         } else {
           setData({});
+          console.log(setData.length);
         }
         setIsLoading(false);
       } catch (error) {
@@ -250,7 +251,7 @@ const AddedList = () => {
                               {index + 1}
                             </td>
                             <td className="px-3 py-2">
-                              <p>{item.itemname}</p>
+                              <p>{item.ItemName}</p>
                             </td>
                             <td className="px-3 py-2">
                               <span>2</span>
@@ -446,7 +447,7 @@ const AddedList = () => {
                         scope="row"
                         className="px-6 py-4 text-2xl font-semibold text-gray-900 whitespace-nowrap dark:text-white"
                       >
-                        {item.itemname}
+                        {item.section3messege}
                       </th>
                       <th
                         scope="row"
