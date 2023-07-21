@@ -106,6 +106,7 @@ const InvoicePage = () => {
 
   //section-2
   const [inputuser2, setInputuser2] = useState(initialInputuser2);
+  const [data, setData] = useState([]);
 
   const [itemlist, setItemlist] = useState([{ additems: "" }]);
   console.log(itemlist);

@@ -95,7 +95,7 @@ const AddedList = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const snapshot = await dataRef.ref().child("section3").once("value");
+        const snapshot = await dataRef.ref().child("section2").once("value");
         const data = snapshot.val();
         if (data !== null) {
           setData(data);
@@ -245,41 +245,46 @@ const AddedList = () => {
                             <th className="p-3">AMOUNTS$</th>
                           </tr>
                         </thead>
-                        <tbody className="border-b dark:bg-gray-900 dark:border-gray-700">
-                          <tr>
-                            <td className="px-3 text-2xl font-medium dark:text-gray-400">
-                              {index + 1}
-                            </td>
-                            <td className="px-3 py-2">
-                              <p>{item.ItemName}</p>
-                            </td>
-                            <td className="px-3 py-2">
-                              <span>2</span>
-                              <p className="dark:text-gray-400"></p>
-                            </td>
-                            <td className="px-3 py-2">
-                              <p>$100</p>
-                            </td>
-                            <td className="px-10 py-2">
-                              <p>$20</p>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td className="px-3 text-2xl font-medium dark:text-gray-400"></td>
-                            <td className="px-3 py-2">
-                              <p>Description 1</p>
-                            </td>
-                            <td className="px-3 py-2">
-                              <span></span>
-                              <p className="dark:text-gray-400"></p>
-                            </td>
-                            <td className="px-3 py-2">
-                              <p></p>
-                            </td>
-                            <td className="px-3 py-2">
-                              <p></p>
-                            </td>
-                          </tr>
+                        <tbody className="border-b dark:bg-gray-900 dark:border-gray-700  ">
+                          {item.map((itemData, id) => (
+                            <>
+                              <tr className="" key={id}>
+                                <td className="px-3 text-2xl font-medium dark:text-gray-400  ">
+                                  {id + 1}
+                                </td>
+                                <td className="px-3 text-2xl font-medium dark:text-gray-400  ">
+                                  {itemData?.ItemName}
+                                </td>
+
+                                <td className="px-3 py-2">
+                                  <span>2{itemData?.quantity}</span>
+                                  <p className="dark:text-gray-400"></p>
+                                </td>
+                                <td className="px-3 py-2">
+                                  <p>$100{itemData?.price}</p>
+                                </td>
+                                <td className="px-10 py-2">
+                                  <p>$20</p>
+                                </td>
+                              </tr>
+                              <tr className="border-b">
+                                <td className="px-3 text-2xl font-medium dark:text-gray-400"></td>
+                                <td className="px-3 py-2">
+                                  <p>Description 1</p>
+                                </td>
+                                <td className="px-3 py-2">
+                                  <span></span>
+                                  <p className="dark:text-gray-400"></p>
+                                </td>
+                                <td className="px-3 py-2">
+                                  <p></p>
+                                </td>
+                                <td className="px-3 py-2">
+                                  <p></p>
+                                </td>
+                              </tr>
+                            </>
+                          ))}
                         </tbody>
                       </table>
                     </div>
@@ -420,7 +425,11 @@ const AddedList = () => {
                 console.log("ID:", id);
                 const item = data[id];
                 return (
-                  <tbody key={id} className="">
+                  <tbody
+                    key={id}
+                    className="cursor-pointer"
+                    onClick={() => handlegeneratepdf(id)}
+                  >
                     <tr className="bg-white  border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600  ">
                       <td className="w-4 p-6">
                         <div className="flex items-center  ">
@@ -447,7 +456,7 @@ const AddedList = () => {
                         scope="row"
                         className="px-6 py-4 text-2xl font-semibold text-gray-900 whitespace-nowrap dark:text-white"
                       >
-                        {item.section3messege}
+                        {item[0].ItemName}
                       </th>
                       <th
                         scope="row"
