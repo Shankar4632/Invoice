@@ -106,10 +106,27 @@ const InvoicePage = () => {
 
   //section-2
   const [inputuser2, setInputuser2] = useState(initialInputuser2);
-  const [data, setData] = useState([]);
 
-  const [itemlist, setItemlist] = useState([{ additems: "" }]);
+  const [itemlist, setItemlist] = useState([
+    {
+      ItemName: "",
+      quantity: 0,
+      price: 0,
+      description: "",
+      tax: "",
+      discount: 0,
+      itemnamehours: "",
+      hours: 0,
+      rate: 0,
+      itemnameaccount: "",
+    },
+  ]);
   console.log(itemlist);
+  const [singleItem, setSingleItem] = useState({
+    ItemName: "",
+    quantity: 0,
+    price: 0,
+  });
   //section-3
   const [input, setInput] = useState({
     section3messege: "",
@@ -169,7 +186,21 @@ const InvoicePage = () => {
     setItemlist(list);
   };
   const handleAddItem = () => {
-    setItemlist([...itemlist, { additems: "" }]);
+    setItemlist([
+      ...itemlist,
+      {
+        ItemName: "",
+        quantity: 0,
+        price: 0,
+        description: "",
+        tax: "",
+        discount: 0,
+        itemnamehours: "",
+        hours: 0,
+        rate: 0,
+        itemnameaccount: "",
+      },
+    ]);
   };
 
   //section-3
@@ -523,6 +554,11 @@ const InvoicePage = () => {
     setSelecteddateFields(fields4);
     setCustomisePopup(false);
   };
+
+  const index = { id: 0 };
+
+  // Rest of your code
+
   // Render the form fields
   const renderFields = ({ singleItem, index }) => {
     return fields.map((field) => (
@@ -536,7 +572,7 @@ const InvoicePage = () => {
             width: "100%",
           }}
           name={field}
-          value={singleItem[field]}
+          value={singleItem && singleItem[field]}
           onChange={(e) => handlechangeadditemlist(e, index)}
         />
       </div>
@@ -1172,7 +1208,7 @@ const InvoicePage = () => {
                             }}
                           />
 
-                          {renderFieldstax()}
+                          {renderFieldstax({ singleItem })}
                           {renderFieldsdiscount()}
                           {renderFieldsdate()}
                         </div>
@@ -1206,7 +1242,7 @@ const InvoicePage = () => {
                               width: "25%",
                             }}
                           />
-                          {renderFieldstax()}
+                          {renderFieldstax({ singleItem })}
                           {renderFieldsdate()}
                           {renderFieldsdiscount()}
                         </div>
@@ -1225,13 +1261,13 @@ const InvoicePage = () => {
                         {" "}
                         <div className="   flex items-center ">
                           <div className="flex gap-4">
-                            {renderFields()}
-                            {renderFieldstax()}
+                            {renderFields(singleItem, index)}
+                            {renderFieldstax({ singleItem })}
                             {renderFieldsdate()}
                             {renderFieldsdiscount()}
                           </div>
                         </div>
-                        <div>{renderFieldsdescription()}</div>
+                        <div>{renderFieldsdescription({ singleItem })}</div>
                       </>
                     )}
                   </div>
@@ -1462,7 +1498,7 @@ const InvoicePage = () => {
                       <p className="font-bold text-xl w-full ml-3">Items</p>
                       <button
                         className=" text-blue-500 text-xl font-bold  rounded-full  flex justify-end items-center mr-3"
-                        onClick={(event) => {
+                        onClick={(event, singleItem, index) => {
                           event.preventDefault();
                           setCustomisePopup(true);
                         }}
