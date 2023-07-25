@@ -33,7 +33,7 @@ const initialState = {
   invoicedate: "",
   invoicenumber: "",
 };
-const initialFields = ["ItemName", "Quantity", "Price"];
+const initialFields = ["ItemName", "quantity", "price"];
 const initialInputuser2 = {
   ItemName: "",
   quantity: 0,
@@ -54,7 +54,7 @@ const InvoicePage = () => {
   const [showMemo, setShowMemo] = useState(false);
   const [showMemosection4, setShowMemosection4] = useState(false);
   const [subtotal, setSubtotal] = useState("$0.00");
-  const [discount, setDiscount] = useState("");
+  const [discounts, setDiscount] = useState("");
   const [shipping, setShipping] = useState("");
   const [otherAmount, setOtherAmount] = useState("");
   const [showDiscountField, setShowDiscountField] = useState(false);
@@ -184,6 +184,7 @@ const InvoicePage = () => {
     const list = [...itemlist];
     list[index][name] = value;
     setItemlist(list);
+    console.log(name, value);
   };
   const handleAddItem = () => {
     setItemlist([
@@ -262,7 +263,7 @@ const InvoicePage = () => {
     if (email === inputValue) {
       dataRef
         .ref()
-        .child("section1")
+        .child("sections")
         .push(email, (err) => {
           if (err) {
             toast.error(err);
@@ -284,7 +285,7 @@ const InvoicePage = () => {
     } else {
       dataRef
         .ref()
-        .child("section2")
+        .child("sections")
         .push(itemlist, (err) => {
           if (err) {
             toast.error(err);
@@ -303,7 +304,7 @@ const InvoicePage = () => {
     } else {
       dataRef
         .ref()
-        .child("section3message")
+        .child("sections")
         .push(input, (err) => {
           if (err) {
             toast.error(err);
@@ -321,7 +322,7 @@ const InvoicePage = () => {
     } else {
       dataRef
         .ref()
-        .child("section4memo")
+        .child("sections")
         .push(inputuser4, (err) => {
           if (err) {
             toast.error(err);
@@ -351,7 +352,7 @@ const InvoicePage = () => {
     try {
       dataRef
         .ref()
-        .child("section5total")
+        .child("sections")
         .push(section5Data, (error) => {
           if (error) {
             toast.error(error.message);
@@ -377,7 +378,7 @@ const InvoicePage = () => {
     } else {
       dataRef
         .ref()
-        .child("section6Businessinformation")
+        .child("sections")
         .push(inputbusiness, (err) => {
           if (err) {
             toast.error(err);
@@ -407,50 +408,57 @@ const InvoicePage = () => {
     }
   };
   //Total for amount field
-  useEffect(() => {}, [discount]);
+  useEffect(() => {}, [discounts]);
 
   useEffect(() => {}, [shipping]);
 
   useEffect(() => {}, [otherAmount]);
   const calculateTotal = () => {
-    const discountValue = parseFloat(discount) || 0;
-    const shippingValue = parseFloat(shipping) || 0;
-    const otherAmountValue = parseFloat(otherAmount) || 0;
-    //quantity
-    const itemTotal =
-      parseFloat(inputuser2.price) * parseFloat(inputuser2.quantity) || 0;
-    const itemTotalWithDiscount =
-      (itemTotal * parseFloat(inputuser2.discount)) / 100 || 0;
-    const subtotalFinal = inputuser2.discount
-      ? itemTotalWithDiscount
-      : itemTotal;
-    //hours
-    const itemTotalhours =
-      parseFloat(inputuser2.hours) * parseFloat(inputuser2.rate) || 0;
-    const itemTotalWithDiscounthours =
-      (itemTotalhours * parseFloat(inputuser2.discounthours)) / 100 || 0;
+    let total = 0;
 
-    const subtotalFinalhours = inputuser2.discount
-      ? itemTotalWithDiscounthours
-      : itemTotalhours;
-    //amountonly
-    const itemTotalamountonly = parseFloat(inputuser2.price) || 0;
-    const itemTotalWithDiscountamountsonly =
-      (itemTotalamountonly * parseFloat(inputuser2.discount)) / 100 || 0;
-    const itemTotalamountsonly = inputuser2.discount
-      ? itemTotalWithDiscountamountsonly
-      : itemTotalamountonly;
+    itemlist.forEach((item) => {
+      const quantity = parseFloat(item.quantity) || 0;
+      const price = parseFloat(item.price) || 0;
+      const discount = parseFloat(item.discount) || 0;
+      const hours = parseFloat(item.hours) || 0;
+      const rate = parseFloat(item.rate) || 0;
+      const discounthours = parseFloat(item.discounthours) || 0;
+      const discountValue = parseFloat(discounts) || 0;
+      const shippingValue = parseFloat(shipping) || 0;
+      const otherAmountValue = parseFloat(otherAmount) || 0;
 
-    //total
-    return (
-      discountValue +
-      shippingValue +
-      otherAmountValue +
-      subtotalFinal +
-      subtotalFinalhours +
-      itemTotalamountsonly
-    );
+      const itemTotal = price * quantity;
+      console.log(itemTotal);
+      const itemTotalWithDiscount = (itemTotal * discount) / 100;
+
+      const subtotalFinal = discount ? itemTotalWithDiscount : itemTotal;
+
+      const itemTotalhours = hours * rate;
+      const itemTotalWithDiscounthours = (itemTotalhours * discounthours) / 100;
+      const subtotalFinalhours = discount
+        ? itemTotalWithDiscounthours
+        : itemTotalhours;
+
+      // const itemTotalamountonly = price;
+      // const itemTotalWithDiscountamountsonly =
+      //   (itemTotalamountonly * discount) / 100;
+      // const itemTotalamountsonly = discount
+      //   ? itemTotalWithDiscountamountsonly
+      //   : itemTotalamountonly;
+
+      total +=
+        discountValue +
+        shippingValue +
+        otherAmountValue +
+        subtotalFinal +
+        subtotalFinalhours;
+      // itemTotalamountsonly;
+    });
+    console.log("total:", total);
+
+    return total;
   };
+  const totalValue = calculateTotal();
 
   const handleKeyDown = (event, section) => {
     if (event.key === "Enter") {
@@ -637,7 +645,7 @@ const InvoicePage = () => {
             marginRight: "10px",
             width: "100%",
           }}
-          name={discount}
+          name={discounts}
           onChange={handleChangesection2}
         />
       </div>
@@ -1542,7 +1550,7 @@ const InvoicePage = () => {
                               </div>
                             )}
                             <div className="flex justify-end pr-7 pb-3">
-                              {inputuser2 && (
+                              {/* {inputuser2 && (
                                 <>
                                   <p className="font-bold text-md">
                                     Amounts: $
@@ -1554,7 +1562,27 @@ const InvoicePage = () => {
                                       : inputuser2.price * inputuser2.quantity}
                                   </p>
                                 </>
-                              )}
+                              )} */}
+                              {itemlist.map((item, index) => (
+                                <div
+                                  key={index}
+                                  className="flex justify-end pr-7 pb-3"
+                                >
+                                  {item && (
+                                    <>
+                                      <p className="font-bold text-md">
+                                        Amounts: $
+                                        {item.discount
+                                          ? (item.price *
+                                              item.quantity *
+                                              item.discount) /
+                                            100
+                                          : item.price * item.quantity}
+                                      </p>
+                                    </>
+                                  )}
+                                </div>
+                              ))}
                             </div>
                           </div>
                           {itemlist.length - 1 === index && (
@@ -1570,6 +1598,20 @@ const InvoicePage = () => {
                       );
                     })}
                   </form>
+
+                  <div>
+                    <div>
+                      {/* {itemlist.map((item, index) => (
+                        <div key={index}>
+                          {Object.keys(item).map((key) => (
+                            <span key={key}>
+                              {key}: {item[key]}
+                            </span>
+                          ))}
+                        </div>
+                      ))} */}
+                    </div>
+                  </div>
                 </div>
                 {/*  ==============================  section-3  ============================= */}
                 <form onSubmit={handleSubmitsection3}>
@@ -2039,49 +2081,65 @@ const InvoicePage = () => {
                 <div className="mt-3">
                   {isVisibleinvoicepage && (
                     <>
-                      {inputuser2 && (
-                        <>
-                          <p className="font-bold text-md">
-                            {inputuser2.discount
-                              ? (inputuser2.price *
-                                  inputuser2.quantity *
-                                  inputuser2.discount) /
-                                100
-                              : inputuser2.price * inputuser2.quantity}
-                          </p>
-                        </>
-                      )}
+                      {itemlist.map((item, index) => (
+                        <div key={index} className="">
+                          {item && (
+                            <>
+                              <p className="font-bold text-md">
+                                {item.discount
+                                  ? (item.price *
+                                      item.quantity *
+                                      item.discount) /
+                                    100
+                                  : item.price * item.quantity}
+                              </p>
+                            </>
+                          )}
+                        </div>
+                      ))}
                     </>
                   )}
                   {isVisiblehours && (
                     <>
-                      {inputuser2 && (
-                        <>
-                          <p className="font-bold text-md">
-                            {inputuser2.discount
-                              ? (inputuser2.hours *
-                                  inputuser2.rate *
-                                  inputuser2.discount) /
-                                100
-                              : inputuser2.hours * inputuser2.rate}
-                          </p>
-                        </>
-                      )}
+                      {itemlist.map((item, index) => (
+                        <div key={index} className="flex justify-end pr-7 pb-3">
+                          {item && (
+                            <>
+                              <p className="font-bold text-md">
+                                Amounts: $
+                                {item.discount
+                                  ? (item.price *
+                                      item.quantity *
+                                      item.discount) /
+                                    100
+                                  : item.price * item.quantity}
+                              </p>
+                            </>
+                          )}
+                        </div>
+                      ))}
                     </>
                   )}
 
                   {isVisibleaccount && (
                     <>
                       {" "}
-                      {inputuser2 && (
-                        <>
-                          <p className="font-bold text-md">
-                            {inputuser2.discount
-                              ? (inputuser2.price * inputuser2.discount) / 100
-                              : inputuser2.price}
-                          </p>
-                        </>
-                      )}
+                      {itemlist.map((item, index) => (
+                        <div key={index} className="">
+                          {item && (
+                            <>
+                              <p className="font-bold text-md">
+                                {item.discount
+                                  ? (item.price *
+                                      item.quantity *
+                                      item.discount) /
+                                    100
+                                  : item.price * item.quantity}
+                              </p>
+                            </>
+                          )}
+                        </div>
+                      ))}
                     </>
                   )}
 
@@ -2092,7 +2150,7 @@ const InvoicePage = () => {
                           <input
                             type="text"
                             className="w-14 border border-black"
-                            value={discount}
+                            value={discounts}
                             onChange={(e) => setDiscount(e.target.value)}
                             onKeyDown={(e) => handleKeyDown(e, "discount")}
                           />
@@ -2151,7 +2209,7 @@ const InvoicePage = () => {
                       )}
                     </p>
                   </form>
-                  <p className="p-3 font-bold">$ {calculateTotal()}</p>
+                  <p className="p-3 font-bold">${totalValue}</p>
                 </div>
               </div>
             </div>
