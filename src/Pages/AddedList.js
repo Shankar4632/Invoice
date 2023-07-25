@@ -158,7 +158,10 @@ const AddedList = () => {
               if (selectedKey === id) {
                 return (
                   <>
-                    <div className="grid grid-cols-2  text-end  bg-white h-auto">
+                    <div
+                      key={index}
+                      className="grid grid-cols-2  text-end  bg-white h-auto"
+                    >
                       <div className=""></div>
                       <div className="pr-6">
                         <h1 className="text-[50px] font-semibold ">INVOICE</h1>
@@ -257,8 +260,10 @@ const AddedList = () => {
                                 </td>
 
                                 <td className="px-3 py-2">
-                                  <span>2{itemData?.quantity}</span>
-                                  <p className="dark:text-gray-400"></p>
+                                  <span>2{itemData.quantity}</span>
+                                  <p className="dark:text-gray-400">
+                                    {console.log(itemData.quantity)}
+                                  </p>
                                 </td>
                                 <td className="px-3 py-2">
                                   <p>$100{itemData?.price}</p>

@@ -203,6 +203,15 @@ const InvoicePage = () => {
       },
     ]);
   };
+  const updatedItemList = itemlist.map((item) => {
+    const amount = item.discount
+      ? (item.price * item.quantity * item.discount) / 100
+      : item.price * item.quantity;
+    return {
+      ...item,
+      amount,
+    };
+  });
 
   //section-3
   const handleChangesection3 = (event) => {
@@ -263,7 +272,7 @@ const InvoicePage = () => {
     if (email === inputValue) {
       dataRef
         .ref()
-        .child("sections")
+        .child("section1")
         .push(email, (err) => {
           if (err) {
             toast.error(err);
@@ -276,8 +285,27 @@ const InvoicePage = () => {
     }
   };
 
+  // const handleSubmitsection2 = (e) => {
+  //   console.log();
+
+  //   if (!itemlist) {
+  //     // Handle error when any of the fields are empty
+  //     // toast.error("Please fill in all the fields");
+  //   } else {
+  //     dataRef
+  //       .ref()
+  //       .child("section2")
+  //       .push(itemlist, (err) => {
+  //         if (err) {
+  //           toast.error(err);
+  //         } else {
+  //           toast.success("Successfully added");
+  //         }
+  //       });
+  //   }
+  // };
   const handleSubmitsection2 = (e) => {
-    console.log();
+    e.preventDefault();
 
     if (!itemlist) {
       // Handle error when any of the fields are empty
@@ -285,8 +313,8 @@ const InvoicePage = () => {
     } else {
       dataRef
         .ref()
-        .child("sections")
-        .push(itemlist, (err) => {
+        .child("section2")
+        .push(updatedItemList, (err) => {
           if (err) {
             toast.error(err);
           } else {
@@ -304,7 +332,7 @@ const InvoicePage = () => {
     } else {
       dataRef
         .ref()
-        .child("sections")
+        .child("section3message")
         .push(input, (err) => {
           if (err) {
             toast.error(err);
@@ -322,7 +350,7 @@ const InvoicePage = () => {
     } else {
       dataRef
         .ref()
-        .child("sections")
+        .child("section4memo")
         .push(inputuser4, (err) => {
           if (err) {
             toast.error(err);
@@ -352,7 +380,7 @@ const InvoicePage = () => {
     try {
       dataRef
         .ref()
-        .child("sections")
+        .child("section5total")
         .push(section5Data, (error) => {
           if (error) {
             toast.error(error.message);
@@ -378,7 +406,7 @@ const InvoicePage = () => {
     } else {
       dataRef
         .ref()
-        .child("sections")
+        .child("section6Businessinformation")
         .push(inputbusiness, (err) => {
           if (err) {
             toast.error(err);
@@ -1559,19 +1587,6 @@ const InvoicePage = () => {
                               </div>
                             )}
                             <div className="flex justify-end pr-7 pb-3">
-                              {/* {inputuser2 && (
-                                <>
-                                  <p className="font-bold text-md">
-                                    Amounts: $
-                                    {inputuser2.discount
-                                      ? (inputuser2.price *
-                                          inputuser2.quantity *
-                                          inputuser2.discount) /
-                                        100
-                                      : inputuser2.price * inputuser2.quantity}
-                                  </p>
-                                </>
-                              )} */}
                               {itemlist.map((item, index) => (
                                 <div
                                   key={index}
@@ -1592,6 +1607,15 @@ const InvoicePage = () => {
                                   )}
                                 </div>
                               ))}
+
+                              {/* {itemlist.map((item, index) => (
+                                <div
+                                  key={index}
+                                  className="flex justify-end pr-7 pb-3"
+                                >
+                                  <p>{}</p>
+                                </div>
+                              ))} */}
                             </div>
                           </div>
                           {itemlist.length - 1 === index && (
