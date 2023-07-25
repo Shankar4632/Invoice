@@ -271,7 +271,7 @@ const AddCustomer = () => {
                 className="w-[95%] py-4 px-3 text-base border border-gray-500 rounded-md box-border"
                 onChange={handleinputchange}
                 name="countrycode"
-                value={initialState.countrycode}
+                value={countrycode}
               >
                 <option defaultValue disabled value="">
                   ---select code---
@@ -304,7 +304,7 @@ const AddCustomer = () => {
               className="w-[98%] py-4 px-3 text-black border border-gray-500 rounded-md box-border"
               onChange={handleinputchange}
               name="selectcountry"
-              value={initialState.selectcountry}
+              value={selectcountry}
             >
               <option defaultValue disabled value="">
                 ---select country---
@@ -343,7 +343,7 @@ const AddCustomer = () => {
                 className="w-[95%] py-4 px-3 text-base border border-gray-500 rounded-md box-border"
                 onChange={handleinputchange}
                 name="city"
-                value={initialState.city}
+                value={city}
               >
                 <option defaultValue disabled value="">
                   ---select city---
@@ -359,7 +359,7 @@ const AddCustomer = () => {
                 className="w-[95%] py-4 px-3 text-base border border-gray-500 rounded-md box-border"
                 onChange={handleinputchange}
                 name="state1"
-                value={initialState.state1}
+                value={state1}
               >
                 <option defaultValue disabled value="">
                   ---select states---
@@ -428,7 +428,7 @@ const AddCustomer = () => {
               className="w-[98%] py-4 px-3 text-black border border-gray-500 rounded-md box-border"
               name="dselectcountry"
               onChange={handleinputchange}
-              value={initialState.dselectcountry}
+              // value={dselectcountry}
             >
               <option defaultValue disabled value="">
                 ---select country---
@@ -468,7 +468,7 @@ const AddCustomer = () => {
                 className="w-[95%] py-4 px-3 text-base border border-gray-500 rounded-md box-border"
                 name="dcity"
                 onChange={handleinputchange}
-                value={initialState.dcity}
+                value={dcity}
               >
                 <option defaultValue disabled value="">
                   ---select city---
@@ -483,7 +483,7 @@ const AddCustomer = () => {
               className="w-[95%] py-4 px-3 text-base border border-gray-500 rounded-md box-border"
               name="dstate"
               onChange={handleinputchange}
-              value={initialState.dstate}
+              value={dstate}
             >
               <option defaultValue disabled value="">
                 ---select states---
@@ -514,7 +514,7 @@ const AddCustomer = () => {
               id="dropdown-select"
               className="w-[98%] py-4 px-3 text-black border border-gray-500 rounded-md box-border"
               name="lselectcountry"
-              value={initialState.lselectcountry}
+              value={lselectcountry}
               onChange={handleinputchange}
             >
               <option defaultValue disabled value="">
@@ -532,7 +532,7 @@ const AddCustomer = () => {
                 id="dropdown-select"
                 className="w-[98%] py-4 px-3 text-black border border-gray-500 rounded-md box-border"
                 name="lselectlanguage"
-                value={initialState.lselectlanguage}
+                value={lselectlanguage}
                 onChange={handleinputchange}
               >
                 <option defaultValue disabled value="">

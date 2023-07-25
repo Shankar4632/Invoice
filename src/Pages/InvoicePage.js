@@ -413,6 +413,7 @@ const InvoicePage = () => {
   useEffect(() => {}, [shipping]);
 
   useEffect(() => {}, [otherAmount]);
+  //individual value
   const calculateTotal = () => {
     let total = 0;
 
@@ -458,7 +459,15 @@ const InvoicePage = () => {
 
     return total;
   };
+  //total value
   const totalValue = calculateTotal();
+  //sub total value
+  const subtotal1 = itemlist.reduce((accumulator, item) => {
+    if (item.discount) {
+      return accumulator + (item.price * item.quantity * item.discount) / 100;
+    }
+    return accumulator + item.price * item.quantity;
+  }, 0);
 
   const handleKeyDown = (event, section) => {
     if (event.key === "Enter") {
@@ -2081,22 +2090,7 @@ const InvoicePage = () => {
                 <div className="mt-3">
                   {isVisibleinvoicepage && (
                     <>
-                      {itemlist.map((item, index) => (
-                        <div key={index} className="">
-                          {item && (
-                            <>
-                              <p className="font-bold text-md">
-                                {item.discount
-                                  ? (item.price *
-                                      item.quantity *
-                                      item.discount) /
-                                    100
-                                  : item.price * item.quantity}
-                              </p>
-                            </>
-                          )}
-                        </div>
-                      ))}
+                      <p className="font-bold text-md">{subtotal1}</p>
                     </>
                   )}
                   {isVisiblehours && (
