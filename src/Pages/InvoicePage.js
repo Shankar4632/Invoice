@@ -70,8 +70,8 @@ const InvoicePage = () => {
   const [selectedTemplate, setSelectedTemplate] = useState("");
   const [fields, setFields] = useState(initialFields);
   const [fields1, setField1] = useState(["description"]);
-  const [fields2, setField2] = useState([""]);
-  const [fields3, setField3] = useState([""]);
+  const [fields2, setField2] = useState([]);
+  const [fields3, setField3] = useState([]);
   const [fields4, setField4] = useState([]);
   const [selectedFields, setSelectedFields] = useState([]);
   const [selecteddescriptionFields, setSelecteddescriptionFields] = useState(
@@ -293,25 +293,6 @@ const InvoicePage = () => {
     }
   };
 
-  // const handleSubmitsection2 = (e) => {
-  //   console.log();
-
-  //   if (!itemlist) {
-  //     // Handle error when any of the fields are empty
-  //     // toast.error("Please fill in all the fields");
-  //   } else {
-  //     dataRef
-  //       .ref()
-  //       .child("section2")
-  //       .push(itemlist, (err) => {
-  //         if (err) {
-  //           toast.error(err);
-  //         } else {
-  //           toast.success("Successfully added");
-  //         }
-  //       });
-  //   }
-  // };
   const handleSubmitsection2 = (e) => {
     e.preventDefault();
 
@@ -804,7 +785,6 @@ const InvoicePage = () => {
             select
             label="Select"
             defaultValue="select"
-            className=""
             name="tax"
             value={singleItem[field]}
             onChange={(e) => handlechangeadditemlist(e, index)}
