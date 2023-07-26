@@ -70,8 +70,8 @@ const InvoicePage = () => {
   const [selectedTemplate, setSelectedTemplate] = useState("");
   const [fields, setFields] = useState(initialFields);
   const [fields1, setField1] = useState(["description"]);
-  const [fields2, setField2] = useState([]);
-  const [fields3, setField3] = useState([]);
+  const [fields2, setField2] = useState([""]);
+  const [fields3, setField3] = useState([""]);
   const [fields4, setField4] = useState([]);
   const [selectedFields, setSelectedFields] = useState([]);
   const [selecteddescriptionFields, setSelecteddescriptionFields] = useState(
@@ -127,6 +127,13 @@ const InvoicePage = () => {
     ItemName: "",
     quantity: 0,
     price: 0,
+    description: "",
+    tax: "",
+    discount: 0,
+    itemnamehours: "",
+    hours: 0,
+    rate: 0,
+    itemnameaccount: "",
   });
   //section-3
   const [input, setInput] = useState({
@@ -659,7 +666,7 @@ const InvoicePage = () => {
             label="Select"
             defaultValue="select"
             name="tax"
-            value={singleItem[fields2]}
+            value={singleItem && singleItem[fields2]}
             onChange={(e) => handlechangeadditemlist(e, index)}
           >
             {taxes.map((option) => (
@@ -672,7 +679,7 @@ const InvoicePage = () => {
       </div>
     ));
   };
-  const renderFieldsdiscount = () => {
+  const renderFieldsdiscount = ({ singleItem, index }) => {
     return fields3.map((fields3) => (
       <div key={fields3}>
         <TextField
@@ -683,13 +690,14 @@ const InvoicePage = () => {
             marginRight: "10px",
             width: "100%",
           }}
-          name={discounts}
-          onChange={handleChangesection2}
+          name="discount"
+          value={singleItem[fields3]}
+          onChange={(e) => handlechangeadditemlist(e, index)}
         />
       </div>
     ));
   };
-  const renderFieldsdate = () => {
+  const renderFieldsdate = ({ singleItem, index }) => {
     return fields4.map((fields4) => (
       <div key={fields4}>
         <TextField
@@ -699,14 +707,16 @@ const InvoicePage = () => {
             marginRight: "10px",
             width: "100%",
           }}
-          onChange={handleChangesection2}
+          name="date"
+          value={singleItem[fields3]}
+          onChange={(e) => handlechangeadditemlist(e, index)}
         />
       </div>
     ));
   };
 
   // Render the selected fields below the form
-  const renderSelectedFields = () => {
+  const renderSelectedFields = ({ singleItem, index }) => {
     return selectedFields.map((field) => (
       <div key={field}>
         <TextField
@@ -718,13 +728,14 @@ const InvoicePage = () => {
             width: "100%",
           }}
           className="gap-3"
-          name={field.toLowerCase()}
-          onChange={handleChangesection2}
+          name={field}
+          value={singleItem[field]}
+          onChange={(e) => handlechangeadditemlist(e, index)}
         />
       </div>
     ));
   };
-  const renderSelecteddescriptionFields = () => {
+  const renderSelecteddescriptionFields = ({ singleItem, index }) => {
     return selecteddescriptionFields.map((field) => (
       <div key={field}>
         <textarea
@@ -734,14 +745,15 @@ const InvoicePage = () => {
           type="text"
           placeholder="Description(optional)"
           name="description"
-          onChange={handleChangesection2}
+          value={singleItem[field]}
+          onChange={(e) => handlechangeadditemlist(e, index)}
         >
           {" "}
         </textarea>
       </div>
     ));
   };
-  const renderSelecteddiscountFields = () => {
+  const renderSelecteddiscountFields = ({ singleItem, index }) => {
     return selecteddiscountFields.map((field) => (
       <div key={field}>
         <TextField
@@ -753,12 +765,13 @@ const InvoicePage = () => {
             marginRight: "10px",
             width: "100%",
           }}
-          onChange={handleChangesection2}
+          value={singleItem[field]}
+          onChange={(e) => handlechangeadditemlist(e, index)}
         />
       </div>
     ));
   };
-  const renderSelecteddateFields = () => {
+  const renderSelecteddateFields = ({ singleItem, index }) => {
     return selecteddateFields.map((field) => (
       <div key={field}>
         <TextField
@@ -769,12 +782,13 @@ const InvoicePage = () => {
             marginRight: "10px",
             width: "100%",
           }}
-          onChange={handleChangesection2}
+          value={singleItem[field]}
+          onChange={(e) => handlechangeadditemlist(e, index)}
         />
       </div>
     ));
   };
-  const renderSelectedtaxFields = () => {
+  const renderSelectedtaxFields = ({ singleItem, index }) => {
     return selectedtaxFields.map((field) => (
       <div key={field}>
         <Box
@@ -792,8 +806,8 @@ const InvoicePage = () => {
             defaultValue="select"
             className=""
             name="tax"
-            onChange={handleChangesection2}
-            value={inputuser2.tax}
+            value={singleItem[field]}
+            onChange={(e) => handlechangeadditemlist(e, index)}
           >
             {taxes.map((option) => (
               <MenuItem key={option.value} value={option.value}>
@@ -1254,9 +1268,9 @@ const InvoicePage = () => {
                             }}
                           />
 
-                          {renderFieldstax({ singleItem })}
-                          {renderFieldsdiscount()}
-                          {renderFieldsdate()}
+                          {renderFieldstax({ singleItem, index })}
+                          {renderFieldsdiscount({ singleItem, index })}
+                          {renderFieldsdate({ singleItem, index })}
                         </div>
                       </>
                     )}
@@ -1289,8 +1303,8 @@ const InvoicePage = () => {
                             }}
                           />
                           {renderFieldstax({ singleItem })}
-                          {renderFieldsdate()}
-                          {renderFieldsdiscount()}
+                          {renderFieldsdate({ singleItem, index })}
+                          {renderFieldsdiscount({ singleItem, index })}
                         </div>
 
                         <textarea
@@ -1308,12 +1322,14 @@ const InvoicePage = () => {
                         <div className="   flex items-center ">
                           <div className="flex gap-4">
                             {renderFields(singleItem, index)}
-                            {renderFieldstax({ singleItem })}
-                            {renderFieldsdate()}
-                            {renderFieldsdiscount()}
+                            {renderFieldstax({ singleItem, index })}
+                            {renderFieldsdate({ singleItem, index })}
+                            {renderFieldsdiscount({ singleItem, index })}
                           </div>
                         </div>
-                        <div>{renderFieldsdescription({ singleItem })}</div>
+                        <div>
+                          {renderFieldsdescription({ singleItem, index })}
+                        </div>
                       </>
                     )}
                   </div>
@@ -1566,7 +1582,10 @@ const InvoicePage = () => {
                                   <div className="flex gap-4">
                                     {renderFields({ singleItem, index })}
                                     {renderFieldstax({ singleItem, index })}
-                                    {renderFieldsdiscount()}
+                                    {renderFieldsdiscount({
+                                      singleItem,
+                                      index,
+                                    })}
                                   </div>
                                 </div>
                                 <div>
@@ -1579,12 +1598,27 @@ const InvoicePage = () => {
                             ) : (
                               <div className="p-3   ">
                                 <div className="   flex items-center gap-5 ">
-                                  {renderSelectedFields()}
-                                  {renderSelectedtaxFields()}
-                                  {renderSelecteddiscountFields()}
-                                  {renderSelecteddateFields()}
+                                  {renderSelectedFields({ singleItem, index })}
+                                  {renderSelectedtaxFields({
+                                    singleItem,
+                                    index,
+                                  })}
+                                  {renderSelecteddiscountFields({
+                                    singleItem,
+                                    index,
+                                  })}
+                                  {renderSelecteddateFields({
+                                    singleItem,
+                                    index,
+                                  })}
                                 </div>
-                                <div> {renderSelecteddescriptionFields()}</div>
+                                <div>
+                                  {" "}
+                                  {renderSelecteddescriptionFields({
+                                    singleItem,
+                                    index,
+                                  })}
+                                </div>
                               </div>
                             )}
                             <div className="flex justify-end pr-7 pb-3">
