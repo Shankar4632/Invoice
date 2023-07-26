@@ -121,6 +121,7 @@ const InvoicePage = () => {
       itemnameaccount: "",
     },
   ]);
+
   console.log(itemlist);
   const [singleItem, setSingleItem] = useState({
     ItemName: "",
@@ -1040,7 +1041,7 @@ const InvoicePage = () => {
 
   //Return Statements
   return (
-    <div className="mb-3 ">
+    <div className="mb-3  ">
       {businesspopup ? (
         <>
           <form onSubmit={handleSubmitsection6}>
@@ -1587,35 +1588,29 @@ const InvoicePage = () => {
                               </div>
                             )}
                             <div className="flex justify-end pr-7 pb-3">
-                              {itemlist.map((item, index) => (
-                                <div
-                                  key={index}
-                                  className="flex justify-end pr-7 pb-3"
-                                >
-                                  {item && (
-                                    <>
-                                      <p className="font-bold text-md">
-                                        Amounts: $
-                                        {item.discount
-                                          ? (item.price *
-                                              item.quantity *
-                                              item.discount) /
-                                            100
-                                          : item.price * item.quantity}
-                                      </p>
-                                    </>
-                                  )}
-                                </div>
-                              ))}
-
-                              {/* {itemlist.map((item, index) => (
-                                <div
-                                  key={index}
-                                  className="flex justify-end pr-7 pb-3"
-                                >
-                                  <p>{}</p>
-                                </div>
-                              ))} */}
+                              {itemlist
+                                .slice(itemlist.length - 1)
+                                .map((index) => (
+                                  <div
+                                    key={index}
+                                    className="flex justify-end pr-7 pb-3"
+                                  >
+                                    {singleItem && (
+                                      <>
+                                        <p className="font-bold text-md">
+                                          Amounts: $
+                                          {singleItem.discount
+                                            ? (singleItem.price *
+                                                singleItem.quantity *
+                                                singleItem.discount) /
+                                              100
+                                            : singleItem.price *
+                                              singleItem.quantity}
+                                        </p>
+                                      </>
+                                    )}
+                                  </div>
+                                ))}
                             </div>
                           </div>
                           {itemlist.length - 1 === index && (
