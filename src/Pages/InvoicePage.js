@@ -68,12 +68,17 @@ const InvoicePage = () => {
 
   //states for customise  items
   const [selectedTemplate, setSelectedTemplate] = useState("");
-  const [fields, setFields] = useState(initialFields);
+  const [fields, setFields] = useState(["ItemName"]);
+  const [fields5, setFields5] = useState(["quantity"]);
+  const [fields6, setFields6] = useState(["price"]);
   const [fields1, setField1] = useState(["description"]);
   const [fields2, setField2] = useState([]);
   const [fields3, setField3] = useState([]);
   const [fields4, setField4] = useState([]);
+
   const [selectedFields, setSelectedFields] = useState([]);
+  const [selectedFields5, setSelectedFields5] = useState([]);
+  const [selectedFields6, setSelectedFields6] = useState([]);
   const [selecteddescriptionFields, setSelecteddescriptionFields] = useState(
     []
   );
@@ -135,6 +140,8 @@ const InvoicePage = () => {
     rate: 0,
     itemnameaccount: "",
   });
+  //amounts only
+
   //section-3
   const [input, setInput] = useState({
     section3messege: "",
@@ -187,6 +194,7 @@ const InvoicePage = () => {
     console.log(fieldName, value); // Check if the values are being received correctly
     setInputuser2((values) => ({ ...values, [fieldName]: value }));
   };
+  //quantity
   const handlechangeadditemlist = (e, index) => {
     const { name, value } = e.target;
     const list = [...itemlist];
@@ -207,7 +215,6 @@ const InvoicePage = () => {
         itemnamehours: "",
         hours: 0,
         rate: 0,
-        itemnameaccount: "",
       },
     ]);
   };
@@ -220,6 +227,7 @@ const InvoicePage = () => {
       amount,
     };
   });
+  //amounts
 
   //section-3
   const handleChangesection3 = (event) => {
@@ -432,7 +440,7 @@ const InvoicePage = () => {
   useEffect(() => {}, [otherAmount]);
   //individual value
   const calculateTotal = () => {
-    let total = 0;
+    let total = 0.0;
 
     itemlist.forEach((item) => {
       const quantity = parseFloat(item.quantity) || 0;
@@ -530,6 +538,31 @@ const InvoicePage = () => {
       setFields((prevFields) => prevFields.filter((field) => field !== value));
     }
   };
+  const handleCheckboxChange5 = (e) => {
+    const { value, checked } = e.target;
+
+    // Add or remove the field based on checkbox selection
+    if (checked) {
+      setFields5((prevFields) => [...prevFields, value]);
+    } else {
+      setFields5((prevFields) =>
+        prevFields.filter((field5) => field5 !== value)
+      );
+    }
+  };
+  const handleCheckboxChange6 = (e) => {
+    const { value, checked } = e.target;
+
+    // Add or remove the field based on checkbox selection
+    if (checked) {
+      setFields6((prevFields) => [...prevFields, value]);
+    } else {
+      setFields6((prevFields) =>
+        prevFields.filter((field6) => field6 !== value)
+      );
+    }
+  };
+
   const handleCheckboxChangedescription = (e) => {
     const { value, checked } = e.target;
 
@@ -582,6 +615,8 @@ const InvoicePage = () => {
   // Handle save button click
   const handleSaveClick = () => {
     setSelectedFields(fields);
+    setSelectedFields5(fields5);
+    setSelectedFields6(fields6);
     setSelecteddescriptionFields(fields1);
     setSelectedtaxFields(fields2);
     setSelecteddiscountFields(fields3);
@@ -603,8 +638,8 @@ const InvoicePage = () => {
           label={field}
           style={{
             marginRight: "10px",
-            width: "100%",
           }}
+          className=" w-[500px]"
           name={field}
           value={singleItem && singleItem[field]}
           onChange={(e) => handlechangeadditemlist(e, index)}
@@ -612,6 +647,45 @@ const InvoicePage = () => {
       </div>
     ));
   };
+  const renderFields5 = ({ singleItem, index }) => {
+    return fields5.map((field5) => (
+      <div key={field5}>
+        <TextField
+          id="outlined-search"
+          type="text"
+          label={field5}
+          style={{
+            marginRight: "10px",
+            width: "100%",
+          }}
+          className=""
+          name={field5}
+          value={singleItem && singleItem[field5]}
+          onChange={(e) => handlechangeadditemlist(e, index)}
+        />
+      </div>
+    ));
+  };
+  const renderFields6 = ({ singleItem, index }) => {
+    return fields6.map((field6) => (
+      <div key={field6}>
+        <TextField
+          id="outlined-search"
+          type="text"
+          label={field6}
+          style={{
+            marginRight: "10px",
+            width: "100%",
+          }}
+          className=""
+          name={field6}
+          value={singleItem && singleItem[field6]}
+          onChange={(e) => handlechangeadditemlist(e, index)}
+        />
+      </div>
+    ));
+  };
+
   const renderFieldsdescription = ({ singleItem, index }) => {
     return fields1.map((fields1) => (
       <div key={fields1}>
@@ -706,11 +780,48 @@ const InvoicePage = () => {
           label={field}
           style={{
             marginRight: "20px",
+          }}
+          className="gap-3 w-[500px]"
+          name={field}
+          value={singleItem[field]}
+          onChange={(e) => handlechangeadditemlist(e, index)}
+        />
+      </div>
+    ));
+  };
+  const renderSelectedFields5 = ({ singleItem, index }) => {
+    return selectedFields5.map((field5) => (
+      <div key={field5}>
+        <TextField
+          id="outlined-search"
+          type="text"
+          label={field5}
+          style={{
+            marginRight: "20px",
             width: "100%",
           }}
           className="gap-3"
-          name={field}
-          value={singleItem[field]}
+          name={field5}
+          value={singleItem[field5]}
+          onChange={(e) => handlechangeadditemlist(e, index)}
+        />
+      </div>
+    ));
+  };
+  const renderSelectedFields6 = ({ singleItem, index }) => {
+    return selectedFields6.map((field6) => (
+      <div key={field6}>
+        <TextField
+          id="outlined-search"
+          type="text"
+          label={field6}
+          style={{
+            marginRight: "20px",
+            width: "100%",
+          }}
+          className="gap-3"
+          name={field6}
+          value={singleItem[field6]}
           onChange={(e) => handlechangeadditemlist(e, index)}
         />
       </div>
@@ -1230,23 +1341,9 @@ const InvoicePage = () => {
                       <>
                         {" "}
                         <div className="flex items-center mx-auto  w-[97%] mt-3 gap-10">
-                          <TextField
-                            id="outlined-search"
-                            label="Item Name"
-                            type="search"
-                            style={{
-                              width: "75%",
-                            }}
-                          />
+                          {renderFields({ singleItem, index })}
 
-                          <TextField
-                            id="outlined-search"
-                            label="Price"
-                            type="search"
-                            style={{
-                              width: "35%",
-                            }}
-                          />
+                          {renderFields6({ singleItem, index })}
 
                           {renderFieldstax({ singleItem, index })}
                           {renderFieldsdiscount({ singleItem, index })}
@@ -1301,7 +1398,9 @@ const InvoicePage = () => {
                         {" "}
                         <div className="   flex items-center ">
                           <div className="flex gap-4">
-                            {renderFields(singleItem, index)}
+                            {renderFields({ singleItem, index })}
+                            {renderFields5({ singleItem, index })}
+                            {renderFields6({ singleItem, index })}
                             {renderFieldstax({ singleItem, index })}
                             {renderFieldsdate({ singleItem, index })}
                             {renderFieldsdiscount({ singleItem, index })}
@@ -1561,6 +1660,8 @@ const InvoicePage = () => {
                                 <div className="   flex items-center ">
                                   <div className="flex gap-4">
                                     {renderFields({ singleItem, index })}
+                                    {renderFields5({ singleItem, index })}
+                                    {renderFields6({ singleItem, index })}
                                     {renderFieldstax({ singleItem, index })}
                                     {renderFieldsdiscount({
                                       singleItem,
@@ -1579,6 +1680,8 @@ const InvoicePage = () => {
                               <div className="p-3   ">
                                 <div className="   flex items-center gap-5 ">
                                   {renderSelectedFields({ singleItem, index })}
+                                  {renderSelectedFields5({ singleItem, index })}
+                                  {renderSelectedFields6({ singleItem, index })}
                                   {renderSelectedtaxFields({
                                     singleItem,
                                     index,
@@ -1640,20 +1743,6 @@ const InvoicePage = () => {
                       );
                     })}
                   </form>
-
-                  <div>
-                    <div>
-                      {/* {itemlist.map((item, index) => (
-                        <div key={index}>
-                          {Object.keys(item).map((key) => (
-                            <span key={key}>
-                              {key}: {item[key]}
-                            </span>
-                          ))}
-                        </div>
-                      ))} */}
-                    </div>
-                  </div>
                 </div>
                 {/*  ==============================  section-3  ============================= */}
                 <form onSubmit={handleSubmitsection3}>
@@ -1687,7 +1776,7 @@ const InvoicePage = () => {
                   </button>
                 </div>
                 {/*===================================  section-4  =================================*/}
-                <div className="  p-3 mt-10 ">
+                <div className="  p-3 ">
                   <div className="flex items-center">
                     <p className=" text-[27px]  ml-3 font-semibold w-full">
                       More Options
@@ -1777,7 +1866,9 @@ const InvoicePage = () => {
                                 width: "50%",
                               }}
                               name="itemnamehours"
-                              onChange={handleChangesection2}
+                              onChange={(e) =>
+                                handlechangeadditemlist(e, index)
+                              }
                             />
                             <TextField
                               id="outlined-uncontrolled"
@@ -1787,7 +1878,9 @@ const InvoicePage = () => {
                                 width: "20%",
                               }}
                               name="hours"
-                              onChange={handleChangesection2}
+                              onChange={(e) =>
+                                handlechangeadditemlist(e, index)
+                              }
                             />
 
                             <TextField
@@ -1798,7 +1891,9 @@ const InvoicePage = () => {
                                 width: "25%",
                               }}
                               name="rate"
-                              onChange={handleChangesection2}
+                              onChange={(e) =>
+                                handlechangeadditemlist(e, index)
+                              }
                             />
                           </>
                         ) : (
@@ -1811,7 +1906,9 @@ const InvoicePage = () => {
                                 width: "50%",
                               }}
                               name="itemnamehours"
-                              onChange={handleChangesection2}
+                              onChange={(e) =>
+                                handlechangeadditemlist(e, index)
+                              }
                             />
                             <TextField
                               id="outlined-uncontrolled"
@@ -1821,7 +1918,9 @@ const InvoicePage = () => {
                                 width: "20%",
                               }}
                               name="hours"
-                              onChange={handleChangesection2}
+                              onChange={(e) =>
+                                handlechangeadditemlist(e, index)
+                              }
                             />
 
                             <TextField
@@ -1832,13 +1931,21 @@ const InvoicePage = () => {
                                 width: "25%",
                               }}
                               name="rate"
-                              onChange={handleChangesection2}
+                              onChange={(e) =>
+                                handlechangeadditemlist(e, index)
+                              }
                             />
                             <div className="p-3   ">
                               <div className="   flex items-center gap-5 ">
-                                {renderSelectedtaxFields()}
-                                {renderSelecteddiscountFields()}
-                                {renderSelecteddateFields()}
+                                {renderSelectedtaxFields({ singleItem, index })}
+                                {renderSelecteddiscountFields({
+                                  singleItem,
+                                  index,
+                                })}
+                                {renderSelecteddateFields({
+                                  singleItem,
+                                  index,
+                                })}
                               </div>
                             </div>
                           </>
@@ -1872,9 +1979,9 @@ const InvoicePage = () => {
             )}
             {isVisibleaccount && (
               <>
-                <div className="p-3 ">
+                <div className="p-3 h-auto ">
                   <form onSubmit={handleSubmitsection2}>
-                    <div className="flex items-center pl-3 pt-20">
+                    <div className="flex items-center  pl-3 pt-20">
                       <p className="font-bold text-xl w-full ml-3">Items</p>
                       <button
                         className=" text-blue-500 text-xl font-bold  rounded-full  flex justify-end items-center mr-3"
@@ -1886,90 +1993,93 @@ const InvoicePage = () => {
                         <MdModeEditOutline className="mr-1" /> Customise
                       </button>
                     </div>
-                    <div className="h-28 w-[97%] mt-4  border-2 rounded-xl mx-auto  ">
-                      <div className="flex items-center mx-auto  w-[97%] mt-3 gap-10">
-                        {customiseui ? (
-                          <>
-                            {" "}
-                            <TextField
-                              id="outlined-search"
-                              label="Item Name"
-                              type="search"
-                              style={{
-                                width: "75%",
-                              }}
-                              name="itemnameaccount"
-                              onChange={handleChangesection2}
-                            />
-                            <TextField
-                              id="outlined-search"
-                              label="Price"
-                              type="search"
-                              style={{
-                                width: "35%",
-                              }}
-                              name="price"
-                              onChange={handleChangesection2}
-                            />
-                          </>
-                        ) : (
-                          <>
-                            {" "}
-                            <TextField
-                              id="outlined-search"
-                              label="Item Name"
-                              type="search"
-                              style={{
-                                width: "75%",
-                              }}
-                              name="itemnameaccount"
-                              onChange={handleChangesection2}
-                            />
-                            <TextField
-                              id="outlined-search"
-                              label="Price"
-                              type="search"
-                              style={{
-                                width: "35%",
-                              }}
-                              name="price"
-                              onChange={handleChangesection2}
-                            />
-                            <div className="p-3   ">
-                              <div className="   flex items-center gap-5 ">
-                                {renderSelectedtaxFields()}
-                                {renderSelecteddiscountFields()}
-                                {renderSelecteddateFields()}
+
+                    {itemlist.map((singleItem, index) => {
+                      return (
+                        <div
+                          key={index}
+                          className="h-36 w-[97%] mt-4 mb-6  border-2  rounded-xl mx-auto"
+                        >
+                          <div className="flex items-center mx-auto  mt-3 gap-10">
+                            {customiseui ? (
+                              <div className="p-3 flex items-center gap-10">
+                                {renderFields({ singleItem, index })}
+
+                                {renderFields6({ singleItem, index })}
                               </div>
-                            </div>
-                          </>
-                        )}
-                      </div>
-                    </div>
-                    {inputuser2 && (
-                      <>
-                        <p className="font-bold float-right mr-3 mt-3 text-md">
-                          Amounts: $
-                          {inputuser2.discount
-                            ? (inputuser2.price * inputuser2.discount) / 100
-                            : inputuser2.price}
-                        </p>
-                      </>
-                    )}
+                            ) : (
+                              <div className="p-3   ">
+                                <>
+                                  {" "}
+                                  <div className="p-3   ">
+                                    <div className="   flex items-center gap-5 ">
+                                      {renderSelectedFields({
+                                        singleItem,
+                                        index,
+                                      })}
+
+                                      {renderSelectedFields6({
+                                        singleItem,
+                                        index,
+                                      })}
+                                      {renderSelecteddiscountFields({
+                                        singleItem,
+                                        index,
+                                      })}
+                                      {renderSelectedtaxFields({
+                                        singleItem,
+                                        index,
+                                      })}
+                                      {renderSelecteddateFields({
+                                        singleItem,
+                                        index,
+                                      })}
+                                    </div>
+                                  </div>
+                                </>
+                              </div>
+                            )}
+                          </div>
+                          <div className=" pr-7  mt-2 ">
+                            {itemlist
+                              .slice(itemlist.length - 1)
+                              .map((index) => (
+                                <div key={index} className=" pr-7 pb-3">
+                                  {singleItem && (
+                                    <>
+                                      <p className="font-bold flex justify-end  pb-2 text-md">
+                                        Amounts: $
+                                        {singleItem.discount
+                                          ? (singleItem.price *
+                                              singleItem.quantity *
+                                              singleItem.discount) /
+                                            100
+                                          : singleItem.price}
+                                      </p>
+                                    </>
+                                  )}
+                                </div>
+                              ))}
+                          </div>
+                          <div className="  ">
+                            {" "}
+                            {itemlist.length - 1 === index && (
+                              <button
+                                className="text-bold ml-4   text-blue-600  font-bold flex items-center text-xl "
+                                onClick={handleAddItem}
+                              >
+                                <AiOutlinePlus className="mr-2" /> Add items or
+                                Service
+                              </button>
+                            )}
+                          </div>
+                        </div>
+                      );
+                    })}
                   </form>
                 </div>
-                <button className="text-bold ml-4 mt-3 text-blue-600  font-bold flex items-center text-xl ">
-                  <AiOutlinePlus className="mr-2" /> Add items or Service
-                </button>
               </>
             )}
-
-            {/* {additem.map((item, index) => (
-              <div key={index} className="">
-                {" "}
-                <div className="flex gap-4">{additems(item)}</div>
-              </div>
-            ))} */}
           </div>
         </div>
 
@@ -2129,11 +2239,10 @@ const InvoicePage = () => {
                   {isVisiblehours && (
                     <>
                       {itemlist.map((item, index) => (
-                        <div key={index} className="flex justify-end pr-7 pb-3">
+                        <div key={index} className="">
                           {item && (
                             <>
                               <p className="font-bold text-md">
-                                Amounts: $
                                 {item.discount
                                   ? (item.price *
                                       item.quantity *
