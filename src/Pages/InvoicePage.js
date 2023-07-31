@@ -74,6 +74,8 @@ const InvoicePage = () => {
   const [fields, setFields] = useState(["ItemName"]);
   const [fields5, setFields5] = useState(["quantity"]);
   const [fields6, setFields6] = useState(["price"]);
+  const [fields7, setFields7] = useState(["hours"]);
+  const [fields8, setFields8] = useState(["rate"]);
   const [fields1, setField1] = useState(["description"]);
   const [fields2, setField2] = useState([]);
   const [fields3, setField3] = useState([]);
@@ -82,6 +84,8 @@ const InvoicePage = () => {
   const [selectedFields, setSelectedFields] = useState([]);
   const [selectedFields5, setSelectedFields5] = useState([]);
   const [selectedFields6, setSelectedFields6] = useState([]);
+  const [selectedFields7, setSelectedFields7] = useState([]);
+  const [selectedFields8, setSelectedFields8] = useState([]);
   const [selecteddescriptionFields, setSelecteddescriptionFields] = useState(
     []
   );
@@ -495,6 +499,7 @@ const InvoicePage = () => {
     }
     return accumulator + item.price * item.quantity;
   }, 0);
+
   const subtotal2 = itemlist.reduce((accumulator, item) => {
     if (item.discount) {
       return accumulator + (item.price * item.discount) / 100;
@@ -570,6 +575,30 @@ const InvoicePage = () => {
       );
     }
   };
+  const handleCheckboxChange7 = (e) => {
+    const { value, checked } = e.target;
+
+    // Add or remove the field based on checkbox selection
+    if (checked) {
+      setFields7((prevFields) => [...prevFields, value]);
+    } else {
+      setFields7((prevFields) =>
+        prevFields.filter((field7) => field7 !== value)
+      );
+    }
+  };
+  const handleCheckboxChange8 = (e) => {
+    const { value, checked } = e.target;
+
+    // Add or remove the field based on checkbox selection
+    if (checked) {
+      setFields8((prevFields) => [...prevFields, value]);
+    } else {
+      setFields8((prevFields) =>
+        prevFields.filter((field8) => field8 !== value)
+      );
+    }
+  };
 
   const handleCheckboxChangedescription = (e) => {
     const { value, checked } = e.target;
@@ -625,6 +654,8 @@ const InvoicePage = () => {
     setSelectedFields(fields);
     setSelectedFields5(fields5);
     setSelectedFields6(fields6);
+    setSelectedFields7(fields7);
+    setSelectedFields8(fields8);
     setSelecteddescriptionFields(fields1);
     setSelectedtaxFields(fields2);
     setSelecteddiscountFields(fields3);
@@ -688,6 +719,44 @@ const InvoicePage = () => {
           className=""
           name={field6}
           value={singleItem && singleItem[field6]}
+          onChange={(e) => handlechangeadditemlist(e, index)}
+        />
+      </div>
+    ));
+  };
+  const renderFields7 = ({ singleItem, index }) => {
+    return fields7.map((field7) => (
+      <div key={field7}>
+        <TextField
+          id="outlined-search"
+          type="text"
+          label={field7}
+          style={{
+            marginRight: "10px",
+            width: "100%",
+          }}
+          className=""
+          name={field7}
+          value={singleItem && singleItem[field7]}
+          onChange={(e) => handlechangeadditemlist(e, index)}
+        />
+      </div>
+    ));
+  };
+  const renderFields8 = ({ singleItem, index }) => {
+    return fields8.map((field8) => (
+      <div key={field8}>
+        <TextField
+          id="outlined-search"
+          type="text"
+          label={field8}
+          style={{
+            marginRight: "10px",
+            width: "100%",
+          }}
+          className=""
+          name={field8}
+          value={singleItem && singleItem[field8]}
           onChange={(e) => handlechangeadditemlist(e, index)}
         />
       </div>
@@ -835,6 +904,44 @@ const InvoicePage = () => {
       </div>
     ));
   };
+  const renderSelectedFields7 = ({ singleItem, index }) => {
+    return selectedFields7.map((field7) => (
+      <div key={field7}>
+        <TextField
+          id="outlined-search"
+          type="text"
+          label={field7}
+          style={{
+            marginRight: "20px",
+            width: "100%",
+          }}
+          className="gap-3"
+          name={field7}
+          value={singleItem[field7]}
+          onChange={(e) => handlechangeadditemlist(e, index)}
+        />
+      </div>
+    ));
+  };
+  const renderSelectedFields8 = ({ singleItem, index }) => {
+    return selectedFields8.map((field8) => (
+      <div key={field8}>
+        <TextField
+          id="outlined-search"
+          type="text"
+          label={field8}
+          style={{
+            marginRight: "20px",
+            width: "100%",
+          }}
+          className="gap-3"
+          name={field8}
+          value={singleItem[field8]}
+          onChange={(e) => handlechangeadditemlist(e, index)}
+        />
+      </div>
+    ));
+  };
   const renderSelecteddescriptionFields = ({ singleItem, index }) => {
     return selecteddescriptionFields.map((field) => (
       <div key={field}>
@@ -948,6 +1055,7 @@ const InvoicePage = () => {
     setIsVisibleaccount(true);
     setIsVisiblehours(false);
     setIsVisibleinvoicepage(false);
+
     setTimeout(() => {
       setTogglesection2(false);
     }, 1500);
@@ -958,6 +1066,7 @@ const InvoicePage = () => {
     setIsVisibleaccount(false);
     setIsVisiblehours(true);
     setIsVisibleinvoicepage(false);
+
     setTimeout(() => {
       setTogglesection3(false);
     }, 1500);
@@ -968,6 +1077,7 @@ const InvoicePage = () => {
     setIsVisibleaccount(false);
     setIsVisiblehours(false);
     setIsVisibleinvoicepage(true);
+
     // Simulate loading for 5 seconds and then set loading state back to false
     setTimeout(() => {
       setTogglesection4(false);
@@ -1942,129 +2052,113 @@ const InvoicePage = () => {
                         </button>
                       </div>
                       <form onSubmit={handleSubmitsection2}>
-                        <div className="h-64 w-[97%] mt-4  border-2 rounded-xl mx-auto  ">
-                          <div className="flex items-center mx-auto  w-[97%] mt-3 gap-10">
-                            {customiseui ? (
-                              <>
-                                <TextField
-                                  id="outlined-search"
-                                  label="Item Name"
-                                  type="search"
-                                  style={{
-                                    width: "50%",
-                                  }}
-                                  name="itemnamehours"
-                                  onChange={(e) =>
-                                    handlechangeadditemlist(e, index)
-                                  }
-                                />
-                                <TextField
-                                  id="outlined-uncontrolled"
-                                  label="Hours"
-                                  defaultValue="0"
-                                  style={{
-                                    width: "20%",
-                                  }}
-                                  name="hours"
-                                  onChange={(e) =>
-                                    handlechangeadditemlist(e, index)
-                                  }
-                                />
+                        {itemlist.map((singleItem, index) => {
+                          return (
+                            <>
+                              {" "}
+                              <div
+                                key={index}
+                                className="h-64 w-[97%] mt-4  border-2 rounded-xl mx-auto  "
+                              >
+                                {customiseui ? (
+                                  <>
+                                    <div className="p-3   ">
+                                      <div className="   flex items-center ">
+                                        <div className="flex gap-4">
+                                          {renderFields({
+                                            singleItem,
+                                            index,
+                                          })}
 
-                                <TextField
-                                  id="outlined-search"
-                                  label="Rate"
-                                  type="search"
-                                  style={{
-                                    width: "25%",
-                                  }}
-                                  name="rate"
-                                  onChange={(e) =>
-                                    handlechangeadditemlist(e, index)
-                                  }
-                                />
-                              </>
-                            ) : (
-                              <>
-                                <TextField
-                                  id="outlined-search"
-                                  label="Item Name"
-                                  type="search"
-                                  style={{
-                                    width: "50%",
-                                  }}
-                                  name="itemnamehours"
-                                  onChange={(e) =>
-                                    handlechangeadditemlist(e, index)
-                                  }
-                                />
-                                <TextField
-                                  id="outlined-uncontrolled"
-                                  label="Hours"
-                                  defaultValue="0"
-                                  style={{
-                                    width: "20%",
-                                  }}
-                                  name="hours"
-                                  onChange={(e) =>
-                                    handlechangeadditemlist(e, index)
-                                  }
-                                />
-
-                                <TextField
-                                  id="outlined-search"
-                                  label="Rate"
-                                  type="search"
-                                  style={{
-                                    width: "25%",
-                                  }}
-                                  name="rate"
-                                  onChange={(e) =>
-                                    handlechangeadditemlist(e, index)
-                                  }
-                                />
-                                <div className="p-3   ">
-                                  <div className="   flex items-center gap-5 ">
-                                    {renderSelectedtaxFields({
-                                      singleItem,
-                                      index,
-                                    })}
-                                    {renderSelecteddiscountFields({
-                                      singleItem,
-                                      index,
-                                    })}
-                                    {renderSelecteddateFields({
-                                      singleItem,
-                                      index,
-                                    })}
-                                  </div>
+                                          {renderFields7({
+                                            singleItem,
+                                            index,
+                                          })}
+                                          {renderFields8({
+                                            singleItem,
+                                            index,
+                                          })}
+                                        </div>
+                                      </div>
+                                      <div>
+                                        {renderFieldsdescription({
+                                          singleItem,
+                                          index,
+                                        })}
+                                      </div>
+                                    </div>
+                                  </>
+                                ) : (
+                                  <>
+                                    <div className="p-3   ">
+                                      <div className="   flex items-center gap-5 ">
+                                        {renderSelectedFields({
+                                          singleItem,
+                                          index,
+                                        })}
+                                        {renderSelectedFields7({
+                                          singleItem,
+                                          index,
+                                        })}
+                                        {renderSelectedFields8({
+                                          singleItem,
+                                          index,
+                                        })}
+                                        {renderSelectedtaxFields({
+                                          singleItem,
+                                          index,
+                                        })}
+                                        {renderSelecteddiscountFields({
+                                          singleItem,
+                                          index,
+                                        })}
+                                        {renderSelecteddateFields({
+                                          singleItem,
+                                          index,
+                                        })}
+                                      </div>
+                                    </div>
+                                  </>
+                                )}
+                                <div className="flex justify-end pr-7 pb-3">
+                                  {itemlist
+                                    .slice(itemlist.length - 1)
+                                    .map((index) => (
+                                      <div
+                                        key={index}
+                                        className="flex justify-end pr-7 pb-3"
+                                      >
+                                        {singleItem && (
+                                          <>
+                                            <p className="font-bold text-md">
+                                              Amounts: $
+                                              {singleItem.discount
+                                                ? (singleItem.hours *
+                                                    singleItem.rate *
+                                                    singleItem.discount) /
+                                                  100
+                                                : singleItem.hours *
+                                                  singleItem.rate}
+                                            </p>
+                                          </>
+                                        )}
+                                      </div>
+                                    ))}
                                 </div>
-                              </>
-                            )}
-                          </div>
-                          <textarea
-                            className="peer block h-auto w-[97%] mx-auto border border-gray-500 rounded mt-5 text-black px-3 py-[0.32rem]"
-                            id="exampleFormControlTextarea1"
-                            rows="5"
-                            placeholder="Description(optional)"
-                          ></textarea>
-                        </div>
+                                {itemlist.length - 1 === index && (
+                                  <button
+                                    className="text-bold ml-4 mt-3 text-blue-600  font-bold flex items-center text-xl "
+                                    onClick={handleAddItem}
+                                  >
+                                    <AiOutlinePlus className="mr-2" /> Add items
+                                    or Service
+                                  </button>
+                                )}
+                              </div>
+                            </>
+                          );
+                        })}
                       </form>
-                      <div className="flex justify-end pr-7 pb-3">
-                        {inputuser2 && (
-                          <>
-                            <p className="font-bold text-md">
-                              Amounts: $
-                              {inputuser2.discount
-                                ? (inputuser2.hours *
-                                    inputuser2.rate *
-                                    inputuser2.discount) /
-                                  100
-                                : inputuser2.hours * inputuser2.rate}
-                            </p>
-                          </>
-                        )}
-                      </div>
                     </div>
                   </>
                 )}
@@ -2358,45 +2452,12 @@ const InvoicePage = () => {
                   {isVisiblehours && (
                     <>
                       <p className="font-bold text-md">{subtotal1}</p>
-
-                      {/* {itemlist.map((item, index) => (
-                        <div key={index} className="">
-                          {item && (
-                            <>
-                              <p className="font-bold text-md">
-                                {item.discount
-                                  ? (item.price *
-                                      item.quantity *
-                                      item.discount) /
-                                    100
-                                  : item.price * item.quantity}
-                              </p>
-                            </>
-                          )}
-                        </div>
-                      ))} */}
                     </>
                   )}
 
                   {isVisibleaccount && (
                     <>
                       {" "}
-                      {/* {itemlist.map((item, index) => (
-                        <div key={index} className="">
-                          {item && (
-                            <>
-                              <p className="font-bold text-md">
-                                {item.discount
-                                  ? (item.price *
-                                      item.quantity *
-                                      item.discount) /
-                                    100
-                                  : item.price * item.quantity}
-                              </p>
-                            </>
-                          )}
-                        </div>
-                      ))} */}
                       <p className="font-bold text-md">{subtotal2}</p>
                     </>
                   )}
