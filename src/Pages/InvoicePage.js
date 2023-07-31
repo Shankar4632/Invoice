@@ -64,6 +64,9 @@ const InvoicePage = () => {
   const [businesspopup, setBusinessPopup] = useState(false);
   const [customisepopup, setCustomisePopup] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [togglesection2, setTogglesection2] = useState(false);
+  const [togglesection3, setTogglesection3] = useState(false);
+  const [togglesection4, setTogglesection4] = useState(false);
   const [lastData, setLastData] = useState(null);
 
   //states for customise  items
@@ -440,7 +443,7 @@ const InvoicePage = () => {
   useEffect(() => {}, [otherAmount]);
   //individual value
   const calculateTotal = () => {
-    let total = 0.0;
+    let total = 0;
 
     itemlist.forEach((item) => {
       const quantity = parseFloat(item.quantity) || 0;
@@ -465,20 +468,19 @@ const InvoicePage = () => {
         ? itemTotalWithDiscounthours
         : itemTotalhours;
 
-      // const itemTotalamountonly = price;
-      // const itemTotalWithDiscountamountsonly =
-      //   (itemTotalamountonly * discount) / 100;
-      // const itemTotalamountsonly = discount
-      //   ? itemTotalWithDiscountamountsonly
-      //   : itemTotalamountonly;
+      const itemTotalamountonly = price;
+      const itemTotalWithDiscountamountsonly = (price * discount) / 100;
 
+      const itemTotalamountsonly = discount
+        ? itemTotalWithDiscountamountsonly
+        : itemTotalamountonly;
       total +=
         discountValue +
         shippingValue +
         otherAmountValue +
         subtotalFinal +
-        subtotalFinalhours;
-      // itemTotalamountsonly;
+        subtotalFinalhours +
+        itemTotalamountsonly;
     });
     console.log("total:", total);
 
@@ -492,6 +494,12 @@ const InvoicePage = () => {
       return accumulator + (item.price * item.quantity * item.discount) / 100;
     }
     return accumulator + item.price * item.quantity;
+  }, 0);
+  const subtotal2 = itemlist.reduce((accumulator, item) => {
+    if (item.discount) {
+      return accumulator + (item.price * item.discount) / 100;
+    }
+    return accumulator + item.price;
   }, 0);
 
   const handleKeyDown = (event, section) => {
@@ -934,21 +942,36 @@ const InvoicePage = () => {
     handleSaveClick();
   };
   //vibilities for ui of different type pages
+
   const toggleVisibilityofamounts = () => {
+    setTogglesection2(true); // Set loading state to true
     setIsVisibleaccount(true);
     setIsVisiblehours(false);
     setIsVisibleinvoicepage(false);
+    setTimeout(() => {
+      setTogglesection2(false);
+    }, 1500);
   };
+
   const toggleVisibilityofhours = () => {
+    setTogglesection3(true); // Set loading state to true
     setIsVisibleaccount(false);
     setIsVisiblehours(true);
     setIsVisibleinvoicepage(false);
+    setTimeout(() => {
+      setTogglesection3(false);
+    }, 1500);
   };
 
   const toggleVisibilityofQuantity = () => {
+    setTogglesection4(true); // Set loading state to true
     setIsVisibleaccount(false);
     setIsVisiblehours(false);
     setIsVisibleinvoicepage(true);
+    // Simulate loading for 5 seconds and then set loading state back to false
+    setTimeout(() => {
+      setTogglesection4(false);
+    }, 1500);
   };
   //customise ui for display
   const toggleVisibilityofcustomiseamounts = () => {
@@ -1012,6 +1035,7 @@ const InvoicePage = () => {
   }, []);
 
   //loading
+
   if (isLoading) {
     return (
       // <div className="text-center text-3xl text-black">
@@ -1631,402 +1655,96 @@ const InvoicePage = () => {
               </form>
             </div>
             {/*==================================  section-2  =============================== */}
-            {isVisibleinvoicepage && (
-              <>
-                <div className="p-3 ">
-                  <form onSubmit={handleSubmitsection2}>
-                    <div className="flex items-center pl-3 pt-20">
-                      <p className="font-bold text-xl w-full ml-3">Items</p>
-                      <button
-                        className=" text-blue-500 text-xl font-bold  rounded-full  flex justify-end items-center mr-3"
-                        onClick={(event, singleItem, index) => {
-                          event.preventDefault();
-                          setCustomisePopup(true);
-                        }}
-                      >
-                        <MdModeEditOutline className="mr-1" /> Customise
-                      </button>
-                    </div>
-
-                    {itemlist.map((singleItem, index) => {
-                      return (
-                        <div key={index}>
-                          <div
-                            className="h-auto  w-[97%] mt-4  border-2 rounded-xl mx-auto  "
-                            id="additems"
-                          >
-                            {customiseui ? (
-                              <div className="p-3   ">
-                                <div className="   flex items-center ">
-                                  <div className="flex gap-4">
-                                    {renderFields({ singleItem, index })}
-                                    {renderFields5({ singleItem, index })}
-                                    {renderFields6({ singleItem, index })}
-                                    {renderFieldstax({ singleItem, index })}
-                                    {renderFieldsdiscount({
-                                      singleItem,
-                                      index,
-                                    })}
-                                  </div>
-                                </div>
-                                <div>
-                                  {renderFieldsdescription({
-                                    singleItem,
-                                    index,
-                                  })}
-                                </div>
-                              </div>
-                            ) : (
-                              <div className="p-3   ">
-                                <div className="   flex items-center gap-5 ">
-                                  {renderSelectedFields({ singleItem, index })}
-                                  {renderSelectedFields5({ singleItem, index })}
-                                  {renderSelectedFields6({ singleItem, index })}
-                                  {renderSelectedtaxFields({
-                                    singleItem,
-                                    index,
-                                  })}
-                                  {renderSelecteddiscountFields({
-                                    singleItem,
-                                    index,
-                                  })}
-                                  {renderSelecteddateFields({
-                                    singleItem,
-                                    index,
-                                  })}
-                                </div>
-                                <div>
-                                  {" "}
-                                  {renderSelecteddescriptionFields({
-                                    singleItem,
-                                    index,
-                                  })}
-                                </div>
-                              </div>
-                            )}
-                            <div className="flex justify-end pr-7 pb-3">
-                              {itemlist
-                                .slice(itemlist.length - 1)
-                                .map((index) => (
-                                  <div
-                                    key={index}
-                                    className="flex justify-end pr-7 pb-3"
-                                  >
-                                    {singleItem && (
-                                      <>
-                                        <p className="font-bold text-md">
-                                          Amounts: $
-                                          {singleItem.discount
-                                            ? (singleItem.price *
-                                                singleItem.quantity *
-                                                singleItem.discount) /
-                                              100
-                                            : singleItem.price *
-                                              singleItem.quantity}
-                                        </p>
-                                      </>
-                                    )}
-                                  </div>
-                                ))}
-                            </div>
-                          </div>
-                          {itemlist.length - 1 === index && (
-                            <button
-                              className="text-bold ml-4 mt-3 text-blue-600  font-bold flex items-center text-xl "
-                              onClick={handleAddItem}
-                            >
-                              <AiOutlinePlus className="mr-2" /> Add items or
-                              Service
-                            </button>
-                          )}
-                        </div>
-                      );
-                    })}
-                  </form>
-                </div>
-                {/*  ==============================  section-3  ============================= */}
-                <form onSubmit={handleSubmitsection3}>
-                  <div className="p-3">
-                    <p className="font-bold text-xl ml-5">
-                      Message To Customer
-                    </p>
-                    <div className=" mb-2" data-te-input-wrapper-init>
-                      <textarea
-                        className="peer block min-h-[auto] w-[97%] mx-auto border border-gray-500 rounded mt-5 text-black px-3 py-[0.32rem]  "
-                        id="exampleFormControlTextarea1"
-                        rows="6"
-                        value={input.section3messege}
-                        name="section3messege"
-                        placeholder="Seller note to customer"
-                        onChange={handleChangesection3}
-                      >
-                        {" "}
-                      </textarea>
-                    </div>
-                  </div>
-                </form>
-                <div className="flex items-center ml-7 ">
-                  <button className="text-bold  mt-3 text-blue-600  font-bold flex items-center text-xl ">
-                    Add terms and conditions
-                  </button>
-
-                  <button className="text-bold  ml-1 mt-3 text-blue-600  font-bold flex items-center text-xl ">
-                    <RxDividerVertical className="text-black flex item-center text-xl" />{" "}
-                    Add reference number
-                  </button>
-                </div>
-                {/*===================================  section-4  =================================*/}
-                <div className="  p-3 ">
-                  <div className="flex items-center">
-                    <p className=" text-[27px]  ml-3 font-semibold w-full">
-                      More Options
-                    </p>
-                    <button onClick={hideshow}>
-                      {" "}
-                      {showMemo ? (
-                        <IoIosArrowUp className="text-2xl text-gray-500" />
-                      ) : (
-                        <IoIosArrowDown className="text-2xl text-gray-500" />
-                      )}
-                    </button>
-                  </div>
-                  <hr className="mt-3 w-[98%] mx-auto" />
-                  <div className="  ">
-                    {showMemo && (
-                      <form onSubmit={handleSubmitsection4}>
-                        <div className="">
-                          <p className="text-xl p-3 ml-1 font-bold">
-                            Attachments
-                          </p>
-                          <input
-                            ref={fileInputRef}
-                            type="file"
-                            name="files"
-                            id="files"
-                            className="hidden"
-                            onChange={handleFileChange}
-                          />
-                          <button
-                            type="button"
-                            className="text-[#05070a] ml-3 font-bold border-2 border-[#003087] px-4 py-1 rounded-full text-sm"
-                            onClick={handleButtonClick}
-                          >
-                            Upload files
-                          </button>
-                          <p className="text-sm font-semibold p-3 text-gray-800">
-                            JPG GIF PNG PDF | Up to 5 files , 4MB per file
-                          </p>
-                        </div>
-                        <div className=" p-3 mt-10 mb-4">
-                          <p className="font-bold text-xl ml-2">Memo To Self</p>
-                          <div className=" mb-2">
-                            <textarea
-                              className="peer block min-h-[auto] placeholder-gray-500  w-[98%] mx-auto border border-gray-500 rounded mt-5 text-black px-3 py-[0.32rem]  "
-                              rows="6"
-                              placeholder="Memo"
-                              value={inputuser4.memo}
-                              name="memo"
-                              onChange={handleChangesection4}
-                            >
-                              {" "}
-                            </textarea>
-                          </div>
-                        </div>
-                      </form>
-                    )}
-                  </div>
-                </div>
-              </>
-            )}
-            {isVisiblehours && (
-              <>
-                <div className="p-3 ">
-                  <div className="flex items-center pl-3 pt-20">
-                    <p className="font-bold w-full  text-xl ml-3">Items</p>
-                    <button
-                      className=" text-blue-500 text-xl font-bold  rounded-full flex justify-end items-center mr-3"
-                      onClick={(event) => {
-                        event.preventDefault();
-                        setCustomisePopup(true);
-                      }}
+            {togglesection4 ? (
+              <div>
+                <div className="flex justify-center text-3xl h-72 items-center">
+                  <div role="status">
+                    <svg
+                      aria-hidden="true"
+                      className="inline w-10 h-10 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
+                      viewBox="0 0 100 101"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
                     >
-                      <MdModeEditOutline className="mr-1" /> Customise
-                    </button>
-                  </div>
-                  <form onSubmit={handleSubmitsection2}>
-                    <div className="h-64 w-[97%] mt-4  border-2 rounded-xl mx-auto  ">
-                      <div className="flex items-center mx-auto  w-[97%] mt-3 gap-10">
-                        {customiseui ? (
-                          <>
-                            <TextField
-                              id="outlined-search"
-                              label="Item Name"
-                              type="search"
-                              style={{
-                                width: "50%",
-                              }}
-                              name="itemnamehours"
-                              onChange={(e) =>
-                                handlechangeadditemlist(e, index)
-                              }
-                            />
-                            <TextField
-                              id="outlined-uncontrolled"
-                              label="Hours"
-                              defaultValue="0"
-                              style={{
-                                width: "20%",
-                              }}
-                              name="hours"
-                              onChange={(e) =>
-                                handlechangeadditemlist(e, index)
-                              }
-                            />
-
-                            <TextField
-                              id="outlined-search"
-                              label="Rate"
-                              type="search"
-                              style={{
-                                width: "25%",
-                              }}
-                              name="rate"
-                              onChange={(e) =>
-                                handlechangeadditemlist(e, index)
-                              }
-                            />
-                          </>
-                        ) : (
-                          <>
-                            <TextField
-                              id="outlined-search"
-                              label="Item Name"
-                              type="search"
-                              style={{
-                                width: "50%",
-                              }}
-                              name="itemnamehours"
-                              onChange={(e) =>
-                                handlechangeadditemlist(e, index)
-                              }
-                            />
-                            <TextField
-                              id="outlined-uncontrolled"
-                              label="Hours"
-                              defaultValue="0"
-                              style={{
-                                width: "20%",
-                              }}
-                              name="hours"
-                              onChange={(e) =>
-                                handlechangeadditemlist(e, index)
-                              }
-                            />
-
-                            <TextField
-                              id="outlined-search"
-                              label="Rate"
-                              type="search"
-                              style={{
-                                width: "25%",
-                              }}
-                              name="rate"
-                              onChange={(e) =>
-                                handlechangeadditemlist(e, index)
-                              }
-                            />
-                            <div className="p-3   ">
-                              <div className="   flex items-center gap-5 ">
-                                {renderSelectedtaxFields({ singleItem, index })}
-                                {renderSelecteddiscountFields({
-                                  singleItem,
-                                  index,
-                                })}
-                                {renderSelecteddateFields({
-                                  singleItem,
-                                  index,
-                                })}
-                              </div>
-                            </div>
-                          </>
-                        )}
-                      </div>
-                      <textarea
-                        className="peer block h-auto w-[97%] mx-auto border border-gray-500 rounded mt-5 text-black px-3 py-[0.32rem]"
-                        id="exampleFormControlTextarea1"
-                        rows="5"
-                        placeholder="Description(optional)"
-                      ></textarea>
-                    </div>
-                  </form>
-                  <div className="flex justify-end pr-7 pb-3">
-                    {inputuser2 && (
-                      <>
-                        <p className="font-bold text-md">
-                          Amounts: $
-                          {inputuser2.discount
-                            ? (inputuser2.hours *
-                                inputuser2.rate *
-                                inputuser2.discount) /
-                              100
-                            : inputuser2.hours * inputuser2.rate}
-                        </p>
-                      </>
-                    )}
+                      <path
+                        d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                        fill="currentColor"
+                      />
+                      <path
+                        d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                        fill="currentFill"
+                      />
+                    </svg>
                   </div>
                 </div>
-              </>
-            )}
-            {isVisibleaccount && (
+              </div>
+            ) : (
               <>
-                <div className="p-3 h-auto ">
-                  <form onSubmit={handleSubmitsection2}>
-                    <div className="flex items-center  pl-3 pt-20">
-                      <p className="font-bold text-xl w-full ml-3">Items</p>
-                      <button
-                        className=" text-blue-500 text-xl font-bold  rounded-full  flex justify-end items-center mr-3"
-                        onClick={(event) => {
-                          event.preventDefault();
-                          setCustomisePopup(true);
-                        }}
-                      >
-                        <MdModeEditOutline className="mr-1" /> Customise
-                      </button>
-                    </div>
+                {isVisibleinvoicepage && (
+                  <>
+                    <div className="p-3 ">
+                      <form onSubmit={handleSubmitsection2}>
+                        <div className="flex items-center pl-3 pt-20">
+                          <p className="font-bold text-xl w-full ml-3">Items</p>
+                          <button
+                            className=" text-blue-500 text-xl font-bold  rounded-full  flex justify-end items-center mr-3"
+                            onClick={(event, singleItem, index) => {
+                              event.preventDefault();
+                              setCustomisePopup(true);
+                            }}
+                          >
+                            <MdModeEditOutline className="mr-1" /> Customise
+                          </button>
+                        </div>
 
-                    {itemlist.map((singleItem, index) => {
-                      return (
-                        <div
-                          key={index}
-                          className="h-36 w-[97%] mt-4 mb-6  border-2  rounded-xl mx-auto"
-                        >
-                          <div className="flex items-center mx-auto  mt-3 gap-10">
-                            {customiseui ? (
-                              <div className="p-3 flex items-center gap-10">
-                                {renderFields({ singleItem, index })}
-
-                                {renderFields6({ singleItem, index })}
-                              </div>
-                            ) : (
-                              <div className="p-3   ">
-                                <>
-                                  {" "}
+                        {itemlist.map((singleItem, index) => {
+                          return (
+                            <div key={index}>
+                              <div
+                                className="h-auto  w-[97%] mt-4  border-2 rounded-xl mx-auto  "
+                                id="additems"
+                              >
+                                {customiseui ? (
+                                  <div className="p-3   ">
+                                    <div className="   flex items-center ">
+                                      <div className="flex gap-4">
+                                        {renderFields({ singleItem, index })}
+                                        {renderFields5({ singleItem, index })}
+                                        {renderFields6({ singleItem, index })}
+                                        {renderFieldstax({ singleItem, index })}
+                                        {renderFieldsdiscount({
+                                          singleItem,
+                                          index,
+                                        })}
+                                      </div>
+                                    </div>
+                                    <div>
+                                      {renderFieldsdescription({
+                                        singleItem,
+                                        index,
+                                      })}
+                                    </div>
+                                  </div>
+                                ) : (
                                   <div className="p-3   ">
                                     <div className="   flex items-center gap-5 ">
                                       {renderSelectedFields({
                                         singleItem,
                                         index,
                                       })}
-
+                                      {renderSelectedFields5({
+                                        singleItem,
+                                        index,
+                                      })}
                                       {renderSelectedFields6({
                                         singleItem,
                                         index,
                                       })}
-                                      {renderSelecteddiscountFields({
+                                      {renderSelectedtaxFields({
                                         singleItem,
                                         index,
                                       })}
-                                      {renderSelectedtaxFields({
+                                      {renderSelecteddiscountFields({
                                         singleItem,
                                         index,
                                       })}
@@ -2035,49 +1753,450 @@ const InvoicePage = () => {
                                         index,
                                       })}
                                     </div>
+                                    <div>
+                                      {" "}
+                                      {renderSelecteddescriptionFields({
+                                        singleItem,
+                                        index,
+                                      })}
+                                    </div>
                                   </div>
-                                </>
-                              </div>
-                            )}
-                          </div>
-                          <div className=" pr-7  mt-2 ">
-                            {itemlist
-                              .slice(itemlist.length - 1)
-                              .map((index) => (
-                                <div key={index} className=" pr-7 pb-3">
-                                  {singleItem && (
-                                    <>
-                                      <p className="font-bold flex justify-end  pb-2 text-md">
-                                        Amounts: $
-                                        {singleItem.discount
-                                          ? (singleItem.price *
-                                              singleItem.quantity *
-                                              singleItem.discount) /
-                                            100
-                                          : singleItem.price}
-                                      </p>
-                                    </>
-                                  )}
+                                )}
+                                <div className="flex justify-end pr-7 pb-3">
+                                  {itemlist
+                                    .slice(itemlist.length - 1)
+                                    .map((index) => (
+                                      <div
+                                        key={index}
+                                        className="flex justify-end pr-7 pb-3"
+                                      >
+                                        {singleItem && (
+                                          <>
+                                            <p className="font-bold text-md">
+                                              Amounts: $
+                                              {singleItem.discount
+                                                ? (singleItem.price *
+                                                    singleItem.quantity *
+                                                    singleItem.discount) /
+                                                  100
+                                                : singleItem.price *
+                                                  singleItem.quantity}
+                                            </p>
+                                          </>
+                                        )}
+                                      </div>
+                                    ))}
                                 </div>
-                              ))}
-                          </div>
-                          <div className="  ">
+                              </div>
+                              {itemlist.length - 1 === index && (
+                                <button
+                                  className="text-bold ml-4 mt-3 text-blue-600  font-bold flex items-center text-xl "
+                                  onClick={handleAddItem}
+                                >
+                                  <AiOutlinePlus className="mr-2" /> Add items
+                                  or Service
+                                </button>
+                              )}
+                            </div>
+                          );
+                        })}
+                      </form>
+                    </div>
+                    {/*  ==============================  section-3  ============================= */}
+                    <form onSubmit={handleSubmitsection3}>
+                      <div className="p-3">
+                        <p className="font-bold text-xl ml-5">
+                          Message To Customer
+                        </p>
+                        <div className=" mb-2" data-te-input-wrapper-init>
+                          <textarea
+                            className="peer block min-h-[auto] w-[97%] mx-auto border border-gray-500 rounded mt-5 text-black px-3 py-[0.32rem]  "
+                            id="exampleFormControlTextarea1"
+                            rows="6"
+                            value={input.section3messege}
+                            name="section3messege"
+                            placeholder="Seller note to customer"
+                            onChange={handleChangesection3}
+                          >
                             {" "}
-                            {itemlist.length - 1 === index && (
+                          </textarea>
+                        </div>
+                      </div>
+                    </form>
+                    <div className="flex items-center ml-7 ">
+                      <button className="text-bold  mt-3 text-blue-600  font-bold flex items-center text-xl ">
+                        Add terms and conditions
+                      </button>
+
+                      <button className="text-bold  ml-1 mt-3 text-blue-600  font-bold flex items-center text-xl ">
+                        <RxDividerVertical className="text-black flex item-center text-xl" />{" "}
+                        Add reference number
+                      </button>
+                    </div>
+                    {/*===================================  section-4  =================================*/}
+                    <div className="  p-3 ">
+                      <div className="flex items-center">
+                        <p className=" text-[27px]  ml-3 font-semibold w-full">
+                          More Options
+                        </p>
+                        <button onClick={hideshow}>
+                          {" "}
+                          {showMemo ? (
+                            <IoIosArrowUp className="text-2xl text-gray-500" />
+                          ) : (
+                            <IoIosArrowDown className="text-2xl text-gray-500" />
+                          )}
+                        </button>
+                      </div>
+                      <hr className="mt-3 w-[98%] mx-auto" />
+                      <div className="  ">
+                        {showMemo && (
+                          <form onSubmit={handleSubmitsection4}>
+                            <div className="">
+                              <p className="text-xl p-3 ml-1 font-bold">
+                                Attachments
+                              </p>
+                              <input
+                                ref={fileInputRef}
+                                type="file"
+                                name="files"
+                                id="files"
+                                className="hidden"
+                                onChange={handleFileChange}
+                              />
                               <button
-                                className="text-bold ml-4   text-blue-600  font-bold flex items-center text-xl "
-                                onClick={handleAddItem}
+                                type="button"
+                                className="text-[#05070a] ml-3 font-bold border-2 border-[#003087] px-4 py-1 rounded-full text-sm"
+                                onClick={handleButtonClick}
                               >
-                                <AiOutlinePlus className="mr-2" /> Add items or
-                                Service
+                                Upload files
                               </button>
+                              <p className="text-sm font-semibold p-3 text-gray-800">
+                                JPG GIF PNG PDF | Up to 5 files , 4MB per file
+                              </p>
+                            </div>
+                            <div className=" p-3 mt-10 mb-4">
+                              <p className="font-bold text-xl ml-2">
+                                Memo To Self
+                              </p>
+                              <div className=" mb-2">
+                                <textarea
+                                  className="peer block min-h-[auto] placeholder-gray-500  w-[98%] mx-auto border border-gray-500 rounded mt-5 text-black px-3 py-[0.32rem]  "
+                                  rows="6"
+                                  placeholder="Memo"
+                                  value={inputuser4.memo}
+                                  name="memo"
+                                  onChange={handleChangesection4}
+                                >
+                                  {" "}
+                                </textarea>
+                              </div>
+                            </div>
+                          </form>
+                        )}
+                      </div>
+                    </div>
+                  </>
+                )}
+              </>
+            )}
+
+            {togglesection3 ? (
+              <div>
+                <div className="flex justify-center text-3xl h-72 items-center">
+                  <div role="status">
+                    <svg
+                      aria-hidden="true"
+                      className="inline w-10 h-10 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
+                      viewBox="0 0 100 101"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                        fill="currentColor"
+                      />
+                      <path
+                        d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                        fill="currentFill"
+                      />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <>
+                {isVisiblehours && (
+                  <>
+                    <div className="p-3 ">
+                      <div className="flex items-center pl-3 pt-20">
+                        <p className="font-bold w-full  text-xl ml-3">Items</p>
+                        <button
+                          className=" text-blue-500 text-xl font-bold  rounded-full flex justify-end items-center mr-3"
+                          onClick={(event) => {
+                            event.preventDefault();
+                            setCustomisePopup(true);
+                          }}
+                        >
+                          <MdModeEditOutline className="mr-1" /> Customise
+                        </button>
+                      </div>
+                      <form onSubmit={handleSubmitsection2}>
+                        <div className="h-64 w-[97%] mt-4  border-2 rounded-xl mx-auto  ">
+                          <div className="flex items-center mx-auto  w-[97%] mt-3 gap-10">
+                            {customiseui ? (
+                              <>
+                                <TextField
+                                  id="outlined-search"
+                                  label="Item Name"
+                                  type="search"
+                                  style={{
+                                    width: "50%",
+                                  }}
+                                  name="itemnamehours"
+                                  onChange={(e) =>
+                                    handlechangeadditemlist(e, index)
+                                  }
+                                />
+                                <TextField
+                                  id="outlined-uncontrolled"
+                                  label="Hours"
+                                  defaultValue="0"
+                                  style={{
+                                    width: "20%",
+                                  }}
+                                  name="hours"
+                                  onChange={(e) =>
+                                    handlechangeadditemlist(e, index)
+                                  }
+                                />
+
+                                <TextField
+                                  id="outlined-search"
+                                  label="Rate"
+                                  type="search"
+                                  style={{
+                                    width: "25%",
+                                  }}
+                                  name="rate"
+                                  onChange={(e) =>
+                                    handlechangeadditemlist(e, index)
+                                  }
+                                />
+                              </>
+                            ) : (
+                              <>
+                                <TextField
+                                  id="outlined-search"
+                                  label="Item Name"
+                                  type="search"
+                                  style={{
+                                    width: "50%",
+                                  }}
+                                  name="itemnamehours"
+                                  onChange={(e) =>
+                                    handlechangeadditemlist(e, index)
+                                  }
+                                />
+                                <TextField
+                                  id="outlined-uncontrolled"
+                                  label="Hours"
+                                  defaultValue="0"
+                                  style={{
+                                    width: "20%",
+                                  }}
+                                  name="hours"
+                                  onChange={(e) =>
+                                    handlechangeadditemlist(e, index)
+                                  }
+                                />
+
+                                <TextField
+                                  id="outlined-search"
+                                  label="Rate"
+                                  type="search"
+                                  style={{
+                                    width: "25%",
+                                  }}
+                                  name="rate"
+                                  onChange={(e) =>
+                                    handlechangeadditemlist(e, index)
+                                  }
+                                />
+                                <div className="p-3   ">
+                                  <div className="   flex items-center gap-5 ">
+                                    {renderSelectedtaxFields({
+                                      singleItem,
+                                      index,
+                                    })}
+                                    {renderSelecteddiscountFields({
+                                      singleItem,
+                                      index,
+                                    })}
+                                    {renderSelecteddateFields({
+                                      singleItem,
+                                      index,
+                                    })}
+                                  </div>
+                                </div>
+                              </>
                             )}
                           </div>
+                          <textarea
+                            className="peer block h-auto w-[97%] mx-auto border border-gray-500 rounded mt-5 text-black px-3 py-[0.32rem]"
+                            id="exampleFormControlTextarea1"
+                            rows="5"
+                            placeholder="Description(optional)"
+                          ></textarea>
                         </div>
-                      );
-                    })}
-                  </form>
+                      </form>
+                      <div className="flex justify-end pr-7 pb-3">
+                        {inputuser2 && (
+                          <>
+                            <p className="font-bold text-md">
+                              Amounts: $
+                              {inputuser2.discount
+                                ? (inputuser2.hours *
+                                    inputuser2.rate *
+                                    inputuser2.discount) /
+                                  100
+                                : inputuser2.hours * inputuser2.rate}
+                            </p>
+                          </>
+                        )}
+                      </div>
+                    </div>
+                  </>
+                )}
+              </>
+            )}
+            {togglesection2 ? (
+              <div>
+                <div className="flex justify-center text-3xl h-72 items-center">
+                  <div role="status">
+                    <svg
+                      aria-hidden="true"
+                      className="inline w-10 h-10 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
+                      viewBox="0 0 100 101"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                        fill="currentColor"
+                      />
+                      <path
+                        d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                        fill="currentFill"
+                      />
+                    </svg>
+                  </div>
                 </div>
+              </div>
+            ) : (
+              <>
+                {isVisibleaccount && (
+                  <>
+                    <div className="p-3 h-auto ">
+                      <form onSubmit={handleSubmitsection2}>
+                        <div className="flex items-center  pl-3 pt-20">
+                          <p className="font-bold text-xl w-full ml-3">Items</p>
+                          <button
+                            className=" text-blue-500 text-xl font-bold  rounded-full  flex justify-end items-center mr-3"
+                            onClick={(event) => {
+                              event.preventDefault();
+                              setCustomisePopup(true);
+                            }}
+                          >
+                            <MdModeEditOutline className="mr-1" /> Customise
+                          </button>
+                        </div>
+
+                        {itemlist.map((singleItem, index) => {
+                          return (
+                            <div
+                              key={index}
+                              className="h-36 w-[97%] mt-4 mb-6  border-2  rounded-xl mx-auto"
+                            >
+                              <div className="flex items-center mx-auto  mt-3 gap-10">
+                                {customiseui ? (
+                                  <div className="p-3 flex items-center gap-10">
+                                    {renderFields({ singleItem, index })}
+
+                                    {renderFields6({ singleItem, index })}
+                                  </div>
+                                ) : (
+                                  <div className="p-3   ">
+                                    <>
+                                      {" "}
+                                      <div className="p-3   ">
+                                        <div className="   flex items-center gap-5 ">
+                                          {renderSelectedFields({
+                                            singleItem,
+                                            index,
+                                          })}
+
+                                          {renderSelectedFields6({
+                                            singleItem,
+                                            index,
+                                          })}
+                                          {renderSelecteddiscountFields({
+                                            singleItem,
+                                            index,
+                                          })}
+                                          {renderSelectedtaxFields({
+                                            singleItem,
+                                            index,
+                                          })}
+                                          {renderSelecteddateFields({
+                                            singleItem,
+                                            index,
+                                          })}
+                                        </div>
+                                      </div>
+                                    </>
+                                  </div>
+                                )}
+                              </div>
+                              <div className=" pr-7  mt-2 ">
+                                {itemlist
+                                  .slice(itemlist.length - 1)
+                                  .map((index) => (
+                                    <div key={index} className=" pr-7 pb-3">
+                                      {singleItem && (
+                                        <>
+                                          <p className="font-bold flex justify-end  pb-2 text-md">
+                                            Amounts: $
+                                            {singleItem.discount
+                                              ? (singleItem.price *
+                                                  singleItem.discount) /
+                                                100
+                                              : singleItem.price}
+                                          </p>
+                                        </>
+                                      )}
+                                    </div>
+                                  ))}
+                              </div>
+                              <div className="  ">
+                                {" "}
+                                {itemlist.length - 1 === index && (
+                                  <button
+                                    className="text-bold ml-4   text-blue-600  font-bold flex items-center text-xl "
+                                    onClick={handleAddItem}
+                                  >
+                                    <AiOutlinePlus className="mr-2" /> Add items
+                                    or Service
+                                  </button>
+                                )}
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </form>
+                    </div>
+                  </>
+                )}
               </>
             )}
           </div>
@@ -2238,7 +2357,9 @@ const InvoicePage = () => {
                   )}
                   {isVisiblehours && (
                     <>
-                      {itemlist.map((item, index) => (
+                      <p className="font-bold text-md">{subtotal1}</p>
+
+                      {/* {itemlist.map((item, index) => (
                         <div key={index} className="">
                           {item && (
                             <>
@@ -2253,14 +2374,14 @@ const InvoicePage = () => {
                             </>
                           )}
                         </div>
-                      ))}
+                      ))} */}
                     </>
                   )}
 
                   {isVisibleaccount && (
                     <>
                       {" "}
-                      {itemlist.map((item, index) => (
+                      {/* {itemlist.map((item, index) => (
                         <div key={index} className="">
                           {item && (
                             <>
@@ -2275,7 +2396,8 @@ const InvoicePage = () => {
                             </>
                           )}
                         </div>
-                      ))}
+                      ))} */}
+                      <p className="font-bold text-md">{subtotal2}</p>
                     </>
                   )}
 
