@@ -478,12 +478,16 @@ const InvoicePage = () => {
       const itemTotalamountsonly = discount
         ? itemTotalWithDiscountamountsonly
         : itemTotalamountonly;
+
+      const itemhoursonly = hours * rate;
+      const itemhoursallonly = (item.hours * item.rate * item.discount) / 100;
       total +=
         discountValue +
         shippingValue +
         otherAmountValue +
         subtotalFinal +
         subtotalFinalhours +
+        itemhoursallonly +
         itemTotalamountsonly;
     });
     console.log("total:", total);
@@ -501,10 +505,17 @@ const InvoicePage = () => {
   }, 0);
 
   const subtotal2 = itemlist.reduce((accumulator, item) => {
+    const totalamountsitems = (item.price * item.discount) / 100;
     if (item.discount) {
-      return accumulator + (item.price * item.discount) / 100;
+      return accumulator + totalamountsitems;
     }
     return accumulator + item.price;
+  }, 0);
+  const subtotal3 = itemlist.reduce((accumulator, item) => {
+    if (item.discount) {
+      return accumulator + (item.hours * item.rate * item.discount) / 100;
+    }
+    return accumulator + item.hours * item.rate;
   }, 0);
 
   const handleKeyDown = (event, section) => {
@@ -1487,44 +1498,31 @@ const InvoicePage = () => {
                     )}
                     {isVisiblecustomisehours && (
                       <>
-                        <div className="flex items-center mx-auto  w-[97%] mt-3 gap-10">
-                          <TextField
-                            id="outlined-search"
-                            label="Item Name"
-                            type="search"
-                            style={{
-                              width: "50%",
-                            }}
-                          />
-                          <TextField
-                            id="outlined-uncontrolled"
-                            label="Hours"
-                            defaultValue="0"
-                            style={{
-                              width: "20%",
-                            }}
-                          />
+                        <div className="p-3   ">
+                          <div className="   flex items-center ">
+                            <div className="flex gap-4">
+                              {renderFields({
+                                singleItem,
+                                index,
+                              })}
 
-                          <TextField
-                            id="outlined-search"
-                            label="Rate"
-                            type="search"
-                            style={{
-                              width: "25%",
-                            }}
-                          />
-                          {renderFieldstax({ singleItem })}
-                          {renderFieldsdate({ singleItem, index })}
-                          {renderFieldsdiscount({ singleItem, index })}
+                              {renderFields7({
+                                singleItem,
+                                index,
+                              })}
+                              {renderFields8({
+                                singleItem,
+                                index,
+                              })}
+                            </div>
+                          </div>
+                          <div>
+                            {renderFieldsdescription({
+                              singleItem,
+                              index,
+                            })}
+                          </div>
                         </div>
-
-                        <textarea
-                          className="peer block h-auto w-[97%] mx-auto border border-gray-500 rounded mt-5 text-black px-3 py-[0.32rem]"
-                          id="exampleFormControlTextarea1"
-                          rows="5"
-                          placeholder="Description(optional)"
-                          value={textareaValue}
-                        ></textarea>
                       </>
                     )}
                     {isVisiblecustomiseinvoicepage && (
@@ -2091,28 +2089,37 @@ const InvoicePage = () => {
                                 ) : (
                                   <>
                                     <div className="p-3   ">
-                                      <div className="   flex items-center gap-5 ">
-                                        {renderSelectedFields({
-                                          singleItem,
-                                          index,
-                                        })}
-                                        {renderSelectedFields7({
-                                          singleItem,
-                                          index,
-                                        })}
-                                        {renderSelectedFields8({
-                                          singleItem,
-                                          index,
-                                        })}
-                                        {renderSelectedtaxFields({
-                                          singleItem,
-                                          index,
-                                        })}
-                                        {renderSelecteddiscountFields({
-                                          singleItem,
-                                          index,
-                                        })}
-                                        {renderSelecteddateFields({
+                                      <div className="   flex items-center  ">
+                                        <div className="flex gap-4">
+                                          {renderSelectedFields({
+                                            singleItem,
+                                            index,
+                                          })}
+                                          {renderSelectedFields7({
+                                            singleItem,
+                                            index,
+                                          })}
+                                          {renderSelectedFields8({
+                                            singleItem,
+                                            index,
+                                          })}
+                                          {renderSelectedtaxFields({
+                                            singleItem,
+                                            index,
+                                          })}
+                                          {renderSelecteddiscountFields({
+                                            singleItem,
+                                            index,
+                                          })}
+                                          {renderSelecteddateFields({
+                                            singleItem,
+                                            index,
+                                          })}
+                                        </div>
+                                      </div>
+                                      <div>
+                                        {" "}
+                                        {renderSelecteddescriptionFields({
                                           singleItem,
                                           index,
                                         })}
@@ -2451,7 +2458,7 @@ const InvoicePage = () => {
                   )}
                   {isVisiblehours && (
                     <>
-                      <p className="font-bold text-md">{subtotal1}</p>
+                      <p className="font-bold text-md">{subtotal3}</p>
                     </>
                   )}
 
