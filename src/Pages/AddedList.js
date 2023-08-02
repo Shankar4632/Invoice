@@ -72,7 +72,7 @@ const AddedList = () => {
     console.log("Deleting data with key:", key);
     dataRef
       .ref()
-      .child("section3")
+      .child("section2")
       .child(key) // Use the key directly to access the child node
       .remove()
       .then(() => {
@@ -143,9 +143,6 @@ const AddedList = () => {
   //loading
   if (isLoading) {
     return (
-      // <div className="text-center text-3xl text-black">
-      //   Loading<span className="text-yellow-500"> . . .</span>
-      // </div>
       <>
         <div className="flex justify-center text-3xl">
           <div role="status">
@@ -389,10 +386,12 @@ const AddedList = () => {
         </div>
       </div>
       <div className="grid grid-cols-2 h-20  ">
-        <div className=" flex items-center justify-center gap-10 w-[95%] ">
-          <button className=" text-xl font-semibold ">Invoice</button>
-          <button className=" text-xl font-semibold">Estimates</button>
-          <button className=" text-xl font-semibold">Recurring series</button>
+        <div className=" flex items-center gap-5 border w-[95%] ">
+          <button className=" text-2xl font-bold border text-blue-800 px-5 py-3  rounded-full bg-white ">
+            Invoices
+          </button>
+          {/* <button className=" text-xl font-semibold">Estimates</button>
+          <button className=" text-xl font-semibold">Recurring series</button> */}
         </div>
         <div></div>
       </div>
@@ -490,13 +489,13 @@ const AddedList = () => {
                         scope="row"
                         className="px-6 py-4 text-2xl font-semibold text-gray-900 whitespace-nowrap dark:text-white"
                       >
-                        {item.price}
+                        {item[0].amounts}
                       </th>
                       <th
                         scope="row"
                         className="px-6 py-4 text-2xl font-semibold text-gray-900 whitespace-nowrap dark:text-white"
                       >
-                        {item.description}
+                        {item[0].description}
                       </th>
 
                       <td className="px-6 py-4">

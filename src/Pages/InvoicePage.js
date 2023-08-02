@@ -456,46 +456,70 @@ const InvoicePage = () => {
       const hours = parseFloat(item.hours) || 0;
       const rate = parseFloat(item.rate) || 0;
       const discounthours = parseFloat(item.discounthours) || 0;
+      const discountquantity = parseFloat(item.discountquantity) || 0;
       const discountValue = parseFloat(discounts) || 0;
       const shippingValue = parseFloat(shipping) || 0;
       const otherAmountValue = parseFloat(otherAmount) || 0;
-
+      //quantity
       const itemTotal = price * quantity;
       console.log(itemTotal);
-      const itemTotalWithDiscount = (itemTotal * discount) / 100;
 
-      const subtotalFinal = discount ? itemTotalWithDiscount : itemTotal;
-
+      //hours
       const itemTotalhours = hours * rate;
       const itemTotalWithDiscounthours = (itemTotalhours * discounthours) / 100;
       const subtotalFinalhours = discount
         ? itemTotalWithDiscounthours
         : itemTotalhours;
-
+      const itemhoursallonly = (item.hours * item.rate * item.discount) / 100;
+      //amounts only
       const itemTotalamountonly = price;
       const itemTotalWithDiscountamountsonly = (price * discount) / 100;
 
       const itemTotalamountsonly = discount
         ? itemTotalWithDiscountamountsonly
         : itemTotalamountonly;
-
-      const itemhoursonly = hours * rate;
-      const itemhoursallonly = (item.hours * item.rate * item.discount) / 100;
       total +=
         discountValue +
         shippingValue +
         otherAmountValue +
-        subtotalFinal +
+        itemTotal +
         subtotalFinalhours +
-        itemhoursallonly +
-        itemTotalamountsonly;
+        itemhoursallonly;
+      // itemTotalamountsonly;
     });
+
+    console.log("total:", total);
+
+    return total;
+  };
+  const calculateTotal1 = () => {
+    let total = 0;
+
+    itemlist.forEach((item) => {
+      const price = parseFloat(item.price) || 0;
+      const discount = parseFloat(item.discount) || 0;
+      const discountValue = parseFloat(discounts) || 0;
+      const shippingValue = parseFloat(shipping) || 0;
+      const otherAmountValue = parseFloat(otherAmount) || 0;
+
+      //amounts only
+      const itemTotalamountonly = price;
+      const itemTotalWithDiscountamountsonly = (price * discount) / 100;
+
+      const itemTotalamountsonly = discount
+        ? itemTotalWithDiscountamountsonly
+        : itemTotalamountonly;
+      total +=
+        discountValue + shippingValue + otherAmountValue + itemTotalamountsonly;
+    });
+
     console.log("total:", total);
 
     return total;
   };
   //total value
   const totalValue = calculateTotal();
+  const totalValue1 = calculateTotal1();
   //sub total value
   const subtotal1 = itemlist.reduce((accumulator, item) => {
     if (item.discount) {
@@ -2152,15 +2176,18 @@ const InvoicePage = () => {
                                       </div>
                                     ))}
                                 </div>
-                                {itemlist.length - 1 === index && (
-                                  <button
-                                    className="text-bold ml-4 mt-3 text-blue-600  font-bold flex items-center text-xl "
-                                    onClick={handleAddItem}
-                                  >
-                                    <AiOutlinePlus className="mr-2" /> Add items
-                                    or Service
-                                  </button>
-                                )}
+                                <div>
+                                  {" "}
+                                  {itemlist.length - 1 === index && (
+                                    <button
+                                      className="text-bold ml-4 mt-3 text-blue-600  font-bold flex items-center text-xl "
+                                      onClick={handleAddItem}
+                                    >
+                                      <AiOutlinePlus className="mr-2" /> Add
+                                      items or Service
+                                    </button>
+                                  )}
+                                </div>
                               </div>
                             </>
                           );
@@ -2535,7 +2562,22 @@ const InvoicePage = () => {
                       )}
                     </p>
                   </form>
-                  <p className="p-3 font-bold">${totalValue}</p>
+                  {isVisibleinvoicepage && (
+                    <>
+                      <p className="p-3 font-bold">${totalValue}</p>
+                    </>
+                  )}
+                  {isVisiblehours && (
+                    <>
+                      <p className="p-3 font-bold">${totalValue}</p>
+                    </>
+                  )}
+                  {isVisibleaccount && (
+                    <>
+                      {" "}
+                      <p className="p-3 font-bold">${totalValue1}</p>
+                    </>
+                  )}
                 </div>
               </div>
             </div>
