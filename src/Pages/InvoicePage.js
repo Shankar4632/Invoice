@@ -1,6 +1,7 @@
 //Reactjs Library imports
 import * as React from "react";
 import { useState, useRef, useEffect } from "react";
+import { v4 as uuidv4 } from "uuid";
 //materialUI imports
 import Box from "@mui/material/Box";
 import InputLabel from "@mui/material/InputLabel";
@@ -117,7 +118,6 @@ const InvoicePage = () => {
   };
 
   //section-2
-  const [inputuser2, setInputuser2] = useState(initialInputuser2);
 
   const [itemlist, setItemlist] = useState([
     {
@@ -195,12 +195,7 @@ const InvoicePage = () => {
   //section-1
 
   //section-2
-  const handleChangesection2 = (event) => {
-    const fieldName = event.target.name;
-    const value = event.target.value;
-    console.log(fieldName, value); // Check if the values are being received correctly
-    setInputuser2((values) => ({ ...values, [fieldName]: value }));
-  };
+
   //quantity
   const handlechangeadditemlist = (e, index) => {
     const { name, value } = e.target;
@@ -264,163 +259,167 @@ const InvoicePage = () => {
     setInputbusiness({ ...inputbusiness, [name]: value });
   };
 
-  const handlesubmit = (e) => {
+  // const handleSubmitsection1 = (e) => {
+  //   e.preventDefault();
+  //   console.log("Submitting section 1 form");
+  //   const email = lastData.email;
+  //   if (email === inputValue) {
+  //     dataRef
+  //       .ref()
+  //       .child("section1")
+  //       .push(email, (err) => {
+  //         if (err) {
+  //           toast.error(err);
+  //         } else {
+  //           toast.success("Successfully added");
+  //         }
+  //       });
+  //   } else {
+  //     // toast.error("Email mismatch. Please enter a valid email.");
+  //   }
+  // };
+
+  // const handleSubmitsection2 = (e) => {
+  //   e.preventDefault();
+
+  //   if (!itemlist) {
+  //     // Handle error when any of the fields are empty
+  //     // toast.error("Please fill in all the fields");
+  //   } else {
+  //     dataRef
+  //       .ref()
+  //       .child("section2")
+  //       .push(updatedItemList, (err) => {
+  //         if (err) {
+  //           toast.error(err);
+  //         } else {
+  //           toast.success("Successfully added");
+  //         }
+  //       });
+  //   }
+  // };
+
+  // //section-3
+  // const handleSubmitsection3 = (e) => {
+  //   e.preventDefault();
+  //   if (!section3messege) {
+  //     // toast.error(<div className="">Please enter the values!</div>);
+  //   } else {
+  //     dataRef
+  //       .ref()
+  //       .child("section3message")
+  //       .push(input, (err) => {
+  //         if (err) {
+  //           toast.error(err);
+  //         } else {
+  //           toast.success("Successfully added");
+  //         }
+  //       });
+  //   }
+  // };
+  // //section-4
+  // const handleSubmitsection4 = (e) => {
+  //   e.preventDefault();
+  //   if (!memo) {
+  //     // toast.error(<div className="">Please enter the values!</div>);
+  //   } else {
+  //     dataRef
+  //       .ref()
+  //       .child("section4memo")
+  //       .push(inputuser4, (err) => {
+  //         if (err) {
+  //           toast.error(err);
+  //         } else {
+  //           toast.success("Successfully added");
+  //         }
+  //       });
+  //   }
+  // };
+  // //section-5
+  // const handleSubmitsection5 = (e) => {
+  //   e.preventDefault();
+
+  //   const { invoicedue, invoicedate, invoicenumber } = inputuser5;
+
+  //   if (!invoicedue || !invoicedate || !invoicenumber) {
+  //     // toast.error("Please enter all the values!");
+  //     return;
+  //   }
+
+  //   const total = calculateTotal(); // Calculate the total value
+  //   const section5Data = {
+  //     inputuser5: inputuser5,
+  //     total: total,
+  //   };
+
+  //   try {
+  //     dataRef
+  //       .ref()
+  //       .child("section5total")
+  //       .push(section5Data, (error) => {
+  //         if (error) {
+  //           toast.error(error.message);
+  //         } else {
+  //           toast.success("Successfully added");
+  //         }
+  //       });
+  //   } catch (error) {
+  //     toast.error(error.message);
+  //   }
+  // };
+
+  // //section-6
+  // const handleSubmitsection6 = (e) => {
+  //   e.preventDefault();
+  //   if (!fname || !lname || !businessname) {
+  //     // toast.error(<div className="">Please enter the values!</div>);
+  //   } else {
+  //     dataRef
+  //       .ref()
+  //       .child("section6Businessinformation")
+  //       .push(inputbusiness, (err) => {
+  //         if (err) {
+  //           toast.error(err);
+  //         } else {
+  //           toast.success("Successfully added");
+  //         }
+  //       });
+  //   }
+  // };
+  const handleSubmitAll = (e) => {
     e.preventDefault();
 
-    const section1Result = handleSubmitsection1(e);
-    const section2Result = handleSubmitsection2(e);
-    const section3Result = handleSubmitsection3(e);
-    const section4Result = handleSubmitsection4(e);
-    const section5Result = handleSubmitsection5(e);
-    const section6Result = handleSubmitsection6(e);
-
-    if (
-      section1Result &&
-      section2Result &&
-      section3Result &&
-      section4Result &&
-      section5Result &&
-      section6Result
-    ) {
-      navigate("/");
-    } else {
-      toast.error("Please fill in all the required fields.");
-    }
-  };
-
-  const handleSubmitsection1 = (e) => {
-    e.preventDefault();
-    console.log("Submitting section 1 form");
-    const email = lastData.email;
-    if (email === inputValue) {
-      dataRef
-        .ref()
-        .child("section1")
-        .push(email, (err) => {
-          if (err) {
-            toast.error(err);
-          } else {
-            toast.success("Successfully added");
-          }
-        });
-    } else {
-      // toast.error("Email mismatch. Please enter a valid email.");
-    }
-  };
-
-  const handleSubmitsection2 = (e) => {
-    e.preventDefault();
-
-    if (!itemlist) {
-      // Handle error when any of the fields are empty
-      // toast.error("Please fill in all the fields");
-    } else {
-      dataRef
-        .ref()
-        .child("section2")
-        .push(updatedItemList, (err) => {
-          if (err) {
-            toast.error(err);
-          } else {
-            toast.success("Successfully added");
-          }
-        });
-    }
-  };
-
-  //section-3
-  const handleSubmitsection3 = (e) => {
-    e.preventDefault();
-    if (!section3messege) {
-      // toast.error(<div className="">Please enter the values!</div>);
-    } else {
-      dataRef
-        .ref()
-        .child("section3message")
-        .push(input, (err) => {
-          if (err) {
-            toast.error(err);
-          } else {
-            toast.success("Successfully added");
-          }
-        });
-    }
-  };
-  //section-4
-  const handleSubmitsection4 = (e) => {
-    e.preventDefault();
-    if (!memo) {
-      // toast.error(<div className="">Please enter the values!</div>);
-    } else {
-      dataRef
-        .ref()
-        .child("section4memo")
-        .push(inputuser4, (err) => {
-          if (err) {
-            toast.error(err);
-          } else {
-            toast.success("Successfully added");
-          }
-        });
-    }
-  };
-  //section-5
-  const handleSubmitsection5 = (e) => {
-    e.preventDefault();
-
-    const { invoicedue, invoicedate, invoicenumber } = inputuser5;
-
-    if (!invoicedue || !invoicedate || !invoicenumber) {
-      // toast.error("Please enter all the values!");
-      return;
-    }
-
-    const total = calculateTotal(); // Calculate the total value
-    const section5Data = {
-      inputuser5: inputuser5,
-      total: total,
+    // Collect data from different sections into one object
+    const formData = {
+      section1: lastData.email,
+      section2: updatedItemList,
+      section3message: input,
+      section4memo: inputuser4,
+      section5total: {
+        inputuser5: inputuser5,
+        total: calculateTotal(), // Make sure you have the function calculateTotal() defined
+      },
+      section6Businessinformation: inputbusiness,
     };
 
-    try {
-      dataRef
-        .ref()
-        .child("section5total")
-        .push(section5Data, (error) => {
-          if (error) {
-            toast.error(error.message);
-          } else {
-            toast.success("Successfully added");
-          }
-        });
-    } catch (error) {
-      toast.error(error.message);
-    }
+    // Push the combined data to the database
+    dataRef
+      .ref()
+      .child("Allsections")
+      .push(formData, (err) => {
+        if (err) {
+          toast.error(err);
+        } else {
+          toast.success("Successfully added");
+        }
+      });
   };
 
   //section-6 business information
   const handlesavebusinessinfo = (e) => {
-    handleSubmitsection6(e);
+    // handleSubmitsection6(e);
     setBusinessPopup(false);
   };
-  //section-6
-  const handleSubmitsection6 = (e) => {
-    e.preventDefault();
-    if (!fname || !lname || !businessname) {
-      // toast.error(<div className="">Please enter the values!</div>);
-    } else {
-      dataRef
-        .ref()
-        .child("section6Businessinformation")
-        .push(inputbusiness, (err) => {
-          if (err) {
-            toast.error(err);
-          } else {
-            toast.success("Successfully added");
-          }
-        });
-    }
-  };
-
   const handleAdd = (section, value) => {
     switch (section) {
       case "discount":
@@ -494,7 +493,6 @@ const InvoicePage = () => {
   };
   const calculateTotal1 = () => {
     let total = 0;
-
     itemlist.forEach((item) => {
       const price = parseFloat(item.price) || 0;
       const discount = parseFloat(item.discount) || 0;
@@ -610,6 +608,7 @@ const InvoicePage = () => {
       );
     }
   };
+
   const handleCheckboxChange7 = (e) => {
     const { value, checked } = e.target;
 
@@ -1316,9 +1315,9 @@ const InvoicePage = () => {
   //Return Statements
   return (
     <div className="mb-3  ">
-      {businesspopup ? (
-        <>
-          <form onSubmit={handleSubmitsection6}>
+      <form onSubmit={handleSubmitAll}>
+        {businesspopup ? (
+          <>
             <div className="w-full h-full  mx-auto  overflow-y-hidden fixed z-20  bg-gray-200   ">
               <div className="w-[900px] bg-white  opacity-100 relative  h-screen">
                 <div className="flex items-center relative  mt-4 ">
@@ -1445,314 +1444,316 @@ const InvoicePage = () => {
                 </div>
               </div>
             </div>
-          </form>
-        </>
-      ) : null}
-      {customisepopup ? (
-        <>
-          <div className=" overflow-y-hidden  w-full h-full flex justify-center fixed z-20  bg-gray-200   ">
-            <div className="bg-white h-auto  w-[70%] mx-auto  relative border">
-              <div className="flex items-center relative  mt-4">
-                <i className="w-full flex justify-center text-blue-600  ">
-                  <FaPaypal className="text-3xl" />
-                </i>
-                <i
-                  className="flex  justify-end pr-3 cursor-pointer"
-                  onClick={() => setCustomisePopup(false)}
-                >
-                  <RxCross1 className="text-xl" />
-                </i>
-              </div>
-              <p className="text-center text-3xl mt-3 font-semibold">
-                {" "}
-                Customise items
-              </p>
+          </>
+        ) : null}
+        {customisepopup ? (
+          <>
+            <div className=" overflow-y-hidden  w-full h-full flex justify-center fixed z-20  bg-gray-200   ">
+              <div className="bg-white h-auto  w-[70%] mx-auto  relative border">
+                <div className="flex items-center relative  mt-4">
+                  <i className="w-full flex justify-center text-blue-600  ">
+                    <FaPaypal className="text-3xl" />
+                  </i>
+                  <i
+                    className="flex  justify-end pr-3 cursor-pointer"
+                    onClick={() => setCustomisePopup(false)}
+                  >
+                    <RxCross1 className="text-xl" />
+                  </i>
+                </div>
+                <p className="text-center text-3xl mt-3 font-semibold">
+                  {" "}
+                  Customise items
+                </p>
 
-              <form>
-                <p className=" mt-3 pl-8 text-lg font-bold  mb-2">Preview</p>
-                <Box sx={{ width: "40%", paddingLeft: "30px" }}>
-                  <FormControl fullWidth>
-                    <InputLabel id="template-select-label">
-                      Choose Type
-                    </InputLabel>
+                <form>
+                  <p className=" mt-3 pl-8 text-lg font-bold  mb-2">Preview</p>
+                  <Box sx={{ width: "40%", paddingLeft: "30px" }}>
+                    <FormControl fullWidth>
+                      <InputLabel id="template-select-label">
+                        Choose Type
+                      </InputLabel>
 
-                    <Select
-                      labelId="template-select-label"
-                      id="template-select"
-                      value={selectedTemplate}
-                      label="Choose Type"
-                      onChange={handleselectedTemplate}
-                    >
-                      <MenuItem
-                        value="template1"
-                        onClick={toggleVisibilityofcustomiseamounts}
+                      <Select
+                        labelId="template-select-label"
+                        id="template-select"
+                        value={selectedTemplate}
+                        label="Choose Type"
+                        onChange={handleselectedTemplate}
                       >
-                        Amounts only
-                      </MenuItem>
-                      <MenuItem
-                        value="template2"
-                        onClick={toggleVisibilityofcustomisehours}
-                      >
-                        Hours
-                      </MenuItem>
-                      <MenuItem
-                        value="template3"
-                        onClick={toggleVisibilityofcustomiseQuantity}
-                      >
-                        Quantity
-                      </MenuItem>
-                    </Select>
-                  </FormControl>
-                </Box>
-                <div className="h-auto w-[95%] mx-auto mt-3 border-2 border-gray-300 rounded-xl">
-                  <div className="p-3   ">
-                    {isVisiblecustomiseaccount && (
-                      <>
-                        {" "}
-                        <div className="flex items-center mx-auto  w-[97%] mt-3 gap-10">
-                          {renderFields({ singleItem, index })}
+                        <MenuItem
+                          value="template1"
+                          onClick={toggleVisibilityofcustomiseamounts}
+                        >
+                          Amounts only
+                        </MenuItem>
+                        <MenuItem
+                          value="template2"
+                          onClick={toggleVisibilityofcustomisehours}
+                        >
+                          Hours
+                        </MenuItem>
+                        <MenuItem
+                          value="template3"
+                          onClick={toggleVisibilityofcustomiseQuantity}
+                        >
+                          Quantity
+                        </MenuItem>
+                      </Select>
+                    </FormControl>
+                  </Box>
+                  <div className="h-auto w-[95%] mx-auto mt-3 border-2 border-gray-300 rounded-xl">
+                    <div className="p-3   ">
+                      {isVisiblecustomiseaccount && (
+                        <>
+                          {" "}
+                          <div className="flex items-center mx-auto  w-[97%] mt-3 gap-10">
+                            {renderFields({ singleItem, index })}
 
-                          {renderFields6({ singleItem, index })}
+                            {renderFields6({ singleItem, index })}
 
-                          {renderFieldstax({ singleItem, index })}
-                          {renderFieldsdiscount({ singleItem, index })}
-                          {renderFieldsdate({ singleItem, index })}
-                        </div>
-                      </>
-                    )}
-                    {isVisiblecustomisehours && (
-                      <>
-                        <div className="p-3   ">
-                          <div className="   flex items-center ">
-                            <div className="flex gap-4">
-                              {renderFields({
-                                singleItem,
-                                index,
-                              })}
+                            {renderFieldstax({ singleItem, index })}
+                            {renderFieldsdiscount({ singleItem, index })}
+                            {renderFieldsdate({ singleItem, index })}
+                          </div>
+                        </>
+                      )}
+                      {isVisiblecustomisehours && (
+                        <>
+                          <div className="p-3   ">
+                            <div className="   flex items-center ">
+                              <div className="flex gap-4">
+                                {renderFields({
+                                  singleItem,
+                                  index,
+                                })}
 
-                              {renderFields7({
-                                singleItem,
-                                index,
-                              })}
-                              {renderFields8({
+                                {renderFields7({
+                                  singleItem,
+                                  index,
+                                })}
+                                {renderFields8({
+                                  singleItem,
+                                  index,
+                                })}
+                              </div>
+                            </div>
+                            <div>
+                              {renderFieldsdescription({
                                 singleItem,
                                 index,
                               })}
                             </div>
                           </div>
+                        </>
+                      )}
+                      {isVisiblecustomiseinvoicepage && (
+                        <>
+                          {" "}
+                          <div className="   flex items-center ">
+                            <div className="flex gap-4">
+                              {renderFields({ singleItem, index })}
+                              {renderFields5({ singleItem, index })}
+                              {renderFields6({ singleItem, index })}
+                              {renderFieldstax({ singleItem, index })}
+                              {renderFieldsdate({ singleItem, index })}
+                              {renderFieldsdiscount({ singleItem, index })}
+                            </div>
+                          </div>
                           <div>
-                            {renderFieldsdescription({
-                              singleItem,
-                              index,
-                            })}
+                            {renderFieldsdescription({ singleItem, index })}
                           </div>
-                        </div>
-                      </>
-                    )}
-                    {isVisiblecustomiseinvoicepage && (
-                      <>
+                        </>
+                      )}
+                    </div>
+                  </div>
+                  <div className="w-[97%] p-5  mx-auto mt-5">
+                    <p className="text-lg font-semibold text-gray-700">
+                      Choose item field
+                    </p>
+                    <div>
+                      <input
+                        type="checkbox"
+                        value="Discount"
+                        className="mt-5 h-5 w-5 "
+                        onChange={handleCheckboxChangediscount}
+                      />
+                      <label
+                        htmlFor="Item"
+                        className="text-lg font-semibold text-gray-700"
+                      >
                         {" "}
-                        <div className="   flex items-center ">
-                          <div className="flex gap-4">
-                            {renderFields({ singleItem, index })}
-                            {renderFields5({ singleItem, index })}
-                            {renderFields6({ singleItem, index })}
-                            {renderFieldstax({ singleItem, index })}
-                            {renderFieldsdate({ singleItem, index })}
-                            {renderFieldsdiscount({ singleItem, index })}
-                          </div>
-                        </div>
-                        <div>
-                          {renderFieldsdescription({ singleItem, index })}
-                        </div>
-                      </>
-                    )}
-                  </div>
+                        Discount
+                      </label>
+                      <br />
+                      <input
+                        type="checkbox"
+                        value="Tax"
+                        className="mt-5 h-5 w-5 "
+                        onChange={handleCheckboxChangetax}
+                      />
+                      <label
+                        htmlFor="Item"
+                        className="text-lg font-semibold text-gray-700"
+                      >
+                        {" "}
+                        Tax
+                      </label>
+                      <br />
+                      <input
+                        type="checkbox"
+                        value="date"
+                        className="mt-5 h-5 w-5 "
+                        onChange={handleCheckboxChangedate}
+                      />
+                      <label
+                        htmlFor="Item"
+                        className="text-lg font-semibold text-gray-700"
+                      >
+                        {" "}
+                        Date
+                      </label>
+                      <br />
+                      <input
+                        type="checkbox"
+                        value="description"
+                        className="mt-5 h-5 w-5 "
+                        onChange={handleCheckboxChangedescription}
+                      />
+                      <label
+                        htmlFor="Item"
+                        className="text-lg font-semibold text-gray-700"
+                      >
+                        {" "}
+                        description
+                      </label>
+                    </div>
+                  </div>{" "}
+                </form>
+                <div className="text-center pb-10">
+                  <button
+                    className="px-8 py-3 rounded-3xl  bg-blue-900 text-white font-bold mx-auto "
+                    type="submit"
+                    onClick={handlecustomiseui}
+                  >
+                    Save
+                  </button>
                 </div>
-                <div className="w-[97%] p-5  mx-auto mt-5">
-                  <p className="text-lg font-semibold text-gray-700">
-                    Choose item field
-                  </p>
-                  <div>
-                    <input
-                      type="checkbox"
-                      value="Discount"
-                      className="mt-5 h-5 w-5 "
-                      onChange={handleCheckboxChangediscount}
-                    />
-                    <label
-                      htmlFor="Item"
-                      className="text-lg font-semibold text-gray-700"
-                    >
-                      {" "}
-                      Discount
-                    </label>
-                    <br />
-                    <input
-                      type="checkbox"
-                      value="Tax"
-                      className="mt-5 h-5 w-5 "
-                      onChange={handleCheckboxChangetax}
-                    />
-                    <label
-                      htmlFor="Item"
-                      className="text-lg font-semibold text-gray-700"
-                    >
-                      {" "}
-                      Tax
-                    </label>
-                    <br />
-                    <input
-                      type="checkbox"
-                      value="date"
-                      className="mt-5 h-5 w-5 "
-                      onChange={handleCheckboxChangedate}
-                    />
-                    <label
-                      htmlFor="Item"
-                      className="text-lg font-semibold text-gray-700"
-                    >
-                      {" "}
-                      Date
-                    </label>
-                    <br />
-                    <input
-                      type="checkbox"
-                      value="description"
-                      className="mt-5 h-5 w-5 "
-                      onChange={handleCheckboxChangedescription}
-                    />
-                    <label
-                      htmlFor="Item"
-                      className="text-lg font-semibold text-gray-700"
-                    >
-                      {" "}
-                      description
-                    </label>
-                  </div>
-                </div>{" "}
-              </form>
-              <div className="text-center pb-10">
-                <button
-                  className="px-8 py-3 rounded-3xl  bg-blue-900 text-white font-bold mx-auto "
-                  type="submit"
-                  onClick={handlecustomiseui}
-                >
-                  Save
-                </button>
               </div>
             </div>
-          </div>
-        </>
-      ) : null}
-      <div className="grid grid-cols-2 h-40 ">
-        <div className="  ">
-          <div className="pt-8 pl-3  flex items-center">
-            <button
-              onClick={() => {
-                navigate("/");
-              }}
-            >
-              <BsArrowLeft className="text-2xl cursor-pointer " />
-            </button>
+          </>
+        ) : null}
+        <div className="grid grid-cols-2 h-40 ">
+          <div className="  ">
+            <div className="pt-8 pl-3  flex items-center">
+              <button
+                onClick={() => {
+                  navigate("/");
+                }}
+              >
+                <BsArrowLeft className="text-2xl cursor-pointer " />
+              </button>
 
-            <span
-              className="font-bold text-blue-600 text-lg pl-2 cursor-pointer "
-              onClick={() => {
-                navigate("/");
-              }}
-            >
-              Back to invoice
-            </span>
-          </div>
+              <span
+                className="font-bold text-blue-600 text-lg pl-2 cursor-pointer "
+                onClick={() => {
+                  navigate("/");
+                }}
+              >
+                Back to invoice
+              </span>
+            </div>
 
-          <p className="pl-3 text-[43px] font-semibold mt-1">
-            New invoice No. {invoiceNumber}
-          </p>
+            <p className="pl-3 text-[43px] font-semibold mt-1">
+              New invoice No. {invoiceNumber}
+            </p>
+          </div>
+          <div className=" flex items-center  justify-end ">
+            <div className="flex items-center ">
+              <BsThreeDotsVertical className="mr-8 text-[23px] text-gray-600" />
+
+              <BsCamera className="mr-8 text-xl text-gray-600" />
+              <button
+                className="text-white bg-[#003087] px-9 py-3   mr-5 rounded-full    font-extrabold text-lg"
+                type="submit"
+                onClick={handleSubmitAll}
+              >
+                Send
+              </button>
+            </div>
+          </div>
         </div>
-        <div className=" flex items-center  justify-end ">
-          <div className="flex items-center ">
-            <BsThreeDotsVertical className="mr-8 text-[23px] text-gray-600" />
+        <div className="flex   w-[97%]  mx-auto gap-5  ">
+          <div className="w-[75%]">
+            <div className="border  h-auto rounded-xl bg-white ">
+              {/*===================================   section-1  =============================== */}
+              <div className="">
+                <div className="  flex justify-end w-full mt-3 pr-4">
+                  <Box sx={{ minWidth: 150, marginRight: "20px" }}>
+                    <FormControl fullWidth>
+                      <InputLabel id="template-select-label">
+                        Templete
+                      </InputLabel>
 
-            <BsCamera className="mr-8 text-xl text-gray-600" />
-            <button
-              className="text-white bg-[#003087] px-9 py-3   mr-5 rounded-full    font-extrabold text-lg"
-              type="submit"
-              onClick={handlesubmit}
-            >
-              Send
-            </button>
-          </div>
-        </div>
-      </div>
-      <div className="flex   w-[97%]  mx-auto gap-5  ">
-        <div className="w-[75%]">
-          <div className="border  h-auto rounded-xl bg-white ">
-            {/*===================================   section-1  =============================== */}
-            <div className="">
-              <div className="  flex justify-end w-full mt-3 pr-4">
-                <Box sx={{ minWidth: 150, marginRight: "20px" }}>
-                  <FormControl fullWidth>
-                    <InputLabel id="template-select-label">Templete</InputLabel>
-
-                    <Select
-                      labelId="template-select-label"
-                      id="template-select"
-                      value={selectedTemplate}
-                      label="Templete"
-                      onChange={handleselectedTemplate}
-                    >
-                      <MenuItem
-                        value="template1 "
-                        onClick={toggleVisibilityofamounts}
+                      <Select
+                        labelId="template-select-label"
+                        id="template-select"
+                        value={selectedTemplate}
+                        label="Templete"
+                        onChange={handleselectedTemplate}
                       >
-                        Amounts only
-                      </MenuItem>
-                      <MenuItem
-                        value="template2"
-                        onClick={toggleVisibilityofhours}
-                      >
-                        Hours
-                      </MenuItem>
-                      <MenuItem
-                        value="template3"
-                        onClick={toggleVisibilityofQuantity}
-                      >
-                        Quantity{" "}
-                      </MenuItem>
-                    </Select>
-                  </FormControl>
-                </Box>
-                <Box sx={{ minWidth: 120 }}>
-                  <FormControl fullWidth>
-                    <InputLabel id="currency-select-label">Currency</InputLabel>
-
-                    <Select
-                      labelId="currency-select-label"
-                      id="currency-select"
-                      value={currency}
-                      label="Currency"
-                      onChange={handlecurrency}
-                    >
-                      <MenuItem value="">None</MenuItem>
-                      {Currencydata.map((codes, index) => (
-                        <MenuItem value={codes.code} key={index}>
-                          {codes.code}
+                        <MenuItem
+                          value="template1 "
+                          onClick={toggleVisibilityofamounts}
+                        >
+                          Amounts only
                         </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
-                </Box>
-              </div>
-              <hr className="mt-3 w-[97%] mx-auto" />
-              <div className="flex items-center p-3 ml-5">
-                <p className="font-bold text-xl">Bill To</p>
-                <button className="rounded-full bg-[#003087] px-3 py-1 text-white font-bold ml-3">
-                  invoice single customer
-                </button>
-              </div>
+                        <MenuItem
+                          value="template2"
+                          onClick={toggleVisibilityofhours}
+                        >
+                          Hours
+                        </MenuItem>
+                        <MenuItem
+                          value="template3"
+                          onClick={toggleVisibilityofQuantity}
+                        >
+                          Quantity{" "}
+                        </MenuItem>
+                      </Select>
+                    </FormControl>
+                  </Box>
+                  <Box sx={{ minWidth: 120 }}>
+                    <FormControl fullWidth>
+                      <InputLabel id="currency-select-label">
+                        Currency
+                      </InputLabel>
 
-              <form onSubmit={handleSubmitsection1}>
+                      <Select
+                        labelId="currency-select-label"
+                        id="currency-select"
+                        value={currency}
+                        label="Currency"
+                        onChange={handlecurrency}
+                      >
+                        <MenuItem value="">None</MenuItem>
+                        {Currencydata.map((codes, index) => (
+                          <MenuItem value={codes.code} key={index}>
+                            {codes.code}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+                  </Box>
+                </div>
+                <hr className="mt-3 w-[97%] mx-auto" />
+                <div className="flex items-center p-3 ml-5">
+                  <p className="font-bold text-xl">Bill To</p>
+                  <button className="rounded-full bg-[#003087] px-3 py-1 text-white font-bold ml-3">
+                    invoice single customer
+                  </button>
+                </div>
+
                 <div className="mx-auto w-[97%]">
                   <input
                     id="outlined-required"
@@ -1784,38 +1785,36 @@ const InvoicePage = () => {
                     </>
                   )}
                 </div>
-              </form>
-            </div>
-            {/*==================================  section-2  =============================== */}
-            {togglesection4 ? (
-              <div>
-                <div className="flex justify-center text-3xl h-72 items-center">
-                  <div role="status">
-                    <svg
-                      aria-hidden="true"
-                      className="inline w-10 h-10 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
-                      viewBox="0 0 100 101"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
-                        fill="currentColor"
-                      />
-                      <path
-                        d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
-                        fill="currentFill"
-                      />
-                    </svg>
+              </div>
+              {/*==================================  section-2  =============================== */}
+              {togglesection4 ? (
+                <div>
+                  <div className="flex justify-center text-3xl h-72 items-center">
+                    <div role="status">
+                      <svg
+                        aria-hidden="true"
+                        className="inline w-10 h-10 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
+                        viewBox="0 0 100 101"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                          fill="currentColor"
+                        />
+                        <path
+                          d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                          fill="currentFill"
+                        />
+                      </svg>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ) : (
-              <>
-                {isVisibleinvoicepage && (
-                  <>
-                    <div className="p-3 ">
-                      <form onSubmit={handleSubmitsection2}>
+              ) : (
+                <>
+                  {isVisibleinvoicepage && (
+                    <>
+                      <div className="p-3 ">
                         <div className="flex items-center pl-3 pt-20">
                           <p className="font-bold text-xl w-full ml-3">Items</p>
                           <button
@@ -1932,10 +1931,9 @@ const InvoicePage = () => {
                             </div>
                           );
                         })}
-                      </form>
-                    </div>
-                    {/*  ==============================  section-3  ============================= */}
-                    <form onSubmit={handleSubmitsection3}>
+                      </div>
+                      {/*  ==============================  section-3  ============================= */}
+
                       <div className="p-3">
                         <p className="font-bold text-xl ml-5">
                           Message To Customer
@@ -1954,126 +1952,128 @@ const InvoicePage = () => {
                           </textarea>
                         </div>
                       </div>
-                    </form>
-                    <div className="flex items-center ml-7 ">
-                      <button className="text-bold  mt-3 text-blue-600  font-bold flex items-center text-xl ">
-                        Add terms and conditions
-                      </button>
 
-                      <button className="text-bold  ml-1 mt-3 text-blue-600  font-bold flex items-center text-xl ">
-                        <RxDividerVertical className="text-black flex item-center text-xl" />{" "}
-                        Add reference number
-                      </button>
-                    </div>
-                    {/*===================================  section-4  =================================*/}
-                    <div className="  p-3 ">
-                      <div className="flex items-center">
-                        <p className=" text-[27px]  ml-3 font-semibold w-full">
-                          More Options
-                        </p>
-                        <button onClick={hideshow}>
-                          {" "}
-                          {showMemo ? (
-                            <IoIosArrowUp className="text-2xl text-gray-500" />
-                          ) : (
-                            <IoIosArrowDown className="text-2xl text-gray-500" />
-                          )}
+                      <div className="flex items-center ml-7 ">
+                        <button className="text-bold  mt-3 text-blue-600  font-bold flex items-center text-xl ">
+                          Add terms and conditions
+                        </button>
+
+                        <button className="text-bold  ml-1 mt-3 text-blue-600  font-bold flex items-center text-xl ">
+                          <RxDividerVertical className="text-black flex item-center text-xl" />{" "}
+                          Add reference number
                         </button>
                       </div>
-                      <hr className="mt-3 w-[98%] mx-auto" />
-                      <div className="  ">
-                        {showMemo && (
-                          <form onSubmit={handleSubmitsection4}>
-                            <div className="">
-                              <p className="text-xl p-3 ml-1 font-bold">
-                                Attachments
-                              </p>
-                              <input
-                                ref={fileInputRef}
-                                type="file"
-                                name="files"
-                                id="files"
-                                className="hidden"
-                                onChange={handleFileChange}
-                              />
-                              <button
-                                type="button"
-                                className="text-[#05070a] ml-3 font-bold border-2 border-[#003087] px-4 py-1 rounded-full text-sm"
-                                onClick={handleButtonClick}
-                              >
-                                Upload files
-                              </button>
-                              <p className="text-sm font-semibold p-3 text-gray-800">
-                                JPG GIF PNG PDF | Up to 5 files , 4MB per file
-                              </p>
-                            </div>
-                            <div className=" p-3 mt-10 mb-4">
-                              <p className="font-bold text-xl ml-2">
-                                Memo To Self
-                              </p>
-                              <div className=" mb-2">
-                                <textarea
-                                  className="peer block min-h-[auto] placeholder-gray-500  w-[98%] mx-auto border border-gray-500 rounded mt-5 text-black px-3 py-[0.32rem]  "
-                                  rows="6"
-                                  placeholder="Memo"
-                                  value={inputuser4.memo}
-                                  name="memo"
-                                  onChange={handleChangesection4}
+                      {/*===================================  section-4  =================================*/}
+                      <div className="  p-3 ">
+                        <div className="flex items-center">
+                          <p className=" text-[27px]  ml-3 font-semibold w-full">
+                            More Options
+                          </p>
+                          <button onClick={hideshow}>
+                            {" "}
+                            {showMemo ? (
+                              <IoIosArrowUp className="text-2xl text-gray-500" />
+                            ) : (
+                              <IoIosArrowDown className="text-2xl text-gray-500" />
+                            )}
+                          </button>
+                        </div>
+                        <hr className="mt-3 w-[98%] mx-auto" />
+                        <div className="  ">
+                          {showMemo && (
+                            <>
+                              <div className="">
+                                <p className="text-xl p-3 ml-1 font-bold">
+                                  Attachments
+                                </p>
+                                <input
+                                  ref={fileInputRef}
+                                  type="file"
+                                  name="files"
+                                  id="files"
+                                  className="hidden"
+                                  onChange={handleFileChange}
+                                />
+                                <button
+                                  type="button"
+                                  className="text-[#05070a] ml-3 font-bold border-2 border-[#003087] px-4 py-1 rounded-full text-sm"
+                                  onClick={handleButtonClick}
                                 >
-                                  {" "}
-                                </textarea>
+                                  Upload files
+                                </button>
+                                <p className="text-sm font-semibold p-3 text-gray-800">
+                                  JPG GIF PNG PDF | Up to 5 files , 4MB per file
+                                </p>
                               </div>
-                            </div>
-                          </form>
-                        )}
+                              <div className=" p-3 mt-10 mb-4">
+                                <p className="font-bold text-xl ml-2">
+                                  Memo To Self
+                                </p>
+                                <div className=" mb-2">
+                                  <textarea
+                                    className="peer block min-h-[auto] placeholder-gray-500  w-[98%] mx-auto border border-gray-500 rounded mt-5 text-black px-3 py-[0.32rem]  "
+                                    rows="6"
+                                    placeholder="Memo"
+                                    value={inputuser4.memo}
+                                    name="memo"
+                                    onChange={handleChangesection4}
+                                  >
+                                    {" "}
+                                  </textarea>
+                                </div>
+                              </div>
+                            </>
+                          )}
+                        </div>
                       </div>
-                    </div>
-                  </>
-                )}
-              </>
-            )}
+                    </>
+                  )}
+                </>
+              )}
 
-            {togglesection3 ? (
-              <div>
-                <div className="flex justify-center text-3xl h-72 items-center">
-                  <div role="status">
-                    <svg
-                      aria-hidden="true"
-                      className="inline w-10 h-10 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
-                      viewBox="0 0 100 101"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
-                        fill="currentColor"
-                      />
-                      <path
-                        d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
-                        fill="currentFill"
-                      />
-                    </svg>
+              {togglesection3 ? (
+                <div>
+                  <div className="flex justify-center text-3xl h-72 items-center">
+                    <div role="status">
+                      <svg
+                        aria-hidden="true"
+                        className="inline w-10 h-10 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
+                        viewBox="0 0 100 101"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                          fill="currentColor"
+                        />
+                        <path
+                          d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                          fill="currentFill"
+                        />
+                      </svg>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ) : (
-              <>
-                {isVisiblehours && (
-                  <>
-                    <div className="p-3 ">
-                      <div className="flex items-center pl-3 pt-20">
-                        <p className="font-bold w-full  text-xl ml-3">Items</p>
-                        <button
-                          className=" text-blue-500 text-xl font-bold  rounded-full flex justify-end items-center mr-3"
-                          onClick={(event) => {
-                            event.preventDefault();
-                            setCustomisePopup(true);
-                          }}
-                        >
-                          <MdModeEditOutline className="mr-1" /> Customise
-                        </button>
-                      </div>
-                      <form onSubmit={handleSubmitsection2}>
+              ) : (
+                <>
+                  {isVisiblehours && (
+                    <>
+                      <div className="p-3 ">
+                        <div className="flex items-center pl-3 pt-20">
+                          <p className="font-bold w-full  text-xl ml-3">
+                            Items
+                          </p>
+                          <button
+                            className=" text-blue-500 text-xl font-bold  rounded-full flex justify-end items-center mr-3"
+                            onClick={(event) => {
+                              event.preventDefault();
+                              setCustomisePopup(true);
+                            }}
+                          >
+                            <MdModeEditOutline className="mr-1" /> Customise
+                          </button>
+                        </div>
+
                         {itemlist.map((singleItem, index) => {
                           return (
                             <>
@@ -2192,41 +2192,39 @@ const InvoicePage = () => {
                             </>
                           );
                         })}
-                      </form>
+                      </div>
+                    </>
+                  )}
+                </>
+              )}
+              {togglesection2 ? (
+                <div>
+                  <div className="flex justify-center text-3xl h-72 items-center">
+                    <div role="status">
+                      <svg
+                        aria-hidden="true"
+                        className="inline w-10 h-10 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
+                        viewBox="0 0 100 101"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                          fill="currentColor"
+                        />
+                        <path
+                          d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                          fill="currentFill"
+                        />
+                      </svg>
                     </div>
-                  </>
-                )}
-              </>
-            )}
-            {togglesection2 ? (
-              <div>
-                <div className="flex justify-center text-3xl h-72 items-center">
-                  <div role="status">
-                    <svg
-                      aria-hidden="true"
-                      className="inline w-10 h-10 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
-                      viewBox="0 0 100 101"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
-                        fill="currentColor"
-                      />
-                      <path
-                        d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
-                        fill="currentFill"
-                      />
-                    </svg>
                   </div>
                 </div>
-              </div>
-            ) : (
-              <>
-                {isVisibleaccount && (
-                  <>
-                    <div className="p-3 h-auto ">
-                      <form onSubmit={handleSubmitsection2}>
+              ) : (
+                <>
+                  {isVisibleaccount && (
+                    <>
+                      <div className="p-3 h-auto ">
                         <div className="flex items-center  pl-3 pt-20">
                           <p className="font-bold text-xl w-full ml-3">Items</p>
                           <button
@@ -2321,106 +2319,104 @@ const InvoicePage = () => {
                             </div>
                           );
                         })}
-                      </form>
-                    </div>
-                  </>
-                )}
-              </>
-            )}
-          </div>
-        </div>
-
-        <div className=" w-[25%]  text-center ">
-          <div className="h-auto border rounded-xl bg-white">
-            <div className="flex items-center h-20   w-full">
-              <div className="flex items-center justify-start ml-3 mt-3 w-full">
-                <div>
-                  {selectedImage && (
-                    <img
-                      src={selectedImage}
-                      alt="Uploaded"
-                      // style={{ maxWidth: "300px" }}
-                      className="w-20 h-20"
-                    />
-                  )}
-                </div>
-                <div>
-                  {businessdata && (
-                    <>
-                      <div className="text-lg font-bold pl-5">
-                        {" "}
-                        {businessdata.businessname}
                       </div>
                     </>
                   )}
-                </div>
-              </div>
-
-              <div>
-                <button
-                  className=" flex justify-end  mr-2 "
-                  onClick={hideshowsection4}
-                >
-                  {" "}
-                  {showMemosection4 ? (
-                    <IoIosArrowUp className="text-2xl  text-gray-500" />
-                  ) : (
-                    <IoIosArrowDown className="text-2xl  text-gray-500" />
-                  )}
-                </button>
-              </div>
-            </div>
-            <div>
-              {businessdata && (
-                <div className="flex items-center">
-                  <div className="text-2xl text-black  mt-2 pl-2 gap-3">
-                    <p className="text-[20px] text-black flex  items-center mt-3 pl-8">
-                      {businessdata.address1}
-                    </p>
-                    <p className="text-[20px] text-black flex  items-center ">
-                      <i>
-                        {" "}
-                        <FaRegAddressCard className="text-blue-900 mr-3 " />
-                      </i>{" "}
-                      {businessdata.address2}
-                    </p>
-                    <p className="text-[20px] text-black flex  items-center  pl-8">
-                      {businessdata.pin}
-                    </p>
-                    <p className="text-[20px] text-black flex  items-center mt-3">
-                      <i>
-                        {" "}
-                        <IoMdMail className="text-blue-900 mr-3  " />
-                      </i>{" "}
-                      {businessdata.email}
-                    </p>
-
-                    <p className="text-[20px] text-black flex items-center mt-3 mb-4 ">
-                      <CgWebsite className="text-blue-900 mr-3 " />
-                      {businessdata.website}
-                    </p>
-                  </div>
-                </div>
-              )}
-              {showMemosection4 && (
-                <div className="flex items-center mt-5  h-full pb-5 pl-2    ">
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleImageUpload}
-                  />
-                  <button
-                    className="text-blue-600 w-full    text-lg font-bold"
-                    onClick={() => setBusinessPopup(true)}
-                  >
-                    Edit Business Information
-                  </button>
-                </div>
+                </>
               )}
             </div>
           </div>
 
-          <form onSubmit={handleSubmitsection5}>
+          <div className=" w-[25%]  text-center ">
+            <div className="h-auto border rounded-xl bg-white">
+              <div className="flex items-center h-20   w-full">
+                <div className="flex items-center justify-start ml-3 mt-3 w-full">
+                  <div>
+                    {selectedImage && (
+                      <img
+                        src={selectedImage}
+                        alt="Uploaded"
+                        // style={{ maxWidth: "300px" }}
+                        className="w-20 h-20"
+                      />
+                    )}
+                  </div>
+                  <div>
+                    {businessdata && (
+                      <>
+                        <div className="text-lg font-bold pl-5">
+                          {" "}
+                          {businessdata.businessname}
+                        </div>
+                      </>
+                    )}
+                  </div>
+                </div>
+
+                <div>
+                  <button
+                    className=" flex justify-end  mr-2 "
+                    onClick={hideshowsection4}
+                  >
+                    {" "}
+                    {showMemosection4 ? (
+                      <IoIosArrowUp className="text-2xl  text-gray-500" />
+                    ) : (
+                      <IoIosArrowDown className="text-2xl  text-gray-500" />
+                    )}
+                  </button>
+                </div>
+              </div>
+              <div>
+                {businessdata && (
+                  <div className="flex items-center">
+                    <div className="text-2xl text-black  mt-2 pl-2 gap-3">
+                      <p className="text-[20px] text-black flex  items-center mt-3 pl-8">
+                        {businessdata.address1}
+                      </p>
+                      <p className="text-[20px] text-black flex  items-center ">
+                        <i>
+                          {" "}
+                          <FaRegAddressCard className="text-blue-900 mr-3 " />
+                        </i>{" "}
+                        {businessdata.address2}
+                      </p>
+                      <p className="text-[20px] text-black flex  items-center  pl-8">
+                        {businessdata.pin}
+                      </p>
+                      <p className="text-[20px] text-black flex  items-center mt-3">
+                        <i>
+                          {" "}
+                          <IoMdMail className="text-blue-900 mr-3  " />
+                        </i>{" "}
+                        {businessdata.email}
+                      </p>
+
+                      <p className="text-[20px] text-black flex items-center mt-3 mb-4 ">
+                        <CgWebsite className="text-blue-900 mr-3 " />
+                        {businessdata.website}
+                      </p>
+                    </div>
+                  </div>
+                )}
+                {showMemosection4 && (
+                  <div className="flex items-center mt-5  h-full pb-5 pl-2    ">
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleImageUpload}
+                    />
+                    <button
+                      className="text-blue-600 w-full    text-lg font-bold"
+                      onClick={() => setBusinessPopup(true)}
+                    >
+                      Edit Business Information
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
+
             <div className="h-[550px] border rounded-xl bg-white mt-4 pt-8 ">
               <Box
                 component=""
@@ -2581,9 +2577,9 @@ const InvoicePage = () => {
                 </div>
               </div>
             </div>
-          </form>
+          </div>
         </div>
-      </div>
+      </form>
     </div>
   );
 };

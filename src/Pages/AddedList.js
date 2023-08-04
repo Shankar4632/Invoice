@@ -386,8 +386,8 @@ const AddedList = () => {
         </div>
       </div>
       <div className="grid grid-cols-2 h-20  ">
-        <div className=" flex items-center gap-5 border w-[95%] ">
-          <button className=" text-2xl font-bold border text-blue-800 px-5 py-3  rounded-full bg-white ">
+        <div className=" flex items-center gap-5  w-[95%] ">
+          <button className=" text-2xl font-bold border text-blue-800 px-5 py-3 ml-24  rounded-full bg-white ">
             Invoices
           </button>
           {/* <button className=" text-xl font-semibold">Estimates</button>
@@ -518,16 +518,6 @@ const AddedList = () => {
                                 Delete
                               </button>
                             </li>
-                            <li className="px-4 py-2 text-black hover:bg-gray-100 dark:hover:bg-gray-700 ">
-                              <button>Send</button>{" "}
-                            </li>
-
-                            <li className="px-4 py-2 text-black hover:bg-gray-100 dark:hover:bg-gray-700  ">
-                              <button>Copy</button>
-                            </li>
-                            <li className="px-4 py-2 text-black hover:bg-gray-100 dark:hover:bg-gray-700  ">
-                              <button>Record payment</button>
-                            </li>
                             <li
                               className="px-4 py-2 text-black hover:bg-gray-100 dark:hover:bg-gray-700  "
                               onClick={generatepdf}
@@ -540,10 +530,6 @@ const AddedList = () => {
                               onClick={() => handlegeneratepdf(id)}
                             >
                               <button>Download PDF</button>
-                            </li>
-                            <li className="px-4 py-2 text-black hover:bg-gray-100 dark:hover:bg-gray-700  ">
-                              {" "}
-                              <button>Share Link</button>{" "}
                             </li>
                           </ul>
                         )}
