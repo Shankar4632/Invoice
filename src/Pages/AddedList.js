@@ -92,34 +92,6 @@ const AddedList = () => {
 
   //data from db
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const snapshot = await dataRef.ref().child("Allsections").once("value");
-  //       const data = snapshot.val();
-  //       if (data !== null) {
-  //         setData(data);
-  //       } else {
-  //         setData({});
-  //         console.log(Object.keys(data).length);
-  //       }
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   };
-
-  //   const setLoadingFalse = () => {
-  //     setIsLoading(false);
-  //   };
-
-  //   // Fetch data and set isLoading to false after 5 seconds
-  //   fetchData();
-  //   setTimeout(setLoadingFalse, 1000);
-
-  //   return () => {
-  //     setData({});
-  //   };
-  // }, []);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -196,30 +168,37 @@ const AddedList = () => {
             className="w-full h-auto  border bg-white "
             ref={componentuserpdf}
           >
-            {/* {Object.keys(data).map((id, index) => {
-              const item = data[id];
-              if (selectedKey === id) {
+            {Object.keys(data).map((key, index) => {
+              if (selectedKey === key) {
                 return (
                   <>
                     <div
-                      key={index}
+                      key={key}
                       className="grid grid-cols-2  text-end  bg-white h-auto"
                     >
-                      <div className=""></div>
+                      <div className="">{index + 1}</div>
                       <div className="pr-6">
                         <h1 className="text-[50px] font-semibold ">INVOICE</h1>
                         <p className="text-2xl font-semibold p-1">
-                          Company Name :XYZ Company
-                        </p>
-                        <p className="text-2xl font-semibold p-1">Address:</p>
-                        <p className="text-2xl font-semibold p-1">TIN/PAN</p>
-                        <p className="text-2xl font-semibold p-1">
-                          Phone No. :XXXXXXXXXXX
+                          Company Name :
+                          {data[key].section6Businessinformation.businessname}
                         </p>
                         <p className="text-2xl font-semibold p-1">
-                          Email ID. :XXXXXXXXXXX
+                          Address:
+                          {data[key].section6Businessinformation.address1}
                         </p>
-                        <p className="text-2xl font-semibold p-1">Website :</p>
+                        <p className="text-2xl font-semibold p-1">TIN/PAN </p>
+                        <p className="text-2xl font-semibold p-1">
+                          Phone No. :{data[key].section6Businessinformation.pin}
+                        </p>
+                        <p className="text-2xl font-semibold p-1">
+                          Email ID. :
+                          {data[key].section6Businessinformation.email}
+                        </p>
+                        <p className="text-2xl font-semibold p-1">
+                          Website :
+                          {data[key].section6Businessinformation.website}
+                        </p>
                       </div>
                     </div>
 
@@ -228,15 +207,18 @@ const AddedList = () => {
                         <div className="  ">
                           <p className="text-2xl font-semibold p-2">
                             Invoice no.
+                            {data[key].section5total.inputuser5.invoicenumber}
                           </p>
                           <p className="text-2xl font-semibold p-2">
-                            Invoice date.
+                            Invoice date.{" "}
+                            {data[key].section5total.inputuser5.invoicedate}
                           </p>
                           <p className="text-2xl font-semibold p-2">
                             Reference
                           </p>
                           <p className="text-2xl font-semibold pl-2">
                             Due date.
+                            {data[key].section5total.inputuser5.invoicedue}
                           </p>
                         </div>
                         <div className="text-[35px] font-semibold flex justify-end items-end">
@@ -291,49 +273,29 @@ const AddedList = () => {
                             <th className="p-3">AMOUNTS$</th>
                           </tr>
                         </thead>
-                        <tbody className="border-b dark:bg-gray-900 dark:border-gray-700  ">
-                          {item.map((itemData, id) => (
-                            <>
-                              <tr className="" key={id}>
-                                <td className="px-3 text-2xl font-medium dark:text-gray-400  ">
-                                  {id + 1}
-                                </td>
-                                <td className="px-3 text-2xl font-medium dark:text-gray-400  ">
-                                  {itemData?.ItemName}
-                                </td>
+                        {data[key].section2.map((key, index) => (
+                          <tbody key={key} className="cursor-pointer">
+                            <tr className="bg-white  border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600  ">
+                              <td className="px-3 text-2xl font-medium dark:text-gray-400 py-3 ">
+                                {index + 1}
+                              </td>
+                              <td className="px-3 text-2xl font-medium dark:text-gray-400 py-3 ">
+                                {key?.ItemName}
+                              </td>
 
-                                <td className="px-3 py-2">
-                                  <span>2{itemData.quantity}</span>
-                                  <p className="dark:text-gray-400">
-                                    {console.log(itemData.quantity)}
-                                  </p>
-                                </td>
-                                <td className="px-3 py-2">
-                                  <p>$100{itemData?.price}</p>
-                                </td>
-                                <td className="px-10 py-2">
-                                  <p>$20</p>
-                                </td>
-                              </tr>
-                              <tr className="border-b">
-                                <td className="px-3 text-2xl font-medium dark:text-gray-400"></td>
-                                <td className="px-3 py-2">
-                                  <p>Description 1</p>
-                                </td>
-                                <td className="px-3 py-2">
-                                  <span></span>
-                                  <p className="dark:text-gray-400"></p>
-                                </td>
-                                <td className="px-3 py-2">
-                                  <p></p>
-                                </td>
-                                <td className="px-3 py-2">
-                                  <p></p>
-                                </td>
-                              </tr>
-                            </>
-                          ))}
-                        </tbody>
+                              <td className="px-3 py-2 ">
+                                <span> {key?.quantity}</span>
+                                <p className="dark:text-gray-400"></p>
+                              </td>
+                              <td className="px-3 py-2">
+                                <p>${key?.price}</p>
+                              </td>
+                              <td className="px-10 py-2">
+                                <p>${key?.amount}</p>
+                              </td>
+                            </tr>
+                          </tbody>
+                        ))}
                       </table>
                     </div>
                     <div className="">
@@ -347,7 +309,7 @@ const AddedList = () => {
                             Shipping <span className="pr-10">$20</span>
                           </p>
                           <p className="font-bold text-2xl p-4 pr-10 flex justify-end border-b-4 border-gray-200">
-                            ToTal $220 USD
+                            ToTal ${data[key].section5total.total}USD
                           </p>
                         </div>
                       </div>
@@ -379,7 +341,7 @@ const AddedList = () => {
                 );
               }
               return null;
-            })} */}
+            })}
           </div>
         </>
       )}
@@ -471,9 +433,6 @@ const AddedList = () => {
                 <tr></tr>
               </thead>
 
-              {Object.keys(data).map((key) => (
-                <div key={key}> </div>
-              ))}
               {/* Render the properties of the nested object */}
               {/* <div>Email: {data[key].section1}</div> */}
 
@@ -509,7 +468,8 @@ const AddedList = () => {
               {/* Render other properties */}
               {/* <div>Section 4 Memo: {data[key].section4memo.memo}</div> */}
               {/* <div>Section 5 Total: {data[key].section5total.}</div> */}
-              {Object.keys(data).map((key) => {
+
+              {Object.keys(data).map((key, index) => {
                 return (
                   <tbody key={key} className="cursor-pointer">
                     <tr className="bg-white  border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600  ">
@@ -528,26 +488,40 @@ const AddedList = () => {
                           </label>
                         </div>
                       </td>
+
                       <th
                         scope="row"
                         className="px-6 py-4 text-2xl font-semibold text-gray-900 whitespace-nowrap dark:text-white"
                       >
-                        {/* {index + 1} */}
+                        <div>
+                          {" "}
+                          {data[key].section5total.inputuser5.invoicedate}
+                        </div>
                       </th>
                       <th
                         scope="row"
                         className="px-6 py-4 text-2xl font-semibold text-gray-900 whitespace-nowrap dark:text-white"
                       >
-                        <div> {data[key].section1}</div>
+                        <div>
+                          {" "}
+                          <p>-</p>{" "}
+                          <p>
+                            {data[key].section5total.inputuser5.invoicenumber}
+                          </p>
+                        </div>
                       </th>
                       <th
                         scope="row"
                         className="px-6 py-4 text-2xl font-semibold text-gray-900 whitespace-nowrap dark:text-white"
-                      ></th>
+                      >
+                        Due {data[key].section5total.inputuser5.invoicedue}
+                      </th>
                       <th
                         scope="row"
                         className="px-6 py-4 text-2xl font-semibold text-gray-900 whitespace-nowrap dark:text-white"
-                      ></th>
+                      >
+                        ${data[key].section5total.total} USD
+                      </th>
 
                       <td className="px-6 py-4">
                         <Link
@@ -559,7 +533,7 @@ const AddedList = () => {
                         {isOpen === key && (
                           <ul className="absolute  right-[65px] mt-2 py-2 w-48 bg-white border dark:bg-gray-800 dark:border-gray-700 rounded shadow-lg">
                             <li className="px-4 py-2 text-black hover:bg-gray-100 dark:hover:bg-gray-700">
-                              {/* <button>{index + 1}</button> */}
+                              <button>{index + 1}</button>
                             </li>
                             <li className="px-4 py-2 text-black hover:bg-gray-100 dark:hover:bg-gray-700">
                               <button>Edit</button>

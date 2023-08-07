@@ -2431,7 +2431,7 @@ const InvoicePage = () => {
                 onChange={handleInputInvoice}
               >
                 <TextField
-                  type="number"
+                  type="text"
                   id="outlined-uncontrolled"
                   label="Invoice Number"
                   name="invoicenumber"
