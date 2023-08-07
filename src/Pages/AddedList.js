@@ -232,32 +232,44 @@ const AddedList = () => {
                           <p className="text-2xl font-bold p-1">BILL TO</p>
 
                           <p className="text-2xl  font-semibold  p-1">
-                            Business Name
+                            {data[key].section1.businessname}
                           </p>
                           <p className="text-2xl  font-semibold  p-1">
-                            Fname Lname
+                            {data[key].section1.firstname}
+                          </p>
+                          <p className="text-2xl  font-semibold  p-1">
+                            {data[key].section1.lastname}
                           </p>
                           <p className="text-2xl  font-semibold p-1 ">
-                            Address1 Address2
+                            Address1 :{data[key].section1.address1}
+                          </p>
+                          <p className="text-2xl  font-semibold p-1 ">
+                            Address2 :{data[key].section1.address2}
                           </p>
                           <p className="text-2xl  font-semibold  p-1">
-                            Email Id.
+                            Email Id:-{data[key].section1.email}
                           </p>
                           <p className="text-2xl  font-semibold pl-1  ">
-                            Phone No.
+                            Phone No:- {data[key].section1.phone}
                           </p>
                         </div>
                         <div className=" ">
                           <p className="text-2xl font-bold p-1">SEND TO</p>
 
                           <p className="text-2xl  font-semibold  p-1">
-                            Business Name
+                            {data[key].section1.dbusinessname}
                           </p>
                           <p className="text-2xl  font-semibold  p-1">
-                            Fname Lname
+                            {data[key].section1.dfirstname}
+                          </p>
+                          <p className="text-2xl  font-semibold  p-1">
+                            {data[key].section1.dlastname}
                           </p>
                           <p className="text-2xl  font-semibold p-1 ">
-                            Address1 Address2
+                            {data[key].section1.daddress1}
+                          </p>
+                          <p className="text-2xl  font-semibold p-1 ">
+                            {data[key].section1.daddress2}
                           </p>
                         </div>
                       </div>

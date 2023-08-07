@@ -259,139 +259,26 @@ const InvoicePage = () => {
     setInputbusiness({ ...inputbusiness, [name]: value });
   };
 
-  // const handleSubmitsection1 = (e) => {
-  //   e.preventDefault();
-  //   console.log("Submitting section 1 form");
-  //   const email = lastData.email;
-  //   if (email === inputValue) {
-  //     dataRef
-  //       .ref()
-  //       .child("section1")
-  //       .push(email, (err) => {
-  //         if (err) {
-  //           toast.error(err);
-  //         } else {
-  //           toast.success("Successfully added");
-  //         }
-  //       });
-  //   } else {
-  //     // toast.error("Email mismatch. Please enter a valid email.");
-  //   }
-  // };
-
-  // const handleSubmitsection2 = (e) => {
-  //   e.preventDefault();
-
-  //   if (!itemlist) {
-  //     // Handle error when any of the fields are empty
-  //     // toast.error("Please fill in all the fields");
-  //   } else {
-  //     dataRef
-  //       .ref()
-  //       .child("section2")
-  //       .push(updatedItemList, (err) => {
-  //         if (err) {
-  //           toast.error(err);
-  //         } else {
-  //           toast.success("Successfully added");
-  //         }
-  //       });
-  //   }
-  // };
-
-  // //section-3
-  // const handleSubmitsection3 = (e) => {
-  //   e.preventDefault();
-  //   if (!section3messege) {
-  //     // toast.error(<div className="">Please enter the values!</div>);
-  //   } else {
-  //     dataRef
-  //       .ref()
-  //       .child("section3message")
-  //       .push(input, (err) => {
-  //         if (err) {
-  //           toast.error(err);
-  //         } else {
-  //           toast.success("Successfully added");
-  //         }
-  //       });
-  //   }
-  // };
-  // //section-4
-  // const handleSubmitsection4 = (e) => {
-  //   e.preventDefault();
-  //   if (!memo) {
-  //     // toast.error(<div className="">Please enter the values!</div>);
-  //   } else {
-  //     dataRef
-  //       .ref()
-  //       .child("section4memo")
-  //       .push(inputuser4, (err) => {
-  //         if (err) {
-  //           toast.error(err);
-  //         } else {
-  //           toast.success("Successfully added");
-  //         }
-  //       });
-  //   }
-  // };
-  // //section-5
-  // const handleSubmitsection5 = (e) => {
-  //   e.preventDefault();
-
-  //   const { invoicedue, invoicedate, invoicenumber } = inputuser5;
-
-  //   if (!invoicedue || !invoicedate || !invoicenumber) {
-  //     // toast.error("Please enter all the values!");
-  //     return;
-  //   }
-
-  //   const total = calculateTotal(); // Calculate the total value
-  //   const section5Data = {
-  //     inputuser5: inputuser5,
-  //     total: total,
-  //   };
-
-  //   try {
-  //     dataRef
-  //       .ref()
-  //       .child("section5total")
-  //       .push(section5Data, (error) => {
-  //         if (error) {
-  //           toast.error(error.message);
-  //         } else {
-  //           toast.success("Successfully added");
-  //         }
-  //       });
-  //   } catch (error) {
-  //     toast.error(error.message);
-  //   }
-  // };
-
-  // //section-6
-  // const handleSubmitsection6 = (e) => {
-  //   e.preventDefault();
-  //   if (!fname || !lname || !businessname) {
-  //     // toast.error(<div className="">Please enter the values!</div>);
-  //   } else {
-  //     dataRef
-  //       .ref()
-  //       .child("section6Businessinformation")
-  //       .push(inputbusiness, (err) => {
-  //         if (err) {
-  //           toast.error(err);
-  //         } else {
-  //           toast.success("Successfully added");
-  //         }
-  //       });
-  //   }
-  // };
   const handleSubmitAll = (e) => {
     e.preventDefault();
 
     // Collect data from different sections into one object
     const formData = {
-      section1: lastData.email,
+      section1: {
+        email: lastData.email,
+        phone: lastData.phone,
+        firstname: lastData.firstname,
+        lastname: lastData.lastname,
+        address1: lastData.address1,
+        address2: lastData.address2,
+        businessname: lastData.businessname,
+        email: lastData.email,
+        dfirstname: lastData.dfirstname,
+        dlastname: lastData.dlastname,
+        dbusinessname: lastData.dbusinessname,
+        daddress1: lastData.daddress1,
+        daddress2: lastData.daddress2,
+      },
       section2: updatedItemList,
       section3message: input,
       section4memo: inputuser4,
@@ -1767,12 +1654,14 @@ const InvoicePage = () => {
                   {showAddButton && (
                     <>
                       {lastData && (
-                        <button
-                          className="px-4 py-2 bg-white text-blue-700 rounded-full border mt-2 flex items-center gap-2"
-                          onClick={handleClick1}
-                        >
-                          {lastData.email} <RxCross1 />
-                        </button>
+                        <>
+                          <button
+                            className="px-4 py-2 bg-white text-blue-700 rounded-full border mt-2 flex items-center gap-2"
+                            onClick={handleClick1}
+                          >
+                            {lastData.email} <RxCross1 />
+                          </button>
+                        </>
                       )}
                       <button
                         className="mt-3 px-4 py-2 rounded bg-blue-900 text-white font-semibold"
