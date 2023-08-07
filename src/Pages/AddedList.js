@@ -36,7 +36,7 @@ const AddedList = () => {
   const [selectedKey, setSelectedKey] = useState(null);
 
   //get data from the db
-  const [data, setData] = useState([]);
+  const [data, setData] = useState({});
   const [values, setValues] = useState([]);
   const navigate = useNavigate();
 
@@ -72,7 +72,7 @@ const AddedList = () => {
     console.log("Deleting data with key:", key);
     dataRef
       .ref()
-      .child("section2")
+      .child("Allsections")
       .child(key) // Use the key directly to access the child node
       .remove()
       .then(() => {
@@ -92,34 +92,53 @@ const AddedList = () => {
 
   //data from db
 
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const snapshot = await dataRef.ref().child("Allsections").once("value");
+  //       const data = snapshot.val();
+  //       if (data !== null) {
+  //         setData(data);
+  //       } else {
+  //         setData({});
+  //         console.log(Object.keys(data).length);
+  //       }
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   };
+
+  //   const setLoadingFalse = () => {
+  //     setIsLoading(false);
+  //   };
+
+  //   // Fetch data and set isLoading to false after 5 seconds
+  //   fetchData();
+  //   setTimeout(setLoadingFalse, 1000);
+
+  //   return () => {
+  //     setData({});
+  //   };
+  // }, []);
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const snapshot = await dataRef.ref().child("section2").once("value");
-        const data = snapshot.val();
-        if (data !== null) {
-          setData(data);
-        } else {
-          setData({});
-          console.log(Object.keys(data).length);
-        }
+        const snapshot = await dataRef.ref("Allsections").once("value");
+        const fetchedData = snapshot.val();
+        setData(fetchedData);
+        setIsLoading(false); // Set loading to false once data is fetched
+        console.log("Fetched Data:", fetchedData);
       } catch (error) {
-        console.log(error);
+        console.error("Fetch Error:", error);
       }
     };
 
-    const setLoadingFalse = () => {
-      setIsLoading(false);
-    };
-
-    // Fetch data and set isLoading to false after 5 seconds
     fetchData();
-    setTimeout(setLoadingFalse, 1000);
-
-    return () => {
-      setData({});
-    };
   }, []);
+
+  useEffect(() => {
+    console.log("Updated Data:", data);
+  }, [data]);
 
   const receipt = [
     {
@@ -140,7 +159,7 @@ const AddedList = () => {
     },
   ];
 
-  //loading
+  //loading;
   if (isLoading) {
     return (
       <>
@@ -177,7 +196,7 @@ const AddedList = () => {
             className="w-full h-auto  border bg-white "
             ref={componentuserpdf}
           >
-            {Object.keys(data).map((id, index) => {
+            {/* {Object.keys(data).map((id, index) => {
               const item = data[id];
               if (selectedKey === id) {
                 return (
@@ -360,7 +379,7 @@ const AddedList = () => {
                 );
               }
               return null;
-            })}
+            })} */}
           </div>
         </>
       )}
@@ -452,7 +471,126 @@ const AddedList = () => {
                 <tr></tr>
               </thead>
 
-              {Object.keys(data).map((id, index) => {
+              {Object.keys(data).map((key) => (
+                <div key={key}> </div>
+              ))}
+              {/* Render the properties of the nested object */}
+              {/* <div>Email: {data[key].section1}</div> */}
+
+              {/* Render array properties
+                        <div>Section 2:</div>
+                        <ul>
+                          {data[key].section2.map((item, index) => (
+                            <li key={index}>{item}</li>
+                          ))}
+                        </ul> */}
+
+              {/* Render properties within the nested object */}
+              {/* <div>Section 3 Message:</div> */}
+              {/* <div> {data[key].section3message.section3messege}</div> */}
+              <div>
+                {/* {data[key].section2.ItemName} */}
+                {/* {data[key].section2.map((item, index) => (
+                          <li key={index}>{item.ItemName}</li>
+                        ))} */}
+                {/* <div>
+                              Item Name: {data[key].section3message.ItemName}
+                            </div>
+                            <div>
+                              Amount: {data[key].section3message.amount}
+                            </div>
+                            <div>
+                              Description:{" "}
+                              {data[key].section3message.description}
+                            </div> */}
+                {/* Add other properties from section3message */}
+              </div>
+
+              {/* Render other properties */}
+              {/* <div>Section 4 Memo: {data[key].section4memo.memo}</div> */}
+              {/* <div>Section 5 Total: {data[key].section5total.}</div> */}
+              {Object.keys(data).map((key) => {
+                return (
+                  <tbody key={key} className="cursor-pointer">
+                    <tr className="bg-white  border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600  ">
+                      <td className="w-4 p-6">
+                        <div className="flex items-center  ">
+                          <input
+                            id={`checkbox-table-${key}`}
+                            type="checkbox"
+                            className="w-6 h-6  bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                          />
+                          <label
+                            htmlFor={`checkbox-table-${key}`}
+                            className="sr-only"
+                          >
+                            checkbox
+                          </label>
+                        </div>
+                      </td>
+                      <th
+                        scope="row"
+                        className="px-6 py-4 text-2xl font-semibold text-gray-900 whitespace-nowrap dark:text-white"
+                      >
+                        {/* {index + 1} */}
+                      </th>
+                      <th
+                        scope="row"
+                        className="px-6 py-4 text-2xl font-semibold text-gray-900 whitespace-nowrap dark:text-white"
+                      >
+                        <div> {data[key].section1}</div>
+                      </th>
+                      <th
+                        scope="row"
+                        className="px-6 py-4 text-2xl font-semibold text-gray-900 whitespace-nowrap dark:text-white"
+                      ></th>
+                      <th
+                        scope="row"
+                        className="px-6 py-4 text-2xl font-semibold text-gray-900 whitespace-nowrap dark:text-white"
+                      ></th>
+
+                      <td className="px-6 py-4">
+                        <Link
+                          className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                          onClick={() => handleMenuToggle(key)}
+                        >
+                          <BsThreeDotsVertical className=" text-[23px] text-gray-600" />
+                        </Link>
+                        {isOpen === key && (
+                          <ul className="absolute  right-[65px] mt-2 py-2 w-48 bg-white border dark:bg-gray-800 dark:border-gray-700 rounded shadow-lg">
+                            <li className="px-4 py-2 text-black hover:bg-gray-100 dark:hover:bg-gray-700">
+                              {/* <button>{index + 1}</button> */}
+                            </li>
+                            <li className="px-4 py-2 text-black hover:bg-gray-100 dark:hover:bg-gray-700">
+                              <button>Edit</button>
+                            </li>
+                            <li className="px-4 py-2 text-black hover:bg-gray-100 dark:hover:bg-gray-700">
+                              <button onClick={() => handleDelete(key)}>
+                                Delete
+                              </button>
+                            </li>
+                            <li
+                              className="px-4 py-2 text-black hover:bg-gray-100 dark:hover:bg-gray-700  "
+                              onClick={generatepdf}
+                            >
+                              <button>Print</button>
+                            </li>
+                            <li
+                              key={key}
+                              className="px-4 py-2 text-black hover:bg-gray-100 dark:hover:bg-gray-700"
+                              onClick={() => handlegeneratepdf(key)}
+                            >
+                              <button>Download PDF</button>
+                            </li>
+                          </ul>
+                        )}
+                      </td>
+                    </tr>
+                  </tbody>
+                );
+              })}
+
+              {/* {Object.keys(data).map((id, index) => {
                 console.log("ID:", id);
                 const item = data[id];
                 return (
@@ -537,7 +675,7 @@ const AddedList = () => {
                     </tr>
                   </tbody>
                 );
-              })}
+              })} */}
             </table>
           </div>
         </div>
