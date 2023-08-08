@@ -23,7 +23,7 @@ import { CgWebsite } from "react-icons/cg";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 //toast
-import { dataRef } from "../firebase-config";
+import { dataRef, storage } from "../firebase-config";
 import { toast } from "react-toastify";
 // import currencies json
 import Currencydata from "../json file/currencies.json";
@@ -98,6 +98,7 @@ const InvoicePage = () => {
 
   //image state
   const [selectedImage, setSelectedImage] = useState(null);
+  const [imageUrl, setImageUrl] = useState(null);
   //hide and show of main page
   const [isVisibleinvoicepage, setIsVisibleinvoicepage] = useState(true);
   const [isVisibleaccount, setIsVisibleaccount] = useState(null);
@@ -262,7 +263,6 @@ const InvoicePage = () => {
   const handleSubmitAll = (e) => {
     e.preventDefault();
 
-    // Collect data from different sections into one object
     const formData = {
       section1: {
         email: lastData.email,
@@ -284,9 +284,13 @@ const InvoicePage = () => {
       section4memo: inputuser4,
       section5total: {
         inputuser5: inputuser5,
-        total: calculateTotal(), // Make sure you have the function calculateTotal() defined
+        total: calculateTotal(),
+        subtotal: subtotal1, // Make sure you have the function calculateTotal() defined
       },
-      section6Businessinformation: inputbusiness,
+      section6Businessinformation: {
+        inputbusiness,
+        imageUrl: imageUrl,
+      },
     };
 
     // Push the combined data to the database
@@ -787,6 +791,7 @@ const InvoicePage = () => {
       </div>
     ));
   };
+
   const renderSelectedFields5 = ({ singleItem, index }) => {
     return selectedFields5.map((field5) => (
       <div key={field5}>
@@ -1185,18 +1190,37 @@ const InvoicePage = () => {
     return <div>No data available</div>;
   }
   //logo image
-  const handleImageUpload = (event) => {
-    const file = event.target.files[0];
-    const reader = new FileReader();
 
-    reader.onload = () => {
-      setSelectedImage(reader.result);
-    };
+  // const handleImageUpload = () => {
+  //   if (selectedImage) {
+  //     const storageRef = storage.ref(`/images/${selectedImage.name}`);
 
-    if (file) {
-      reader.readAsDataURL(file);
+  //     storageRef
+  //       .put(selectedImage)
+  //       .then((snapshot) => {
+  //         console.log("Image uploaded successfully");
+  //         return snapshot.ref.getDownloadURL();
+  //       })
+  //       .then((url) => {
+  //         setImageUrl(url);
+  //       })
+  //       .catch((error) => {
+  //         console.log("Error uploading image", error);
+  //       });
+  //   }
+  // };
+  const handleImageUpload = () => {
+    if (selectedImage) {
+      const reader = new FileReader();
+
+      reader.onload = (e) => {
+        setImageUrl(e.target.result);
+      };
+
+      reader.readAsDataURL(selectedImage);
     }
   };
+
   //handle add items
 
   //Return Statements
@@ -2221,13 +2245,18 @@ const InvoicePage = () => {
               <div className="flex items-center h-20   w-full">
                 <div className="flex items-center justify-start ml-3 mt-3 w-full">
                   <div>
-                    {selectedImage && (
-                      <img
-                        src={selectedImage}
-                        alt="Uploaded"
-                        // style={{ maxWidth: "300px" }}
-                        className="w-20 h-20"
-                      />
+                    {imageUrl && (
+                      <div>
+                        <img
+                          src={imageUrl}
+                          alt="Uploaded"
+                          style={{
+                            width: "90px",
+                            height: "90px",
+                            marginTop: "10px",
+                          }}
+                        />
+                      </div>
                     )}
                   </div>
                   <div>
@@ -2292,9 +2321,15 @@ const InvoicePage = () => {
                   <div className="flex items-center mt-5  h-full pb-5 pl-2    ">
                     <input
                       type="file"
-                      accept="image/*"
-                      onChange={handleImageUpload}
+                      onChange={(e) => setSelectedImage(e.target.files[0])}
                     />
+                    <button
+                      className="text-blue-600 w-full text-lg font-bold"
+                      onClick={handleImageUpload}
+                    >
+                      Upload
+                    </button>
+
                     <button
                       className="text-blue-600 w-full    text-lg font-bold"
                       onClick={() => setBusinessPopup(true)}

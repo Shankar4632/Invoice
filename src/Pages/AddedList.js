@@ -98,7 +98,7 @@ const AddedList = () => {
         const snapshot = await dataRef.ref("Allsections").once("value");
         const fetchedData = snapshot.val();
         setData(fetchedData);
-        setIsLoading(false); // Set loading to false once data is fetched
+        setIsLoading(false);
         console.log("Fetched Data:", fetchedData);
       } catch (error) {
         console.error("Fetch Error:", error);
@@ -176,28 +176,52 @@ const AddedList = () => {
                       key={key}
                       className="grid grid-cols-2  text-end  bg-white h-auto"
                     >
-                      <div className="">{index + 1}</div>
+                      <div className="flex justify-start items-center ml-20 ">
+                        {data[key].section6Businessinformation.imageUrl && (
+                          <img
+                            src={data[key].section6Businessinformation.imageUrl}
+                            alt="Business Logo"
+                            style={{ maxWidth: "100%" }}
+                          />
+                        )}
+                      </div>
                       <div className="pr-6">
                         <h1 className="text-[50px] font-semibold ">INVOICE</h1>
                         <p className="text-2xl font-semibold p-1">
                           Company Name :
-                          {data[key].section6Businessinformation.businessname}
+                          {
+                            data[key].section6Businessinformation.inputbusiness
+                              .businessname
+                          }
                         </p>
                         <p className="text-2xl font-semibold p-1">
                           Address:
-                          {data[key].section6Businessinformation.address1}
+                          {
+                            data[key].section6Businessinformation.inputbusiness
+                              .address1
+                          }
                         </p>
                         <p className="text-2xl font-semibold p-1">TIN/PAN </p>
                         <p className="text-2xl font-semibold p-1">
-                          Phone No. :{data[key].section6Businessinformation.pin}
+                          Phone No. :
+                          {
+                            data[key].section6Businessinformation.inputbusiness
+                              .pin
+                          }
                         </p>
                         <p className="text-2xl font-semibold p-1">
                           Email ID. :
-                          {data[key].section6Businessinformation.email}
+                          {
+                            data[key].section6Businessinformation.inputbusiness
+                              .email
+                          }
                         </p>
                         <p className="text-2xl font-semibold p-1">
                           Website :
-                          {data[key].section6Businessinformation.website}
+                          {
+                            data[key].section6Businessinformation.inputbusiness
+                              .website
+                          }
                         </p>
                       </div>
                     </div>
@@ -221,8 +245,13 @@ const AddedList = () => {
                             {data[key].section5total.inputuser5.invoicedue}
                           </p>
                         </div>
-                        <div className="text-[35px] font-semibold flex justify-end items-end">
-                          <p>AMOUNT DUE</p>
+                        <div className=" font-semibold grid justify-end items-end  ">
+                          <div className=" mt-10 text-[45px]">
+                            ${data[key].section5total.total}.00
+                          </div>
+                          <div className=" text-[35px] font-bold">
+                            AMOUNT DUE
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -315,7 +344,10 @@ const AddedList = () => {
                         <div className=" h-48"></div>
                         <div className=" h-48 ">
                           <p className="text-xl p-2 font-semibold flex justify-end">
-                            Subtotal <span className="pr-10">$200</span>
+                            Subtotal{" "}
+                            <span className="pr-10">
+                              ${data[key].section5total.subtotal}
+                            </span>
                           </p>
                           <p className="text-xl p-2 font-semibold border-b-4 border-gray-200 flex justify-end">
                             Shipping <span className="pr-10">$20</span>
@@ -444,43 +476,6 @@ const AddedList = () => {
               <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr></tr>
               </thead>
-
-              {/* Render the properties of the nested object */}
-              {/* <div>Email: {data[key].section1}</div> */}
-
-              {/* Render array properties
-                        <div>Section 2:</div>
-                        <ul>
-                          {data[key].section2.map((item, index) => (
-                            <li key={index}>{item}</li>
-                          ))}
-                        </ul> */}
-
-              {/* Render properties within the nested object */}
-              {/* <div>Section 3 Message:</div> */}
-              {/* <div> {data[key].section3message.section3messege}</div> */}
-              <div>
-                {/* {data[key].section2.ItemName} */}
-                {/* {data[key].section2.map((item, index) => (
-                          <li key={index}>{item.ItemName}</li>
-                        ))} */}
-                {/* <div>
-                              Item Name: {data[key].section3message.ItemName}
-                            </div>
-                            <div>
-                              Amount: {data[key].section3message.amount}
-                            </div>
-                            <div>
-                              Description:{" "}
-                              {data[key].section3message.description}
-                            </div> */}
-                {/* Add other properties from section3message */}
-              </div>
-
-              {/* Render other properties */}
-              {/* <div>Section 4 Memo: {data[key].section4memo.memo}</div> */}
-              {/* <div>Section 5 Total: {data[key].section5total.}</div> */}
-
               {Object.keys(data).map((key, index) => {
                 return (
                   <tbody key={key} className="cursor-pointer">
@@ -575,93 +570,6 @@ const AddedList = () => {
                   </tbody>
                 );
               })}
-
-              {/* {Object.keys(data).map((id, index) => {
-                console.log("ID:", id);
-                const item = data[id];
-                return (
-                  <tbody key={id} className="cursor-pointer">
-                    <tr className="bg-white  border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600  ">
-                      <td className="w-4 p-6">
-                        <div className="flex items-center  ">
-                          <input
-                            id={`checkbox-table-${id}-${index}`}
-                            type="checkbox"
-                            className="w-6 h-6  bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                          />
-                          <label
-                            htmlFor={`checkbox-table-${id}-${index}`}
-                            className="sr-only"
-                          >
-                            checkbox
-                          </label>
-                        </div>
-                      </td>
-                      <th
-                        scope="row"
-                        className="px-6 py-4 text-2xl font-semibold text-gray-900 whitespace-nowrap dark:text-white"
-                      >
-                        {index + 1}
-                      </th>
-                      <th
-                        scope="row"
-                        className="px-6 py-4 text-2xl font-semibold text-gray-900 whitespace-nowrap dark:text-white"
-                      >
-                        {item[0].ItemName}
-                      </th>
-                      <th
-                        scope="row"
-                        className="px-6 py-4 text-2xl font-semibold text-gray-900 whitespace-nowrap dark:text-white"
-                      >
-                        {item[0].amounts}
-                      </th>
-                      <th
-                        scope="row"
-                        className="px-6 py-4 text-2xl font-semibold text-gray-900 whitespace-nowrap dark:text-white"
-                      >
-                        {item[0].description}
-                      </th>
-
-                      <td className="px-6 py-4">
-                        <Link
-                          className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                          onClick={() => handleMenuToggle(id)}
-                        >
-                          <BsThreeDotsVertical className=" text-[23px] text-gray-600" />
-                        </Link>
-                        {isOpen === id && (
-                          <ul className="absolute  right-[65px] mt-2 py-2 w-48 bg-white border dark:bg-gray-800 dark:border-gray-700 rounded shadow-lg">
-                            <li className="px-4 py-2 text-black hover:bg-gray-100 dark:hover:bg-gray-700">
-                              <button>{index + 1}</button>
-                            </li>
-                            <li className="px-4 py-2 text-black hover:bg-gray-100 dark:hover:bg-gray-700">
-                              <button>Edit</button>
-                            </li>
-                            <li className="px-4 py-2 text-black hover:bg-gray-100 dark:hover:bg-gray-700">
-                              <button onClick={() => handleDelete(id)}>
-                                Delete
-                              </button>
-                            </li>
-                            <li
-                              className="px-4 py-2 text-black hover:bg-gray-100 dark:hover:bg-gray-700  "
-                              onClick={generatepdf}
-                            >
-                              <button>Print</button>
-                            </li>
-                            <li
-                              key={id}
-                              className="px-4 py-2 text-black hover:bg-gray-100 dark:hover:bg-gray-700"
-                              onClick={() => handlegeneratepdf(id)}
-                            >
-                              <button>Download PDF</button>
-                            </li>
-                          </ul>
-                        )}
-                      </td>
-                    </tr>
-                  </tbody>
-                );
-              })} */}
             </table>
           </div>
         </div>
