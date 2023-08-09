@@ -285,7 +285,10 @@ const InvoicePage = () => {
       section5total: {
         inputuser5: inputuser5,
         total: calculateTotal(),
-        subtotal: subtotal1, // Make sure you have the function calculateTotal() defined
+        subtotal: subtotal1,
+        discounts: discounts,
+        shipping: shipping,
+        otherAmount: otherAmount,
       },
       section6Businessinformation: {
         inputbusiness,
@@ -302,6 +305,7 @@ const InvoicePage = () => {
           toast.error(err);
         } else {
           toast.success("Successfully added");
+          navigate("/");
         }
       });
   };
@@ -964,10 +968,12 @@ const InvoicePage = () => {
   ];
 
   /////////////////    hide and show on button click    ////////////////
-  const hideshow = () => {
+  const hideshow = (e) => {
+    e.preventDefault();
     setShowMemo((prevShowMemo) => !prevShowMemo);
   };
-  const hideshowsection4 = () => {
+  const hideshowsection4 = (e) => {
+    e.preventDefault();
     setShowMemosection4((prevshowMemosection4) => !prevshowMemosection4);
   };
   const handlecustomiseui = () => {
@@ -1052,7 +1058,7 @@ const InvoicePage = () => {
   useEffect(() => {
     dataRef
       .ref()
-      .child("section6Businessinformation")
+      .child("Allsections")
       .on("value", (snapshot) => {
         const snapshotValue = snapshot.val();
         if (snapshotValue !== null) {
@@ -1191,24 +1197,6 @@ const InvoicePage = () => {
   }
   //logo image
 
-  // const handleImageUpload = () => {
-  //   if (selectedImage) {
-  //     const storageRef = storage.ref(`/images/${selectedImage.name}`);
-
-  //     storageRef
-  //       .put(selectedImage)
-  //       .then((snapshot) => {
-  //         console.log("Image uploaded successfully");
-  //         return snapshot.ref.getDownloadURL();
-  //       })
-  //       .then((url) => {
-  //         setImageUrl(url);
-  //       })
-  //       .catch((error) => {
-  //         console.log("Error uploading image", error);
-  //       });
-  //   }
-  // };
   const handleImageUpload = () => {
     if (selectedImage) {
       const reader = new FileReader();
@@ -1867,14 +1855,14 @@ const InvoicePage = () => {
                       </div>
 
                       <div className="flex items-center ml-7 ">
-                        <button className="text-bold  mt-3 text-blue-600  font-bold flex items-center text-xl ">
+                        <p className="text-bold  mt-3 text-blue-600  font-bold flex items-center text-xl cursor-pointer ">
                           Add terms and conditions
-                        </button>
+                        </p>
 
-                        <button className="text-bold  ml-1 mt-3 text-blue-600  font-bold flex items-center text-xl ">
+                        <p className="text-bold  ml-1 mt-3 text-blue-600  font-bold flex items-center text-xl cursor-pointer ">
                           <RxDividerVertical className="text-black flex item-center text-xl" />{" "}
                           Add reference number
-                        </button>
+                        </p>
                       </div>
                       {/*===================================  section-4  =================================*/}
                       <div className="  p-3 ">

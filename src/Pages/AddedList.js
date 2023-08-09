@@ -350,7 +350,10 @@ const AddedList = () => {
                             </span>
                           </p>
                           <p className="text-xl p-2 font-semibold border-b-4 border-gray-200 flex justify-end">
-                            Shipping <span className="pr-10">$20</span>
+                            Shipping{" "}
+                            <span className="pr-10">
+                              ${data[key].section5total.shipping}
+                            </span>
                           </p>
                           <p className="font-bold text-2xl p-4 pr-10 flex justify-end border-b-4 border-gray-200">
                             ToTal ${data[key].section5total.total}USD
@@ -543,7 +546,7 @@ const AddedList = () => {
                               <button>{index + 1}</button>
                             </li>
                             <li className="px-4 py-2 text-black hover:bg-gray-100 dark:hover:bg-gray-700">
-                              <button>Edit</button>
+                              <Link to={`/invoicepage/${key}`}>Edit</Link>
                             </li>
                             <li className="px-4 py-2 text-black hover:bg-gray-100 dark:hover:bg-gray-700">
                               <button onClick={() => handleDelete(key)}>
