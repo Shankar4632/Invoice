@@ -1213,7 +1213,7 @@ const InvoicePage = () => {
 
   //Return Statements
   return (
-    <div className="mb-3  ">
+    <div className="mb-3 ">
       <form onSubmit={handleSubmitAll}>
         {businesspopup ? (
           <>
@@ -1554,7 +1554,7 @@ const InvoicePage = () => {
               </button>
 
               <span
-                className="font-bold text-blue-600 text-lg pl-2 cursor-pointer "
+                className="font-extrabold  text-blue-600 text-lg pl-2 cursor-pointer "
                 onClick={() => {
                   navigate("/");
                 }}
@@ -1719,7 +1719,7 @@ const InvoicePage = () => {
                         <div className="flex items-center pl-3 pt-20">
                           <p className="font-bold text-xl w-full ml-3">Items</p>
                           <button
-                            className=" text-blue-500 text-xl font-bold  rounded-full  flex justify-end items-center mr-3"
+                            className=" text-blue-500 text-xl font-extrabold  rounded-full  flex justify-end items-center mr-3"
                             onClick={(event, singleItem, index) => {
                               event.preventDefault();
                               setCustomisePopup(true);
@@ -1822,7 +1822,7 @@ const InvoicePage = () => {
                               </div>
                               {itemlist.length - 1 === index && (
                                 <button
-                                  className="text-bold ml-4 mt-3 text-blue-600  font-bold flex items-center text-xl "
+                                  className="text-bold ml-4 mt-3 text-blue-600  font-extrabold  flex items-center text-xl "
                                   onClick={handleAddItem}
                                 >
                                   <AiOutlinePlus className="mr-2" /> Add items
@@ -1855,11 +1855,11 @@ const InvoicePage = () => {
                       </div>
 
                       <div className="flex items-center ml-7 ">
-                        <p className="text-bold  mt-3 text-blue-600  font-bold flex items-center text-xl cursor-pointer ">
+                        <p className="text-bold  mt-3 text-blue-600  font-extrabold  flex items-center text-xl cursor-pointer ">
                           Add terms and conditions
                         </p>
 
-                        <p className="text-bold  ml-1 mt-3 text-blue-600  font-bold flex items-center text-xl cursor-pointer ">
+                        <p className="text-bold  ml-1 mt-3 text-blue-600  font-extrabold  flex items-center text-xl cursor-pointer ">
                           <RxDividerVertical className="text-black flex item-center text-xl" />{" "}
                           Add reference number
                         </p>
@@ -1959,13 +1959,13 @@ const InvoicePage = () => {
                 <>
                   {isVisiblehours && (
                     <>
-                      <div className="p-3 ">
+                      <div className="p-3 h-auto  ">
                         <div className="flex items-center pl-3 pt-20">
                           <p className="font-bold w-full  text-xl ml-3">
                             Items
                           </p>
                           <button
-                            className=" text-blue-500 text-xl font-bold  rounded-full flex justify-end items-center mr-3"
+                            className=" text-blue-500 text-xl font-extrabold   rounded-full flex justify-end items-center mr-3"
                             onClick={(event) => {
                               event.preventDefault();
                               setCustomisePopup(true);
@@ -1981,7 +1981,7 @@ const InvoicePage = () => {
                               {" "}
                               <div
                                 key={index}
-                                className="h-64 w-[97%] mt-4  border-2 rounded-xl mx-auto  "
+                                className="h-64 w-[97%] mt-4  border-2  rounded-xl mx-auto  "
                               >
                                 {customiseui ? (
                                   <>
@@ -2081,7 +2081,7 @@ const InvoicePage = () => {
                                   {" "}
                                   {itemlist.length - 1 === index && (
                                     <button
-                                      className="text-bold ml-4 mt-3 text-blue-600  font-bold flex items-center text-xl "
+                                      className="text-bold ml-4 mt-3 text-blue-600  font-extrabold  flex items-center text-xl "
                                       onClick={handleAddItem}
                                     >
                                       <AiOutlinePlus className="mr-2" /> Add
@@ -2129,7 +2129,7 @@ const InvoicePage = () => {
                         <div className="flex items-center  pl-3 pt-20">
                           <p className="font-bold text-xl w-full ml-3">Items</p>
                           <button
-                            className=" text-blue-500 text-xl font-bold  rounded-full  flex justify-end items-center mr-3"
+                            className=" text-blue-500 text-xl font-extrabold  rounded-full  flex justify-end items-center mr-3"
                             onClick={(event) => {
                               event.preventDefault();
                               setCustomisePopup(true);
@@ -2209,7 +2209,7 @@ const InvoicePage = () => {
                                 {" "}
                                 {itemlist.length - 1 === index && (
                                   <button
-                                    className="text-bold ml-4   text-blue-600  font-bold flex items-center text-xl "
+                                    className="text-bold ml-4   text-blue-600  font-extrabold  flex items-center text-xl "
                                     onClick={handleAddItem}
                                   >
                                     <AiOutlinePlus className="mr-2" /> Add items
@@ -2418,7 +2418,7 @@ const InvoicePage = () => {
                         </div>
                       ) : (
                         <button
-                          className="text-blue-600 rounded-xl text-lg font-bold not-italic cursor-pointer"
+                          className="text-blue-600 rounded-xl text-lg font-extrabold  not-italic cursor-pointer"
                           onClick={() => setShowDiscountField(true)}
                         >
                           Add
@@ -2440,7 +2440,7 @@ const InvoicePage = () => {
                         </div>
                       ) : (
                         <button
-                          className="text-blue-600 rounded-xl text-lg font-bold not-italic cursor-pointer"
+                          className="text-blue-600 rounded-xl text-lg font-extrabold  not-italic cursor-pointer"
                           onClick={() => setShowShippingField(true)}
                         >
                           Add
@@ -2462,7 +2462,7 @@ const InvoicePage = () => {
                         </div>
                       ) : (
                         <button
-                          className="text-blue-600 rounded-xl text-lg font-bold not-italic cursor-pointer"
+                          className="text-blue-600 rounded-xl text-lg font-extrabold  not-italic cursor-pointer"
                           onClick={() => setShowOtherAmountField(true)}
                         >
                           Add
@@ -2472,18 +2472,18 @@ const InvoicePage = () => {
                   </form>
                   {isVisibleinvoicepage && (
                     <>
-                      <p className="p-3 font-bold">${totalValue}</p>
+                      <p className="p-3 font-extrabold ">${totalValue}</p>
                     </>
                   )}
                   {isVisiblehours && (
                     <>
-                      <p className="p-3 font-bold">${totalValue}</p>
+                      <p className="p-3 font-extrabold ">${totalValue}</p>
                     </>
                   )}
                   {isVisibleaccount && (
                     <>
                       {" "}
-                      <p className="p-3 font-bold">${totalValue1}</p>
+                      <p className="p-3 font-bold ">${totalValue1}</p>
                     </>
                   )}
                 </div>

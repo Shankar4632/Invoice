@@ -537,6 +537,7 @@ const AddedList = () => {
                         <Link
                           className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
                           onClick={() => handleMenuToggle(key)}
+                          // onBlur={() => handleMenuToggle()}
                         >
                           <BsThreeDotsVertical className=" text-[23px] text-gray-600" />
                         </Link>
@@ -546,7 +547,7 @@ const AddedList = () => {
                               <button>{index + 1}</button>
                             </li>
                             <li className="px-4 py-2 text-black hover:bg-gray-100 dark:hover:bg-gray-700">
-                              <Link to={`/invoicepage/${key}`}>Edit</Link>
+                              <Link to={`/addedit`}>Edit</Link>
                             </li>
                             <li className="px-4 py-2 text-black hover:bg-gray-100 dark:hover:bg-gray-700">
                               <button onClick={() => handleDelete(key)}>
