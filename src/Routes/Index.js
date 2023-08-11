@@ -14,7 +14,7 @@ const Index = () => {
       <Routes>
         <Route exact path="/invoicepage" element={<InvoicePage />} />
         <Route path="/addcustomer" element={<AddCustomer />} />
-        <Route path="/addedit" element={<AddEdit />} />
+        <Route path="/addedit/:key" element={<AddEdit />} />
         <Route path="/" element={<AddedList />} />
         <Route path="/downloadpdf/:id" element={<Downloadpdf />} />
       </Routes>

@@ -547,7 +547,7 @@ const AddedList = () => {
                               <button>{index + 1}</button>
                             </li>
                             <li className="px-4 py-2 text-black hover:bg-gray-100 dark:hover:bg-gray-700">
-                              <Link to={`/addedit`}>Edit</Link>
+                              <Link to={`/addedit/${key}`}>Edit</Link>
                             </li>
                             <li className="px-4 py-2 text-black hover:bg-gray-100 dark:hover:bg-gray-700">
                               <button onClick={() => handleDelete(key)}>

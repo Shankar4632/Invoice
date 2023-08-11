@@ -1822,7 +1822,7 @@ const InvoicePage = () => {
                               </div>
                               {itemlist.length - 1 === index && (
                                 <button
-                                  className="text-bold ml-4 mt-3 text-blue-600  font-extrabold  flex items-center text-xl "
+                                  className=" ml-4 mt-3 text-blue-600  font-extrabold  flex items-center text-xl "
                                   onClick={handleAddItem}
                                 >
                                   <AiOutlinePlus className="mr-2" /> Add items
