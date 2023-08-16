@@ -315,6 +315,10 @@ const InvoicePage = () => {
     // handleSubmitsection6(e);
     setBusinessPopup(false);
   };
+  const handleeditbusinessinfo = (e) => {
+    e.preventDefault();
+    setBusinessPopup(true);
+  };
   const handleAdd = (section, value) => {
     switch (section) {
       case "discount":
@@ -2320,7 +2324,7 @@ const InvoicePage = () => {
 
                     <button
                       className="text-blue-600 w-full    text-lg font-bold"
-                      onClick={() => setBusinessPopup(true)}
+                      onClick={handleeditbusinessinfo}
                     >
                       Edit Business Information
                     </button>

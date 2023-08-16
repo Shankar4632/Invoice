@@ -94,7 +94,7 @@ const AddCustomer = () => {
             toast.error(err);
           } else {
             toast.success("Successfully added");
-            navigate("/");
+            navigate("/invoicepage");
           }
         });
     }
@@ -193,7 +193,7 @@ const AddCustomer = () => {
         <i
           className="flex  justify-end pr-3 cursor-pointer"
           onClick={() => {
-            navigate("/");
+            navigate("/invoicepage");
           }}
         >
           <RxCross1 className="text-xl" />
