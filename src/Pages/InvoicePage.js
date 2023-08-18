@@ -1724,7 +1724,7 @@ const InvoicePage = () => {
                           <p className="font-bold text-xl w-full ml-3">Items</p>
                           <button
                             className=" text-blue-500 text-xl font-extrabold  rounded-full  flex justify-end items-center mr-3"
-                            onClick={(event, singleItem, index) => {
+                            onClick={(event) => {
                               event.preventDefault();
                               setCustomisePopup(true);
                             }}

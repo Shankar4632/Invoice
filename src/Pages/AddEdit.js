@@ -26,6 +26,24 @@ import { toast } from "react-toastify";
 import Currencydata from "../json file/currencies.json";
 import days from "../json file/days.json";
 
+const inititalvalue = {
+  ItemName: "",
+  quantity: 0,
+  price: 0,
+  description: "",
+  tax: "",
+  discount: 0,
+  itemnamehours: "",
+  hours: 0,
+  rate: 0,
+  itemnameaccount: "",
+};
+const inititalsection3value = {
+  section3messege: "",
+};
+const inititalsection4value = {
+  memo: "",
+};
 const AddEdit = () => {
   const [currency, setCurrency] = useState("");
   const [showMemo, setShowMemo] = useState(false);
@@ -59,6 +77,9 @@ const AddEdit = () => {
   const [selecteddiscountFields, setSelecteddiscountFields] = useState([]);
   const [selecteditemFields, setSelecteditemFields] = useState([]);
   const [customiseui, setCustomiseui] = useState(true);
+  const [discounts, setDiscount] = useState("");
+  const [shipping, setShipping] = useState("");
+  const [otherAmount, setOtherAmount] = useState("");
   //hide and show of main page
   const [isVisibleinvoicepage, setIsVisibleinvoicepage] = useState(true);
   //hide and show of customize
@@ -67,6 +88,12 @@ const AddEdit = () => {
   const [isVisiblecustomiseaccount, setVisiblecustomiseaccount] =
     useState(null);
   const [isVisiblecustomisehours, setVisiblecustomisehours] = useState(null);
+  const [showDiscountField, setShowDiscountField] = useState(false);
+  const [showShippingField, setShowShippingField] = useState(false);
+  const [showOtherAmountField, setShowOtherAmountField] = useState(false);
+  //hide and show of main page
+  const [isVisibleaccount, setIsVisibleaccount] = useState(null);
+  const [isVisiblehours, setIsVisiblehours] = useState(null);
   //get data from the db
   const [data, setData] = useState({});
 
@@ -79,9 +106,8 @@ const AddEdit = () => {
   };
 
   //section-2
-  const [itemlist, setItemlist] = useState([]);
+  const [itemlist, setItemlist] = useState(inititalvalue);
 
-  console.log(itemlist);
   const [singleItem, setSingleItem] = useState({
     ItemName: "",
     quantity: 0,
@@ -94,51 +120,11 @@ const AddEdit = () => {
     rate: 0,
     itemnameaccount: "",
   });
-
-  //quantity
-  const handlechangeadditemlist = (e, index) => {
-    const { name, value } = e.target;
-    const list = [...itemlist];
-    list[index][name] = value;
-    setItemlist(list);
-    console.log(name, value);
-  };
-  const handleAddItem = () => {
-    setItemlist([
-      ...itemlist,
-      {
-        ItemName: "",
-        quantity: 0,
-        price: 0,
-        description: "",
-        tax: "",
-        discount: 0,
-        itemnamehours: "",
-        hours: 0,
-        rate: 0,
-      },
-    ]);
-  };
-  // const updatedItemList = itemlist.map((item) => {
-  //   const amount = item.discount
-  //     ? (item.price * item.quantity * item.discount) / 100
-  //     : item.price * item.quantity;
-  //   return {
-  //     ...item,
-  //     amount,
-  //   };
-  // });
-  //amounts only
-
   //section-3
-  const [input, setInput] = useState({
-    section3messege: "",
-  });
+  const [input, setInput] = useState(inititalsection3value);
   const { section3messege } = input;
   //section-4
-  const [inputuser4, setInputuser4] = useState({
-    memo: "",
-  });
+  const [inputuser4, setInputuser4] = useState(inititalsection4value);
   const { memo } = inputuser4;
 
   //section-5
@@ -168,42 +154,179 @@ const AddEdit = () => {
     pin,
     additionalinfo,
   } = inputbusiness;
+
+  //quantity
+
+  const handlechangeadditemlist = (e, index) => {
+    const { name, value } = e.target;
+    const updatedData = [...data[key].section2];
+    updatedData[index][name] = value;
+    setSingleItem({ ...updatedData[index] });
+    setData({ ...data, [key]: { ...data[key], section2: updatedData } });
+  };
+
+  const handleAddItem = () => {
+    setItemlist([
+      ...itemlist,
+      {
+        ItemName: "",
+        quantity: 0,
+        price: 0,
+        description: "",
+        tax: "",
+        discount: 0,
+        itemnamehours: "",
+        hours: 0,
+        rate: 0,
+      },
+    ]);
+  };
+
+  const handleAdd = (section, value) => {
+    switch (section) {
+      case "discount":
+        setDiscount(value);
+        setShowDiscountField(false);
+        break;
+      case "shipping":
+        setShipping(value);
+        setShowShippingField(false);
+        break;
+      case "otherAmount":
+        setOtherAmount(value);
+        setShowOtherAmountField(false);
+        break;
+      default:
+        break;
+    }
+  };
+  const handleKeyDown = (event, section) => {
+    if (event.key === "Enter") {
+      handleAdd(section, event.target.value);
+    }
+  };
+  // //section-3
+
+  const handleChangesection3 = (event) => {
+    const { name, value } = event.target;
+    setInput({ ...input, [name]: value });
+  };
+  const handleChangesection4 = (event) => {
+    const { name, value } = event.target;
+    setInputuser4({ ...inputuser4, [name]: value });
+  };
+
   //fetch
 
   const handleSubmitAll = (e) => {
     e.preventDefault();
 
     const formData = {
-      section1: {
-        email: lastData.email,
-        phone: lastData.phone,
-        firstname: lastData.firstname,
-        lastname: lastData.lastname,
-        address1: lastData.address1,
-        address2: lastData.address2,
-        businessname: lastData.businessname,
-        email: lastData.email,
-        dfirstname: lastData.dfirstname,
-        dlastname: lastData.dlastname,
-        dbusinessname: lastData.dbusinessname,
-        daddress1: lastData.daddress1,
-        daddress2: lastData.daddress2,
-      },
+      // section1: {
+      //   email: lastData.email,
+      //   phone: lastData.phone,
+      //   firstname: lastData.firstname,
+      //   lastname: lastData.lastname,
+      //   address1: lastData.address1,
+      //   address2: lastData.address2,
+      //   businessname: lastData.businessname,
+      //   email: lastData.email,
+      //   dfirstname: lastData.dfirstname,
+      //   dlastname: lastData.dlastname,
+      //   dbusinessname: lastData.dbusinessname,
+      //   daddress1: lastData.daddress1,
+      //   daddress2: lastData.daddress2,
+      // },
+      section3message: input,
+      section4memo: inputuser4,
     };
-
-    // Push the combined data to the database
-    dataRef
-      .ref()
-      .child("Allsections")
-      .push(formData, (err) => {
-        if (err) {
-          toast.error(err);
-        } else {
-          toast.success("Successfully added");
-          navigate("/");
-        }
-      });
+    if (!formData) {
+      toast.error("please enter the values");
+    } else {
+      if (!key) {
+        dataRef
+          .ref()
+          .child("Allsections")
+          .push(formData, (err) => {
+            if (err) {
+              toast.error(err);
+            } else {
+              toast.success("Successfully added");
+              navigate("/");
+            }
+          });
+      } else {
+        dataRef
+          .ref()
+          .child(`Allsections/${key}`)
+          .set(formData, (err) => {
+            if (err) {
+              toast.error(err);
+            } else {
+              toast.success("Successfully updated ");
+              navigate("/");
+            }
+          });
+      }
+    }
   };
+
+  //fetch data
+
+  const { key } = useParams();
+
+  useEffect(() => {
+    const dataRef1 = dataRef.ref("Allsections");
+    dataRef1.on("value", (snapshot) => {
+      if (snapshot.val() !== null) {
+        setData({ ...snapshot.val() });
+      } else {
+        setData({});
+      }
+      setIsLoading(false);
+    });
+    return () => {
+      setData({});
+    };
+  }, [key]);
+
+  useEffect(
+    (field) => {
+      if (data && key && data[key] && singleItem[field]) {
+        setItemlist({ ...data[key].section2 });
+      } else {
+        setItemlist({ ...inititalvalue });
+      }
+      return () => {
+        setItemlist({ ...inititalvalue });
+        console.log("Updated Data2:", data);
+      };
+    },
+    [key, data]
+  );
+
+  useEffect(() => {
+    if (data && key && data[key] && data[key].section3message) {
+      setInput({ ...data[key].section3message });
+    } else {
+      setInput({ ...inititalsection3value });
+    }
+    return () => {
+      setInput({ ...inititalsection3value });
+      console.log("Updated Data3:", data);
+    };
+  }, [key, data]); // Include loading state in the dependency array
+  useEffect(() => {
+    if (data && key && data[key] && data[key].section4memo) {
+      setInputuser4({ ...data[key].section4memo });
+    } else {
+      setInputuser4({ ...inititalsection4value });
+    }
+    return () => {
+      setInputuser4({ ...inititalsection4value });
+      console.log("Updated Data4:", data);
+    };
+  }, [key, data]); // Include loading state in the dependency array
   const hideshow = (e) => {
     e.preventDefault();
     setShowMemo((prevShowMemo) => !prevShowMemo);
@@ -322,7 +445,7 @@ const AddEdit = () => {
           }}
           className=" w-[500px]"
           name={field}
-          value={(singleItem && singleItem[field]) || ""}
+          value={singleItem[field] || ""}
           onChange={(e) => handlechangeadditemlist(e, index)}
         />
       </div>
@@ -680,35 +803,6 @@ const AddEdit = () => {
     },
   ];
 
-  //fetch data
-
-  const { key } = useParams();
-
-  useEffect(() => {
-    const dataRef1 = dataRef.ref("Allsections");
-    dataRef1.on("value", (snapshot) => {
-      if (snapshot.val() !== null) {
-        setData({ ...snapshot.val() });
-      } else {
-        setData({});
-      }
-      setIsLoading(false);
-    });
-    return () => {
-      dataRef1.off(); // Remember to unsubscribe when component unmounts
-    };
-  }, [key]);
-
-  useEffect(() => {
-    if (!data || !data[key]) {
-      // Check for loading state
-      console.log("data[key]:", data[key]);
-      setItemlist({ ...data[key] });
-    }
-
-    console.log("Updated Data:", data);
-  }, [key, data]); // Include loading state in the dependency array
-
   return (
     <div className="mb-3 ">
       {isLoading ? (
@@ -969,7 +1063,8 @@ const AddEdit = () => {
                   <button
                     className="text-white bg-[#003087] px-9 py-3   mr-5 rounded-full    font-extrabold text-lg"
                     type="submit"
-                    onClick={handleSubmitAll}
+                    value={key ? "Update" : "Save"}
+                    // onClick={handleSubmitAll}
                   >
                     Send Update
                   </button>
@@ -1118,23 +1213,43 @@ const AddEdit = () => {
                               </div>
                             )}
                             <div className="flex justify-end pr-7 pb-3">
-                              {/* {itemlist.slice(itemlist.length - 1).map((index) => (
-                      <div key={index} className="flex justify-end pr-7 pb-3">
-                        {singleItem && (
-                          <>
-                            <p className="font-bold text-md">
-                              Amounts: $
-                              {singleItem.discount
-                                ? (singleItem.price *
-                                    singleItem.quantity *
-                                    singleItem.discount) /
-                                  100
-                                : singleItem.price * singleItem.quantity}
-                            </p>
-                          </>
-                        )}
-                      </div>
-                    ))} */}
+                              {singleItem && (
+                                <>
+                                  <p className="font-bold text-md" key={key}>
+                                    Amounts: $
+                                    {singleItem.discount
+                                      ? (singleItem.price *
+                                          singleItem.quantity *
+                                          singleItem.discount) /
+                                        100
+                                      : singleItem.price * singleItem.quantity}
+                                  </p>
+                                </>
+                              )}
+
+                              {/* {itemlist
+                                .slice(itemlist.length - 1)
+                                .map((index) => (
+                                  <div
+                                    key={index}
+                                    className="flex justify-end pr-7 pb-3"
+                                  >
+                                    {singleItem && (
+                                      <>
+                                        <p className="font-bold text-md">
+                                          Amounts: $
+                                          {singleItem.discount
+                                            ? (singleItem.price *
+                                                singleItem.quantity *
+                                                singleItem.discount) /
+                                              100
+                                            : singleItem.price *
+                                              singleItem.quantity}
+                                        </p>
+                                      </>
+                                    )}
+                                  </div>
+                                ))} */}
                             </div>
                           </div>
                           <button className="text-2xl     font-extrabold    ">
@@ -1144,7 +1259,7 @@ const AddEdit = () => {
                       </>
                     ))}
 
-                    {/* {itemlist.length - 1 === index && (
+                    {/* {data[key].section2.length - 1 === index && (
                       <button
                         className=" ml-4 mt-3 text-blue-600  font-extrabold  flex items-center text-xl "
                         onClick={handleAddItem}
@@ -1166,7 +1281,8 @@ const AddEdit = () => {
                         rows="6"
                         name="section3messege"
                         placeholder="Seller note to customer"
-                        value={data[key].section3message.section3messege || ""}
+                        value={input.section3messege || ""}
+                        onChange={handleChangesection3}
                       ></textarea>
                     </div>
                   </div>
@@ -1230,7 +1346,8 @@ const AddEdit = () => {
                                 rows="6"
                                 placeholder="Memo"
                                 name="memo"
-                                value={data[key].section4memo.memo || ""}
+                                value={inputuser4.memo || ""}
+                                onChange={handleChangesection4}
                               >
                                 {" "}
                               </textarea>
@@ -1254,6 +1371,43 @@ const AddEdit = () => {
                 </div>
 
                 <div className="h-[550px] border rounded-xl bg-white mt-4 pt-8 ">
+                  <Box
+                    component=""
+                    sx={{
+                      "& > :not(style)": { m: 1, width: "90%" },
+                    }}
+                    noValidate
+                    autoComplete="off"
+                    className="flex items-start pl-4"
+                    name="invoicenumber"
+                  >
+                    <TextField
+                      type="text"
+                      id="outlined-uncontrolled"
+                      label="Invoice Number"
+                      name="invoicenumber"
+                      value={data[key].section5total.inputuser5.invoicenumber}
+                    />
+                  </Box>
+                  <input
+                    type="date"
+                    name="invoicedate"
+                    className="p-4 border flex items-start ml-6 border-gray-300"
+                    value={data[key].section5total.inputuser5.invoicedate}
+                  />{" "}
+                  <select
+                    id="dropdown-select"
+                    className="w-[90%] py-4 mt-2 px-3 text-base border border-gray-500 rounded-md box-border"
+                    name="invoicedue"
+                    value={data[key].section5total.inputuser5.invoicedue}
+                  >
+                    <option defaultValue disabled value="">
+                      ---select Due---
+                    </option>
+                    {days.map((days, index) => (
+                      <option key={index}>{days.value}</option>
+                    ))}
+                  </select>
                   <div className="mx-auto mt-3  h-[300px] grid grid-cols-2">
                     <div>
                       <p className="font-semibold w-full text-lg p-3">
@@ -1270,6 +1424,110 @@ const AddEdit = () => {
                           (Tax Excl.)
                         </span>{" "}
                       </p>
+                    </div>
+                    <div className="mt-3">
+                      {isVisibleinvoicepage && (
+                        <>
+                          <p className="font-bold text-md"></p>
+                        </>
+                      )}
+                      {isVisiblehours && (
+                        <>
+                          <p className="font-bold text-md"></p>
+                        </>
+                      )}
+
+                      {isVisibleaccount && (
+                        <>
+                          {" "}
+                          <p className="font-bold text-md"></p>
+                        </>
+                      )}
+
+                      <form onSubmit={(e) => e.preventDefault()}>
+                        <p className="p-3">
+                          {showDiscountField ? (
+                            <div>
+                              <input
+                                type="text"
+                                className="w-14 border border-black"
+                                value={discounts}
+                                onChange={(e) => setDiscount(e.target.value)}
+                                onKeyDown={(e) => handleKeyDown(e, "discount")}
+                              />
+                            </div>
+                          ) : (
+                            <button
+                              className="text-blue-600 rounded-xl text-lg font-extrabold  not-italic cursor-pointer"
+                              onClick={() => setShowDiscountField(true)}
+                            >
+                              Add
+                            </button>
+                          )}
+                        </p>
+                      </form>
+                      <form onSubmit={(e) => e.preventDefault()}>
+                        <p className="p-4">
+                          {showShippingField ? (
+                            <div>
+                              <input
+                                type="text"
+                                className="w-14 border border-black"
+                                value={shipping}
+                                onChange={(e) => setShipping(e.target.value)}
+                                onKeyDown={(e) => handleKeyDown(e, "shipping")}
+                              />
+                            </div>
+                          ) : (
+                            <button
+                              className="text-blue-600 rounded-xl text-lg font-extrabold  not-italic cursor-pointer"
+                              onClick={() => setShowShippingField(true)}
+                            >
+                              Add
+                            </button>
+                          )}
+                        </p>
+                      </form>
+                      <form onSubmit={(e) => e.preventDefault()}>
+                        <p className="p-4">
+                          {showOtherAmountField ? (
+                            <div>
+                              <input
+                                type="text"
+                                className="w-14 border border-black"
+                                value={otherAmount}
+                                onChange={(e) => setOtherAmount(e.target.value)}
+                                onKeyDown={(e) =>
+                                  handleKeyDown(e, "otherAmount")
+                                }
+                              />
+                            </div>
+                          ) : (
+                            <button
+                              className="text-blue-600 rounded-xl text-lg font-extrabold  not-italic cursor-pointer"
+                              onClick={() => setShowOtherAmountField(true)}
+                            >
+                              Add
+                            </button>
+                          )}
+                        </p>
+                      </form>
+                      {isVisibleinvoicepage && (
+                        <>
+                          <p className="p-3 font-extrabold ">$</p>
+                        </>
+                      )}
+                      {isVisiblehours && (
+                        <>
+                          <p className="p-3 font-extrabold ">$</p>
+                        </>
+                      )}
+                      {isVisibleaccount && (
+                        <>
+                          {" "}
+                          <p className="p-3 font-bold ">$</p>
+                        </>
+                      )}
                     </div>
                   </div>
                 </div>

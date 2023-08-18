@@ -68,26 +68,59 @@ const AddedList = () => {
 
   // delete
 
+  // const handleDelete = (key) => {
+  //   console.log("Deleting data with key:", key);
+  //   dataRef
+  //     .ref()
+  //     .child("Allsections")
+  //     .child(key) // Use the key directly to access the child node
+  //     .remove()
+  //     .then(() => {
+  //       console.log(`Data with key ${key} deleted successfully.`);
+  //       console.log("Data after deletion:");
+  //       // Update the state by removing the deleted item
+  //       setData((prevData) => {
+  //         const newData = { ...prevData };
+  //         delete newData[key];
+  //         return newData;
+  //       });
+  //     })
+  //     .catch((error) => {
+  //       console.log("Error deleting data:", error);
+  //     });
+  // };
+  // const handleDelete = (key) => {
+  //   if (window.confirm("Are you sure you want to delete ?")) {
+  //     dataRef
+  //       .ref()
+  //       .child(`Allsections/${key}`)
+  //       .remove((err) => {
+  //         if (err) {
+  //           toast.error(err);
+  //         } else {
+  //           toast.success("Successfully deleted");
+  //         }
+  //       });
+  //   }
+  // };
   const handleDelete = (key) => {
-    console.log("Deleting data with key:", key);
-    dataRef
-      .ref()
-      .child("Allsections")
-      .child(key) // Use the key directly to access the child node
-      .remove()
-      .then(() => {
-        console.log(`Data with key ${key} deleted successfully.`);
-        console.log("Data after deletion:");
-        // Update the state by removing the deleted item
-        setData((prevData) => {
-          const newData = { ...prevData };
-          delete newData[key];
-          return newData;
+    if (window.confirm("Are you sure you want to delete ?")) {
+      dataRef
+        .ref()
+        .child(`Allsections/${key}`)
+        .remove((err) => {
+          if (err) {
+            toast.error(err);
+          } else {
+            toast.success("Successfully deleted");
+            setData((prevData) => {
+              const newData = { ...prevData };
+              delete newData[key];
+              return newData;
+            });
+          }
         });
-      })
-      .catch((error) => {
-        console.log("Error deleting data:", error);
-      });
+    }
   };
 
   //data from db
@@ -537,7 +570,6 @@ const AddedList = () => {
                         <Link
                           className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
                           onClick={() => handleMenuToggle(key)}
-                          // onBlur={() => handleMenuToggle()}
                         >
                           <BsThreeDotsVertical className=" text-[23px] text-gray-600" />
                         </Link>
