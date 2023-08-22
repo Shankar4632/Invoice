@@ -1047,7 +1047,11 @@ const InvoicePage = () => {
         if (snapshotValue !== null) {
           const dataKeys = Object.keys(snapshotValue);
           const lastKey = dataKeys[dataKeys.length - 1];
-          setLastData(snapshotValue[lastKey]);
+          setLastData({
+            key: lastKey,
+            ...snapshotValue[lastKey],
+          });
+          console.log("lastKey:", lastKey);
         } else {
           setLastData(null);
         }
@@ -1058,6 +1062,28 @@ const InvoicePage = () => {
       setLastData(null);
     };
   }, []);
+
+  const handleDeleteemail = () => {
+    console.log("Deleting data:", lastData);
+    if (lastData && lastData.key) {
+      console.log("Deleting data with key:", lastData.key);
+      dataRef
+        .ref()
+        .child("CustomerList")
+        .child(lastData.key)
+        .remove()
+        .then(() => {
+          console.log("Last data deleted successfully.");
+        })
+        .catch((error) => {
+          console.error("Error deleting last data:", error);
+          console.log("lastdata to delete", lastData);
+        });
+    } else {
+      console.log("lastData or lastData.key is not defined:", lastData);
+    }
+  };
+
   //fetch data from db of business information
   useEffect(() => {
     dataRef
@@ -1196,7 +1222,7 @@ const InvoicePage = () => {
     );
   }
 
-  if (lastData.length === 0) {
+  if (lastData !== null && lastData.length > 0) {
     return <div>No data available</div>;
   }
   //logo image
@@ -1675,10 +1701,14 @@ const InvoicePage = () => {
                             className="px-4 py-2 bg-white text-blue-700 rounded-full border mt-2 flex items-center gap-2"
                             onClick={handleClick1}
                           >
-                            {lastData.email} <RxCross1 />
+                            {lastData.email}{" "}
+                            <button onClick={() => handleDeleteemail()}>
+                              <RxCross1 />
+                            </button>
                           </button>
                         </>
                       )}
+
                       <button
                         className="mt-3 px-4 py-2 rounded bg-blue-900 text-white font-semibold"
                         onClick={() => {

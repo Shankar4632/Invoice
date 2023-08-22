@@ -104,6 +104,7 @@ const AddEdit = () => {
     event.preventDefault();
     setInputValue(lastData.email);
   };
+  //section-1
 
   //section-2
   const [itemlist, setItemlist] = useState(inititalvalue);
@@ -164,7 +165,17 @@ const AddEdit = () => {
     setSingleItem({ ...updatedData[index] });
     setData({ ...data, [key]: { ...data[key], section2: updatedData } });
   };
+  // const removeItem = (index) => {
+  //   const updatedArray = [...data[index].section2];
+  //   updatedArray.splice(index);
+  // };
 
+  const Deleteemail = (index) => {
+    const deleteemail = [...data[index].section1];
+    deleteemail.splice(index, 1);
+    console.log(deleteemail);
+  };
+  const removeItem = (index) => {};
   const handleAddItem = () => {
     setItemlist([
       ...itemlist,
@@ -1110,9 +1121,16 @@ const AddEdit = () => {
                         <p className="text-2xl   font-semibold">
                           {" "}
                           {data[key].section1.email}
-                          {/* {section1} */}
+                          {/* {email ? (
+                            <p> {data[key].section1.email}</p>
+                          ) : (
+                            <p>Email not available</p>
+                          )} */}
                         </p>
-                        <button className="text-2xl   flex justify-end   w-full pr-20 font-extrabold ">
+                        <button
+                          className="text-2xl   flex justify-end   w-full pr-20 font-extrabold "
+                          onClick={() => Deleteemail(index)}
+                        >
                           <RxCross1 />
                         </button>
                       </div>
@@ -1252,7 +1270,10 @@ const AddEdit = () => {
                                 ))} */}
                             </div>
                           </div>
-                          <button className="text-2xl     font-extrabold    ">
+                          <button
+                            className="text-2xl     font-extrabold"
+                            onClick={() => removeItem(index)}
+                          >
                             <RxCross1 />
                           </button>
                         </div>{" "}
