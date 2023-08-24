@@ -1,10 +1,11 @@
+import React from "react";
 //import from reactjs package
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 //import reacticons
 import { FaPaypal } from "react-icons/fa";
 import { RxCross1 } from "react-icons/rx";
 //import Routes
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 //import from firebase
 
 //import from  json
@@ -42,11 +43,12 @@ const initialState = {
   lselectlanguage: "",
   ldescription: "",
 };
-const AddCustomer = () => {
+const EditCustomer = () => {
   //hooks or states
   const [isLoading, setIsLoading] = useState(true);
   const [state, setState] = useState(initialState);
   const [data, setData] = useState({});
+
   const {
     firstname,
     lastname,
@@ -81,42 +83,116 @@ const AddCustomer = () => {
     const { name, value } = e.target;
     setState({ ...state, [name]: value });
   };
+
   //input to db
-  const handlesubmit = (e) => {
+  //   const handlesubmit = (e) => {
+  //     e.preventDefault();
+  //     if (!firstname || !email || !lastname || !businessname || !phone) {
+  //       toast.error(<div className="">Please enter the values!</div>);
+  //     } else {
+  //       dataRef
+  //         .ref()
+  //         .child("CustomerList")
+  //         .push(state, (err) => {
+  //           if (err) {
+  //             toast.error(err);
+  //           } else {
+  //             toast.success("Successfully added");
+  //             navigate("/invoicepage");
+  //           }
+  //         });
+  //     }
+  //   };
+  const handleSubmitAll = (e) => {
     e.preventDefault();
-    if (!firstname || !email || !lastname || !businessname || !phone) {
-      toast.error(<div className="">Please enter the values!</div>);
+
+    const formData = {
+      section1: {
+        firstname,
+        lastname,
+        businessname,
+        email,
+        phone,
+        countrycode,
+        selectcountry,
+        address1,
+        address2,
+        city,
+        state1,
+        pincode,
+        dfirstname,
+        dlastname,
+        dbusinessname,
+        dselectcountry,
+        daddress1,
+        daddress2,
+        dcity,
+        dstate,
+        dpincode,
+        lselectcountry,
+        lselectlanguage,
+        ldescription,
+      },
+    };
+    if (!formData) {
+      toast.error("please enter the values");
     } else {
-      dataRef
-        .ref()
-        .child("CustomerList")
-        .push(state, (err) => {
-          if (err) {
-            toast.error(err);
-          } else {
-            toast.success("Successfully  added Email");
-            navigate("/invoicepage");
-          }
-        });
+      if (!key) {
+        dataRef
+          .ref()
+          .child("Allsections")
+          .push(formData, (err) => {
+            if (err) {
+              toast.error(err);
+            } else {
+              toast.success("Successfully added");
+              navigate(`/addedit/${key}`);
+            }
+          });
+      } else {
+        dataRef
+          .ref()
+          .child(`Allsections/${key}`)
+          .set(formData, (err) => {
+            if (err) {
+              toast.error(err);
+            } else {
+              toast.success("Successfully updated ");
+              navigate(`/addedit/${key}`);
+            }
+          });
+      }
     }
   };
   //fetch data from db
+  const { key } = useParams();
+
   useEffect(() => {
-    dataRef
-      .ref()
-      .child("CustomerList")
-      .on("value", (snapshot) => {
-        if (snapshot.val() !== null) {
-          setData({ ...snapshot.val() });
-        } else {
-          setData({});
-        }
-        setIsLoading(false);
-      });
+    const dataRef1 = dataRef.ref("Allsections");
+    dataRef1.on("value", (snapshot) => {
+      if (snapshot.val() !== null) {
+        setData({ ...snapshot.val() });
+        console.log("Data:", snapshot.val());
+      } else {
+        setData({});
+      }
+      setIsLoading(false);
+    });
     return () => {
       setData({});
     };
-  }, []);
+  }, [key]);
+  useEffect(() => {
+    if (data && key && data[key] && data[key].section1) {
+      setState({ ...data[key].section1 });
+    } else {
+      setState({ ...initialState });
+    }
+    return () => {
+      setState({ ...initialState });
+      console.log("Updated Data4:", data);
+    };
+  }, [key, data]);
 
   //fetch data of country in json format
 
@@ -183,8 +259,6 @@ const AddCustomer = () => {
   if (data.length === 0) {
     return <div>No data available</div>;
   }
-
-  //return statement
   return (
     <div className="bg-white h-auto w-[70%] mx-auto border">
       <div className="flex items-center  mt-4 ">
@@ -194,7 +268,7 @@ const AddCustomer = () => {
         <i
           className="flex  justify-end pr-3 cursor-pointer"
           onClick={() => {
-            navigate("/invoicepage");
+            navigate(`/addedit/${key}`);
           }}
         >
           <RxCross1 className="text-xl" />
@@ -202,20 +276,10 @@ const AddCustomer = () => {
       </div>
       <p className="text-center text-3xl mt-3 font-semibold">
         {" "}
-        Customer information{" "}
+        Edit Customer information{" "}
       </p>
 
-      {/* {Object.keys(data).map((id, index) => {
-        return (
-          <div key={id}>
-            <h1 className="text-3xl text-black">{index + 1}</h1>
-            <h1 className="text-3xl text-black">{data[id].firstname}</h1>
-            <h1 className="text-3xl text-black">{data[id].lastname}</h1>
-            <h1 className="text-3xl text-black">{data[id].email}</h1>
-          </div>
-        );
-      })} */}
-      <form className="" onSubmit={handlesubmit}>
+      <form className="" onSubmit={handleSubmitAll}>
         <div className="mx-auto w-[60%]  h-auto mt-10">
           <p className="font-bold text-md  "> Customer information</p>
 
@@ -229,6 +293,7 @@ const AddCustomer = () => {
                 type="search"
                 className=" w-[95%]  border border-gray-400 rounded-md py-4 px-3 placeholder-black focus:border-blue-400"
                 placeholder="First name"
+                value={state.firstname || ""}
               />
             </div>
             <div className="">
@@ -240,6 +305,7 @@ const AddCustomer = () => {
                 type="search"
                 className=" w-[95%]  border border-gray-400 rounded-md py-4 px-3 placeholder-black"
                 placeholder="Last name"
+                value={state.lastname || ""}
               />
             </div>
           </div>
@@ -252,6 +318,7 @@ const AddCustomer = () => {
               onChange={handleinputchange}
               className="w-[98%] mt-3 border border-gray-400 rounded-md py-4 px-3 placeholder-black"
               placeholder="Business name"
+              value={businessname || ""}
             />
           </div>
           <div className="w-full  text-center">
@@ -263,6 +330,7 @@ const AddCustomer = () => {
               onChange={handleinputchange}
               className="w-[98%] mt-3 border border-gray-400 rounded-md py-4 px-3 placeholder-black"
               placeholder="Email address"
+              value={email || ""}
             />
           </div>
           <div className="grid grid-cols-2 w-full  mt-3 text-center">
@@ -272,7 +340,7 @@ const AddCustomer = () => {
                 className="w-[95%] py-4 px-3 text-base border border-gray-500 rounded-md box-border"
                 onChange={handleinputchange}
                 name="countrycode"
-                value={countrycode}
+                value={countrycode || ""}
               >
                 <option defaultValue disabled value="">
                   ---select code---
@@ -291,6 +359,7 @@ const AddCustomer = () => {
                 onChange={handleinputchange}
                 className=" w-[95%]  border border-gray-400 rounded-md py-4 px-3 placeholder-black"
                 placeholder="Phone number"
+                value={phone || ""}
               />
             </div>
           </div>
@@ -305,7 +374,7 @@ const AddCustomer = () => {
               className="w-[98%] py-4 px-3 text-black border border-gray-500 rounded-md box-border"
               onChange={handleinputchange}
               name="selectcountry"
-              value={selectcountry}
+              value={selectcountry || ""}
             >
               <option defaultValue disabled value="">
                 ---select country---
@@ -324,6 +393,7 @@ const AddCustomer = () => {
               placeholder="Address line 1"
               onChange={handleinputchange}
               name="address1"
+              value={address1 || ""}
             />
           </div>
           <div className="w-full  text-center">
@@ -335,6 +405,7 @@ const AddCustomer = () => {
               placeholder="Address line 2"
               onChange={handleinputchange}
               name="address2"
+              value={address2 || ""}
             />
           </div>
           <div className="grid grid-cols-2 w-full mt-3 text-center">
@@ -344,7 +415,7 @@ const AddCustomer = () => {
                 className="w-[95%] py-4 px-3 text-base border border-gray-500 rounded-md box-border"
                 onChange={handleinputchange}
                 name="city"
-                value={city}
+                value={city || ""}
               >
                 <option defaultValue disabled value="">
                   ---select city---
@@ -360,7 +431,7 @@ const AddCustomer = () => {
                 className="w-[95%] py-4 px-3 text-base border border-gray-500 rounded-md box-border"
                 onChange={handleinputchange}
                 name="state1"
-                value={state1}
+                value={state1 || ""}
               >
                 <option defaultValue disabled value="">
                   ---select states---
@@ -381,6 +452,7 @@ const AddCustomer = () => {
               placeholder="Pin code"
               onChange={handleinputchange}
               name="pincode"
+              value={pincode || ""}
             />
           </div>
         </div>
@@ -396,6 +468,7 @@ const AddCustomer = () => {
                 placeholder="First name"
                 name="dfirstname"
                 onChange={handleinputchange}
+                value={dfirstname || ""}
               />
             </div>
             <div className="">
@@ -407,6 +480,7 @@ const AddCustomer = () => {
                 placeholder="Last name"
                 name="dlastname"
                 onChange={handleinputchange}
+                value={dlastname || ""}
               />
             </div>
           </div>
@@ -420,6 +494,7 @@ const AddCustomer = () => {
               placeholder="Busiiness name(optional)"
               name="dbusinessname"
               onChange={handleinputchange}
+              value={dbusinessname || ""}
             />
           </div>
           <div className="w-full  text-center mt-4">
@@ -429,7 +504,7 @@ const AddCustomer = () => {
               className="w-[98%] py-4 px-3 text-black border border-gray-500 rounded-md box-border"
               name="dselectcountry"
               onChange={handleinputchange}
-              value={dselectcountry}
+              value={dselectcountry || ""}
             >
               <option defaultValue disabled value="">
                 ---select country---
@@ -448,6 +523,7 @@ const AddCustomer = () => {
               placeholder="Address line 1"
               name="daddress1"
               onChange={handleinputchange}
+              value={daddress1 || ""}
             />
           </div>
           <div className="w-full  text-center">
@@ -459,6 +535,7 @@ const AddCustomer = () => {
               placeholder="Address line 2"
               name="daddress2"
               onChange={handleinputchange}
+              value={daddress2 || ""}
             />
           </div>
           <div className="grid grid-cols-2 w-full mt-3 text-center">
@@ -469,7 +546,7 @@ const AddCustomer = () => {
                 className="w-[95%] py-4 px-3 text-base border border-gray-500 rounded-md box-border"
                 name="dcity"
                 onChange={handleinputchange}
-                value={dcity}
+                value={dcity || ""}
               >
                 <option defaultValue disabled value="">
                   ---select city---
@@ -484,7 +561,7 @@ const AddCustomer = () => {
               className="w-[95%] py-4 px-3 text-base border border-gray-500 rounded-md box-border"
               name="dstate"
               onChange={handleinputchange}
-              value={dstate}
+              value={dstate || ""}
             >
               <option defaultValue disabled value="">
                 ---select states---
@@ -503,6 +580,7 @@ const AddCustomer = () => {
               placeholder="Pin code"
               name="dpincode"
               onChange={handleinputchange}
+              value={dpincode || ""}
             />
           </div>
         </div>
@@ -515,7 +593,7 @@ const AddCustomer = () => {
               id="dropdown-select"
               className="w-[98%] py-4 px-3 text-black border border-gray-500 rounded-md box-border"
               name="lselectcountry"
-              value={lselectcountry}
+              value={lselectcountry || ""}
               onChange={handleinputchange}
             >
               <option defaultValue disabled value="">
@@ -533,7 +611,7 @@ const AddCustomer = () => {
                 id="dropdown-select"
                 className="w-[98%] py-4 px-3 text-black border border-gray-500 rounded-md box-border"
                 name="lselectlanguage"
-                value={lselectlanguage}
+                value={lselectlanguage || ""}
                 onChange={handleinputchange}
               >
                 <option defaultValue disabled value="">
@@ -558,15 +636,22 @@ const AddCustomer = () => {
               name="ldescription"
               defaultValue=""
               onChange={handleinputchange} // Set the initial value here
+              value={ldescription || ""}
             ></textarea>
           </div>
           <div className="text-center pb-10 mt-10">
-            <button
+            {/* <button
               className="px-8 py-3 rounded-3xl  bg-blue-900 text-white font-bold mx-auto "
               type="submit"
+              value={key ? "Update" : "Save"}
             >
               Save
-            </button>
+            </button> */}
+            <input
+              className="px-8 py-3 rounded-3xl  bg-blue-900 text-white font-bold mx-auto cursor-pointer"
+              value={key ? "Update" : "Save"}
+              type="submit"
+            />
           </div>
         </div>
       </form>
@@ -574,4 +659,4 @@ const AddCustomer = () => {
   );
 };
 
-export default AddCustomer;
+export default EditCustomer;

@@ -1,7 +1,7 @@
 //Reactjs Library imports
 import * as React from "react";
 import { useState, useRef, useEffect } from "react";
-import { v4 as uuidv4 } from "uuid";
+
 //materialUI imports
 import Box from "@mui/material/Box";
 import InputLabel from "@mui/material/InputLabel";
@@ -48,6 +48,7 @@ const initialInputuser2 = {
   itemnameaccount: "",
 };
 const InvoicePage = () => {
+  const [activetab, setactivetab] = useState("InvoicePage");
   //hooks or States
   const [currency, setCurrency] = useState("");
   const [textareaValue, setTextareaValue] = useState("");
@@ -264,21 +265,7 @@ const InvoicePage = () => {
     e.preventDefault();
 
     const formData = {
-      section1: {
-        email: lastData.email,
-        phone: lastData.phone,
-        firstname: lastData.firstname,
-        lastname: lastData.lastname,
-        address1: lastData.address1,
-        address2: lastData.address2,
-        businessname: lastData.businessname,
-        email: lastData.email,
-        dfirstname: lastData.dfirstname,
-        dlastname: lastData.dlastname,
-        dbusinessname: lastData.dbusinessname,
-        daddress1: lastData.daddress1,
-        daddress2: lastData.daddress2,
-      },
+      section1: lastData,
       section2: updatedItemList,
       section3message: input,
       section4memo: inputuser4,
@@ -309,6 +296,55 @@ const InvoicePage = () => {
         }
       });
   };
+  // const handleSubmitAll = (e) => {
+  //   e.preventDefault();
+
+  //   const formData = {
+  //     section1: {
+  //       email: lastData.email,
+  //       phone: lastData.phone,
+  //       firstname: lastData.firstname,
+  //       lastname: lastData.lastname,
+  //       address1: lastData.address1,
+  //       address2: lastData.address2,
+  //       businessname: lastData.businessname,
+  //       email: lastData.email,
+  //       dfirstname: lastData.dfirstname,
+  //       dlastname: lastData.dlastname,
+  //       dbusinessname: lastData.dbusinessname,
+  //       daddress1: lastData.daddress1,
+  //       daddress2: lastData.daddress2,
+  //     },
+  //     section2: updatedItemList,
+  //     section3message: input,
+  //     section4memo: inputuser4,
+  //     section5total: {
+  //       inputuser5: inputuser5,
+  //       total: calculateTotal(),
+  //       subtotal: subtotal1,
+  //       discounts: discounts,
+  //       shipping: shipping,
+  //       otherAmount: otherAmount,
+  //     },
+  //     section6Businessinformation: {
+  //       inputbusiness,
+  //       imageUrl: imageUrl,
+  //     },
+  //   };
+
+  //   // Push the combined data to the database
+  //   dataRef
+  //     .ref()
+  //     .child("Allsections")
+  //     .push(formData, (err) => {
+  //       if (err) {
+  //         toast.error(err);
+  //       } else {
+  //         toast.success("Successfully added");
+  //         navigate("/");
+  //       }
+  //     });
+  // };
 
   //section-6 business information
   const handlesavebusinessinfo = (e) => {
@@ -1640,6 +1676,9 @@ const InvoicePage = () => {
                         <MenuItem
                           value="template2"
                           onClick={toggleVisibilityofhours}
+                          className={`${
+                            isVisiblehours === "Hours" ? "active" : ""
+                          }`}
                         >
                           Hours
                         </MenuItem>

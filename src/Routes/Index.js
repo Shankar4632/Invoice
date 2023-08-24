@@ -7,6 +7,7 @@ import AddEdit from "../Pages/AddEdit";
 import Downloadpdf from "../Pages/Downloadpdf";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import EditCustomer from "../Pages/EditCustomer";
 const Index = () => {
   return (
     <div>
@@ -14,6 +15,7 @@ const Index = () => {
       <Routes>
         <Route exact path="/invoicepage" element={<InvoicePage />} />
         <Route path="/addcustomer" element={<AddCustomer />} />
+        <Route path="/editcustomer/:key" element={<EditCustomer />} />
         <Route path="/addedit/:key" element={<AddEdit />} />
         <Route path="/" element={<AddedList />} />
         <Route path="/downloadpdf/:id" element={<Downloadpdf />} />

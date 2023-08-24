@@ -17,7 +17,7 @@ import { FaPaypal, FaRegAddressCard } from "react-icons/fa";
 import { RxCross1 } from "react-icons/rx";
 import { CgWebsite } from "react-icons/cg";
 //Reat Router Dom
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 //toast
 import { dataRef, storage } from "../firebase-config";
@@ -43,6 +43,11 @@ const inititalsection3value = {
 };
 const inititalsection4value = {
   memo: "",
+};
+const initialState = {
+  invoicedue: "",
+  invoicedate: "",
+  invoicenumber: "",
 };
 const AddEdit = () => {
   const [currency, setCurrency] = useState("");
@@ -97,14 +102,13 @@ const AddEdit = () => {
   //get data from the db
   const [data, setData] = useState({});
 
-  //function calling
+  //section - 1;
   const [inputValue, setInputValue] = useState("");
 
   const handleClick1 = (event) => {
     event.preventDefault();
     setInputValue(lastData.email);
   };
-  //section-1
 
   //section-2
   const [itemlist, setItemlist] = useState(inititalvalue);
@@ -129,7 +133,7 @@ const AddEdit = () => {
   const { memo } = inputuser4;
 
   //section-5
-  // const [inputuser5, setInputuser5] = useState(initialState);
+  const [inputuser5, setInputuser5] = useState(initialState);
   //section-6 business information
   const [inputbusiness, setInputbusiness] = useState({
     fname: "",
@@ -157,7 +161,7 @@ const AddEdit = () => {
   } = inputbusiness;
 
   //quantity
-
+  //function calling
   const handlechangeadditemlist = (e, index) => {
     const { name, value } = e.target;
     const updatedData = [...data[key].section2];
@@ -170,10 +174,26 @@ const AddEdit = () => {
   //   updatedArray.splice(index);
   // };
 
-  const Deleteemail = (index) => {
-    const deleteemail = [...data[index].section1];
-    deleteemail.splice(index, 1);
-    console.log(deleteemail);
+  const Deleteemail = (e) => {
+    e.preventDefault();
+    console.log("Deleting data:", lastData);
+    if (lastData && lastData.key) {
+      console.log("Deleting data with key:", lastData.key);
+      dataRef
+        .ref()
+        .child("CustomerList")
+        .child(lastData.key)
+        .remove()
+        .then(() => {
+          console.log("Last data deleted successfully.");
+        })
+        .catch((error) => {
+          console.error("Error deleting last data:", error);
+          console.log("lastdata to delete", lastData);
+        });
+    } else {
+      console.log("lastData or lastData.key is not defined:", lastData);
+    }
   };
   const removeItem = (index) => {};
   const handleAddItem = () => {
@@ -226,6 +246,10 @@ const AddEdit = () => {
     const { name, value } = event.target;
     setInputuser4({ ...inputuser4, [name]: value });
   };
+  const handleChangesection5 = (event) => {
+    const { name, value } = event.target;
+    setInputuser5({ ...inputuser5, [name]: value });
+  };
 
   //fetch
 
@@ -233,23 +257,18 @@ const AddEdit = () => {
     e.preventDefault();
 
     const formData = {
-      // section1: {
-      //   email: lastData.email,
-      //   phone: lastData.phone,
-      //   firstname: lastData.firstname,
-      //   lastname: lastData.lastname,
-      //   address1: lastData.address1,
-      //   address2: lastData.address2,
-      //   businessname: lastData.businessname,
-      //   email: lastData.email,
-      //   dfirstname: lastData.dfirstname,
-      //   dlastname: lastData.dlastname,
-      //   dbusinessname: lastData.dbusinessname,
-      //   daddress1: lastData.daddress1,
-      //   daddress2: lastData.daddress2,
-      // },
+      section1: lastData,
+      section2: data[key].section2,
       section3message: input,
       section4memo: inputuser4,
+      section5total: {
+        inputuser5: inputuser5,
+        // total: calculateTotal(),
+        // subtotal: subtotal1,
+        discounts: discounts,
+        shipping: shipping,
+        otherAmount: otherAmount,
+      },
     };
     if (!formData) {
       toast.error("please enter the values");
@@ -282,7 +301,31 @@ const AddEdit = () => {
     }
   };
 
-  //fetch data
+  //fetched data
+  useEffect(() => {
+    dataRef
+      .ref()
+      .child("CustomerList")
+      .on("value", (snapshot) => {
+        const snapshotValue = snapshot.val();
+        if (snapshotValue !== null) {
+          const dataKeys = Object.keys(snapshotValue);
+          const lastKey = dataKeys[dataKeys.length - 1];
+          setLastData({
+            key: lastKey,
+            ...snapshotValue[lastKey],
+          });
+          console.log("lastKey:", lastKey);
+        } else {
+          setLastData(null);
+        }
+        setIsLoading(false);
+      });
+
+    return () => {
+      setLastData(null);
+    };
+  }, []);
 
   const { key } = useParams();
 
@@ -305,6 +348,7 @@ const AddEdit = () => {
     (field) => {
       if (data && key && data[key] && singleItem[field]) {
         setItemlist({ ...data[key].section2 });
+        console.log(" Data1:", data);
       } else {
         setItemlist({ ...inititalvalue });
       }
@@ -335,6 +379,17 @@ const AddEdit = () => {
     }
     return () => {
       setInputuser4({ ...inititalsection4value });
+      console.log("Updated Data4:", data);
+    };
+  }, [key, data]); // Include loading state in the dependency array
+  useEffect(() => {
+    if (data && key && data[key] && data[key].section5total.inputuser5) {
+      setInputuser5({ ...data[key].section5total.inputuser5 });
+    } else {
+      setInputuser5({ ...initialState });
+    }
+    return () => {
+      setInputuser5({ ...initialState });
       console.log("Updated Data4:", data);
     };
   }, [key, data]); // Include loading state in the dependency array
@@ -813,7 +868,10 @@ const AddEdit = () => {
       label: "Tax able",
     },
   ];
-
+  if (lastData !== null && lastData.length > 0) {
+    return <div>No data available</div>;
+  }
+  // const inputusersection5 = data[key]?.section5total?.inputuser5;
   return (
     <div className="mb-3 ">
       {isLoading ? (
@@ -1071,14 +1129,12 @@ const AddEdit = () => {
                   <BsThreeDotsVertical className="mr-8 text-[23px] text-gray-600" />
 
                   <BsCamera className="mr-8 text-xl text-gray-600" />
-                  <button
-                    className="text-white bg-[#003087] px-9 py-3   mr-5 rounded-full    font-extrabold text-lg"
+
+                  <input
+                    className="text-white bg-[#003087] px-9 py-3   mr-5 rounded-full font-extrabold text-lg cursor-pointer"
                     type="submit"
                     value={key ? "Update" : "Save"}
-                    // onClick={handleSubmitAll}
-                  >
-                    Send Update
-                  </button>
+                  />
                 </div>
               </div>
             </div>
@@ -1120,28 +1176,28 @@ const AddEdit = () => {
                       <div className="flex items-center w-full  mt-10 pl-10">
                         <p className="text-2xl   font-semibold">
                           {" "}
-                          {data[key].section1.email}
-                          {/* {email ? (
-                            <p> {data[key].section1.email}</p>
-                          ) : (
-                            <p>Email not available</p>
-                          )} */}
+                          {/* {data[key].section1.email} */}
+                          {lastData && <>{lastData.email} </>}
                         </p>
                         <button
                           className="text-2xl   flex justify-end   w-full pr-20 font-extrabold "
-                          onClick={() => Deleteemail(index)}
+                          onClick={() => Deleteemail()}
                         >
                           <RxCross1 />
                         </button>
                       </div>
-                      <button
+                      {/* <button
                         className="mt-3 text-blue-600 pl-10  text-2xl   font-semibold"
                         onClick={() => {
-                          navigate("/addcustomer");
+                          navigate("");
                         }}
-                      >
-                        Edit Customer information
-                      </button>
+                      ></button> */}
+
+                      <Link to={`/editcustomer/${key}`}>
+                        <button className="mt-3 text-blue-600 pl-10  text-2xl   font-semibold">
+                          Edit Customer information
+                        </button>
+                      </Link>
                     </div>
                   </div>
                   {/*==================================  section-2  =============================== */}
@@ -1159,10 +1215,8 @@ const AddEdit = () => {
                         <MdModeEditOutline className="mr-1" /> Customise
                       </button>
                     </div>
-
-                    {data[key].section2.map((key, index) => (
-                      <>
-                        {" "}
+                    {data[key]?.section2 ? (
+                      data[key].section2.map((key, index) => (
                         <div className="flex">
                           <div
                             className="h-auto  w-[97%] mt-4  border-2 rounded-xl mx-auto  "
@@ -1276,9 +1330,18 @@ const AddEdit = () => {
                           >
                             <RxCross1 />
                           </button>
-                        </div>{" "}
+                        </div>
+                      ))
+                    ) : (
+                      <p>Section 2 data is missing or undefined</p>
+                    )}
+
+                    {/* {data[key].section2.map((key, index) => (
+                      <>
+                        {" "}
+                        
                       </>
-                    ))}
+                    ))} */}
 
                     {/* {data[key].section2.length - 1 === index && (
                       <button
@@ -1392,6 +1455,7 @@ const AddEdit = () => {
                 </div>
 
                 <div className="h-[550px] border rounded-xl bg-white mt-4 pt-8 ">
+                  {" "}
                   <Box
                     component=""
                     sx={{
@@ -1407,26 +1471,29 @@ const AddEdit = () => {
                       id="outlined-uncontrolled"
                       label="Invoice Number"
                       name="invoicenumber"
-                      value={data[key].section5total.inputuser5.invoicenumber}
+                      value={inputuser5.invoicenumber || ""}
+                      onChange={handleChangesection5}
                     />
                   </Box>
                   <input
                     type="date"
                     name="invoicedate"
                     className="p-4 border flex items-start ml-6 border-gray-300"
-                    value={data[key].section5total.inputuser5.invoicedate}
+                    value={inputuser5.invoicedate || ""}
+                    onChange={handleChangesection5}
                   />{" "}
                   <select
                     id="dropdown-select"
                     className="w-[90%] py-4 mt-2 px-3 text-base border border-gray-500 rounded-md box-border"
                     name="invoicedue"
-                    value={data[key].section5total.inputuser5.invoicedue}
+                    value={inputuser5.invoicedue || ""}
+                    onChange={handleChangesection5}
                   >
                     <option defaultValue disabled value="">
                       ---select Due---
                     </option>
-                    {days.map((days, index) => (
-                      <option key={index}>{days.value}</option>
+                    {days?.map((days, index) => (
+                      <option key={index}>{days?.value}</option>
                     ))}
                   </select>
                   <div className="mx-auto mt-3  h-[300px] grid grid-cols-2">
