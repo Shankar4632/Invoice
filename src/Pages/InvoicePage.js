@@ -169,8 +169,7 @@ const InvoicePage = () => {
     fname: "",
     lname: "",
     businessname: "",
-    // billhide1: "",
-    // billhide2: "",
+
     address1: "",
     address2: "",
     email: "",
@@ -296,61 +295,30 @@ const InvoicePage = () => {
         }
       });
   };
-  // const handleSubmitAll = (e) => {
-  //   e.preventDefault();
+  const handleSubmitsection6 = (e) => {
+    e.preventDefault();
 
-  //   const formData = {
-  //     section1: {
-  //       email: lastData.email,
-  //       phone: lastData.phone,
-  //       firstname: lastData.firstname,
-  //       lastname: lastData.lastname,
-  //       address1: lastData.address1,
-  //       address2: lastData.address2,
-  //       businessname: lastData.businessname,
-  //       email: lastData.email,
-  //       dfirstname: lastData.dfirstname,
-  //       dlastname: lastData.dlastname,
-  //       dbusinessname: lastData.dbusinessname,
-  //       daddress1: lastData.daddress1,
-  //       daddress2: lastData.daddress2,
-  //     },
-  //     section2: updatedItemList,
-  //     section3message: input,
-  //     section4memo: inputuser4,
-  //     section5total: {
-  //       inputuser5: inputuser5,
-  //       total: calculateTotal(),
-  //       subtotal: subtotal1,
-  //       discounts: discounts,
-  //       shipping: shipping,
-  //       otherAmount: otherAmount,
-  //     },
-  //     section6Businessinformation: {
-  //       inputbusiness,
-  //       imageUrl: imageUrl,
-  //     },
-  //   };
+    const formData = {
+      inputbusiness,
+      imageUrl: imageUrl,
+    };
 
-  //   // Push the combined data to the database
-  //   dataRef
-  //     .ref()
-  //     .child("Allsections")
-  //     .push(formData, (err) => {
-  //       if (err) {
-  //         toast.error(err);
-  //       } else {
-  //         toast.success("Successfully added");
-  //         navigate("/");
-  //       }
-  //     });
-  // };
+    // Push the combined data to the database
+    dataRef
+      .ref()
+      .child("section6Businessinformation")
+      .push(formData, (err) => {
+        if (err) {
+          toast.error(err);
+        } else {
+          toast.success("Successfully added");
+          setBusinessPopup(false);
+        }
+      });
+  };
 
   //section-6 business information
-  const handlesavebusinessinfo = (e) => {
-    // handleSubmitsection6(e);
-    setBusinessPopup(false);
-  };
+
   const handleeditbusinessinfo = (e) => {
     e.preventDefault();
     setBusinessPopup(true);
@@ -1124,9 +1092,10 @@ const InvoicePage = () => {
   useEffect(() => {
     dataRef
       .ref()
-      .child("Allsections")
+      .child("section6Businessinformation")
       .on("value", (snapshot) => {
         const snapshotValue = snapshot.val();
+        console.log("Snapshot Value:", snapshotValue);
         if (snapshotValue !== null) {
           const dataKeys = Object.keys(snapshotValue);
           const lastKey = dataKeys[dataKeys.length - 1];
@@ -1263,15 +1232,31 @@ const InvoicePage = () => {
   }
   //logo image
 
-  const handleImageUpload = () => {
-    if (selectedImage) {
+  // const handleImageUpload = () => {
+  //   if (selectedImage) {
+  //     const reader = new FileReader();
+
+  //     reader.onload = (e) => {
+  //       setImageUrl(e.target.result);
+  //       console.log(e.target.result); // Add this line
+  //     };
+
+  //     reader.readAsDataURL(selectedImage);
+  //   }
+  // };
+   const handleImageChange = (e) => {
+    const file = e.target.files[0];
+
+    if (file) {
+      // Use FileReader to read the selected image and convert it to a data URL
       const reader = new FileReader();
 
-      reader.onload = (e) => {
-        setImageUrl(e.target.result);
+      reader.onload = (event) => {
+        const dataURL = event.target.result;
+        setImageUrl(dataURL);
       };
 
-      reader.readAsDataURL(selectedImage);
+      reader.readAsDataURL(file);
     }
   };
 
@@ -1401,7 +1386,7 @@ const InvoicePage = () => {
                     <button
                       className="text-white bg-[#003087] px-9 py-3  rounded-full    font-extrabold text-lg"
                       type="submit"
-                      onClick={handlesavebusinessinfo}
+                      onClick={handleSubmitsection6}
                     >
                       Save
                     </button>
@@ -2325,7 +2310,7 @@ const InvoicePage = () => {
                       <>
                         <div className="text-lg font-bold pl-5">
                           {" "}
-                          {businessdata.businessname}
+                          {businessname}
                         </div>
                       </>
                     )}
@@ -2350,30 +2335,27 @@ const InvoicePage = () => {
                 {businessdata && (
                   <div className="flex items-center">
                     <div className="text-2xl text-black  mt-2 pl-2 gap-3">
-                      <p className="text-[20px] text-black flex  items-center mt-3 pl-8">
-                        {businessdata.address1}
-                      </p>
                       <p className="text-[20px] text-black flex  items-center ">
                         <i>
                           {" "}
                           <FaRegAddressCard className="text-blue-900 mr-3 " />
                         </i>{" "}
-                        {businessdata.address2}
+                        {address2}
                       </p>
                       <p className="text-[20px] text-black flex  items-center  pl-8">
-                        {businessdata.pin}
+                        {pin}
                       </p>
                       <p className="text-[20px] text-black flex  items-center mt-3">
                         <i>
                           {" "}
                           <IoMdMail className="text-blue-900 mr-3  " />
                         </i>{" "}
-                        {businessdata.email}
+                        {email}
                       </p>
 
                       <p className="text-[20px] text-black flex items-center mt-3 mb-4 ">
                         <CgWebsite className="text-blue-900 mr-3 " />
-                        {businessdata.website}
+                        {website}
                       </p>
                     </div>
                   </div>
@@ -2382,14 +2364,15 @@ const InvoicePage = () => {
                   <div className="flex items-center mt-5  h-full pb-5 pl-2    ">
                     <input
                       type="file"
-                      onChange={(e) => setSelectedImage(e.target.files[0])}
+                      // onChange={(e) => setSelectedImage(e.target.files[0])}
+                      onChange={handleImageChange}
                     />
-                    <button
+                    {/* <button
                       className="text-blue-600 w-full text-lg font-bold"
                       onClick={handleImageUpload}
                     >
                       Upload
-                    </button>
+                    </button> */}
 
                     <button
                       className="text-blue-600 w-full    text-lg font-bold"

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect } from "react";
 //materialUI imports
 import Box from "@mui/material/Box";
 import InputLabel from "@mui/material/InputLabel";
@@ -9,18 +9,16 @@ import Select from "@mui/material/Select";
 import TextField from "@mui/material/TextField";
 //Reacticons
 import { MdModeEditOutline } from "react-icons/md";
-import { AiOutlinePlus } from "react-icons/ai";
+
 import { RxDividerVertical } from "react-icons/rx";
-import { IoIosArrowUp, IoIosArrowDown, IoMdMail } from "react-icons/io";
+import { IoIosArrowUp, IoIosArrowDown } from "react-icons/io";
 import { BsArrowLeft, BsThreeDotsVertical, BsCamera } from "react-icons/bs";
-import { FaPaypal, FaRegAddressCard } from "react-icons/fa";
+import { FaPaypal } from "react-icons/fa";
 import { RxCross1 } from "react-icons/rx";
-import { CgWebsite } from "react-icons/cg";
 //Reat Router Dom
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { useLocation } from "react-router-dom";
 //toast
-import { dataRef, storage } from "../firebase-config";
+import { dataRef } from "../firebase-config";
 import { toast } from "react-toastify";
 // import currencies json
 import Currencydata from "../json file/currencies.json";
@@ -175,7 +173,6 @@ const AddEdit = () => {
   // };
 
   const Deleteemail = (e) => {
-    e.preventDefault();
     console.log("Deleting data:", lastData);
     if (lastData && lastData.key) {
       console.log("Deleting data with key:", lastData.key);
@@ -383,7 +380,7 @@ const AddEdit = () => {
     };
   }, [key, data]); // Include loading state in the dependency array
   useEffect(() => {
-    if (data && key && data[key] && data[key].section5total.inputuser5) {
+    if (data && key && data[key] && data[key].section5total?.inputuser5) {
       setInputuser5({ ...data[key].section5total.inputuser5 });
     } else {
       setInputuser5({ ...initialState });
@@ -1037,7 +1034,6 @@ const AddEdit = () => {
                           htmlFor="Item"
                           className="text-lg font-semibold text-gray-700"
                         >
-                          {" "}
                           Discount
                         </label>
                         <br />
@@ -1230,6 +1226,14 @@ const AddEdit = () => {
                                     {renderFields({ singleItem: key, index })}
                                     {renderFields5({ singleItem: key, index })}
                                     {renderFields6({ singleItem: key, index })}
+                                    {/* {renderFields7({ singleItem: key, index })} */}
+                                    {selectedFields7
+                                      ? renderFields7({
+                                          singleItem: key,
+                                          index,
+                                        })
+                                      : null}
+
                                     {renderFieldstax({
                                       singleItem: key,
                                       index,
@@ -1262,10 +1266,12 @@ const AddEdit = () => {
                                     singleItem: key,
                                     index,
                                   })}
+
                                   {renderSelectedtaxFields({
                                     singleItem: key,
                                     index,
                                   })}
+
                                   {renderSelecteddiscountFields({
                                     singleItem: key,
                                     index,
@@ -1456,168 +1462,185 @@ const AddEdit = () => {
 
                 <div className="h-[550px] border rounded-xl bg-white mt-4 pt-8 ">
                   {" "}
-                  <Box
-                    component=""
-                    sx={{
-                      "& > :not(style)": { m: 1, width: "90%" },
-                    }}
-                    noValidate
-                    autoComplete="off"
-                    className="flex items-start pl-4"
-                    name="invoicenumber"
-                  >
-                    <TextField
-                      type="text"
-                      id="outlined-uncontrolled"
-                      label="Invoice Number"
-                      name="invoicenumber"
-                      value={inputuser5.invoicenumber || ""}
-                      onChange={handleChangesection5}
-                    />
-                  </Box>
-                  <input
-                    type="date"
-                    name="invoicedate"
-                    className="p-4 border flex items-start ml-6 border-gray-300"
-                    value={inputuser5.invoicedate || ""}
-                    onChange={handleChangesection5}
-                  />{" "}
-                  <select
-                    id="dropdown-select"
-                    className="w-[90%] py-4 mt-2 px-3 text-base border border-gray-500 rounded-md box-border"
-                    name="invoicedue"
-                    value={inputuser5.invoicedue || ""}
-                    onChange={handleChangesection5}
-                  >
-                    <option defaultValue disabled value="">
-                      ---select Due---
-                    </option>
-                    {days?.map((days, index) => (
-                      <option key={index}>{days?.value}</option>
-                    ))}
-                  </select>
-                  <div className="mx-auto mt-3  h-[300px] grid grid-cols-2">
-                    <div>
-                      <p className="font-semibold w-full text-lg p-3">
-                        Subtotal{" "}
-                      </p>
-                      <p className="font-semibold text-lg p-3">
-                        Other Discounts{" "}
-                      </p>
-                      <p className="font-semibold text-lg p-3">Shipping </p>
-                      <p className="font-semibold text-lg p-3">Other Amount </p>
-                      <p className="font-bold text-lg p-3">
-                        Total{" "}
-                        <span className="text-sm text-blue-500 font-bold">
-                          (Tax Excl.)
-                        </span>{" "}
-                      </p>
-                    </div>
-                    <div className="mt-3">
-                      {isVisibleinvoicepage && (
-                        <>
-                          <p className="font-bold text-md"></p>
-                        </>
-                      )}
-                      {isVisiblehours && (
-                        <>
-                          <p className="font-bold text-md"></p>
-                        </>
-                      )}
+                  {inputuser5 && (
+                    <>
+                      {" "}
+                      <Box
+                        component=""
+                        sx={{
+                          "& > :not(style)": { m: 1, width: "90%" },
+                        }}
+                        noValidate
+                        autoComplete="off"
+                        className="flex items-start pl-4"
+                        name="invoicenumber"
+                      >
+                        <TextField
+                          type="text"
+                          id="outlined-uncontrolled"
+                          label="Invoice Number"
+                          name="invoicenumber"
+                          value={inputuser5?.invoicenumber || ""}
+                          onChange={handleChangesection5}
+                        />
+                      </Box>
+                      <input
+                        type="date"
+                        name="invoicedate"
+                        className="p-4 border flex items-start ml-6 border-gray-300"
+                        value={inputuser5?.invoicedate || ""}
+                        onChange={handleChangesection5}
+                      />{" "}
+                      <select
+                        id="dropdown-select"
+                        className="w-[90%] py-4 mt-2 px-3 text-base border border-gray-500 rounded-md box-border"
+                        name="invoicedue"
+                        value={inputuser5?.invoicedue || ""}
+                        onChange={handleChangesection5}
+                      >
+                        <option defaultValue disabled value="">
+                          ---select Due---
+                        </option>
+                        {days?.map((days, index) => (
+                          <option key={index}>{days?.value}</option>
+                        ))}
+                      </select>
+                      <div className="mx-auto mt-3  h-[300px] grid grid-cols-2">
+                        <div>
+                          <p className="font-semibold w-full text-lg p-3">
+                            Subtotal{" "}
+                          </p>
+                          <p className="font-semibold text-lg p-3">
+                            Other Discounts{" "}
+                          </p>
+                          <p className="font-semibold text-lg p-3">Shipping </p>
+                          <p className="font-semibold text-lg p-3">
+                            Other Amount{" "}
+                          </p>
+                          <p className="font-bold text-lg p-3">
+                            Total{" "}
+                            <span className="text-sm text-blue-500 font-bold">
+                              (Tax Excl.)
+                            </span>{" "}
+                          </p>
+                        </div>
+                        <div className="mt-3">
+                          {isVisibleinvoicepage && (
+                            <>
+                              <p className="font-bold text-md"></p>
+                            </>
+                          )}
+                          {isVisiblehours && (
+                            <>
+                              <p className="font-bold text-md"></p>
+                            </>
+                          )}
 
-                      {isVisibleaccount && (
-                        <>
-                          {" "}
-                          <p className="font-bold text-md"></p>
-                        </>
-                      )}
+                          {isVisibleaccount && (
+                            <>
+                              {" "}
+                              <p className="font-bold text-md"></p>
+                            </>
+                          )}
 
-                      <form onSubmit={(e) => e.preventDefault()}>
-                        <p className="p-3">
-                          {showDiscountField ? (
-                            <div>
-                              <input
-                                type="text"
-                                className="w-14 border border-black"
-                                value={discounts}
-                                onChange={(e) => setDiscount(e.target.value)}
-                                onKeyDown={(e) => handleKeyDown(e, "discount")}
-                              />
-                            </div>
-                          ) : (
-                            <button
-                              className="text-blue-600 rounded-xl text-lg font-extrabold  not-italic cursor-pointer"
-                              onClick={() => setShowDiscountField(true)}
-                            >
-                              Add
-                            </button>
+                          <form onSubmit={(e) => e.preventDefault()}>
+                            <p className="p-3">
+                              {showDiscountField ? (
+                                <div>
+                                  <input
+                                    type="text"
+                                    className="w-14 border border-black"
+                                    value={discounts}
+                                    onChange={(e) =>
+                                      setDiscount(e.target.value)
+                                    }
+                                    onKeyDown={(e) =>
+                                      handleKeyDown(e, "discount")
+                                    }
+                                  />
+                                </div>
+                              ) : (
+                                <button
+                                  className="text-blue-600 rounded-xl text-lg font-extrabold  not-italic cursor-pointer"
+                                  onClick={() => setShowDiscountField(true)}
+                                >
+                                  Add
+                                </button>
+                              )}
+                            </p>
+                          </form>
+                          <form onSubmit={(e) => e.preventDefault()}>
+                            <p className="p-4">
+                              {showShippingField ? (
+                                <div>
+                                  <input
+                                    type="text"
+                                    className="w-14 border border-black"
+                                    value={shipping}
+                                    onChange={(e) =>
+                                      setShipping(e.target.value)
+                                    }
+                                    onKeyDown={(e) =>
+                                      handleKeyDown(e, "shipping")
+                                    }
+                                  />
+                                </div>
+                              ) : (
+                                <button
+                                  className="text-blue-600 rounded-xl text-lg font-extrabold  not-italic cursor-pointer"
+                                  onClick={() => setShowShippingField(true)}
+                                >
+                                  Add
+                                </button>
+                              )}
+                            </p>
+                          </form>
+                          <form onSubmit={(e) => e.preventDefault()}>
+                            <p className="p-4">
+                              {showOtherAmountField ? (
+                                <div>
+                                  <input
+                                    type="text"
+                                    className="w-14 border border-black"
+                                    value={otherAmount}
+                                    onChange={(e) =>
+                                      setOtherAmount(e.target.value)
+                                    }
+                                    onKeyDown={(e) =>
+                                      handleKeyDown(e, "otherAmount")
+                                    }
+                                  />
+                                </div>
+                              ) : (
+                                <button
+                                  className="text-blue-600 rounded-xl text-lg font-extrabold  not-italic cursor-pointer"
+                                  onClick={() => setShowOtherAmountField(true)}
+                                >
+                                  Add
+                                </button>
+                              )}
+                            </p>
+                          </form>
+                          {isVisibleinvoicepage && (
+                            <>
+                              <p className="p-3 font-extrabold ">$</p>
+                            </>
                           )}
-                        </p>
-                      </form>
-                      <form onSubmit={(e) => e.preventDefault()}>
-                        <p className="p-4">
-                          {showShippingField ? (
-                            <div>
-                              <input
-                                type="text"
-                                className="w-14 border border-black"
-                                value={shipping}
-                                onChange={(e) => setShipping(e.target.value)}
-                                onKeyDown={(e) => handleKeyDown(e, "shipping")}
-                              />
-                            </div>
-                          ) : (
-                            <button
-                              className="text-blue-600 rounded-xl text-lg font-extrabold  not-italic cursor-pointer"
-                              onClick={() => setShowShippingField(true)}
-                            >
-                              Add
-                            </button>
+                          {isVisiblehours && (
+                            <>
+                              <p className="p-3 font-extrabold ">$</p>
+                            </>
                           )}
-                        </p>
-                      </form>
-                      <form onSubmit={(e) => e.preventDefault()}>
-                        <p className="p-4">
-                          {showOtherAmountField ? (
-                            <div>
-                              <input
-                                type="text"
-                                className="w-14 border border-black"
-                                value={otherAmount}
-                                onChange={(e) => setOtherAmount(e.target.value)}
-                                onKeyDown={(e) =>
-                                  handleKeyDown(e, "otherAmount")
-                                }
-                              />
-                            </div>
-                          ) : (
-                            <button
-                              className="text-blue-600 rounded-xl text-lg font-extrabold  not-italic cursor-pointer"
-                              onClick={() => setShowOtherAmountField(true)}
-                            >
-                              Add
-                            </button>
+                          {isVisibleaccount && (
+                            <>
+                              {" "}
+                              <p className="p-3 font-bold ">$</p>
+                            </>
                           )}
-                        </p>
-                      </form>
-                      {isVisibleinvoicepage && (
-                        <>
-                          <p className="p-3 font-extrabold ">$</p>
-                        </>
-                      )}
-                      {isVisiblehours && (
-                        <>
-                          <p className="p-3 font-extrabold ">$</p>
-                        </>
-                      )}
-                      {isVisibleaccount && (
-                        <>
-                          {" "}
-                          <p className="p-3 font-bold ">$</p>
-                        </>
-                      )}
-                    </div>
-                  </div>
+                        </div>
+                      </div>
+                    </>
+                  )}
                 </div>
               </div>
             </div>
