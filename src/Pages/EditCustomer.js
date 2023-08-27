@@ -85,63 +85,111 @@ const EditCustomer = () => {
   };
 
   //input to db
-  //   const handlesubmit = (e) => {
-  //     e.preventDefault();
-  //     if (!firstname || !email || !lastname || !businessname || !phone) {
-  //       toast.error(<div className="">Please enter the values!</div>);
-  //     } else {
+
+  // const handleSubmitAll = (e) => {
+  //   e.preventDefault();
+
+  //   const formData = {
+  //     section1: {
+  //       firstname,
+  //       lastname,
+  //       businessname,
+  //       email,
+  //       phone,
+  //       countrycode,
+  //       selectcountry,
+  //       address1,
+  //       address2,
+  //       city,
+  //       state1,
+  //       pincode,
+  //       dfirstname,
+  //       dlastname,
+  //       dbusinessname,
+  //       dselectcountry,
+  //       daddress1,
+  //       daddress2,
+  //       dcity,
+  //       dstate,
+  //       dpincode,
+  //       lselectcountry,
+  //       lselectlanguage,
+  //       ldescription,
+  //     },
+  //   };
+  //   if (!formData) {
+  //     toast.error("please enter the values");
+  //   } else {
+  //     if (!key) {
   //       dataRef
   //         .ref()
-  //         .child("CustomerList")
-  //         .push(state, (err) => {
+  //         .child("Allsections")
+  //         .push(formData, (err) => {
   //           if (err) {
   //             toast.error(err);
   //           } else {
   //             toast.success("Successfully added");
-  //             navigate("/invoicepage");
+  //             navigate(`/addedit/${key}`);
+  //           }
+  //         });
+  //     } else {
+  //       dataRef
+  //         .ref()
+  //         .child(`Allsections/${key}`)
+  //         .set(formData, (err) => {
+  //           if (err) {
+  //             toast.error(err);
+  //           } else {
+  //             toast.success("Successfully updated ");
+  //             navigate(`/addedit/${key}`);
   //           }
   //         });
   //     }
-  //   };
+  //   }
+  // };
   const handleSubmitAll = (e) => {
     e.preventDefault();
 
-    const formData = {
-      section1: {
-        firstname,
-        lastname,
-        businessname,
-        email,
-        phone,
-        countrycode,
-        selectcountry,
-        address1,
-        address2,
-        city,
-        state1,
-        pincode,
-        dfirstname,
-        dlastname,
-        dbusinessname,
-        dselectcountry,
-        daddress1,
-        daddress2,
-        dcity,
-        dstate,
-        dpincode,
-        lselectcountry,
-        lselectlanguage,
-        ldescription,
-      },
+    const updatedSection1 = {
+      firstname,
+      lastname,
+      businessname,
+      email,
+      phone,
+      countrycode,
+      selectcountry,
+      address1,
+      address2,
+      city,
+      state1,
+      pincode,
+      dfirstname,
+      dlastname,
+      dbusinessname,
+      dselectcountry,
+      daddress1,
+      daddress2,
+      dcity,
+      dstate,
+      dpincode,
+      lselectcountry,
+      lselectlanguage,
+      ldescription,
     };
-    if (!formData) {
-      toast.error("please enter the values");
+
+    const updatedFormData = {
+      ...data[key], // Keep the rest of the sections unchanged
+      section1: updatedSection1, // Update only section1
+    };
+
+    if (!updatedFormData) {
+      toast.error("Please enter the values");
     } else {
       if (!key) {
         dataRef
           .ref()
           .child("Allsections")
-          .push(formData, (err) => {
+          .push(updatedFormData, (err) => {
             if (err) {
               toast.error(err);
             } else {
@@ -153,17 +201,18 @@ const EditCustomer = () => {
         dataRef
           .ref()
           .child(`Allsections/${key}`)
-          .set(formData, (err) => {
+          .set(updatedFormData, (err) => {
             if (err) {
               toast.error(err);
             } else {
-              toast.success("Successfully updated ");
+              toast.success("Successfully updated");
               navigate(`/addedit/${key}`);
             }
           });
       }
     }
   };
+
   //fetch data from db
   const { key } = useParams();
 

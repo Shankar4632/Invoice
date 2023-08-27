@@ -1,5 +1,4 @@
 import React, { useEffect, useRef } from "react";
-
 import {
   BsFillQuestionCircleFill,
   BsSearch,
@@ -163,6 +162,21 @@ const AddedList = () => {
       label: "in 10 days",
     },
   ];
+  const menuRef = useRef();
+
+  useEffect(() => {
+    const handleOutsideClick = (event) => {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleOutsideClick);
+
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+    };
+  });
 
   //loading;
   if (isLoading) {
@@ -210,7 +224,7 @@ const AddedList = () => {
                       className="grid grid-cols-2  text-end  bg-white h-auto"
                     >
                       <div className="flex justify-start items-center ml-20 ">
-                        {data[key].section6Businessinformation.imageUrl && (
+                        {data[key]?.section6Businessinformation?.imageUrl && (
                           <img
                             src={data[key].section6Businessinformation.imageUrl}
                             alt="Business Logo"
@@ -223,37 +237,37 @@ const AddedList = () => {
                         <p className="text-2xl font-semibold p-1">
                           Company Name :
                           {
-                            data[key].section6Businessinformation.inputbusiness
-                              .businessname
+                            data[key]?.section6Businessinformation
+                              ?.inputbusiness?.businessname
                           }
                         </p>
                         <p className="text-2xl font-semibold p-1">
                           Address:
                           {
-                            data[key].section6Businessinformation.inputbusiness
-                              .address1
+                            data[key]?.section6Businessinformation
+                              ?.inputbusiness?.address1
                           }
                         </p>
                         <p className="text-2xl font-semibold p-1">TIN/PAN </p>
                         <p className="text-2xl font-semibold p-1">
                           Phone No. :
                           {
-                            data[key].section6Businessinformation.inputbusiness
-                              .pin
+                            data[key]?.section6Businessinformation
+                              ?.inputbusiness?.pin
                           }
                         </p>
                         <p className="text-2xl font-semibold p-1">
                           Email ID. :
                           {
-                            data[key].section6Businessinformation.inputbusiness
-                              .email
+                            data[key]?.section6Businessinformation
+                              ?.inputbusiness?.email
                           }
                         </p>
                         <p className="text-2xl font-semibold p-1">
                           Website :
                           {
-                            data[key].section6Businessinformation.inputbusiness
-                              .website
+                            data[key]?.section6Businessinformation
+                              ?.inputbusiness?.website
                           }
                         </p>
                       </div>
@@ -379,17 +393,17 @@ const AddedList = () => {
                           <p className="text-xl p-2 font-semibold flex justify-end">
                             Subtotal{" "}
                             <span className="pr-10">
-                              ${data[key].section5total.subtotal}
+                              ${data[key]?.section5total.subtotal}
                             </span>
                           </p>
                           <p className="text-xl p-2 font-semibold border-b-4 border-gray-200 flex justify-end">
                             Shipping{" "}
                             <span className="pr-10">
-                              ${data[key].section5total.shipping}
+                              ${data[key]?.section5total.shipping}
                             </span>
                           </p>
                           <p className="font-bold text-2xl p-4 pr-10 flex justify-end border-b-4 border-gray-200">
-                            ToTal ${data[key].section5total.total}USD
+                            ToTal ${data[key]?.section5total.total}USD
                           </p>
                         </div>
                       </div>
@@ -479,7 +493,7 @@ const AddedList = () => {
             ))}
           </TextField>
         </Box>
-        <BsSearch className="absolute  ml-60 text-xl text-black   " />
+        <BsSearch className="absolute  ml-60 w-14 text-xl text-black   " />
         <input
           required
           id="outlined-required"
@@ -575,7 +589,10 @@ const AddedList = () => {
                           <BsThreeDotsVertical className=" text-[23px] text-gray-600" />
                         </Link>
                         {isOpen === key && (
-                          <ul className="absolute  right-[65px] mt-2 py-2 w-48 bg-white border dark:bg-gray-800 dark:border-gray-700 rounded shadow-lg">
+                          <ul
+                            className="absolute  right-[65px] mt-2 py-2 w-48 bg-white border dark:bg-gray-800 dark:border-gray-700 rounded shadow-lg"
+                            ref={menuRef}
+                          >
                             <li className="px-4 py-2 text-black hover:bg-gray-100 dark:hover:bg-gray-700">
                               <button>{index + 1}</button>
                             </li>

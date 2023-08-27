@@ -11,8 +11,11 @@ import TextField from "@mui/material/TextField";
 import { MdModeEditOutline } from "react-icons/md";
 
 import { RxDividerVertical } from "react-icons/rx";
-import { IoIosArrowUp, IoIosArrowDown } from "react-icons/io";
+import { IoIosArrowUp, IoIosArrowDown, IoMdMail } from "react-icons/io";
 import { BsArrowLeft, BsThreeDotsVertical, BsCamera } from "react-icons/bs";
+import { FaRegAddressCard } from "react-icons/fa";
+import { CgWebsite } from "react-icons/cg";
+
 import { FaPaypal } from "react-icons/fa";
 import { RxCross1 } from "react-icons/rx";
 //Reat Router Dom
@@ -46,6 +49,17 @@ const initialState = {
   invoicedue: "",
   invoicedate: "",
   invoicenumber: "",
+};
+const inititalsection6 = {
+  fname: "",
+  lname: "",
+  businessname: "",
+  address1: "",
+  address2: "",
+  email: "",
+  website: "",
+  pin: "",
+  additionalinfo: "",
 };
 const AddEdit = () => {
   const [currency, setCurrency] = useState("");
@@ -97,6 +111,7 @@ const AddEdit = () => {
   //hide and show of main page
   const [isVisibleaccount, setIsVisibleaccount] = useState(null);
   const [isVisiblehours, setIsVisiblehours] = useState(null);
+
   //get data from the db
   const [data, setData] = useState({});
 
@@ -133,31 +148,28 @@ const AddEdit = () => {
   //section-5
   const [inputuser5, setInputuser5] = useState(initialState);
   //section-6 business information
-  const [inputbusiness, setInputbusiness] = useState({
-    fname: "",
-    lname: "",
-    businessname: "",
-    // billhide1: "",
-    // billhide2: "",
-    address1: "",
-    address2: "",
-    email: "",
-    website: "",
-    pin: "",
-    additionalinfo: "",
-  });
-  const {
-    fname,
-    lname,
-    businessname,
-    address1,
-    address2,
-    email,
-    website,
-    pin,
-    additionalinfo,
-  } = inputbusiness;
+  const [inputbusiness, setInputbusiness] = useState(inititalsection6);
+  // const {
+  //   fname,
+  //   lname,
+  //   businessname,
+  //   address1,
+  //   address2,
+  //   email,
+  //   website,
+  //   pin,
+  //   additionalinfo,
+  // } = inputbusiness;
+  const [businesspopup, setBusinessPopup] = useState(false);
+  const [businessdata, setBusinessdata] = useState({});
 
+  const [showMemosection4, setShowMemosection4] = useState(false);
+  const [imageUrl, setImageUrl] = useState(null);
+
+  const hideshowsection4 = (e) => {
+    e.preventDefault();
+    setShowMemosection4((prevshowMemosection4) => !prevshowMemosection4);
+  };
   //quantity
   //function calling
   const handlechangeadditemlist = (e, index) => {
@@ -178,7 +190,7 @@ const AddEdit = () => {
       console.log("Deleting data with key:", lastData.key);
       dataRef
         .ref()
-        .child("CustomerList")
+        .child("Allsections")
         .child(lastData.key)
         .remove()
         .then(() => {
@@ -192,7 +204,39 @@ const AddEdit = () => {
       console.log("lastData or lastData.key is not defined:", lastData);
     }
   };
-  const removeItem = (index) => {};
+  // const removeItem = (index) => {};
+  // const removeItem = (index) => {
+  //   // Create a copy of the current data array without the item at the specified index
+  //   const newData = data[key].section2.filter((_, i) => i !== index);
+
+  //   // Update the state with the new data
+  //   setData((prevData) => ({
+  //     ...prevData,
+  //     [key]: {
+  //       ...prevData[key],
+  //       section2: newData,
+  //     },
+  //   }));
+  // };
+  const removeItem = (index) => {
+    // Create a copy of the current data array without the item at the specified index
+    const newData = data[key].section2.filter((_, i) => i !== index);
+
+    // Update the Firebase database with the new data
+    dataRef
+      .ref()
+      .child("Allsections")
+      .child(key)
+      .child("section2")
+      .set(newData)
+      .then(() => {
+        console.log("Data removed successfully from Firebase");
+      })
+      .catch((error) => {
+        console.error("Error removing data from Firebase:", error);
+      });
+  };
+
   const handleAddItem = () => {
     setItemlist([
       ...itemlist,
@@ -247,6 +291,10 @@ const AddEdit = () => {
     const { name, value } = event.target;
     setInputuser5({ ...inputuser5, [name]: value });
   };
+  const handleChangesection6 = (event) => {
+    const { name, value } = event.target;
+    setInputbusiness({ ...inputbusiness, [name]: value });
+  };
 
   //fetch
 
@@ -265,6 +313,9 @@ const AddEdit = () => {
         discounts: discounts,
         shipping: shipping,
         otherAmount: otherAmount,
+      },
+      section6Businessinformation: {
+        inputbusiness,
       },
     };
     if (!formData) {
@@ -387,9 +438,46 @@ const AddEdit = () => {
     }
     return () => {
       setInputuser5({ ...initialState });
-      console.log("Updated Data4:", data);
+      console.log("Updated Data5:", data);
     };
   }, [key, data]); // Include loading state in the dependency array
+  useEffect(() => {
+    if (
+      data &&
+      key &&
+      data[key] &&
+      data[key].section6Businessinformation?.inputbusiness
+    ) {
+      setInputbusiness({
+        ...data[key].section6Businessinformation.inputbusiness,
+      });
+    } else {
+      setInputbusiness({ ...initialState });
+    }
+    return () => {
+      setInputbusiness({ ...initialState });
+      console.log("Updated Data6:", data);
+    };
+  }, [key, data]); // Include loading state in the dependency array
+  const handleeditbusinessinfo = (e) => {
+    e.preventDefault();
+    setBusinessPopup(true);
+  };
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+
+    if (file) {
+      // Use FileReader to read the selected image and convert it to a data URL
+      const reader = new FileReader();
+
+      reader.onload = (event) => {
+        const dataURL = event.target.result;
+        setImageUrl(dataURL);
+      };
+
+      reader.readAsDataURL(file);
+    }
+  };
   const hideshow = (e) => {
     e.preventDefault();
     setShowMemo((prevShowMemo) => !prevShowMemo);
@@ -1173,7 +1261,12 @@ const AddEdit = () => {
                         <p className="text-2xl   font-semibold">
                           {" "}
                           {/* {data[key].section1.email} */}
-                          {lastData && <>{lastData.email} </>}
+                          {lastData && (
+                            <>
+                              {/* {lastData.email} */}
+                              {data[key]?.section1.email}{" "}
+                            </>
+                          )}
                         </p>
                         <button
                           className="text-2xl   flex justify-end   w-full pr-20 font-extrabold "
@@ -1226,13 +1319,6 @@ const AddEdit = () => {
                                     {renderFields({ singleItem: key, index })}
                                     {renderFields5({ singleItem: key, index })}
                                     {renderFields6({ singleItem: key, index })}
-                                    {/* {renderFields7({ singleItem: key, index })} */}
-                                    {selectedFields7
-                                      ? renderFields7({
-                                          singleItem: key,
-                                          index,
-                                        })
-                                      : null}
 
                                     {renderFieldstax({
                                       singleItem: key,
@@ -1453,11 +1539,119 @@ const AddEdit = () => {
               <div className=" w-[25%]  text-center ">
                 <div className="h-auto border rounded-xl bg-white">
                   <div className="flex items-center h-20   w-full">
-                    <div className="flex items-center justify-start ml-3 mt-3 w-full"></div>
-
-                    <div></div>
+                    <div className="flex items-center justify-start ml-3 mt-3 w-full">
+                      <div>
+                        {/* {imageUrl && (
+                          <div>
+                            <img
+                              src={imageUrl}
+                              alt="Uploaded"
+                              style={{
+                                width: "90px",
+                                height: "90px",
+                                marginTop: "10px",
+                              }}
+                            />
+                          </div>
+                        )} */}
+                      </div>
+                      <div>
+                        {businessdata && (
+                          <>
+                            <div className="text-lg font-bold pl-5">
+                              {" "}
+                              {/* {businessname} */}
+                              {
+                                data[key]?.section6Businessinformation
+                                  ?.inputbusiness?.businessname
+                              }
+                            </div>
+                          </>
+                        )}
+                      </div>
+                    </div>
+                    <div>
+                      <button
+                        className=" flex justify-end  mr-2 "
+                        onClick={hideshowsection4}
+                      >
+                        {" "}
+                        {showMemosection4 ? (
+                          <IoIosArrowUp className="text-2xl  text-gray-500" />
+                        ) : (
+                          <IoIosArrowDown className="text-2xl  text-gray-500" />
+                        )}
+                      </button>
+                    </div>
                   </div>
-                  <div></div>
+                  <div>
+                    {businessdata && (
+                      <div className="flex items-center">
+                        <div className="text-2xl text-black  mt-2 pl-2 gap-3">
+                          <p className="text-[20px] text-black flex  items-center ">
+                            <i>
+                              {" "}
+                              <FaRegAddressCard className="text-blue-900 mr-3 " />
+                            </i>{" "}
+                            {
+                              data[key]?.section6Businessinformation
+                                ?.inputbusiness?.address2
+                            }
+                            {/* {address2} */}
+                          </p>
+                          <p className="text-[20px] text-black flex  items-center  pl-8">
+                            {/* {pin} */}
+                            {
+                              data[key]?.section6Businessinformation
+                                ?.inputbusiness?.pin
+                            }
+                          </p>
+                          <p className="text-[20px] text-black flex  items-center mt-3">
+                            <i>
+                              {" "}
+                              <IoMdMail className="text-blue-900 mr-3  " />
+                            </i>{" "}
+                            {/* {email} */}
+                            {
+                              data[key]?.section6Businessinformation
+                                ?.inputbusiness?.email
+                            }
+                          </p>
+
+                          <p className="text-[20px] text-black flex items-center mt-3 mb-4 ">
+                            <CgWebsite className="text-blue-900 mr-3 " />
+                            {/* {website} */}
+                            {
+                              data[key]?.section6Businessinformation
+                                ?.inputbusiness?.website
+                            }
+                          </p>
+                        </div>
+                      </div>
+                    )}
+                    {showMemosection4 && (
+                      <div className="flex items-center mt-5  h-full pb-5 pl-2    ">
+                        <input
+                          type="file"
+                          // onChange={(e) => setSelectedImage(e.target.files[0])}
+                          onChange={handleImageChange}
+                        />
+                        {/* <button
+                      className="text-blue-600 w-full text-lg font-bold"
+                      onClick={handleImageUpload}
+                    >
+                      Upload
+                    </button> */}
+
+                        <button
+                          className="text-blue-600 w-full    text-lg font-bold"
+                          onClick={handleeditbusinessinfo}
+                        >
+                          Edit Business Information
+                        </button>
+                      </div>
+                    )}
+                  </div>
                 </div>
 
                 <div className="h-[550px] border rounded-xl bg-white mt-4 pt-8 ">
