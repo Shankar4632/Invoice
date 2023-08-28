@@ -9,7 +9,7 @@ import Select from "@mui/material/Select";
 import TextField from "@mui/material/TextField";
 //Reacticons
 import { MdModeEditOutline } from "react-icons/md";
-
+import { AiOutlinePlus } from "react-icons/ai";
 import { RxDividerVertical } from "react-icons/rx";
 import { IoIosArrowUp, IoIosArrowDown, IoMdMail } from "react-icons/io";
 import { BsArrowLeft, BsThreeDotsVertical, BsCamera } from "react-icons/bs";
@@ -124,7 +124,8 @@ const AddEdit = () => {
   };
 
   //section-2
-  const [itemlist, setItemlist] = useState(inititalvalue);
+  const [itemlist, setItemlist] = useState([]);
+  console.log(itemlist);
 
   const [singleItem, setSingleItem] = useState({
     ItemName: "",
@@ -178,6 +179,10 @@ const AddEdit = () => {
     updatedData[index][name] = value;
     setSingleItem({ ...updatedData[index] });
     setData({ ...data, [key]: { ...data[key], section2: updatedData } });
+    // const list = [...itemlist];
+    // list[index][name] = value;
+    // setItemlist(list);
+    // console.log("itemlist:", name, value);
   };
   // const removeItem = (index) => {
   //   const updatedArray = [...data[index].section2];
@@ -204,20 +209,7 @@ const AddEdit = () => {
       console.log("lastData or lastData.key is not defined:", lastData);
     }
   };
-  // const removeItem = (index) => {};
-  // const removeItem = (index) => {
-  //   // Create a copy of the current data array without the item at the specified index
-  //   const newData = data[key].section2.filter((_, i) => i !== index);
 
-  //   // Update the state with the new data
-  //   setData((prevData) => ({
-  //     ...prevData,
-  //     [key]: {
-  //       ...prevData[key],
-  //       section2: newData,
-  //     },
-  //   }));
-  // };
   const removeItem = (index) => {
     // Create a copy of the current data array without the item at the specified index
     const newData = data[key].section2.filter((_, i) => i !== index);
@@ -584,97 +576,146 @@ const AddEdit = () => {
   // Rest of your code
 
   // Render the form fields
+  // const renderFields = ({ singleItem, index }) => {
+  //   return fields.map((field) => (
+  //     <div key={field}>
+  //       <TextField
+  //         id="outlined-search"
+  //         type="text"
+  //         label={field}
+  //         style={{
+  //           marginRight: "10px",
+  //         }}
+  //         className=" w-[500px]"
+  //         name={field}
+  //         value={singleItem[field] || ""}
+  //         onChange={(e) => handlechangeadditemlist(e, index)}
+  //       />
+  //     </div>
+  //   ));
+  // };
   const renderFields = ({ singleItem, index }) => {
     return fields.map((field) => (
       <div key={field}>
-        <TextField
-          id="outlined-search"
-          type="text"
-          label={field}
-          style={{
-            marginRight: "10px",
-          }}
-          className=" w-[500px]"
-          name={field}
-          value={singleItem[field] || ""}
-          onChange={(e) => handlechangeadditemlist(e, index)}
-        />
+        {singleItem[field] !== undefined && singleItem[field] !== "" && (
+          <TextField
+            id="outlined-search"
+            type="text"
+            label={field}
+            style={{
+              marginRight: "10px",
+            }}
+            className=" w-[500px]"
+            name={field}
+            value={(singleItem && singleItem[field]) || ""}
+            onChange={(e) => handlechangeadditemlist(e, index)}
+          />
+        )}
       </div>
     ));
   };
+
+  // const renderFields5 = ({ singleItem, index }) => {
+  //   return fields5.map((field5) => (
+  //     <div key={field5}>
+  //       <TextField
+  //         id="outlined-search"
+  //         type="text"
+  //         label={field5}
+  //         style={{
+  //           marginRight: "10px",
+  //           width: "100%",
+  //         }}
+  //         className=""
+  //         name={field5}
+  //         value={(singleItem && singleItem[field5]) || ""}
+  //         onChange={(e) => handlechangeadditemlist(e, index)}
+  //       />
+  //     </div>
+  //   ));
+  // };
   const renderFields5 = ({ singleItem, index }) => {
     return fields5.map((field5) => (
       <div key={field5}>
-        <TextField
-          id="outlined-search"
-          type="text"
-          label={field5}
-          style={{
-            marginRight: "10px",
-            width: "100%",
-          }}
-          className=""
-          name={field5}
-          value={(singleItem && singleItem[field5]) || ""}
-          onChange={(e) => handlechangeadditemlist(e, index)}
-        />
+        {singleItem[field5] !== undefined && singleItem[field5] !== 0 && (
+          <TextField
+            id="outlined-search"
+            type="text"
+            label={field5}
+            style={{
+              marginRight: "10px",
+              width: "100%",
+            }}
+            className=""
+            name={field5}
+            value={(singleItem && singleItem[field5]) || ""}
+            onChange={(e) => handlechangeadditemlist(e, index)}
+          />
+        )}
       </div>
     ));
   };
+
   const renderFields6 = ({ singleItem, index }) => {
     return fields6.map((field6) => (
       <div key={field6}>
-        <TextField
-          id="outlined-search"
-          type="text"
-          label={field6}
-          style={{
-            marginRight: "10px",
-            width: "100%",
-          }}
-          className=""
-          name={field6}
-          value={(singleItem && singleItem[field6]) || ""}
-          onChange={(e) => handlechangeadditemlist(e, index)}
-        />
+        {singleItem[field6] !== undefined && singleItem[field6] !== 0 && (
+          <TextField
+            id="outlined-search"
+            type="text"
+            label={field6}
+            style={{
+              marginRight: "10px",
+              width: "100%",
+            }}
+            className=""
+            name={field6}
+            value={(singleItem && singleItem[field6]) || ""}
+            onChange={(e) => handlechangeadditemlist(e, index)}
+          />
+        )}
       </div>
     ));
   };
   const renderFields7 = ({ singleItem, index }) => {
     return fields7.map((field7) => (
       <div key={field7}>
-        <TextField
-          id="outlined-search"
-          type="text"
-          label={field7}
-          style={{
-            marginRight: "10px",
-            width: "100%",
-          }}
-          className=""
-          name={field7}
-          value={(singleItem && singleItem[field7]) || ""}
-          onChange={(e) => handlechangeadditemlist(e, index)}
-        />
+        {singleItem[field7] !== undefined && singleItem[field7] !== 0 && (
+          <TextField
+            id="outlined-search"
+            type="text"
+            label={field7}
+            style={{
+              marginRight: "10px",
+              width: "100%",
+            }}
+            className=""
+            name={field7}
+            value={(singleItem && singleItem[field7]) || ""}
+            onChange={(e) => handlechangeadditemlist(e, index)}
+          />
+        )}
       </div>
     ));
   };
   const renderFields8 = ({ singleItem, index }) => {
     return fields8.map((field8) => (
       <div key={field8}>
-        <TextField
-          id="outlined-search"
-          type="text"
-          label={field8}
-          style={{
-            marginRight: "10px",
-            width: "100%",
-          }}
-          className=""
-          name={field8}
-          value={(singleItem && singleItem[field8]) || ""}
-          onChange={(e) => handlechangeadditemlist(e, index)}
-        />
+        {singleItem[field8] !== undefined && singleItem[field8] !== 0 && (
+          <TextField
+            id="outlined-search"
+            type="text"
+            label={field8}
+            style={{
+              marginRight: "10px",
+              width: "100%",
+            }}
+            className=""
+            name={field8}
+            value={(singleItem && singleItem[field8]) || ""}
+            onChange={(e) => handlechangeadditemlist(e, index)}
+          />
+        )}
       </div>
     ));
   };
@@ -682,83 +723,91 @@ const AddEdit = () => {
   const renderFieldsdescription = ({ singleItem, index }) => {
     return fields1.map((fields1) => (
       <div key={fields1}>
-        <textarea
-          className="peer block h-auto mb-3 w-[97%] mx-auto border border-gray-500 rounded mt-5 text-black px-3 py-[0.32rem]  "
-          id="exampleFormControlTextarea1"
-          rows="4"
-          type="text"
-          placeholder="Description(optional)"
-          name="description"
-          value={singleItem[fields1] || ""}
-          onChange={(e) => handlechangeadditemlist(e, index)}
-        >
-          {" "}
-        </textarea>
+        {singleItem[fields1] !== undefined && singleItem[fields1] !== "" && (
+          <textarea
+            className="peer block h-auto mb-3 w-[97%] mx-auto border border-gray-500 rounded mt-5 text-black px-3 py-[0.32rem]  "
+            id="exampleFormControlTextarea1"
+            rows="4"
+            type="text"
+            placeholder="Description(optional)"
+            name="description"
+            value={singleItem[fields1] || ""}
+            onChange={(e) => handlechangeadditemlist(e, index)}
+          >
+            {" "}
+          </textarea>
+        )}
       </div>
     ));
   };
   const renderFieldstax = ({ singleItem, index }) => {
     return fields2.map((fields2) => (
       <div key={fields2}>
-        <Box
-          component="form"
-          sx={{
-            "& .MuiTextField-root": { m: 1, width: "25ch" },
-          }}
-          noValidate
-          autoComplete="off"
-        >
-          <TextField
-            id="outlined-select-currency"
-            select
-            label="Select"
-            defaultValue="select"
-            name="tax"
-            value={(singleItem && singleItem[fields2]) || ""}
-            onChange={(e) => handlechangeadditemlist(e, index)}
+        {singleItem[fields2] !== undefined && singleItem[fields2] !== 0 && (
+          <Box
+            component="form"
+            sx={{
+              "& .MuiTextField-root": { m: 1, width: "25ch" },
+            }}
+            noValidate
+            autoComplete="off"
           >
-            {taxes.map((option) => (
-              <MenuItem key={option.value} value={option.value}>
-                {option.label}
-              </MenuItem>
-            ))}
-          </TextField>
-        </Box>
+            <TextField
+              id="outlined-select-currency"
+              select
+              label="Select"
+              defaultValue="select"
+              name="tax"
+              value={(singleItem && singleItem[fields2]) || ""}
+              onChange={(e) => handlechangeadditemlist(e, index)}
+            >
+              {taxes.map((option) => (
+                <MenuItem key={option.value} value={option.value}>
+                  {option.label}
+                </MenuItem>
+              ))}
+            </TextField>
+          </Box>
+        )}
       </div>
     ));
   };
   const renderFieldsdiscount = ({ singleItem, index }) => {
     return fields3.map((fields3) => (
       <div key={fields3}>
-        <TextField
-          id="outlined-search"
-          type="text"
-          label="Discount"
-          style={{
-            marginRight: "10px",
-            width: "100%",
-          }}
-          name="discount"
-          value={singleItem[fields3] || ""}
-          onChange={(e) => handlechangeadditemlist(e, index)}
-        />
+        {singleItem[fields3] !== undefined && singleItem[fields3] !== 0 && (
+          <TextField
+            id="outlined-search"
+            type="text"
+            label="Discount"
+            style={{
+              marginRight: "10px",
+              width: "100%",
+            }}
+            name="discount"
+            value={singleItem[fields3] || ""}
+            onChange={(e) => handlechangeadditemlist(e, index)}
+          />
+        )}
       </div>
     ));
   };
   const renderFieldsdate = ({ singleItem, index }) => {
     return fields4.map((fields4) => (
       <div key={fields4}>
-        <TextField
-          id="outlined-search"
-          type="date"
-          style={{
-            marginRight: "10px",
-            width: "100%",
-          }}
-          name="date"
-          value={singleItem[fields3]}
-          onChange={(e) => handlechangeadditemlist(e, index)}
-        />
+        {singleItem[fields4] !== undefined && singleItem[fields4] !== 0 && (
+          <TextField
+            id="outlined-search"
+            type="date"
+            style={{
+              marginRight: "10px",
+              width: "100%",
+            }}
+            name="date"
+            value={singleItem[fields3]}
+            onChange={(e) => handlechangeadditemlist(e, index)}
+          />
+        )}
       </div>
     ));
   };
@@ -957,6 +1006,12 @@ const AddEdit = () => {
     return <div>No data available</div>;
   }
   // const inputusersection5 = data[key]?.section5total?.inputuser5;
+  const subtotal1 = data[key]?.section2.reduce((accumulator, item) => {
+    if (item.discount) {
+      return accumulator + (item.price * item.quantity * item.discount) / 100;
+    }
+    return accumulator + item.price * item.quantity;
+  }, 0);
   return (
     <div className="mb-3 ">
       {isLoading ? (
@@ -1205,7 +1260,8 @@ const AddEdit = () => {
                 </div>
 
                 <p className="pl-3 text-[43px] font-semibold mt-1">
-                  Edit invoice no. {invoiceNumber}
+                  Edit invoice no.
+                  {inputuser5.invoicenumber}
                 </p>
               </div>
               <div className=" flex items-center  justify-end ">
@@ -1260,7 +1316,6 @@ const AddEdit = () => {
                       <div className="flex items-center w-full  mt-10 pl-10">
                         <p className="text-2xl   font-semibold">
                           {" "}
-                          {/* {data[key].section1.email} */}
                           {lastData && (
                             <>
                               {/* {lastData.email} */}
@@ -1310,7 +1365,7 @@ const AddEdit = () => {
                           <div
                             className="h-auto  w-[97%] mt-4  border-2 rounded-xl mx-auto  "
                             id="additems"
-                            key={key}
+                            key={index}
                           >
                             {customiseui ? (
                               <div className="p-3   ">
@@ -1377,23 +1432,8 @@ const AddEdit = () => {
                               </div>
                             )}
                             <div className="flex justify-end pr-7 pb-3">
-                              {singleItem && (
+                              {/* {itemlist.map((index) => (
                                 <>
-                                  <p className="font-bold text-md" key={key}>
-                                    Amounts: $
-                                    {singleItem.discount
-                                      ? (singleItem.price *
-                                          singleItem.quantity *
-                                          singleItem.discount) /
-                                        100
-                                      : singleItem.price * singleItem.quantity}
-                                  </p>
-                                </>
-                              )}
-
-                              {/* {itemlist
-                                .slice(itemlist.length - 1)
-                                .map((index) => (
                                   <div
                                     key={index}
                                     className="flex justify-end pr-7 pb-3"
@@ -1413,7 +1453,21 @@ const AddEdit = () => {
                                       </>
                                     )}
                                   </div>
-                                ))} */}
+                                </>
+                              ))} */}
+                              {key && (
+                                <>
+                                  <p className="font-bold text-md">
+                                    Amounts: $
+                                    {key.discount
+                                      ? (key.price *
+                                          key.quantity *
+                                          key.discount) /
+                                        100
+                                      : key.price * key.quantity}
+                                  </p>
+                                </>
+                              )}
                             </div>
                           </div>
                           <button
@@ -1427,13 +1481,6 @@ const AddEdit = () => {
                     ) : (
                       <p>Section 2 data is missing or undefined</p>
                     )}
-
-                    {/* {data[key].section2.map((key, index) => (
-                      <>
-                        {" "}
-                        
-                      </>
-                    ))} */}
 
                     {/* {data[key].section2.length - 1 === index && (
                       <button
@@ -1721,7 +1768,7 @@ const AddEdit = () => {
                         <div className="mt-3">
                           {isVisibleinvoicepage && (
                             <>
-                              <p className="font-bold text-md"></p>
+                              <p className="font-bold text-md">{subtotal1}</p>
                             </>
                           )}
                           {isVisiblehours && (

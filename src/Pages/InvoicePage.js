@@ -136,7 +136,7 @@ const InvoicePage = () => {
     },
   ]);
 
-  console.log(itemlist);
+  // console.log(itemlist);
   const [singleItem, setSingleItem] = useState({
     ItemName: "",
     quantity: 0,

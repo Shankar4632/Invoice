@@ -2,10 +2,15 @@ body {
   background-color: #faf8f5;
   margin: 0px;
   font-family: "Helvetica Neue", Arial, sans-serif;
+  scroll-behavior: smooth;
+}
+html {
+  scroll-behavior: smooth;
 }
 /* Hide the scrollbar */
 body {
   overflow: scroll;
+  scroll-behavior: smooth;
 }
 
 /* Show the scrollbar on scroll */
