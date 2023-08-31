@@ -1248,7 +1248,6 @@ const InvoicePage = () => {
     const file = e.target.files[0];
 
     if (file) {
-      // Use FileReader to read the selected image and convert it to a data URL
       const reader = new FileReader();
 
       reader.onload = (event) => {
@@ -1268,9 +1267,9 @@ const InvoicePage = () => {
       <form onSubmit={handleSubmitAll}>
         {businesspopup ? (
           <>
-            <div className="w-full h-full  mx-auto  overflow-y-hidden fixed z-20  bg-gray-200   ">
+            <div className="w-full h-screen  mx-auto  overflow-y-hidden fixed z-20  bg-gray-200   ">
               <div className="w-[900px] bg-white  opacity-100 relative  h-screen">
-                <div className="flex items-center relative  mt-4 ">
+                <div className="flex items-center relative   ">
                   <i className="w-full flex justify-center text-blue-600  ">
                     <FaPaypal className="text-3xl" />
                   </i>
@@ -2362,17 +2361,7 @@ const InvoicePage = () => {
                 )}
                 {showMemosection4 && (
                   <div className="flex items-center mt-5  h-full pb-5 pl-2    ">
-                    <input
-                      type="file"
-                      // onChange={(e) => setSelectedImage(e.target.files[0])}
-                      onChange={handleImageChange}
-                    />
-                    {/* <button
-                      className="text-blue-600 w-full text-lg font-bold"
-                      onClick={handleImageUpload}
-                    >
-                      Upload
-                    </button> */}
+                    <input type="file" onChange={handleImageChange} />
 
                     <button
                       className="text-blue-600 w-full    text-lg font-bold"

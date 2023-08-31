@@ -246,6 +246,16 @@ const AddEdit = () => {
     ]);
   };
 
+  // const updatedItemList = data[key].section2.map((key, item) => {
+  //   const amount = item.discount
+  //     ? (item.price * item.quantity * item.discount) / 100
+  //     : item.price * item.quantity;
+  //   return {
+  //     ...item,
+  //     amount,
+  //   };
+  // });
+
   const handleAdd = (section, value) => {
     switch (section) {
       case "discount":
@@ -286,6 +296,7 @@ const AddEdit = () => {
   const handleChangesection6 = (event) => {
     const { name, value } = event.target;
     setInputbusiness({ ...inputbusiness, [name]: value });
+    console.log(value);
   };
 
   //fetch
@@ -296,12 +307,13 @@ const AddEdit = () => {
     const formData = {
       section1: lastData,
       section2: data[key].section2,
+      // section2: updatedItemList,
       section3message: input,
       section4memo: inputuser4,
       section5total: {
         inputuser5: inputuser5,
         // total: calculateTotal(),
-        // subtotal: subtotal1,
+        subtotal: subtotal1,
         discounts: discounts,
         shipping: shipping,
         otherAmount: otherAmount,
@@ -338,6 +350,44 @@ const AddEdit = () => {
             }
           });
       }
+    }
+  };
+  const handleSubmitsection6 = (e) => {
+    e.preventDefault();
+
+    const updatedFormData = {
+      ...data[key], // Keep the rest of the sections unchanged
+      section6Businessinformation: {
+        inputbusiness: { ...inputbusiness }, // Copy the input business data
+      },
+    };
+
+    if (!key) {
+      // If no key is provided, it's a new entry, so use push to generate a new key
+      dataRef
+        .ref()
+        .child("Allsections")
+        .push(updatedFormData, (err) => {
+          if (err) {
+            toast.error(err);
+          } else {
+            toast.success("Successfully added");
+            setBusinessPopup(false);
+          }
+        });
+    } else {
+      // If a key is provided, it's an update
+      dataRef
+        .ref()
+        .child(`Allsections/${key}`)
+        .update(updatedFormData, (err) => {
+          if (err) {
+            toast.error(err);
+          } else {
+            toast.success("Successfully updated");
+            setBusinessPopup(false);
+          }
+        });
     }
   };
 
@@ -438,7 +488,8 @@ const AddEdit = () => {
       data &&
       key &&
       data[key] &&
-      data[key].section6Businessinformation?.inputbusiness
+      data[key].section6Businessinformation?.inputbusiness &&
+      data[key].section6Businessinformation?.imageUrl
     ) {
       setInputbusiness({
         ...data[key].section6Businessinformation.inputbusiness,
@@ -576,154 +627,296 @@ const AddEdit = () => {
   // Rest of your code
 
   // Render the form fields
+
   // const renderFields = ({ singleItem, index }) => {
   //   return fields.map((field) => (
   //     <div key={field}>
-  //       <TextField
-  //         id="outlined-search"
-  //         type="text"
-  //         label={field}
-  //         style={{
-  //           marginRight: "10px",
-  //         }}
-  //         className=" w-[500px]"
-  //         name={field}
-  //         value={singleItem[field] || ""}
-  //         onChange={(e) => handlechangeadditemlist(e, index)}
-  //       />
+  //       {singleItem[field] !== undefined && singleItem[field] !== "" && (
+  //         <TextField
+  //           id="outlined-search"
+  //           type="text"
+  //           label={field}
+  //           style={{
+  //             marginRight: "10px",
+  //           }}
+  //           className=" w-[500px]"
+  //           name={field}
+  //           value={(singleItem && singleItem[field]) || ""}
+  //           onChange={(e) => handlechangeadditemlist(e, index)}
+  //         />
+  //       )}
   //     </div>
   //   ));
   // };
   const renderFields = ({ singleItem, index }) => {
-    return fields.map((field) => (
-      <div key={field}>
-        {singleItem[field] !== undefined && singleItem[field] !== "" && (
-          <TextField
-            id="outlined-search"
-            type="text"
-            label={field}
-            style={{
-              marginRight: "10px",
-            }}
-            className=" w-[500px]"
-            name={field}
-            value={(singleItem && singleItem[field]) || ""}
-            onChange={(e) => handlechangeadditemlist(e, index)}
-          />
-        )}
-      </div>
-    ));
+    return fields.map((field) => {
+      const isKey = typeof singleItem === "string";
+
+      return (
+        <div key={field}>
+          {(!isKey ||
+            (singleItem[field] !== undefined && singleItem[field] !== "")) && (
+            <TextField
+              id="outlined-search"
+              type="text"
+              label={field}
+              style={{
+                marginRight: "10px",
+              }}
+              className=" w-[500px]"
+              name={field}
+              value={isKey ? "" : (singleItem && singleItem[field]) || ""}
+              onChange={(e) =>
+                isKey
+                  ? handlechangeadditemlist(e, index)
+                  : handlechangeadditemlist(e, index)
+              }
+            />
+          )}
+        </div>
+      );
+    });
   };
 
+  const renderFields5 = ({ singleItem, index }) => {
+    return fields5.map((field5) => {
+      const isKey = typeof singleItem === "string";
+
+      return (
+        <div key={field5}>
+          {(!isKey ||
+            (singleItem[field5] !== undefined &&
+              singleItem[field5] !== "")) && (
+            <TextField
+              id="outlined-search"
+              type="text"
+              label={field5}
+              style={{
+                marginRight: "10px",
+                width: "100%",
+              }}
+              className=" w-[500px]"
+              name={field5}
+              value={isKey ? "" : (singleItem && singleItem[field5]) || ""}
+              onChange={(e) =>
+                isKey
+                  ? handlechangeadditemlist(e, index)
+                  : handlechangeadditemlist(e, index)
+              }
+            />
+          )}
+        </div>
+      );
+    });
+  };
   // const renderFields5 = ({ singleItem, index }) => {
   //   return fields5.map((field5) => (
   //     <div key={field5}>
-  //       <TextField
-  //         id="outlined-search"
-  //         type="text"
-  //         label={field5}
-  //         style={{
-  //           marginRight: "10px",
-  //           width: "100%",
-  //         }}
-  //         className=""
-  //         name={field5}
-  //         value={(singleItem && singleItem[field5]) || ""}
-  //         onChange={(e) => handlechangeadditemlist(e, index)}
-  //       />
+  //       {singleItem[field5] !== undefined && singleItem[field5] !== 0 && (
+  //         <TextField
+  //           id="outlined-search"
+  //           type="text"
+  //           label={field5}
+  //           style={{
+  //             marginRight: "10px",
+  //             width: "100%",
+  //           }}
+  //           className=""
+  //           name={field5}
+  //           value={(singleItem && singleItem[field5]) || ""}
+  //           onChange={(e) => handlechangeadditemlist(e, index)}
+  //         />
+  //       )}
   //     </div>
   //   ));
   // };
-  const renderFields5 = ({ singleItem, index }) => {
-    return fields5.map((field5) => (
-      <div key={field5}>
-        {singleItem[field5] !== undefined && singleItem[field5] !== 0 && (
-          <TextField
-            id="outlined-search"
-            type="text"
-            label={field5}
-            style={{
-              marginRight: "10px",
-              width: "100%",
-            }}
-            className=""
-            name={field5}
-            value={(singleItem && singleItem[field5]) || ""}
-            onChange={(e) => handlechangeadditemlist(e, index)}
-          />
-        )}
-      </div>
-    ));
-  };
 
+  // const renderFields6 = ({ singleItem, index }) => {
+  //   return fields6.map((field6) => (
+  //     <div key={field6}>
+  //       {singleItem[field6] !== undefined && singleItem[field6] !== 0 && (
+  //         <TextField
+  //           id="outlined-search"
+  //           type="text"
+  //           label={field6}
+  //           style={{
+  //             marginRight: "10px",
+  //             width: "100%",
+  //           }}
+  //           className=""
+  //           name={field6}
+  //           value={(singleItem && singleItem[field6]) || ""}
+  //           onChange={(e) => handlechangeadditemlist(e, index)}
+  //         />
+  //       )}
+  //     </div>
+  //   ));
+  // };
   const renderFields6 = ({ singleItem, index }) => {
-    return fields6.map((field6) => (
-      <div key={field6}>
-        {singleItem[field6] !== undefined && singleItem[field6] !== 0 && (
-          <TextField
-            id="outlined-search"
-            type="text"
-            label={field6}
-            style={{
-              marginRight: "10px",
-              width: "100%",
-            }}
-            className=""
-            name={field6}
-            value={(singleItem && singleItem[field6]) || ""}
-            onChange={(e) => handlechangeadditemlist(e, index)}
-          />
-        )}
-      </div>
-    ));
+    return fields6.map((field6) => {
+      const isKey = typeof singleItem === "string";
+
+      return (
+        <div key={field6}>
+          {(!isKey ||
+            (singleItem[field6] !== undefined &&
+              singleItem[field6] !== "")) && (
+            <TextField
+              id="outlined-search"
+              type="text"
+              label={field6}
+              style={{
+                marginRight: "10px",
+                width: "100%",
+              }}
+              className=" w-[500px]"
+              name={field6}
+              value={isKey ? "" : (singleItem && singleItem[field6]) || ""}
+              onChange={(e) =>
+                isKey
+                  ? handlechangeadditemlist(e, index)
+                  : handlechangeadditemlist(e, index)
+              }
+            />
+          )}
+        </div>
+      );
+    });
   };
+  // const renderFields6 = ({ singleItem, index }) => {
+  //   return fields6.map((field6) => (
+  //     <div key={field6}>
+  //       {singleItem[field6] !== undefined && singleItem[field6] !== 0 && (
+  //         <TextField
+  //           id="outlined-search"
+  //           type="text"
+  //           label={field6}
+  //           style={{
+  //             marginRight: "10px",
+  //             width: "100%",
+  //           }}
+  //           className=""
+  //           name={field6}
+  //           value={(singleItem && singleItem[field6]) || ""}
+  //           onChange={(e) => handlechangeadditemlist(e, index)}
+  //         />
+  //       )}
+  //     </div>
+  //   ));
+  // };
+
+  // const renderFields7 = ({ singleItem, index }) => {
+  //   return fields7.map((field7) => (
+  //     <div key={field7}>
+  //       {singleItem[field7] !== undefined && singleItem[field7] !== 0 && (
+  //         <TextField
+  //           id="outlined-search"
+  //           type="text"
+  //           label={field7}
+  //           style={{
+  //             marginRight: "10px",
+  //             width: "100%",
+  //           }}
+  //           className=""
+  //           name={field7}
+  //           value={(singleItem && singleItem[field7]) || ""}
+  //           onChange={(e) => handlechangeadditemlist(e, index)}
+  //         />
+  //       )}
+  //     </div>
+  //   ));
+  // };
   const renderFields7 = ({ singleItem, index }) => {
-    return fields7.map((field7) => (
-      <div key={field7}>
-        {singleItem[field7] !== undefined && singleItem[field7] !== 0 && (
-          <TextField
-            id="outlined-search"
-            type="text"
-            label={field7}
-            style={{
-              marginRight: "10px",
-              width: "100%",
-            }}
-            className=""
-            name={field7}
-            value={(singleItem && singleItem[field7]) || ""}
-            onChange={(e) => handlechangeadditemlist(e, index)}
-          />
-        )}
-      </div>
-    ));
+    return fields7.map((field7) => {
+      const isKey = typeof singleItem === "string";
+
+      return (
+        <div key={field7}>
+          {(!isKey ||
+            (singleItem[field7] !== undefined &&
+              singleItem[field7] !== "")) && (
+            <TextField
+              id="outlined-search"
+              type="text"
+              label={field7}
+              style={{
+                marginRight: "10px",
+                width: "100%",
+              }}
+              className=" w-[500px]"
+              name={field7}
+              value={isKey ? "" : (singleItem && singleItem[field7]) || ""}
+              onChange={(e) =>
+                isKey
+                  ? handlechangeadditemlist(e, index)
+                  : handlechangeadditemlist(e, index)
+              }
+            />
+          )}
+        </div>
+      );
+    });
   };
   const renderFields8 = ({ singleItem, index }) => {
-    return fields8.map((field8) => (
-      <div key={field8}>
-        {singleItem[field8] !== undefined && singleItem[field8] !== 0 && (
-          <TextField
-            id="outlined-search"
-            type="text"
-            label={field8}
-            style={{
-              marginRight: "10px",
-              width: "100%",
-            }}
-            className=""
-            name={field8}
-            value={(singleItem && singleItem[field8]) || ""}
-            onChange={(e) => handlechangeadditemlist(e, index)}
-          />
-        )}
-      </div>
-    ));
+    return fields8.map((field8) => {
+      const isKey = typeof singleItem === "string";
+
+      return (
+        <div key={field8}>
+          {(!isKey ||
+            (singleItem[field8] !== undefined &&
+              singleItem[field8] !== "")) && (
+            <TextField
+              id="outlined-search"
+              type="text"
+              label={field8}
+              style={{
+                marginRight: "10px",
+                width: "100%",
+              }}
+              className=" w-[500px]"
+              name={field8}
+              value={isKey ? "" : (singleItem && singleItem[field8]) || ""}
+              onChange={(e) =>
+                isKey
+                  ? handlechangeadditemlist(e, index)
+                  : handlechangeadditemlist(e, index)
+              }
+            />
+          )}
+        </div>
+      );
+    });
   };
+  // const renderFields8 = ({ singleItem, index }) => {
+  //   return fields8.map((field8) => (
+  //     <div key={field8}>
+  //       {singleItem[field8] !== undefined && singleItem[field8] !== 0 && (
+  //         <TextField
+  //           id="outlined-search"
+  //           type="text"
+  //           label={field8}
+  //           style={{
+  //             marginRight: "10px",
+  //             width: "100%",
+  //           }}
+  //           className=""
+  //           name={field8}
+  //           value={(singleItem && singleItem[field8]) || ""}
+  //           onChange={(e) => handlechangeadditemlist(e, index)}
+  //         />
+  //       )}
+  //     </div>
+  //   ));
+  // };
 
   const renderFieldsdescription = ({ singleItem, index }) => {
-    return fields1.map((fields1) => (
-      <div key={fields1}>
-        {singleItem[fields1] !== undefined && singleItem[fields1] !== "" && (
+    const isKey = typeof singleItem === "string";
+
+    return fields1.map((field) => (
+      <div key={field}>
+        {(!isKey ||
+          (singleItem[field] !== undefined && singleItem[field] !== "")) && (
           <textarea
             className="peer block h-auto mb-3 w-[97%] mx-auto border border-gray-500 rounded mt-5 text-black px-3 py-[0.32rem]  "
             id="exampleFormControlTextarea1"
@@ -731,7 +924,7 @@ const AddEdit = () => {
             type="text"
             placeholder="Description(optional)"
             name="description"
-            value={singleItem[fields1] || ""}
+            value={singleItem[field] || ""}
             onChange={(e) => handlechangeadditemlist(e, index)}
           >
             {" "}
@@ -740,77 +933,200 @@ const AddEdit = () => {
       </div>
     ));
   };
+
+  // const renderFieldsdescription = ({ singleItem, index }) => {
+  //   return fields1.map((fields1) => (
+  //     <div key={fields1}>
+  //       {singleItem[fields1] !== undefined && singleItem[fields1] !== "" && (
+  //         <textarea
+  //           className="peer block h-auto mb-3 w-[97%] mx-auto border border-gray-500 rounded mt-5 text-black px-3 py-[0.32rem]  "
+  //           id="exampleFormControlTextarea1"
+  //           rows="4"
+  //           type="text"
+  //           placeholder="Description(optional)"
+  //           name="description"
+  //           value={singleItem[fields1] || ""}
+  //           onChange={(e) => handlechangeadditemlist(e, index)}
+  //         >
+  //           {" "}
+  //         </textarea>
+  //       )}
+  //     </div>
+  //   ));
+  // };
   const renderFieldstax = ({ singleItem, index }) => {
-    return fields2.map((fields2) => (
-      <div key={fields2}>
-        {singleItem[fields2] !== undefined && singleItem[fields2] !== 0 && (
-          <Box
-            component="form"
-            sx={{
-              "& .MuiTextField-root": { m: 1, width: "25ch" },
-            }}
-            noValidate
-            autoComplete="off"
-          >
-            <TextField
-              id="outlined-select-currency"
-              select
-              label="Select"
-              defaultValue="select"
-              name="tax"
-              value={(singleItem && singleItem[fields2]) || ""}
-              onChange={(e) => handlechangeadditemlist(e, index)}
+    return fields2.map((fields2) => {
+      const isKey = typeof singleItem === "string";
+
+      return (
+        <div key={fields2}>
+          {(!isKey ||
+            (singleItem[fields2] !== undefined &&
+              singleItem[fields2] !== "")) && (
+            <Box
+              component="form"
+              sx={{
+                "& .MuiTextField-root": { m: 1, width: "25ch" },
+              }}
+              noValidate
+              autoComplete="off"
             >
-              {taxes.map((option) => (
-                <MenuItem key={option.value} value={option.value}>
-                  {option.label}
-                </MenuItem>
-              ))}
-            </TextField>
-          </Box>
-        )}
-      </div>
-    ));
+              <TextField
+                id="outlined-select-currency"
+                select
+                label="Select"
+                defaultValue="select"
+                name="tax"
+                value={isKey ? "" : (singleItem && singleItem[fields2]) || ""}
+                onChange={(e) =>
+                  isKey
+                    ? handlechangeadditemlist(e, index)
+                    : handlechangeadditemlist(e, index)
+                }
+              >
+                {taxes.map((option) => (
+                  <MenuItem key={option.value} value={option.value}>
+                    {option.label}
+                  </MenuItem>
+                ))}
+              </TextField>
+            </Box>
+          )}
+        </div>
+      );
+    });
   };
+  // const renderFieldstax = ({ singleItem, index }) => {
+  //   return fields2.map((fields2) => (
+  //     <div key={fields2}>
+  //       {singleItem[fields2] !== undefined && singleItem[fields2] !== 0 && (
+  //         <Box
+  //           component="form"
+  //           sx={{
+  //             "& .MuiTextField-root": { m: 1, width: "25ch" },
+  //           }}
+  //           noValidate
+  //           autoComplete="off"
+  //         >
+  //           <TextField
+  //             id="outlined-select-currency"
+  //             select
+  //             label="Select"
+  //             defaultValue="select"
+  //             name="tax"
+  //             value={(singleItem && singleItem[fields2]) || ""}
+  //             onChange={(e) => handlechangeadditemlist(e, index)}
+  //           >
+  //             {taxes.map((option) => (
+  //               <MenuItem key={option.value} value={option.value}>
+  //                 {option.label}
+  //               </MenuItem>
+  //             ))}
+  //           </TextField>
+  //         </Box>
+  //       )}
+  //     </div>
+  //   ));
+  // };
   const renderFieldsdiscount = ({ singleItem, index }) => {
-    return fields3.map((fields3) => (
-      <div key={fields3}>
-        {singleItem[fields3] !== undefined && singleItem[fields3] !== 0 && (
-          <TextField
-            id="outlined-search"
-            type="text"
-            label="Discount"
-            style={{
-              marginRight: "10px",
-              width: "100%",
-            }}
-            name="discount"
-            value={singleItem[fields3] || ""}
-            onChange={(e) => handlechangeadditemlist(e, index)}
-          />
-        )}
-      </div>
-    ));
+    return fields3.map((fields3) => {
+      const isKey = typeof singleItem === "string";
+
+      return (
+        <div key={fields3}>
+          {(!isKey ||
+            (singleItem[fields3] !== undefined &&
+              singleItem[fields3] !== "")) && (
+            <TextField
+              id="outlined-search"
+              type="text"
+              label={fields3}
+              style={{
+                marginRight: "10px",
+                width: "100%",
+              }}
+              className=" w-[500px]"
+              name={fields3}
+              value={isKey ? "" : (singleItem && singleItem[fields3]) || ""}
+              onChange={(e) =>
+                isKey
+                  ? handlechangeadditemlist(e, index)
+                  : handlechangeadditemlist(e, index)
+              }
+            />
+          )}
+        </div>
+      );
+    });
   };
+  // const renderFieldsdiscount = ({ singleItem, index }) => {
+  //   return fields3.map((fields3) => (
+  //     <div key={fields3}>
+  //       {singleItem[fields3] !== undefined && singleItem[fields3] !== 0 && (
+  //         <TextField
+  //           id="outlined-search"
+  //           type="text"
+  //           label="Discount"
+  //           style={{
+  //             marginRight: "10px",
+  //             width: "100%",
+  //           }}
+  //           name="discount"
+  //           value={singleItem[fields3] || ""}
+  //           onChange={(e) => handlechangeadditemlist(e, index)}
+  //         />
+  //       )}
+  //     </div>
+  //   ));
+  // };
   const renderFieldsdate = ({ singleItem, index }) => {
-    return fields4.map((fields4) => (
-      <div key={fields4}>
-        {singleItem[fields4] !== undefined && singleItem[fields4] !== 0 && (
-          <TextField
-            id="outlined-search"
-            type="date"
-            style={{
-              marginRight: "10px",
-              width: "100%",
-            }}
-            name="date"
-            value={singleItem[fields3]}
-            onChange={(e) => handlechangeadditemlist(e, index)}
-          />
-        )}
-      </div>
-    ));
+    return fields4.map((fields4) => {
+      const isKey = typeof singleItem === "string";
+
+      return (
+        <div key={fields4}>
+          {(!isKey ||
+            (singleItem[fields4] !== undefined &&
+              singleItem[fields4] !== "")) && (
+            <TextField
+              id="outlined-search"
+              type="date"
+              style={{
+                marginRight: "10px",
+                width: "100%",
+              }}
+              name="date"
+              value={isKey ? "" : (singleItem && singleItem[fields4]) || ""}
+              onChange={(e) =>
+                isKey
+                  ? handlechangeadditemlist(e, index)
+                  : handlechangeadditemlist(e, index)
+              }
+            />
+          )}
+        </div>
+      );
+    });
   };
+  // const renderFieldsdate = ({ singleItem, index }) => {
+  //   return fields4.map((fields4) => (
+  //     <div key={fields4}>
+  //       {singleItem[fields4] !== undefined && singleItem[fields4] !== 0 && (
+  //         <TextField
+  //           id="outlined-search"
+  //           type="date"
+  //           style={{
+  //             marginRight: "10px",
+  //             width: "100%",
+  //           }}
+  //           name="date"
+  //           value={singleItem[fields3]}
+  //           onChange={(e) => handlechangeadditemlist(e, index)}
+  //         />
+  //       )}
+  //     </div>
+  //   ));
+  // };
 
   // Render the selected fields below the form
   const renderSelectedFields = ({ singleItem, index }) => {
@@ -926,6 +1242,37 @@ const AddEdit = () => {
       </div>
     ));
   };
+
+  // const renderSelecteddiscountFields = ({ singleItem, index }) => {
+  //   return selecteddiscountFields.map((field) => {
+  //     const isKey = typeof singleItem === "string";
+  //     return (
+  //       <div key={field}>
+  //         {(!isKey ||
+  //           (singleItem[field] !== undefined && singleItem[field] !== "")) && (
+  //           <div key={field}>
+  //             <TextField
+  //               id="outlined-search"
+  //               type="text"
+  //               label="Discount"
+  //               name="discount"
+  //               style={{
+  //                 marginRight: "10px",
+  //                 width: "100%",
+  //               }}
+  //               value={isKey ? "" : (singleItem && singleItem[field]) || ""}
+  //               onChange={(e) =>
+  //                 isKey
+  //                   ? handlechangeadditemlist(e, index)
+  //                   : handlechangeadditemlist(e, index)
+  //               }
+  //             />
+  //           </div>
+  //         )}
+  //       </div>
+  //     );
+  //   });
+  // };
   const renderSelecteddiscountFields = ({ singleItem, index }) => {
     return selecteddiscountFields.map((field) => (
       <div key={field}>
@@ -1039,6 +1386,151 @@ const AddEdit = () => {
       ) : (
         <>
           {" "}
+          {businesspopup ? (
+            <>
+              <div className="w-full h-full  mx-auto  overflow-y-hidden fixed z-20  bg-gray-200   ">
+                <div className="w-[900px] bg-white  opacity-100 relative  h-screen">
+                  <div className="flex items-center relative  mt-4 ">
+                    <i className="w-full flex justify-center text-blue-600  ">
+                      <FaPaypal className="text-3xl" />
+                    </i>
+                    <i
+                      className="flex  justify-end pr-3 cursor-pointer"
+                      onClick={() => setBusinessPopup(false)}
+                    >
+                      <RxCross1 className="text-xl" />
+                    </i>
+                  </div>
+                  <p className="text-center text-[40px]  font-semibold">
+                    {" "}
+                    Business information{" "}
+                  </p>
+                  <div className="w-[70%]  mx-auto ">
+                    {" "}
+                    <div className="grid grid-cols-2 w-full  mt-3 text-center">
+                      <div className="">
+                        {" "}
+                        <input
+                          id="outlined-search"
+                          name="fname"
+                          type="search"
+                          className=" w-[90%]  border border-gray-400 rounded-md py-5 px-3 placeholder-black focus:border-blue-400"
+                          placeholder="First name"
+                          value={inputbusiness.fname || ""}
+                          onChange={handleChangesection6}
+                        />
+                      </div>
+
+                      <div className="">
+                        {" "}
+                        <input
+                          id="outlined-search"
+                          name="lname"
+                          type="search"
+                          className=" w-[90%]  border border-gray-400 rounded-md py-5 px-3 placeholder-black"
+                          placeholder="Last name"
+                          value={inputbusiness.lname || ""}
+                          onChange={handleChangesection6}
+                        />
+                      </div>
+                    </div>
+                    <div className="flex  justify-center mt-3">
+                      <input
+                        id="outlined-search"
+                        name="businessname"
+                        type="search"
+                        className=" w-[95%]  border border-gray-400  rounded-md py-5 px-3 placeholder-black"
+                        placeholder="Business name"
+                        value={inputbusiness.businessname || ""}
+                        onChange={handleChangesection6}
+                      />
+                    </div>
+                    <div className="flex  justify-center mt-3">
+                      <input
+                        id="outlined-search"
+                        name="address1"
+                        type="text"
+                        className=" w-[95%]  border border-gray-400  rounded-md py-5 px-3 placeholder-black"
+                        placeholder="Address 1"
+                        value={inputbusiness.address1 || ""}
+                        onChange={handleChangesection6}
+                      />
+                    </div>
+                    <div className="flex  justify-center mt-3">
+                      <input
+                        id="outlined-search"
+                        name="address2"
+                        type="text"
+                        className=" w-[95%]  border border-gray-400  rounded-md py-5 px-3 placeholder-black"
+                        placeholder="Address 2"
+                        value={inputbusiness.address2 || ""}
+                        onChange={handleChangesection6}
+                      />
+                    </div>
+                    <div className="flex  justify-center mt-3">
+                      <input
+                        id="outlined-search"
+                        name="email"
+                        type="email"
+                        className=" w-[95%]  border border-gray-400  rounded-md py-5 px-3 placeholder-black"
+                        placeholder="Email"
+                        value={inputbusiness.email || ""}
+                        onChange={handleChangesection6}
+                      />
+                    </div>
+                    <div className="flex  justify-center mt-3">
+                      <input
+                        id="outlined-search"
+                        name="website"
+                        type="text"
+                        className=" w-[95%]  border border-gray-400  rounded-md py-5 px-3 placeholder-black"
+                        placeholder="Website"
+                        value={inputbusiness.website || ""}
+                        onChange={handleChangesection6}
+                      />
+                    </div>
+                    <div className="flex  justify-center mt-3">
+                      <input
+                        id="outlined-search"
+                        name="pin"
+                        type="text"
+                        className=" w-[95%]  border border-gray-400  rounded-md py-5 px-3 placeholder-black"
+                        placeholder="TIN / PIN"
+                        value={inputbusiness.pin || ""}
+                        onChange={handleChangesection6}
+                      />
+                    </div>
+                    <div className="flex  justify-center mt-3">
+                      <input
+                        id="outlined-search"
+                        name="additionalinfo"
+                        type="text"
+                        className=" w-[95%]  border border-gray-400  rounded-md py-5 px-3 placeholder-black"
+                        placeholder="Additional information"
+                        value={inputbusiness.additionalinfo || ""}
+                        onChange={handleChangesection6}
+                      />
+                    </div>
+                    <div className="flex justify-center  mt-10">
+                      {/* <button
+                        className="text-white bg-[#003087] px-9 py-3  rounded-full    font-extrabold text-lg"
+                        type="submit"
+                        onClick={handleSubmitsection6}
+                      >
+                        Save
+                      </button> */}
+                      <input
+                        className="px-8 py-3 rounded-3xl  bg-blue-900 text-white font-bold mx-auto cursor-pointer"
+                        value={key ? "Update" : "Save"}
+                        onClick={handleSubmitsection6}
+                        type="submit"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </>
+          ) : null}
           {customisepopup ? (
             <>
               <div className=" overflow-y-hidden  w-full h-full flex justify-center fixed z-20  bg-gray-200   ">
@@ -1432,29 +1924,6 @@ const AddEdit = () => {
                               </div>
                             )}
                             <div className="flex justify-end pr-7 pb-3">
-                              {/* {itemlist.map((index) => (
-                                <>
-                                  <div
-                                    key={index}
-                                    className="flex justify-end pr-7 pb-3"
-                                  >
-                                    {singleItem && (
-                                      <>
-                                        <p className="font-bold text-md">
-                                          Amounts: $
-                                          {singleItem.discount
-                                            ? (singleItem.price *
-                                                singleItem.quantity *
-                                                singleItem.discount) /
-                                              100
-                                            : singleItem.price *
-                                              singleItem.quantity}
-                                        </p>
-                                      </>
-                                    )}
-                                  </div>
-                                </>
-                              ))} */}
                               {key && (
                                 <>
                                   <p className="font-bold text-md">
@@ -1481,8 +1950,7 @@ const AddEdit = () => {
                     ) : (
                       <p>Section 2 data is missing or undefined</p>
                     )}
-
-                    {/* {data[key].section2.length - 1 === index && (
+                    {/* {key.length - 1 === index && (
                       <button
                         className=" ml-4 mt-3 text-blue-600  font-extrabold  flex items-center text-xl "
                         onClick={handleAddItem}
@@ -1490,6 +1958,12 @@ const AddEdit = () => {
                         <AiOutlinePlus className="mr-2" /> Add items or Service
                       </button>
                     )} */}
+                    <button
+                      className=" ml-4 mt-3 text-blue-600  font-extrabold  flex items-center text-xl "
+                      onClick={handleAddItem}
+                    >
+                      <AiOutlinePlus className="mr-2 " /> Add items or Service
+                    </button>
                   </div>
                   {/*  ==============================  section-3  ============================= */}
 
@@ -1588,19 +2062,10 @@ const AddEdit = () => {
                   <div className="flex items-center h-20   w-full">
                     <div className="flex items-center justify-start ml-3 mt-3 w-full">
                       <div>
-                        {/* {imageUrl && (
-                          <div>
-                            <img
-                              src={imageUrl}
-                              alt="Uploaded"
-                              style={{
-                                width: "90px",
-                                height: "90px",
-                                marginTop: "10px",
-                              }}
-                            />
-                          </div>
-                        )} */}
+                        {imageUrl && <img src={imageUrl} alt="Uploaded" />}
+                        {imageUrl && (
+                          <>{data[key]?.section6Businessinformation.imageUrl}</>
+                        )}
                       </div>
                       <div>
                         {businessdata && (

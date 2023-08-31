@@ -604,12 +604,7 @@ const AddedList = () => {
                                 Delete
                               </button>
                             </li>
-                            <li
-                              className="px-4 py-2 text-black hover:bg-gray-100 dark:hover:bg-gray-700  "
-                              onClick={generatepdf}
-                            >
-                              <button>Print</button>
-                            </li>
+
                             <li
                               key={key}
                               className="px-4 py-2 text-black hover:bg-gray-100 dark:hover:bg-gray-700"
