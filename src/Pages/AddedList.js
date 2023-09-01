@@ -66,42 +66,6 @@ const AddedList = () => {
   };
 
   // delete
-
-  // const handleDelete = (key) => {
-  //   console.log("Deleting data with key:", key);
-  //   dataRef
-  //     .ref()
-  //     .child("Allsections")
-  //     .child(key) // Use the key directly to access the child node
-  //     .remove()
-  //     .then(() => {
-  //       console.log(`Data with key ${key} deleted successfully.`);
-  //       console.log("Data after deletion:");
-  //       // Update the state by removing the deleted item
-  //       setData((prevData) => {
-  //         const newData = { ...prevData };
-  //         delete newData[key];
-  //         return newData;
-  //       });
-  //     })
-  //     .catch((error) => {
-  //       console.log("Error deleting data:", error);
-  //     });
-  // };
-  // const handleDelete = (key) => {
-  //   if (window.confirm("Are you sure you want to delete ?")) {
-  //     dataRef
-  //       .ref()
-  //       .child(`Allsections/${key}`)
-  //       .remove((err) => {
-  //         if (err) {
-  //           toast.error(err);
-  //         } else {
-  //           toast.success("Successfully deleted");
-  //         }
-  //       });
-  //   }
-  // };
   const handleDelete = (key) => {
     if (window.confirm("Are you sure you want to delete ?")) {
       dataRef
@@ -310,7 +274,8 @@ const AddedList = () => {
                         </div>
                         <div className=" font-semibold grid justify-end items-end  ">
                           <div className=" mt-10 text-[45px]">
-                            ${data[key].section5total.total}.00
+                            {data[key].countrycurrency}
+                            {data[key].section5total.total}.00
                           </div>
                           <div className=" text-[35px] font-bold">
                             AMOUNT DUE
@@ -373,8 +338,12 @@ const AddedList = () => {
                             <th className="p-3">No.</th>
                             <th className="p-3">ITMES AND DESCRIPTION</th>
                             <th className="p-3">QTY/HRS</th>
-                            <th className="p-3">PRICE</th>
-                            <th className="p-3">AMOUNTS$</th>
+                            <th className="p-3">
+                              PRICE {data[key].countrycurrency}
+                            </th>
+                            <th className="p-3">
+                              AMOUNTS {data[key].countrycurrency}
+                            </th>
                           </tr>
                         </thead>
                         {data[key].section2.map((key, index) => (
@@ -392,10 +361,10 @@ const AddedList = () => {
                                 <p className="dark:text-gray-400"></p>
                               </td>
                               <td className="px-3 py-2">
-                                <p>${key?.price}</p>
+                                <p>{key?.price}</p>
                               </td>
                               <td className="px-10 py-2">
-                                <p>${key?.amount}</p>
+                                <p>{key?.amount}</p>
                               </td>
                             </tr>
                           </tbody>
@@ -409,17 +378,20 @@ const AddedList = () => {
                           <p className="text-xl p-2 font-semibold flex justify-end">
                             Subtotal{" "}
                             <span className="pr-10">
-                              ${data[key]?.section5total.subtotal}
+                              {data[key].countrycurrency}
+                              {data[key]?.section5total.subtotal}
                             </span>
                           </p>
                           <p className="text-xl p-2 font-semibold border-b-4 border-gray-200 flex justify-end">
                             Shipping{" "}
                             <span className="pr-10">
-                              ${data[key]?.section5total.shipping}
+                              {data[key].countrycurrency}
+                              {data[key]?.section5total.shipping}
                             </span>
                           </p>
                           <p className="font-bold text-2xl p-4 pr-10 flex justify-end border-b-4 border-gray-200">
-                            ToTal ${data[key]?.section5total.total}USD
+                            ToTal {data[key].countrycurrency}
+                            {data[key]?.section5total.total}
                           </p>
                         </div>
                       </div>

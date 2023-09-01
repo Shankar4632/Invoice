@@ -195,6 +195,11 @@ const InvoicePage = () => {
   //Function Calling
   ////////////////////////  input file onchange events  ///////////////////////
   //section-1
+  const handlecurrency = (e) => {
+    const { value } = e.target;
+
+    setCurrency(value);
+  };
 
   //section-2
 
@@ -265,6 +270,7 @@ const InvoicePage = () => {
     e.preventDefault();
 
     const formData = {
+      countrycurrency: currency,
       section1: lastData,
       section2: updatedItemList,
       section3message: input,
@@ -467,10 +473,6 @@ const InvoicePage = () => {
     e.preventDefault();
     setShowAddButton(true);
     setLastData(lastData);
-  };
-
-  const handlecurrency = (event) => {
-    setCurrency(event.target.value);
   };
 
   const handleselectedTemplate = (event) => {
@@ -1688,11 +1690,12 @@ const InvoicePage = () => {
                         id="currency-select"
                         value={currency}
                         label="Currency"
+                        name="countrycurrency"
                         onChange={handlecurrency}
                       >
                         <MenuItem value="">None</MenuItem>
                         {Currencydata.map((codes, index) => (
-                          <MenuItem value={codes.code} key={index}>
+                          <MenuItem value={codes.symbol} key={index}>
                             {codes.code}
                           </MenuItem>
                         ))}
