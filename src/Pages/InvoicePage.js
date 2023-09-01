@@ -1867,7 +1867,7 @@ const InvoicePage = () => {
                                         {singleItem && (
                                           <>
                                             <p className="font-bold text-md">
-                                              Amounts: $
+                                              Amounts: {currency}
                                               {singleItem.discount
                                                 ? (singleItem.price *
                                                     singleItem.quantity *
@@ -2021,7 +2021,7 @@ const InvoicePage = () => {
                 <>
                   {isVisiblehours && (
                     <>
-                      <div className="p-3 h-auto  ">
+                      <div className="p-3 h-auto   ">
                         <div className="flex items-center pl-3 pt-20">
                           <p className="font-bold w-full  text-xl ml-3">
                             Items
@@ -2125,7 +2125,7 @@ const InvoicePage = () => {
                                         {singleItem && (
                                           <>
                                             <p className="font-bold text-md">
-                                              Amounts: $
+                                              Amounts: {currency}
                                               {singleItem.discount
                                                 ? (singleItem.hours *
                                                     singleItem.rate *
@@ -2255,7 +2255,7 @@ const InvoicePage = () => {
                                       {singleItem && (
                                         <>
                                           <p className="font-bold flex justify-end  pb-2 text-md">
-                                            Amounts: $
+                                            Amounts: {currency}
                                             {singleItem.discount
                                               ? (singleItem.price *
                                                   singleItem.discount) /
@@ -2584,20 +2584,30 @@ const InvoicePage = () => {
                       )}
                     </p>
                   </form>
+
                   {isVisibleinvoicepage && (
                     <>
-                      <p className="p-3 font-extrabold ">${totalValue}</p>
+                      <p className="p-3 font-extrabold ">
+                        {currency}
+                        {totalValue}
+                      </p>
                     </>
                   )}
                   {isVisiblehours && (
                     <>
-                      <p className="p-3 font-extrabold ">${totalValue}</p>
+                      <p className="p-3 font-extrabold ">
+                        {currency}
+                        {totalValue}
+                      </p>
                     </>
                   )}
                   {isVisibleaccount && (
                     <>
                       {" "}
-                      <p className="p-3 font-bold ">${totalValue1}</p>
+                      <p className="p-3 font-bold ">
+                        {currency}
+                        {totalValue1}
+                      </p>
                     </>
                   )}
                 </div>
