@@ -238,37 +238,53 @@ const AddedList = () => {
                           Company Name :
                           {
                             data[key]?.section6Businessinformation
-                              ?.inputbusiness?.businessname
+                              ?.lastDatasection6?.inputbusiness?.email
                           }
                         </p>
                         <p className="text-2xl font-semibold p-1">
                           Address:
                           {
                             data[key]?.section6Businessinformation
-                              ?.inputbusiness?.address1
+                              ?.lastDatasection6?.inputbusiness?.address1
                           }
+                          {/* {
+                            data[key]?.section6Businessinformation
+                              ?.inputbusiness?.address1
+                          } */}
                         </p>
                         <p className="text-2xl font-semibold p-1">TIN/PAN </p>
                         <p className="text-2xl font-semibold p-1">
                           Phone No. :
                           {
                             data[key]?.section6Businessinformation
-                              ?.inputbusiness?.pin
+                              ?.lastDatasection6?.inputbusiness?.pin
                           }
+                          {/* {
+                            data[key]?.section6Businessinformation
+                              ?.inputbusiness?.pin
+                          } */}
                         </p>
                         <p className="text-2xl font-semibold p-1">
                           Email ID. :
                           {
                             data[key]?.section6Businessinformation
-                              ?.inputbusiness?.email
+                              ?.lastDatasection6?.inputbusiness?.email
                           }
+                          {/* {
+                            data[key]?.section6Businessinformation
+                              ?.inputbusiness?.email
+                          } */}
                         </p>
                         <p className="text-2xl font-semibold p-1">
                           Website :
                           {
                             data[key]?.section6Businessinformation
-                              ?.inputbusiness?.website
+                              ?.lastDatasection6?.inputbusiness?.website
                           }
+                          {/* {
+                            data[key]?.section6Businessinformation
+                              ?.inputbusiness?.website
+                          } */}
                         </p>
                       </div>
                     </div>

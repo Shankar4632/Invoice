@@ -358,7 +358,9 @@ const AddEdit = () => {
     const updatedFormData = {
       ...data[key], // Keep the rest of the sections unchanged
       section6Businessinformation: {
-        inputbusiness: { ...inputbusiness }, // Copy the input business data
+        lastDatasection6: {
+          inputbusiness: { ...inputbusiness }, // Copy the input business data
+        },
       },
     };
 
@@ -488,11 +490,11 @@ const AddEdit = () => {
       data &&
       key &&
       data[key] &&
-      data[key].section6Businessinformation?.inputbusiness &&
+      data[key].section6Businessinformation?.lastDatasection6?.inputbusiness &&
       data[key].section6Businessinformation?.imageUrl
     ) {
       setInputbusiness({
-        ...data[key].section6Businessinformation.inputbusiness,
+        ...data[key].section6Businessinformation.lastDatasection6.inputbusiness,
       });
     } else {
       setInputbusiness({ ...initialState });
@@ -1388,9 +1390,9 @@ const AddEdit = () => {
           {" "}
           {businesspopup ? (
             <>
-              <div className="w-full h-full  mx-auto  overflow-y-hidden fixed z-20  bg-gray-200   ">
+              <div className="w-full h-screen  mx-auto  overflow-y-hidden fixed z-20  bg-gray-200   ">
                 <div className="w-[900px] bg-white  opacity-100 relative  h-screen">
-                  <div className="flex items-center relative  mt-4 ">
+                  <div className="flex items-center relative   ">
                     <i className="w-full flex justify-center text-blue-600  ">
                       <FaPaypal className="text-3xl" />
                     </i>
@@ -2075,7 +2077,7 @@ const AddEdit = () => {
                               {/* {businessname} */}
                               {
                                 data[key]?.section6Businessinformation
-                                  ?.inputbusiness?.businessname
+                                  ?.lastDatasection6?.inputbusiness?.email
                               }
                             </div>
                           </>
@@ -2097,70 +2099,68 @@ const AddEdit = () => {
                     </div>
                   </div>
                   <div>
-                    {businessdata && (
-                      <div className="flex items-center">
-                        <div className="text-2xl text-black  mt-2 pl-2 gap-3">
-                          <p className="text-[20px] text-black flex  items-center ">
-                            <i>
-                              {" "}
-                              <FaRegAddressCard className="text-blue-900 mr-3 " />
-                            </i>{" "}
-                            {
-                              data[key]?.section6Businessinformation
-                                ?.inputbusiness?.address2
-                            }
-                            {/* {address2} */}
-                          </p>
-                          <p className="text-[20px] text-black flex  items-center  pl-8">
-                            {/* {pin} */}
-                            {
-                              data[key]?.section6Businessinformation
-                                ?.inputbusiness?.pin
-                            }
-                          </p>
-                          <p className="text-[20px] text-black flex  items-center mt-3">
-                            <i>
-                              {" "}
-                              <IoMdMail className="text-blue-900 mr-3  " />
-                            </i>{" "}
-                            {/* {email} */}
-                            {
-                              data[key]?.section6Businessinformation
-                                ?.inputbusiness?.email
-                            }
-                          </p>
-
-                          <p className="text-[20px] text-black flex items-center mt-3 mb-4 ">
-                            <CgWebsite className="text-blue-900 mr-3 " />
-                            {/* {website} */}
-                            {
-                              data[key]?.section6Businessinformation
-                                ?.inputbusiness?.website
-                            }
-                          </p>
-                        </div>
-                      </div>
-                    )}
                     {showMemosection4 && (
-                      <div className="flex items-center mt-5  h-full pb-5 pl-2    ">
-                        <input
-                          type="file"
-                          // onChange={(e) => setSelectedImage(e.target.files[0])}
-                          onChange={handleImageChange}
-                        />
-                        {/* <button
+                      <div className=" mt-5  h-full pb-5 pl-2    ">
+                        {businessdata && (
+                          <div className="flex items-center">
+                            <div className="text-2xl text-black  mt-2 pl-2 gap-3">
+                              <p className="text-[20px] text-black flex  items-center ">
+                                <i>
+                                  {" "}
+                                  <FaRegAddressCard className="text-blue-900 mr-3 text-3xl " />
+                                </i>{" "}
+                                {
+                                  data[key]?.section6Businessinformation
+                                    ?.lastDatasection6?.inputbusiness?.address2
+                                }
+                                {/* {address2} */}
+                              </p>
+                              <p className="text-[20px] text-black flex  items-center  pl-8">
+                                {/* {pin} */}
+                              </p>
+                              <p className="text-[20px] text-black flex  items-center mt-3">
+                                <i>
+                                  {" "}
+                                  <IoMdMail className="text-blue-900 mr-3 text-3xl " />
+                                </i>{" "}
+                                {/* {email} */}
+                                {
+                                  data[key]?.section6Businessinformation
+                                    ?.lastDatasection6?.inputbusiness?.email
+                                }
+                              </p>
+
+                              <p className="text-[20px] text-black flex items-center mt-3 mb-4 ">
+                                <CgWebsite className="text-blue-900 mr-3 text-3xl " />
+                                {/* {website} */}
+                                {
+                                  data[key]?.section6Businessinformation
+                                    ?.lastDatasection6?.inputbusiness?.website
+                                }
+                              </p>
+                            </div>
+                          </div>
+                        )}
+                        <div className="flex items-center">
+                          <input
+                            type="file"
+                            // onChange={(e) => setSelectedImage(e.target.files[0])}
+                            onChange={handleImageChange}
+                          />
+                          {/* <button
                       className="text-blue-600 w-full text-lg font-bold"
                       onClick={handleImageUpload}
                     >
                       Upload
                     </button> */}
 
-                        <button
-                          className="text-blue-600 w-full    text-lg font-bold"
-                          onClick={handleeditbusinessinfo}
-                        >
-                          Edit Business Information
-                        </button>
+                          <button
+                            className="text-blue-600 w-full    text-lg font-bold"
+                            onClick={handleeditbusinessinfo}
+                          >
+                            Edit Business Information
+                          </button>
+                        </div>
                       </div>
                     )}
                   </div>

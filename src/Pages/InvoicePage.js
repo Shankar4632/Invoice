@@ -70,6 +70,7 @@ const InvoicePage = () => {
   const [togglesection3, setTogglesection3] = useState(false);
   const [togglesection4, setTogglesection4] = useState(false);
   const [lastData, setLastData] = useState(null);
+  const [lastDatasection6, setLastDatasection6] = useState(null);
 
   //states for customise  items
   const [selectedTemplate, setSelectedTemplate] = useState("");
@@ -277,7 +278,7 @@ const InvoicePage = () => {
         otherAmount: otherAmount,
       },
       section6Businessinformation: {
-        inputbusiness,
+        lastDatasection6,
         imageUrl: imageUrl,
       },
     };
@@ -1099,15 +1100,16 @@ const InvoicePage = () => {
         if (snapshotValue !== null) {
           const dataKeys = Object.keys(snapshotValue);
           const lastKey = dataKeys[dataKeys.length - 1];
-          setBusinessdata(snapshotValue[lastKey]);
+          setLastDatasection6(snapshotValue[lastKey]);
+          console.log("lastDatasection6", lastDatasection6);
         } else {
-          setBusinessdata(null);
+          setLastDatasection6(null);
         }
         setIsLoading(false);
       });
 
     return () => {
-      setBusinessdata(null);
+      setLastDatasection6(null);
     };
   }, []);
 
@@ -2290,7 +2292,7 @@ const InvoicePage = () => {
               <div className="flex items-center h-20   w-full">
                 <div className="flex items-center justify-start ml-3 mt-3 w-full">
                   <div>
-                    {imageUrl && (
+                    {/* {imageUrl && (
                       <div>
                         <img
                           src={imageUrl}
@@ -2302,14 +2304,44 @@ const InvoicePage = () => {
                           }}
                         />
                       </div>
-                    )}
+                    )} */}
                   </div>
-                  <div>
-                    {businessdata && (
+                  <div className="flex items-center ">
+                    {/* {businessdata && (
                       <>
                         <div className="text-lg font-bold pl-5">
                           {" "}
                           {businessname}
+                        </div>
+                      </>
+                    )} */}
+                    {/* {lastDatasection6 && (
+                      <>
+                        <div className="text-lg font-bold pl-5">
+                          {" "}
+                          {lastDatasection6.imageUrl}
+                        </div>
+                      </>
+                    )} */}
+
+                    {lastDatasection6 && lastDatasection6.imageUrl && (
+                      <div className="text-lg font-bold pl-5">
+                        <img
+                          src={lastDatasection6.imageUrl}
+                          alt="Image"
+                          style={{
+                            width: "60px",
+                            height: "60px",
+                          }}
+                        />
+                      </div>
+                    )}
+
+                    {lastDatasection6 && (
+                      <>
+                        <div className="text-lg font-bold pl-5">
+                          {" "}
+                          {lastDatasection6.inputbusiness.email}
                         </div>
                       </>
                     )}
@@ -2331,44 +2363,78 @@ const InvoicePage = () => {
                 </div>
               </div>
               <div>
-                {businessdata && (
-                  <div className="flex items-center">
-                    <div className="text-2xl text-black  mt-2 pl-2 gap-3">
-                      <p className="text-[20px] text-black flex  items-center ">
-                        <i>
-                          {" "}
-                          <FaRegAddressCard className="text-blue-900 mr-3 " />
-                        </i>{" "}
-                        {address2}
-                      </p>
-                      <p className="text-[20px] text-black flex  items-center  pl-8">
-                        {pin}
-                      </p>
-                      <p className="text-[20px] text-black flex  items-center mt-3">
-                        <i>
-                          {" "}
-                          <IoMdMail className="text-blue-900 mr-3  " />
-                        </i>{" "}
-                        {email}
-                      </p>
-
-                      <p className="text-[20px] text-black flex items-center mt-3 mb-4 ">
-                        <CgWebsite className="text-blue-900 mr-3 " />
-                        {website}
-                      </p>
-                    </div>
-                  </div>
-                )}
                 {showMemosection4 && (
-                  <div className="flex items-center mt-5  h-full pb-5 pl-2    ">
-                    <input type="file" onChange={handleImageChange} />
+                  <div className=" mt-5  h-full pb-5 pl-2    ">
+                    {/* {businessdata && (
+                      <div className="flex items-center">
+                        <div className="text-2xl text-black  mt-2 pl-2 gap-3">
+                          <p className="text-[20px] text-black flex  items-center ">
+                            <i>
+                              {" "}
+                              <FaRegAddressCard className="text-blue-900 mr-3 " />
+                            </i>{" "}
+                            {address2}
+                          </p>
+                          <p className="text-[20px] text-black flex  items-center  pl-8">
+                            {pin}
+                          </p>
+                          <p className="text-[20px] text-black flex  items-center mt-3">
+                            <i>
+                              {" "}
+                              <IoMdMail className="text-blue-900 mr-3  " />
+                            </i>{" "}
+                            {email}
+                          </p>
 
-                    <button
-                      className="text-blue-600 w-full    text-lg font-bold"
-                      onClick={handleeditbusinessinfo}
-                    >
-                      Edit Business Information
-                    </button>
+                          <p className="text-[20px] text-black flex items-center mt-3 mb-4 ">
+                            <CgWebsite className="text-blue-900 mr-3 " />
+                            {website}
+                          </p>
+                        </div>
+                      </div>
+                    )} */}
+                    {lastDatasection6 && (
+                      <div className="flex items-center">
+                        <div className="text-2xl text-black  mt-2 pl-2 gap-3">
+                          <p className="text-[20px] text-black flex  items-center ">
+                            <i>
+                              {" "}
+                              <FaRegAddressCard className="text-blue-900 mr-3 text-3xl " />
+                            </i>{" "}
+                            {/* {address2} */}
+                            {lastDatasection6.inputbusiness.address2}
+                          </p>
+                          <p className="text-[20px] text-black flex  items-center  pl-8 text-3xl">
+                            {/* {pin} */}
+                            {lastDatasection6.inputbusiness.pin}
+                          </p>
+                          <p className="text-[20px] text-black flex  items-center mt-3 ">
+                            <i>
+                              {" "}
+                              <IoMdMail className="text-blue-900 mr-3 text-3xl  " />
+                            </i>{" "}
+                            {/* {email} */}
+                            {lastDatasection6.inputbusiness.email}
+                          </p>
+
+                          <p className="text-[20px] text-black flex items-center mt-3 mb-4 ">
+                            <CgWebsite className="text-blue-900 mr-3 text-3xl" />
+                            {/* {website} */}
+                            {lastDatasection6.inputbusiness.website}
+                          </p>
+                        </div>
+                      </div>
+                    )}
+                    <div className="flex items-center">
+                      {" "}
+                      <input type="file" onChange={handleImageChange} />
+                      <button
+                        className="text-blue-600 w-full    text-lg font-bold"
+                        onClick={handleeditbusinessinfo}
+                      >
+                        Edit Business Information
+                      </button>
+                    </div>
                   </div>
                 )}
               </div>
