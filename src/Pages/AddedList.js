@@ -33,6 +33,7 @@ const AddedList = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [billpdf, setBillpdf] = useState(false);
   const [selectedKey, setSelectedKey] = useState(null);
+  const [search, setSearch] = useState("");
 
   //get data from the db
   const [data, setData] = useState({});
@@ -187,12 +188,12 @@ const AddedList = () => {
                       key={key}
                       className="grid grid-cols-2  text-end  bg-white h-auto"
                     >
-                      <div className="flex justify-start items-center ml-20 ">
+                      <div className="flex justify-start items-center ml-20  ">
                         {data[key]?.section6Businessinformation?.imageUrl && (
                           <img
                             src={data[key].section6Businessinformation.imageUrl}
                             alt="Business Logo"
-                            style={{ maxWidth: "100%" }}
+                            className="w-60 h-60 "
                           />
                         )}
                       </div>
@@ -487,8 +488,9 @@ const AddedList = () => {
           id="outlined-required"
           className="w-[70%]  py-4 px-3 pr
           pl-10 border border-gray-500 rounded-md"
-          type="search"
-          placeholder="Search Icons..."
+          type="text"
+          placeholder="Search Invoice..."
+          onChange={(e) => setSearch(e.target.value)}
         />
         <button className="flex items-center gap-3 ml-5 border-2 text-blue-900 font-bold rounded-full text-xl px-5 border-blue-900 py-1">
           <CiSliderHorizontal className="font-extrabold" />
