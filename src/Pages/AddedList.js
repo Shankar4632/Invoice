@@ -45,7 +45,8 @@ const AddedList = () => {
     setIsOpen((prevId) => (prevId === id ? null : id));
   };
 
-  //pdf
+  //pdf\
+  const selectedKeyRef = useRef(null);
   const componentpdf = useRef();
   const generatepdf = useReactToPrint({
     content: () => componentpdf.current,
@@ -57,14 +58,30 @@ const AddedList = () => {
   const Downloadpdf = useReactToPrint({
     content: () => componentuserpdf.current,
     documentTitle: "Bill Downloaded ",
-    onafterprint: () => alert("data saved in pdf"),
+
+    onafterprint: () => {
+      alert("Data saved in PDF");
+      // Reset the selectedKey after generating the PDF
+      setSelectedKey(null);
+    },
   });
 
   const handlegeneratepdf = (key) => {
+    console.log("Selected Key (state):", selectedKey);
+    console.log("Selected Key (ref):", selectedKeyRef.current);
+
     setSelectedKey(key);
     setBillpdf(true);
-    Downloadpdf(true);
+    Downloadpdf();
+    selectedKeyRef.current = key;
   };
+
+  useEffect(() => {
+    if (selectedKey) {
+      Downloadpdf();
+      selectedKeyRef.current = selectedKey;
+    }
+  }, [selectedKey]);
 
   // delete
   const handleDelete = (key) => {
