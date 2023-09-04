@@ -408,7 +408,7 @@ const AddedList = () => {
                             </span>
                           </p>
                           <p className="font-bold text-2xl p-4 pr-10 flex justify-end border-b-4 border-gray-200">
-                            ToTal {data[key].countrycurrency}
+                            ToTal
                             {data[key]?.section5total.total}
                           </p>
                         </div>
@@ -585,7 +585,8 @@ const AddedList = () => {
                         scope="row"
                         className="px-6 py-4 text-2xl font-semibold text-gray-900 whitespace-nowrap dark:text-white"
                       >
-                        ${data[key].section5total.total} USD
+                        {data[key].countrycurrency}{" "}
+                        {data[key].section5total.total}
                       </th>
 
                       <td className="px-6 py-4">

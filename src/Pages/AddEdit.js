@@ -45,7 +45,7 @@ const inititalsection3value = {
 const inititalsection4value = {
   memo: "",
 };
-const initialState = {
+const initialState5 = {
   invoicedue: "",
   invoicedate: "",
   invoicenumber: "",
@@ -61,8 +61,11 @@ const inititalsection6 = {
   pin: "",
   additionalinfo: "",
 };
+const inititalvaluecurrency = {
+  countrycurrency: "",
+};
 const AddEdit = () => {
-  const [currency, setCurrency] = useState("");
+  const [currency, setCurrency] = useState(inititalvaluecurrency);
   const [showMemo, setShowMemo] = useState(false);
   const [invoiceNumber, setInvoiceNumber] = useState("");
   const [customisepopup, setCustomisePopup] = useState(false);
@@ -114,7 +117,11 @@ const AddEdit = () => {
 
   //get data from the db
   const [data, setData] = useState({});
+  const handlecurrency = (e) => {
+    const { value } = e.target;
 
+    setCurrency(value);
+  };
   //section - 1;
   const [inputValue, setInputValue] = useState("");
 
@@ -147,7 +154,7 @@ const AddEdit = () => {
   const { memo } = inputuser4;
 
   //section-5
-  const [inputuser5, setInputuser5] = useState(initialState);
+  const [inputuser5, setInputuser5] = useState(initialState5);
   //section-6 business information
   const [inputbusiness, setInputbusiness] = useState(inititalsection6);
   // const {
@@ -189,7 +196,7 @@ const AddEdit = () => {
   //   updatedArray.splice(index);
   // };
 
-  const Deleteemail = (e) => {
+  const Deleteemail = () => {
     console.log("Deleting data:", lastData);
     if (lastData && lastData.key) {
       console.log("Deleting data with key:", lastData.key);
@@ -305,6 +312,7 @@ const AddEdit = () => {
     e.preventDefault();
 
     const formData = {
+      countrycurrency: currency,
       section1: lastData,
       section2: data[key].section2,
       // section2: updatedItemList,
@@ -319,7 +327,9 @@ const AddEdit = () => {
         otherAmount: otherAmount,
       },
       section6Businessinformation: {
-        inputbusiness,
+        lastDatasection6: {
+          inputbusiness: { ...inputbusiness }, // Copy the input business data
+        },
       },
     };
     if (!formData) {
@@ -436,6 +446,20 @@ const AddEdit = () => {
     };
   }, [key]);
 
+  useEffect(() => {
+    if (data && key && data[key] && data[key].countrycurrency) {
+      console.log("Data:", data);
+      console.log("Key:", key);
+      console.log("Country Currency:", data[key].countrycurrency);
+      setCurrency({ ...data[key].countrycurrency });
+    } else {
+      setCurrency({ ...inititalvaluecurrency });
+    }
+    return () => {
+      setCurrency({ ...inititalvaluecurrency });
+    };
+  }, [key, data]);
+
   useEffect(
     (field) => {
       if (data && key && data[key] && singleItem[field]) {
@@ -478,29 +502,30 @@ const AddEdit = () => {
     if (data && key && data[key] && data[key].section5total?.inputuser5) {
       setInputuser5({ ...data[key].section5total.inputuser5 });
     } else {
-      setInputuser5({ ...initialState });
+      setInputuser5({ ...initialState5 });
     }
     return () => {
-      setInputuser5({ ...initialState });
+      setInputuser5({ ...initialState5 });
       console.log("Updated Data5:", data);
     };
   }, [key, data]); // Include loading state in the dependency array
+
   useEffect(() => {
     if (
       data &&
       key &&
       data[key] &&
-      data[key].section6Businessinformation?.lastDatasection6?.inputbusiness &&
-      data[key].section6Businessinformation?.imageUrl
+      data[key].section6Businessinformation?.lastDatasection6?.inputbusiness
+      // &&  data[key].section6Businessinformation?.imageUrl
     ) {
       setInputbusiness({
         ...data[key].section6Businessinformation.lastDatasection6.inputbusiness,
       });
     } else {
-      setInputbusiness({ ...initialState });
+      setInputbusiness({ ...inititalsection6 });
     }
     return () => {
-      setInputbusiness({ ...initialState });
+      setInputbusiness({ ...inititalsection6 });
       console.log("Updated Data6:", data);
     };
   }, [key, data]); // Include loading state in the dependency array
@@ -577,9 +602,7 @@ const AddEdit = () => {
   };
 
   const navigate = useNavigate();
-  const handlecurrency = (event) => {
-    setCurrency(event.target.value);
-  };
+
   const handlecustomiseui = () => {
     setCustomiseui(false);
     handleSaveClick();
@@ -1778,7 +1801,7 @@ const AddEdit = () => {
                   {/*===================================   section-1  =============================== */}
                   <div className="">
                     <div className=" flex justify-end w-full mt-3 pr-4">
-                      <Box sx={{ minWidth: 150 }}>
+                      <Box sx={{ minWidth: 120 }}>
                         <FormControl fullWidth>
                           <InputLabel id="currency-select-label">
                             Currency
@@ -1787,13 +1810,14 @@ const AddEdit = () => {
                           <Select
                             labelId="currency-select-label"
                             id="currency-select"
-                            value={currency}
+                            value="CA$"
                             label="Currency"
+                            name="countrycurrency"
                             onChange={handlecurrency}
                           >
                             <MenuItem value="">None</MenuItem>
                             {Currencydata.map((codes, index) => (
-                              <MenuItem value={codes.code} key={index}>
+                              <MenuItem value={codes.symbol} key={index}>
                                 {codes.code}
                               </MenuItem>
                             ))}
