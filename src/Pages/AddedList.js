@@ -585,7 +585,8 @@ const AddedList = () => {
                         scope="row"
                         className="px-6 py-4 text-2xl font-semibold text-gray-900 whitespace-nowrap dark:text-white"
                       >
-                        {data[key].countrycurrency}{" "}
+                        {JSON.stringify(data[key].countrycurrency)}
+
                         {data[key].section5total.total}
                       </th>
 

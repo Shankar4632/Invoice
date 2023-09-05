@@ -1651,6 +1651,7 @@ const InvoicePage = () => {
                       <Select
                         labelId="template-select-label"
                         id="template-select"
+                        defaultValue="template3"
                         value={selectedTemplate}
                         label="Templete"
                         onChange={handleselectedTemplate}

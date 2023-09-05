@@ -121,7 +121,15 @@ const AddEdit = () => {
     const { value } = e.target;
 
     setCurrency(value);
+
+    console.log("value:", value);
   };
+  // const handlecurrency = (event) => {
+  //   const { name, value } = event.target;
+  //   setCurrency({ ...currency, [name]: value });
+  //   console.log("name:", name);
+  //   console.log("value:", value);
+  // };
   //section - 1;
   const [inputValue, setInputValue] = useState("");
 
@@ -203,6 +211,7 @@ const AddEdit = () => {
       dataRef
         .ref()
         .child("Allsections")
+        .child("section1")
         .child(lastData.key)
         .remove()
         .then(() => {
@@ -2353,18 +2362,24 @@ const AddEdit = () => {
                           </form>
                           {isVisibleinvoicepage && (
                             <>
-                              <p className="p-3 font-extrabold ">$</p>
+                              <p className="p-3 font-extrabold ">
+                                {JSON.stringify(data[key].countrycurrency)}
+                              </p>
                             </>
                           )}
                           {isVisiblehours && (
                             <>
-                              <p className="p-3 font-extrabold ">$</p>
+                              <p className="p-3 font-extrabold ">
+                                {JSON.stringify(data[key].countrycurrency)}
+                              </p>
                             </>
                           )}
                           {isVisibleaccount && (
                             <>
                               {" "}
-                              <p className="p-3 font-bold ">$</p>
+                              <p className="p-3 font-bold ">
+                                {JSON.stringify(data[key].countrycurrency)}
+                              </p>
                             </>
                           )}
                         </div>
