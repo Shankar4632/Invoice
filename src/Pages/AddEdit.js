@@ -1810,7 +1810,7 @@ const AddEdit = () => {
                           <Select
                             labelId="currency-select-label"
                             id="currency-select"
-                            value="CA$"
+                            value={data[key]?.countrycurrency || ""}
                             label="Currency"
                             name="countrycurrency"
                             onChange={handlecurrency}
