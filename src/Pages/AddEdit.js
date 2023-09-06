@@ -95,7 +95,6 @@ const AddEdit = () => {
   const [selectedtaxFields, setSelectedtaxFields] = useState([]);
   const [selecteddateFields, setSelecteddateFields] = useState([]);
   const [selecteddiscountFields, setSelecteddiscountFields] = useState([]);
-  const [selecteditemFields, setSelecteditemFields] = useState([]);
   const [customiseui, setCustomiseui] = useState(true);
   const [discounts, setDiscount] = useState("");
   const [shipping, setShipping] = useState("");
@@ -204,26 +203,40 @@ const AddEdit = () => {
   //   updatedArray.splice(index);
   // };
 
+  // const Deleteemail = () => {
+  //   console.log("Deleting data:", lastData);
+  //   if (lastData && lastData.key) {
+  //     console.log("Deleting data with key:", lastData.key);
+  //     dataRef
+  //       .ref()
+  //       .child("Allsections")
+  //       .child(lastData.key)
+  //       .remove()
+  //       .then(() => {
+  //         console.log("Last data deleted successfully.");
+  //       })
+  //       .catch((error) => {
+  //         console.error("Error deleting last data:", error);
+  //         console.log("lastdata to delete", lastData);
+  //       });
+  //   } else {
+  //     console.log("lastData or lastData.key is not defined:", lastData);
+  //   }
+  // };
   const Deleteemail = () => {
-    console.log("Deleting data:", lastData);
-    if (lastData && lastData.key) {
-      console.log("Deleting data with key:", lastData.key);
-      dataRef
-        .ref()
-        .child("Allsections")
-        .child("section1")
-        .child(lastData.key)
-        .remove()
-        .then(() => {
-          console.log("Last data deleted successfully.");
-        })
-        .catch((error) => {
-          console.error("Error deleting last data:", error);
-          console.log("lastdata to delete", lastData);
-        });
-    } else {
-      console.log("lastData or lastData.key is not defined:", lastData);
-    }
+    // Construct the reference to the specific section1 data using the key
+    const section1Ref = dataRef.ref(`Allsections/${key}/section1`);
+
+    // Remove the section1 data
+    section1Ref
+      .remove()
+      .then(() => {
+        console.log("Section1 data deleted successfully");
+        navigate(`/addedit/${key}`);
+      })
+      .catch((error) => {
+        console.error("Error deleting section1 data:", error);
+      });
   };
 
   const removeItem = (index) => {
@@ -321,8 +334,8 @@ const AddEdit = () => {
     e.preventDefault();
 
     const formData = {
-      countrycurrency: currency,
-      section1: lastData,
+      currency,
+      section1: lastData.key,
       section2: data[key].section2,
       // section2: updatedItemList,
       section3message: input,
@@ -337,7 +350,7 @@ const AddEdit = () => {
       },
       section6Businessinformation: {
         lastDatasection6: {
-          inputbusiness: { ...inputbusiness }, // Copy the input business data
+          inputbusiness: { ...inputbusiness },
         },
       },
     };
@@ -1846,13 +1859,17 @@ const AddEdit = () => {
                           {lastData && (
                             <>
                               {/* {lastData.email} */}
-                              {data[key]?.section1.email}{" "}
+                              {data[key]?.section1?.email || (
+                                <p className="flex w-64 ">
+                                  Email not available
+                                </p>
+                              )}
                             </>
                           )}
                         </p>
                         <button
                           className="text-2xl   flex justify-end   w-full pr-20 font-extrabold "
-                          onClick={() => Deleteemail()}
+                          onClick={Deleteemail}
                         >
                           <RxCross1 />
                         </button>
@@ -2360,13 +2377,10 @@ const AddEdit = () => {
                               )}
                             </p>
                           </form>
-                          {isVisibleinvoicepage && (
-                            <>
-                              <p className="p-3 font-extrabold ">
-                                {JSON.stringify(data[key].countrycurrency)}
-                              </p>
-                            </>
-                          )}
+                          <p className="p-3 font-extrabold ">
+                            {/* {JSON.stringify(data[key].countrycurrency)} */}
+                          </p>
+                          {/* {isVisibleinvoicepage && <></>}
                           {isVisiblehours && (
                             <>
                               <p className="p-3 font-extrabold ">
@@ -2381,7 +2395,7 @@ const AddEdit = () => {
                                 {JSON.stringify(data[key].countrycurrency)}
                               </p>
                             </>
-                          )}
+                          )} */}
                         </div>
                       </div>
                     </>
