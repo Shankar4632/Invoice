@@ -335,7 +335,9 @@ const AddEdit = () => {
 
     const formData = {
       countrycurrency: currency,
-      section1: lastData.key || "",
+      // section1: lastData.key !== undefined ? lastData.key : data[key]?.section1,
+      section1:
+        lastData.key !== undefined ? lastData.key : data[key]?.section1 || "",
       section2: data[key].section2,
       // section2: updatedItemList,
       section3message: input,
