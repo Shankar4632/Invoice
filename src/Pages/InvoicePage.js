@@ -1055,7 +1055,6 @@ const InvoicePage = () => {
           const dataKeys = Object.keys(snapshotValue);
           const lastKey = dataKeys[dataKeys.length - 1];
           setLastData({
-            key: lastKey,
             ...snapshotValue[lastKey],
           });
           console.log("lastKey:", lastKey);

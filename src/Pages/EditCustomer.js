@@ -150,7 +150,7 @@ const EditCustomer = () => {
   const handleSubmitAll = (e) => {
     e.preventDefault();
 
-    const updatedSection1 = {
+    const lastData = {
       firstname,
       lastname,
       businessname,
@@ -179,7 +179,7 @@ const EditCustomer = () => {
 
     const updatedFormData = {
       ...data[key], // Keep the rest of the sections unchanged
-      section1: updatedSection1, // Update only section1
+      section1: lastData, // Update only section1
     };
 
     if (!updatedFormData) {

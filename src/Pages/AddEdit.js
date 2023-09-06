@@ -334,8 +334,8 @@ const AddEdit = () => {
     e.preventDefault();
 
     const formData = {
-      currency,
-      section1: lastData.key,
+      countrycurrency: currency,
+      section1: lastData.key || "",
       section2: data[key].section2,
       // section2: updatedItemList,
       section3message: input,
@@ -436,7 +436,6 @@ const AddEdit = () => {
           const dataKeys = Object.keys(snapshotValue);
           const lastKey = dataKeys[dataKeys.length - 1];
           setLastData({
-            key: lastKey,
             ...snapshotValue[lastKey],
           });
           console.log("lastKey:", lastKey);
