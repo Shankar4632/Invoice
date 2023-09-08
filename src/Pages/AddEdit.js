@@ -37,6 +37,7 @@ const inititalvalue = {
   itemnamehours: "",
   hours: 0,
   rate: 0,
+  date: "",
   itemnameaccount: "",
 };
 const inititalsection3value = {
@@ -80,9 +81,9 @@ const AddEdit = () => {
   const [fields7, setFields7] = useState(["hours"]);
   const [fields8, setFields8] = useState(["rate"]);
   const [fields1, setField1] = useState(["description"]);
-  const [fields2, setField2] = useState([]);
-  const [fields3, setField3] = useState([]);
-  const [fields4, setField4] = useState([]);
+  const [fields2, setField2] = useState(["tax"]);
+  const [fields3, setField3] = useState(["discount"]);
+  const [fields4, setField4] = useState(["date"]);
 
   const [selectedFields, setSelectedFields] = useState([]);
   const [selectedFields5, setSelectedFields5] = useState([]);
@@ -139,7 +140,7 @@ const AddEdit = () => {
 
   //section-2
   const [itemlist, setItemlist] = useState([]);
-  console.log(itemlist);
+  console.log("ITEMLIST", itemlist);
 
   const [singleItem, setSingleItem] = useState({
     ItemName: "",
@@ -149,6 +150,7 @@ const AddEdit = () => {
     tax: "",
     discount: 0,
     itemnamehours: "",
+    date: "",
     hours: 0,
     rate: 0,
     itemnameaccount: "",
@@ -193,36 +195,8 @@ const AddEdit = () => {
     updatedData[index][name] = value;
     setSingleItem({ ...updatedData[index] });
     setData({ ...data, [key]: { ...data[key], section2: updatedData } });
-    // const list = [...itemlist];
-    // list[index][name] = value;
-    // setItemlist(list);
-    // console.log("itemlist:", name, value);
   };
-  // const removeItem = (index) => {
-  //   const updatedArray = [...data[index].section2];
-  //   updatedArray.splice(index);
-  // };
 
-  // const Deleteemail = () => {
-  //   console.log("Deleting data:", lastData);
-  //   if (lastData && lastData.key) {
-  //     console.log("Deleting data with key:", lastData.key);
-  //     dataRef
-  //       .ref()
-  //       .child("Allsections")
-  //       .child(lastData.key)
-  //       .remove()
-  //       .then(() => {
-  //         console.log("Last data deleted successfully.");
-  //       })
-  //       .catch((error) => {
-  //         console.error("Error deleting last data:", error);
-  //         console.log("lastdata to delete", lastData);
-  //       });
-  //   } else {
-  //     console.log("lastData or lastData.key is not defined:", lastData);
-  //   }
-  // };
   const Deleteemail = () => {
     // Construct the reference to the specific section1 data using the key
     const section1Ref = dataRef.ref(`Allsections/${key}/section1`);
@@ -268,6 +242,7 @@ const AddEdit = () => {
         description: "",
         tax: "",
         discount: 0,
+        date: "",
         itemnamehours: "",
         hours: 0,
         rate: 0,
@@ -874,15 +849,54 @@ const AddEdit = () => {
   //     </div>
   //   ));
   // };
+  // const renderFields7 = ({ singleItem, index }) => {
+  //   return fields7.map((field7) => {
+  //     const isKey = typeof singleItem === "string";
+
+  //     return (
+  //       <div key={field7}>
+  //         {(!isKey ||
+  //           (singleItem[field7] !== undefined &&
+  //             singleItem[field7] !== "")) && (
+  //           <TextField
+  //             id="outlined-search"
+  //             type="text"
+  //             label={field7}
+  //             style={{
+  //               marginRight: "10px",
+  //               width: "100%",
+  //             }}
+  //             className=" w-[500px]"
+  //             name={field7}
+  //             value={isKey ? "" : (singleItem && singleItem[field7]) || ""}
+  //             onChange={(e) =>
+  //               isKey
+  //                 ? handlechangeadditemlist(e, index)
+  //                 : handlechangeadditemlist(e, index)
+  //             }
+  //           />
+  //         )}
+  //       </div>
+  //     );
+  //   });
+  // };
   const renderFields7 = ({ singleItem, index }) => {
     return fields7.map((field7) => {
       const isKey = typeof singleItem === "string";
+      console.log(`Field: ${field7}`);
+      console.log(`Value: [${singleItem[field7]}]`);
+      console.log(`Type: ${typeof singleItem[field7]}`);
+
+      const hasDataInDatabase =
+        !isKey ||
+        (singleItem &&
+          singleItem[field7] !== undefined &&
+          singleItem[field7] !== "" &&
+          singleItem[field7] !== 0);
 
       return (
         <div key={field7}>
-          {(!isKey ||
-            (singleItem[field7] !== undefined &&
-              singleItem[field7] !== "")) && (
+          {hasDataInDatabase && (
             <TextField
               id="outlined-search"
               type="text"
@@ -891,20 +905,17 @@ const AddEdit = () => {
                 marginRight: "10px",
                 width: "100%",
               }}
-              className=" w-[500px]"
+              className="w-[500px]"
               name={field7}
-              value={isKey ? "" : (singleItem && singleItem[field7]) || ""}
-              onChange={(e) =>
-                isKey
-                  ? handlechangeadditemlist(e, index)
-                  : handlechangeadditemlist(e, index)
-              }
+              value={(singleItem && singleItem[field7]) || ""}
+              onChange={(e) => handlechangeadditemlist(e, index)}
             />
           )}
         </div>
       );
     });
   };
+
   const renderFields8 = ({ singleItem, index }) => {
     return fields8.map((field8) => {
       const isKey = typeof singleItem === "string";
@@ -1014,7 +1025,7 @@ const AddEdit = () => {
             <Box
               component="form"
               sx={{
-                "& .MuiTextField-root": { m: 1, width: "25ch" },
+                "& .MuiTextField-root": { width: "25ch" },
               }}
               noValidate
               autoComplete="off"
@@ -1559,7 +1570,7 @@ const AddEdit = () => {
                         onChange={handleChangesection6}
                       />
                     </div>
-                    <div className="flex justify-center  mt-10">
+                    <div className="flex justify-center   mt-10">
                       {/* <button
                         className="text-white bg-[#003087] px-9 py-3  rounded-full    font-extrabold text-lg"
                         type="submit"
@@ -1568,7 +1579,7 @@ const AddEdit = () => {
                         Save
                       </button> */}
                       <input
-                        className="px-8 py-3 rounded-3xl  bg-blue-900 text-white font-bold mx-auto cursor-pointer"
+                        className="px-8 py-3  rounded-3xl  bg-blue-900 text-white font-bold mx-auto cursor-pointer"
                         value={key ? "Update" : "Save"}
                         onClick={handleSubmitsection6}
                         type="submit"
@@ -1904,7 +1915,7 @@ const AddEdit = () => {
                         <MdModeEditOutline className="mr-1" /> Customise
                       </button>
                     </div>
-                    {data[key]?.section2 ? (
+                    {/* {data[key]?.section2 ? (
                       data[key].section2.map((key, index) => (
                         <div className="flex">
                           <div
@@ -1919,6 +1930,7 @@ const AddEdit = () => {
                                     {renderFields({ singleItem: key, index })}
                                     {renderFields5({ singleItem: key, index })}
                                     {renderFields6({ singleItem: key, index })}
+                                    {renderFields7({ singleItem: key, index })}
 
                                     {renderFieldstax({
                                       singleItem: key,
@@ -2002,7 +2014,128 @@ const AddEdit = () => {
                       ))
                     ) : (
                       <p>Section 2 data is missing or undefined</p>
+                    )} */}
+                    {data[key]?.section2 && data[key].section2.length > 0 ? (
+                      data[key].section2.map((key, index) => (
+                        <div className="flex" key={index}>
+                          <div
+                            className="h-auto  w-[97%] mt-4  border-2 rounded-xl mx-auto  "
+                            id="additems"
+                          >
+                            {customiseui ? (
+                              <div className="p-3   ">
+                                <div className="   flex items-center ">
+                                  <div className="flex gap-4">
+                                    {renderFields({ singleItem: key, index })}
+                                    {key.quantity !== undefined &&
+                                      key.quantity !== "" &&
+                                      key.quantity !== 0 &&
+                                      renderFields5({ singleItem: key, index })}
+                                    {key.price !== undefined &&
+                                      key.price !== "" &&
+                                      key.price !== 0 &&
+                                      renderFields6({ singleItem: key, index })}
+
+                                    {key.hours !== undefined &&
+                                      key.hours !== "" &&
+                                      key.hours !== 0 &&
+                                      renderFields7({ singleItem: key, index })}
+
+                                    {key.tax !== undefined &&
+                                      key.tax !== "" &&
+                                      key.tax !== 0 &&
+                                      renderFieldstax({
+                                        singleItem: key,
+                                        index,
+                                      })}
+                                    {key.discount !== undefined &&
+                                      key.discount !== "" &&
+                                      key.discount !== 0 &&
+                                      renderFieldsdiscount({
+                                        singleItem: key,
+                                        index,
+                                      })}
+                                    {key.date !== undefined &&
+                                      key.date !== "" &&
+                                      key.date !== 0 &&
+                                      renderFieldsdate({ singleItem, index })}
+                                  </div>
+                                </div>
+                                <div>
+                                  {key.description !== undefined &&
+                                    key.description !== "" &&
+                                    key.description !== 0 &&
+                                    renderFieldsdescription({
+                                      singleItem: key,
+                                      index,
+                                    })}
+                                </div>
+                              </div>
+                            ) : (
+                              <div className="p-3   ">
+                                <div className="   flex items-center gap-5 ">
+                                  {renderSelectedFields({
+                                    singleItem: key,
+                                    index,
+                                  })}
+                                  {renderSelectedFields5({
+                                    singleItem: key,
+                                    index,
+                                  })}
+                                  {renderSelectedFields6({
+                                    singleItem: key,
+                                    index,
+                                  })}
+
+                                  {renderSelectedtaxFields({
+                                    singleItem: key,
+                                    index,
+                                  })}
+                                  {renderSelecteddiscountFields({
+                                    singleItem: key,
+                                    index,
+                                  })}
+                                  {renderSelecteddateFields({
+                                    singleItem: key,
+                                    index,
+                                  })}
+                                </div>
+                                <div>
+                                  {renderSelecteddescriptionFields({
+                                    singleItem: key,
+                                    index,
+                                  })}
+                                </div>
+                              </div>
+                            )}
+                            <div className="flex justify-end pr-7 pb-3">
+                              {key && (
+                                <>
+                                  <p className="font-bold text-md">
+                                    Amounts: $
+                                    {key.discount
+                                      ? (key.price *
+                                          key.quantity *
+                                          key.discount) /
+                                        100
+                                      : key.price * key.quantity}
+                                  </p>
+                                </>
+                              )}
+                            </div>
+                          </div>
+                          <button
+                            className="text-2xl     font-extrabold"
+                            onClick={() => removeItem(index)}
+                          >
+                            <RxCross1 />
+                          </button>
+                        </div>
+                      ))
+                    ) : (
+                      <p>Section 2 data is missing or undefined</p>
                     )}
+
                     {/* {key.length - 1 === index && (
                       <button
                         className=" ml-4 mt-3 text-blue-600  font-extrabold  flex items-center text-xl "

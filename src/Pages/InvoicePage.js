@@ -146,6 +146,7 @@ const InvoicePage = () => {
     tax: "",
     discount: 0,
     itemnamehours: "",
+    date: "",
     hours: 0,
     rate: 0,
     itemnameaccount: "",
@@ -727,7 +728,7 @@ const InvoicePage = () => {
         <Box
           component="form"
           sx={{
-            "& .MuiTextField-root": { m: 1, width: "25ch" },
+            "& .MuiTextField-root": { width: "25ch" },
           }}
           noValidate
           autoComplete="off"
