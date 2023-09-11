@@ -674,6 +674,7 @@ const AddEdit = () => {
   const renderFields = ({ singleItem, index }) => {
     return fields.map((field) => {
       const isKey = typeof singleItem === "string";
+      console.log("singleItemdiscount:", singleItem);
 
       return (
         <div key={field}>
@@ -704,7 +705,6 @@ const AddEdit = () => {
   const renderFields5 = ({ singleItem, index }) => {
     return fields5.map((field5) => {
       const isKey = typeof singleItem === "string";
-
       return (
         <div key={field5}>
           {(!isKey ||
@@ -883,9 +883,6 @@ const AddEdit = () => {
   const renderFields7 = ({ singleItem, index }) => {
     return fields7.map((field7) => {
       const isKey = typeof singleItem === "string";
-      console.log(`Field: ${field7}`);
-      console.log(`Value: [${singleItem[field7]}]`);
-      console.log(`Type: ${typeof singleItem[field7]}`);
 
       const hasDataInDatabase =
         !isKey ||
@@ -1055,38 +1052,7 @@ const AddEdit = () => {
       );
     });
   };
-  // const renderFieldstax = ({ singleItem, index }) => {
-  //   return fields2.map((fields2) => (
-  //     <div key={fields2}>
-  //       {singleItem[fields2] !== undefined && singleItem[fields2] !== 0 && (
-  //         <Box
-  //           component="form"
-  //           sx={{
-  //             "& .MuiTextField-root": { m: 1, width: "25ch" },
-  //           }}
-  //           noValidate
-  //           autoComplete="off"
-  //         >
-  //           <TextField
-  //             id="outlined-select-currency"
-  //             select
-  //             label="Select"
-  //             defaultValue="select"
-  //             name="tax"
-  //             value={(singleItem && singleItem[fields2]) || ""}
-  //             onChange={(e) => handlechangeadditemlist(e, index)}
-  //           >
-  //             {taxes.map((option) => (
-  //               <MenuItem key={option.value} value={option.value}>
-  //                 {option.label}
-  //               </MenuItem>
-  //             ))}
-  //           </TextField>
-  //         </Box>
-  //       )}
-  //     </div>
-  //   ));
-  // };
+
   const renderFieldsdiscount = ({ singleItem, index }) => {
     return fields3.map((fields3) => {
       const isKey = typeof singleItem === "string";
@@ -1167,6 +1133,105 @@ const AddEdit = () => {
       );
     });
   };
+  // const renderFieldsdate = ({ singleItem, index }) => {
+  //   return fields4.map((fields4) => {
+  //     const isKey = typeof singleItem === "string";
+  //     const fieldValue = singleItem[fields4];
+
+  //     console.log(`Field: ${fields4}`);
+  //     console.log(`isKey: ${isKey}`);
+  //     console.log(`fieldValue: ${fieldValue}`);
+  //     console.log("singleItem:", singleItem);
+
+  //     return (
+  //       <div key={fields4}>
+  //         {(!isKey ||
+  //           (fieldValue[fields4] !== undefined &&
+  //             fieldValue[fields4] !== "")) && (
+  //           <TextField
+  //             id="outlined-search"
+  //             type="date"
+  //             style={{
+  //               marginRight: "10px",
+  //               width: "100%",
+  //             }}
+  //             name="date"
+  //             // value={isKey ? "" : (singleItem && singleItem[fields4]) || ""}
+  //             value={isKey ? "" : fieldValue || ""}
+  //             onChange={(e) =>
+  //               isKey
+  //                 ? handlechangeadditemlist(e, index)
+  //                 : handlechangeadditemlist(e, index)
+  //             }
+  //           />
+  //         )}
+  //       </div>
+  //     );
+  //   });
+  // };
+  // const renderFieldsdate = ({ singleItem, index }) => {
+  //   return fields4.map((field) => {
+  //     const isKey = typeof singleItem === "string";
+  //     const fieldValue = singleItem[field];
+
+  //     console.log(`Field: ${field}`);
+  //     console.log(`isKey: ${isKey}`);
+  //     console.log(`fieldValue: ${fieldValue}`);
+  //     console.log("singleItemdate:", singleItem);
+
+  //     return (
+  //       <div key={field}>
+  //         {(!isKey ||
+  //           (fieldValue !== undefined && fieldValue[field] !== "")) && (
+           
+  //           <input
+  //             type="date"
+  //             name={field}
+  //             className="p-4 border flex items-start ml-6 border-gray-300"
+  //             value={isKey ? "" : (fieldValue && fieldValue[field]) || ""}
+  //             onChange={(e) =>
+  //               isKey
+  //                 ? handlechangeadditemlist(e, index)
+  //                 : handlechangeadditemlist(e, index)
+  //             }
+  //           />
+  //         )}
+  //       </div>
+  //     );
+  //   });
+  // };
+
+  // const renderFields = ({ singleItem, index }) => {
+  //   return fields.map((field) => {
+  //     const isKey = typeof singleItem === "string";
+  //     console.log("singleItemdiscount:", singleItem);
+
+  //     return (
+  //       <div key={field}>
+  //         {(!isKey ||
+  //           (singleItem[field] !== undefined && singleItem[field] !== "")) && (
+  //           <TextField
+  //             id="outlined-search"
+  //             type="text"
+  //             label={field}
+  //             style={{
+  //               marginRight: "10px",
+  //             }}
+  //             className=" w-[500px]"
+  //             name={field}
+  //             value={isKey ? "" : (singleItem && singleItem[field]) || ""}
+  //             onChange={(e) =>
+  //               isKey
+  //                 ? handlechangeadditemlist(e, index)
+  //                 : handlechangeadditemlist(e, index)
+  //             }
+  //           />
+  //         )}
+  //       </div>
+  //     );
+  //   });
+  // };
+
   // const renderFieldsdate = ({ singleItem, index }) => {
   //   return fields4.map((fields4) => (
   //     <div key={fields4}>
@@ -1728,6 +1793,7 @@ const AddEdit = () => {
                           htmlFor="Item"
                           className="text-lg font-semibold text-gray-700"
                         >
+                          {" "}
                           Discount
                         </label>
                         <br />
@@ -1865,8 +1931,8 @@ const AddEdit = () => {
                     </div>
 
                     <div className="mx-auto  w-[97%]  border-2 h-36 rounded-xl">
-                      <div className="flex items-center w-full  mt-10 pl-10">
-                        <p className="text-2xl   font-semibold">
+                      <div className="flex items-center w-full   mt-10 pl-10">
+                        <p className="text-2xl  w-full   font-semibold">
                           {" "}
                           {lastData && (
                             <>
@@ -1880,7 +1946,7 @@ const AddEdit = () => {
                           )}
                         </p>
                         <button
-                          className="text-2xl   flex justify-end   w-full pr-20 font-extrabold "
+                          className="text-2xl   flex justify-end    pr-20 font-extrabold "
                           onClick={Deleteemail}
                         >
                           <RxCross1 />
@@ -2058,7 +2124,10 @@ const AddEdit = () => {
                                     {key.date !== undefined &&
                                       key.date !== "" &&
                                       key.date !== 0 &&
-                                      renderFieldsdate({ singleItem, index })}
+                                      renderFieldsdate({
+                                        singleItem: key,
+                                        index,
+                                      })}
                                   </div>
                                 </div>
                                 <div>
@@ -2083,6 +2152,14 @@ const AddEdit = () => {
                                     index,
                                   })}
                                   {renderSelectedFields6({
+                                    singleItem: key,
+                                    index,
+                                  })}
+                                  {renderSelectedFields7({
+                                    singleItem: key,
+                                    index,
+                                  })}
+                                  {renderSelectedFields8({
                                     singleItem: key,
                                     index,
                                   })}
