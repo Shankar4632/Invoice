@@ -1183,7 +1183,7 @@ const AddEdit = () => {
   //       <div key={field}>
   //         {(!isKey ||
   //           (fieldValue !== undefined && fieldValue[field] !== "")) && (
-           
+
   //           <input
   //             type="date"
   //             name={field}
@@ -1476,8 +1476,9 @@ const AddEdit = () => {
   if (lastData !== null && lastData.length > 0) {
     return <div>No data available</div>;
   }
+  const section2Data = data[key]?.section2 || [];
   // const inputusersection5 = data[key]?.section5total?.inputuser5;
-  const subtotal1 = data[key]?.section2.reduce((accumulator, item) => {
+  const subtotal1 = section2Data.reduce((accumulator, item) => {
     if (item.discount) {
       return accumulator + (item.price * item.quantity * item.discount) / 100;
     }
@@ -1927,7 +1928,7 @@ const AddEdit = () => {
                     </div>
                     <hr className="mt-3 w-[97%] mx-auto" />
                     <div className="flex items-center p-3 ml-5">
-                      <p className="font-extrabold text-xl">Bill To</p>
+                      <p className="font-extrabold text-[24px]">Bill To</p>
                     </div>
 
                     <div className="mx-auto  w-[97%]  border-2 h-36 rounded-xl">
@@ -2201,16 +2202,35 @@ const AddEdit = () => {
                               )}
                             </div>
                           </div>
-                          <button
-                            className="text-2xl     font-extrabold"
-                            onClick={() => removeItem(index)}
-                          >
-                            <RxCross1 />
-                          </button>
+                          {index > 0 && (
+                            <button
+                              className="text-2xl font-extrabold"
+                              onClick={() => removeItem(index)}
+                            >
+                              <RxCross1 />
+                            </button>
+                          )}
+                          {/* {data[key]?.section2 &&
+                          data[key].section2.length > 0 ? (
+                            <button
+                              className="text-2xl font-extrabold"
+                              onClick={() => removeItem(index)}
+                            >
+                              <RxCross1 />
+                            </button>
+                          ) : null} */}
                         </div>
                       ))
                     ) : (
-                      <p>Section 2 data is missing or undefined</p>
+                      <div
+                        className="h-auto  w-[97%] mt-4  border-2 rounded-xl mx-auto  "
+                        id="additems"
+                      >
+                        {" "}
+                        <p className="text-center font-bold text-2xl ">
+                          Data is missing
+                        </p>
+                      </div>
                     )}
 
                     {/* {key.length - 1 === index && (
@@ -2231,7 +2251,7 @@ const AddEdit = () => {
                   {/*  ==============================  section-3  ============================= */}
 
                   <div className="p-3">
-                    <p className="font-bold text-xl ml-5">
+                    <p className="font-extrabold text-[24px] ml-5">
                       Message To Customer
                     </p>
                     <div className=" mb-2" data-te-input-wrapper-init>
@@ -2260,7 +2280,7 @@ const AddEdit = () => {
                   {/*===================================  section-4  =================================*/}
                   <div className="  p-3 ">
                     <div className="flex items-center">
-                      <p className=" text-[27px]  ml-3 font-semibold w-full">
+                      <p className=" text-[24px]  ml-3 font-extrabold w-full">
                         More Options
                       </p>
                       <button onClick={hideshow}>
@@ -2297,7 +2317,7 @@ const AddEdit = () => {
                             </p>
                           </div>
                           <div className=" p-3 mt-10 mb-4">
-                            <p className="font-bold text-xl ml-2">
+                            <p className="font-extrabold text-[24px]  ">
                               Memo To Self
                             </p>
                             <div className=" mb-2">
