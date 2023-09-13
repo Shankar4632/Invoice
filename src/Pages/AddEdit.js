@@ -233,10 +233,27 @@ const AddEdit = () => {
       });
   };
 
+  // const handleAddItem = () => {
+  //   setItemlist([
+  //     ...itemlist,
+  //     {
+  //       ItemName: "",
+  //       quantity: 0,
+  //       price: 0,
+  //       description: "",
+  //       tax: "",
+  //       discount: 0,
+  //       date: "",
+  //       itemnamehours: "",
+  //       hours: 0,
+  //       rate: 0,
+  //     },
+  //   ]);
+  // };
   const handleAddItem = () => {
-    setItemlist([
-      ...itemlist,
-      {
+    // Ensure itemlist is an array before adding a new item
+    if (Array.isArray(itemlist)) {
+      const newItem = {
         ItemName: "",
         quantity: 0,
         price: 0,
@@ -247,8 +264,9 @@ const AddEdit = () => {
         itemnamehours: "",
         hours: 0,
         rate: 0,
-      },
-    ]);
+      };
+      setItemlist([...itemlist, newItem]);
+    }
   };
 
   // const updatedItemList = data[key].section2.map((key, item) => {
@@ -1032,52 +1050,25 @@ const AddEdit = () => {
       );
     });
   };
-
   const renderFieldsdiscount = ({ singleItem, index }) => {
-    const isKey = typeof singleItem === "string";
+    return fields3.map((field) => {
+      const isKey = typeof singleItem === "string";
+      console.log("singleItemdiscount:", singleItem);
 
-    console.log("singleItem for renderFieldsdiscount:", singleItem);
-    console.log("isKey for renderFieldsdiscount:", isKey);
-    console.log("Discount field value:", singleItem["discount"]);
-    return fields3.map((fields3) => {
       return (
-        <div key={fields3}>
-          {/* {(!isKey ||
-            (singleItem[fields3] !== undefined &&
-              singleItem[fields3] !== "")) && (
-            <TextFied
-              id="outlined-search"
-              type="text"
-              label={fields3}
-              style={{
-                marginRight: "10px",
-                width: "100%",
-              }}
-              className=" w-[500px]"
-              name={fields3}
-              value={isKey ? "" : (singleItem && singleItem[fields3]) || ""}
-              onChange={(e) =>
-                isKey
-                  ? handlechangeadditemlist(e, index)
-                  : handlechangeadditemlist(e, index)
-              }
-            />
-          )} */}
-
+        <div key={field}>
           {(!isKey ||
-            (singleItem["discount"] !== undefined &&
-              singleItem["discount"] !== "")) && (
+            (singleItem[field] !== undefined && singleItem[field] !== "")) && (
             <TextField
               id="outlined-search"
               type="text"
-              label="Discount"
+              label={field}
               style={{
                 marginRight: "10px",
-                width: "100%",
               }}
               className=" w-[500px]"
-              name="discount"
-              value={isKey ? "" : (singleItem && singleItem["discount"]) || ""}
+              name={field}
+              value={isKey ? "" : (singleItem && singleItem[field]) || ""}
               onChange={(e) =>
                 isKey
                   ? handlechangeadditemlist(e, index)
@@ -1089,6 +1080,37 @@ const AddEdit = () => {
       );
     });
   };
+
+  // const renderFieldsdiscount = ({ singleItem, index }) => {
+  //   return fields3.map((fields3) => {
+  //     const isKey = typeof singleItem === "string";
+  //     return (
+  //       <div key={fields3}>
+  //         {(!isKey ||
+  //           (singleItem[fields3] !== undefined &&
+  //             singleItem[fields3] !== "")) && (
+  //           <TextFied
+  //             id="outlined-search"
+  //             type="text"
+  //             label={fields3}
+  //             style={{
+  //               marginRight: "10px",
+  //               width: "100%",
+  //             }}
+  //             className=" w-[500px]"
+  //             name={fields3}
+  //             value={isKey ? "" : (singleItem && singleItem[fields3]) || ""}
+  //             onChange={(e) =>
+  //               isKey
+  //                 ? handlechangeadditemlist(e, index)
+  //                 : handlechangeadditemlist(e, index)
+  //             }
+  //           />
+  //         )}
+  //       </div>
+  //     );
+  //   });
+  // };
   // const renderFieldsdiscount = ({ singleItem, index }) => {
   //   return fields3.map((fields3) => (
   //     <div key={fields3}>
@@ -1758,7 +1780,7 @@ const AddEdit = () => {
                 <div className="border-2    h-auto rounded-xl bg-white ">
                   {/*===================================   section-1  =============================== */}
                   <div className="">
-                    <div className=" flex justify-end w-full mt-3 pr-4">
+                    <div className=" flex justify-end w-full mt-3 pr-5">
                       <Box sx={{ minWidth: 120 }}>
                         <FormControl fullWidth>
                           <InputLabel id="currency-select-label">
@@ -1784,53 +1806,55 @@ const AddEdit = () => {
                       </Box>
                     </div>
                     <hr className="mt-3 w-[97%] mx-auto" />
-                    <div className="flex items-center p-3 ml-5">
-                      <p className="font-extrabold text-[24px]">Bill To</p>
-                    </div>
-
-                    <div className="mx-auto  w-[97%]  border-2 h-36 rounded-xl">
-                      <div className="flex items-center w-full   mt-10 pl-10">
-                        <p className="text-2xl  w-full   font-semibold">
-                          {" "}
-                          {lastData && (
-                            <>
-                              {/* {lastData.email} */}
-                              {data[key]?.section1?.email || (
-                                <p className="flex w-64 ">
-                                  Email not available
-                                </p>
-                              )}
-                            </>
-                          )}
-                        </p>
-                        <button
-                          className="text-2xl   flex justify-end    pr-20 font-extrabold "
-                          onClick={Deleteemail}
-                        >
-                          <RxCross1 />
-                        </button>
+                    <div className=" ">
+                      <div className="flex items-center ml-5 mt-7 ">
+                        <p className="font-extrabold text-xl">Bill To</p>
                       </div>
-                      {/* <button
+
+                      <div className="mx-auto  w-[97%] mt-4  border-2 h-36 rounded-xl">
+                        <div className="flex items-center w-full   mt-10 pl-10">
+                          <p className="text-2xl  w-full   font-semibold">
+                            {" "}
+                            {lastData && (
+                              <>
+                                {/* {lastData.email} */}
+                                {data[key]?.section1?.email || (
+                                  <p className="flex w-64 ">
+                                    Email not available
+                                  </p>
+                                )}
+                              </>
+                            )}
+                          </p>
+                          <button
+                            className="text-2xl   flex justify-end    pr-20 font-extrabold "
+                            onClick={Deleteemail}
+                          >
+                            <RxCross1 />
+                          </button>
+                        </div>
+                        {/* <button
                         className="mt-3 text-blue-600 pl-10  text-2xl   font-semibold"
                         onClick={() => {
                           navigate("");
                         }}
                       ></button> */}
 
-                      <Link to={`/editcustomer/${key}`}>
-                        <button className="mt-3 text-blue-600 pl-10  text-2xl   font-semibold">
-                          Edit Customer information
-                        </button>
-                      </Link>
+                        <Link to={`/editcustomer/${key}`}>
+                          <button className="mt-3 text-blue-600 pl-10  text-2xl   font-semibold">
+                            Edit Customer information
+                          </button>
+                        </Link>
+                      </div>
                     </div>
                   </div>
                   {/*==================================  section-2  =============================== */}
 
-                  <div className="p-3  ">
-                    <div className="flex items-center pl-3 pt-20">
-                      <p className="font-bold text-xl w-full ml-3">Items</p>
+                  <div className="  ">
+                    <div className="flex items-center ml-5 mt-16 ">
+                      <p className="font-extrabold text-xl w-full ">Items</p>
                       <button
-                        className=" text-blue-500 text-xl font-extrabold  rounded-full  flex justify-end items-center mr-3"
+                        className=" text-blue-500 text-xl font-extrabold  rounded-full  flex justify-end items-center mr-6"
                         onClick={(event) => {
                           event.preventDefault();
                           setCustomisePopup(true);
@@ -1839,106 +1863,7 @@ const AddEdit = () => {
                         <MdModeEditOutline className="mr-1" /> Customise
                       </button>
                     </div>
-                    {/* {data[key]?.section2 ? (
-                      data[key].section2.map((key, index) => (
-                        <div className="flex">
-                          <div
-                            className="h-auto  w-[97%] mt-4  border-2 rounded-xl mx-auto  "
-                            id="additems"
-                            key={index}
-                          >
-                            {customiseui ? (
-                              <div className="p-3   ">
-                                <div className="   flex items-center ">
-                                  <div className="flex gap-4">
-                                    {renderFields({ singleItem: key, index })}
-                                    {renderFields5({ singleItem: key, index })}
-                                    {renderFields6({ singleItem: key, index })}
-                                    {renderFields7({ singleItem: key, index })}
 
-                                    {renderFieldstax({
-                                      singleItem: key,
-                                      index,
-                                    })}
-                                    {renderFieldsdiscount({
-                                      singleItem: key,
-                                      index,
-                                    })}
-                                  </div>
-                                </div>
-                                <div>
-                                  {renderFieldsdescription({
-                                    singleItem: key,
-                                    index,
-                                  })}
-                                </div>
-                              </div>
-                            ) : (
-                              <div className="p-3   ">
-                                <div className="   flex items-center gap-5 ">
-                                  {renderSelectedFields({
-                                    singleItem: key,
-                                    index,
-                                  })}
-                                  {renderSelectedFields5({
-                                    singleItem: key,
-                                    index,
-                                  })}
-                                  {renderSelectedFields6({
-                                    singleItem: key,
-                                    index,
-                                  })}
-
-                                  {renderSelectedtaxFields({
-                                    singleItem: key,
-                                    index,
-                                  })}
-
-                                  {renderSelecteddiscountFields({
-                                    singleItem: key,
-                                    index,
-                                  })}
-                                  {renderSelecteddateFields({
-                                    singleItem: key,
-                                    index,
-                                  })}
-                                </div>
-                                <div>
-                                  {" "}
-                                  {renderSelecteddescriptionFields({
-                                    singleItem: key,
-                                    index,
-                                  })}
-                                </div>
-                              </div>
-                            )}
-                            <div className="flex justify-end pr-7 pb-3">
-                              {key && (
-                                <>
-                                  <p className="font-bold text-md">
-                                    Amounts: $
-                                    {key.discount
-                                      ? (key.price *
-                                          key.quantity *
-                                          key.discount) /
-                                        100
-                                      : key.price * key.quantity}
-                                  </p>
-                                </>
-                              )}
-                            </div>
-                          </div>
-                          <button
-                            className="text-2xl     font-extrabold"
-                            onClick={() => removeItem(index)}
-                          >
-                            <RxCross1 />
-                          </button>
-                        </div>
-                      ))
-                    ) : (
-                      <p>Section 2 data is missing or undefined</p>
-                    )} */}
                     {data[key]?.section2 && data[key].section2.length > 0 ? (
                       data[key].section2.map((key, index, array) => (
                         <div className="flex" key={index}>
@@ -2013,14 +1938,14 @@ const AddEdit = () => {
                                     singleItem: key,
                                     index,
                                   })}
-                                  {renderSelectedFields7({
+                                  {/* {renderSelectedFields7({
                                     singleItem: key,
                                     index,
                                   })}
                                   {renderSelectedFields8({
                                     singleItem: key,
                                     index,
-                                  })}
+                                  })} */}
 
                                   {renderSelectedtaxFields({
                                     singleItem: key,
@@ -2081,6 +2006,127 @@ const AddEdit = () => {
                         </p>
                       </div>
                     )}
+                    {Array.isArray(itemlist) ? (
+                      itemlist.map((singleItem, index, array) => (
+                        <div className="flex" key={index}>
+                          <div
+                            className="h-auto w-[97%] mt-4 border-2 rounded-xl mx-auto"
+                            id="additems"
+                          >
+                            {customiseui ? (
+                              <div className="p-3">
+                                <div className="flex items-center">
+                                  <div className="flex gap-4">
+                                    {renderFields({ singleItem, index })}
+                                    {singleItem.quantity !== undefined &&
+                                      singleItem.quantity !== "" &&
+                                      singleItem.quantity !== 0 &&
+                                      renderFields5({ singleItem, index })}
+                                    {singleItem.price !== undefined &&
+                                      singleItem.price !== "" &&
+                                      singleItem.price !== 0 &&
+                                      renderFields6({ singleItem, index })}
+
+                                    {singleItem.hours !== undefined &&
+                                      singleItem.hours !== "" &&
+                                      singleItem.hours !== 0 &&
+                                      renderFields7({ singleItem, index })}
+
+                                    {singleItem.tax !== undefined &&
+                                      singleItem.tax !== "" &&
+                                      singleItem.tax !== 0 &&
+                                      renderFieldstax({ singleItem, index })}
+                                    {singleItem.discount !== undefined &&
+                                      singleItem.discount !== "" &&
+                                      singleItem.discount !== 0 &&
+                                      renderFieldsdiscount({
+                                        singleItem,
+                                        index,
+                                      })}
+                                    {singleItem.date !== undefined &&
+                                      singleItem.date !== "" &&
+                                      singleItem.date !== 0 &&
+                                      renderFieldsdate({ singleItem, index })}
+                                  </div>
+                                </div>
+                                <div>
+                                  {singleItem.description !== undefined &&
+                                    singleItem.description !== "" &&
+                                    singleItem.description !== 0 &&
+                                    renderFieldsdescription({
+                                      singleItem,
+                                      index,
+                                    })}
+                                </div>
+                              </div>
+                            ) : (
+                              <div className="p-3">
+                                <div className="flex items-center gap-5">
+                                  {renderSelectedFields({ singleItem, index })}
+                                  {renderSelectedFields5({ singleItem, index })}
+                                  {renderSelectedFields6({ singleItem, index })}
+                                  {/* {renderSelectedFields7({ singleItem, index })}
+              {renderSelectedFields8({ singleItem, index })} */}
+                                  {renderSelectedtaxFields({
+                                    singleItem,
+                                    index,
+                                  })}
+                                  {renderSelecteddiscountFields({
+                                    singleItem,
+                                    index,
+                                  })}
+                                  {renderSelecteddateFields({
+                                    singleItem,
+                                    index,
+                                  })}
+                                </div>
+                                <div>
+                                  {renderSelecteddescriptionFields({
+                                    singleItem,
+                                    index,
+                                  })}
+                                </div>
+                              </div>
+                            )}
+                            <div className="flex justify-end pr-7 pb-3">
+                              {singleItem && (
+                                <>
+                                  <p className="font-bold text-md">
+                                    Amounts: $
+                                    {singleItem.discount
+                                      ? (singleItem.price *
+                                          singleItem.quantity *
+                                          singleItem.discount) /
+                                        100
+                                      : singleItem.price * singleItem.quantity}
+                                  </p>
+                                </>
+                              )}
+                            </div>
+                          </div>
+
+                          {array.length > 1 && (
+                            <button
+                              className="text-2xl font-extrabold"
+                              onClick={() => removeItem(index)}
+                            >
+                              <RxCross1 />
+                            </button>
+                          )}
+                          {itemlist.length - 1 === index && (
+                            <button
+                              className="ml-4 mt-3 text-blue-600 font-extrabold flex items-center text-xl"
+                              onClick={handleAddItem}
+                            >
+                              <AiOutlinePlus className="mr-2" /> Add items or
+                              Service
+                            </button>
+                          )}
+                        </div>
+                      ))
+                    ) : (
+                      <></>
+                    )}
 
                     {/* {key.length - 1 === index && (
                       <button
@@ -2099,13 +2145,15 @@ const AddEdit = () => {
                   </div>
                   {/*  ==============================  section-3  ============================= */}
 
-                  <div className="p-3">
-                    <p className="font-extrabold text-[24px] ml-5">
-                      Message To Customer
-                    </p>
-                    <div className=" mb-2" data-te-input-wrapper-init>
+                  <div className="">
+                    <div className="ml-5 mt-14">
+                      <p className="font-extrabold text-xl ">
+                        Message To Customer
+                      </p>
+                    </div>
+                    <div className=" mt-4" data-te-input-wrapper-init>
                       <textarea
-                        className="peer block min-h-[auto] w-[97%] mx-auto border border-gray-500 rounded mt-5 text-black px-3 py-[0.32rem]"
+                        className="peer block min-h-[auto] w-[97%] mx-auto border border-gray-500 rounded mt-4 text-black px-3 py-[0.32rem]"
                         id="exampleFormControlTextarea1"
                         rows="6"
                         name="section3messege"
@@ -2116,23 +2164,23 @@ const AddEdit = () => {
                     </div>
                   </div>
 
-                  <div className="flex items-center ml-7 ">
-                    <p className="text-bold  mt-3 text-blue-600  font-extrabold  flex items-center text-xl cursor-pointer ">
+                  <div className="flex items-center ml-5 ">
+                    <p className="text-bold mt-2   text-blue-600  font-extrabold  flex items-center text-xl cursor-pointer ">
                       Add terms and conditions
                     </p>
 
-                    <p className="text-bold  ml-1 mt-3 text-blue-600  font-extrabold  flex items-center text-xl cursor-pointer ">
+                    <p className="text-bold  ml-1  mt-2 text-blue-600  font-extrabold  flex items-center text-xl cursor-pointer ">
                       <RxDividerVertical className="text-black flex item-center text-xl" />{" "}
                       Add reference number
                     </p>
                   </div>
                   {/*===================================  section-4  =================================*/}
-                  <div className="  p-3 ">
-                    <div className="flex items-center">
-                      <p className=" text-[24px]  ml-3 font-extrabold w-full">
+                  <div className="    ">
+                    <div className="flex items-center  ml-12 mt-14 ">
+                      <p className="   font-bold text-3xl w-full">
                         More Options
                       </p>
-                      <button onClick={hideshow}>
+                      <button onClick={hideshow} className="pr-12">
                         {" "}
                         {showMemo ? (
                           <IoIosArrowUp className="text-2xl text-gray-500" />
@@ -2141,11 +2189,11 @@ const AddEdit = () => {
                         )}
                       </button>
                     </div>
-                    <hr className="mt-3 w-[98%] mx-auto" />
+                    <hr className="mt-3 w-[93%] mx-auto" />
                     <div className="  ">
                       {showMemo && (
                         <>
-                          <div className="">
+                          <div className=" ml-12">
                             <p className="text-xl p-3 ml-1 font-bold">
                               Attachments
                             </p>
@@ -2165,13 +2213,15 @@ const AddEdit = () => {
                               JPG GIF PNG PDF | Up to 5 files , 4MB per file
                             </p>
                           </div>
-                          <div className=" p-3 mt-10 mb-4">
-                            <p className="font-extrabold text-[24px]  ">
-                              Memo To Self
-                            </p>
-                            <div className=" mb-2">
+                          <div className="mb-4 ">
+                            <div className="ml-12 mt-14">
+                              <p className="font-extrabold text-xl  ">
+                                Memo To Self
+                              </p>
+                            </div>
+                            <div className=" mt-4">
                               <textarea
-                                className="peer block min-h-[auto] placeholder-gray-500  w-[98%] mx-auto border border-gray-500 rounded mt-5 text-black px-3 py-[0.32rem]  "
+                                className="peer block min-h-[auto] placeholder-gray-500  w-[93%] mx-auto border border-gray-500 rounded mt-4 text-black px-3 py-[0.32rem]  "
                                 rows="6"
                                 placeholder="Memo"
                                 name="memo"
@@ -2202,7 +2252,7 @@ const AddEdit = () => {
                       <div>
                         {businessdata && (
                           <>
-                            <div className="text-lg font-bold pl-5">
+                            <div className="text-lg font-extrabold pl-5">
                               {" "}
                               {/* {businessname} */}
                               {
@@ -2343,14 +2393,16 @@ const AddEdit = () => {
                       </select>
                       <div className="mx-auto mt-3  h-[300px] grid grid-cols-2">
                         <div>
-                          <p className="font-semibold w-full text-lg p-3">
+                          <p className="font-extrabold w-full text-lg p-3">
                             Subtotal{" "}
                           </p>
-                          <p className="font-semibold text-lg p-3">
+                          <p className="font-extrabold text-lg p-3">
                             Other Discounts{" "}
                           </p>
-                          <p className="font-semibold text-lg p-3">Shipping </p>
-                          <p className="font-semibold text-lg p-3">
+                          <p className="font-extrabold text-lg p-3">
+                            Shipping{" "}
+                          </p>
+                          <p className="font-extrabold text-lg p-3">
                             Other Amount{" "}
                           </p>
                           <p className="font-bold text-lg p-3">

@@ -1641,7 +1641,7 @@ const InvoicePage = () => {
             <div className="border  h-auto rounded-xl bg-white ">
               {/*===================================   section-1  =============================== */}
               <div className="">
-                <div className="  flex justify-end w-full mt-3 pr-4">
+                <div className="  flex justify-end w-full mt-3 pr-5">
                   <Box sx={{ minWidth: 150, marginRight: "20px" }}>
                     <FormControl fullWidth>
                       <InputLabel id="template-select-label">
@@ -1705,8 +1705,8 @@ const InvoicePage = () => {
                   </Box>
                 </div>
                 <hr className="mt-3 w-[97%] mx-auto" />
-                <div className="flex items-center p-3 ml-5">
-                  <p className="font-bold text-xl">Bill To</p>
+                <div className="flex items-center ml-5 mt-7">
+                  <p className="font-extrabold text-xl">Bill To</p>
                   <button className="rounded-full bg-[#003087] px-3 py-1 text-white font-bold ml-3">
                     invoice single customer
                   </button>
@@ -1778,11 +1778,13 @@ const InvoicePage = () => {
                 <>
                   {isVisibleinvoicepage && (
                     <>
-                      <div className="p-3 ">
-                        <div className="flex items-center pl-3 pt-20">
-                          <p className="font-bold text-xl w-full ml-3">Items</p>
+                      <div className=" ">
+                        <div className="flex items-center ml-5 mt-16">
+                          <p className="font-extrabold text-xl w-full ">
+                            Items
+                          </p>
                           <button
-                            className=" text-blue-500 text-xl font-extrabold  rounded-full  flex justify-end items-center mr-3"
+                            className=" text-blue-500 text-xl font-extrabold  rounded-full  flex justify-end items-center mr-6"
                             onClick={(event) => {
                               event.preventDefault();
                               setCustomisePopup(true);
@@ -1898,13 +1900,15 @@ const InvoicePage = () => {
                       </div>
                       {/*  ==============================  section-3  ============================= */}
 
-                      <div className="p-3">
-                        <p className="font-bold text-xl ml-5">
-                          Message To Customer
-                        </p>
-                        <div className=" mb-2" data-te-input-wrapper-init>
+                      <div className="">
+                        <div className="ml-5 mt-14">
+                          <p className="font-extrabold text-xl ">
+                            Message To Customer
+                          </p>
+                        </div>
+                        <div className=" mt-4" data-te-input-wrapper-init>
                           <textarea
-                            className="peer block min-h-[auto] w-[97%] mx-auto border border-gray-500 rounded mt-5 text-black px-3 py-[0.32rem]  "
+                            className="peer block min-h-[auto] w-[97%] mx-auto border border-gray-500 rounded mt-4 text-black px-3 py-[0.32rem]  "
                             id="exampleFormControlTextarea1"
                             rows="6"
                             value={input.section3messege}
@@ -1917,7 +1921,7 @@ const InvoicePage = () => {
                         </div>
                       </div>
 
-                      <div className="flex items-center ml-7 ">
+                      <div className="flex items-center ml-5 ">
                         <p className="text-bold  mt-3 text-blue-600  font-extrabold  flex items-center text-xl cursor-pointer ">
                           Add terms and conditions
                         </p>
@@ -1928,12 +1932,12 @@ const InvoicePage = () => {
                         </p>
                       </div>
                       {/*===================================  section-4  =================================*/}
-                      <div className="  p-3 ">
-                        <div className="flex items-center">
-                          <p className=" text-[27px]  ml-3 font-semibold w-full">
+                      <div className="  ">
+                        <div className="flex items-center  ml-12 mt-14">
+                          <p className="    font-bold text-3xl w-full">
                             More Options
                           </p>
-                          <button onClick={hideshow}>
+                          <button onClick={hideshow} className="pr-12">
                             {" "}
                             {showMemo ? (
                               <IoIosArrowUp className="text-2xl text-gray-500" />
@@ -1942,11 +1946,11 @@ const InvoicePage = () => {
                             )}
                           </button>
                         </div>
-                        <hr className="mt-3 w-[98%] mx-auto" />
+                        <hr className="mt-3 w-[93%] mx-auto" />
                         <div className="  ">
                           {showMemo && (
                             <>
-                              <div className="">
+                              <div className="ml-12">
                                 <p className="text-xl p-3 ml-1 font-bold">
                                   Attachments
                                 </p>
@@ -1969,13 +1973,15 @@ const InvoicePage = () => {
                                   JPG GIF PNG PDF | Up to 5 files , 4MB per file
                                 </p>
                               </div>
-                              <div className=" p-3 mt-10 mb-4">
-                                <p className="font-bold text-xl ml-2">
-                                  Memo To Self
-                                </p>
-                                <div className=" mb-2">
+                              <div className="  mb-4">
+                                <div className="ml-12 mt-14">
+                                  <p className="font-extrabold text-xl ">
+                                    Memo To Self
+                                  </p>
+                                </div>
+                                <div className=" mt-4">
                                   <textarea
-                                    className="peer block min-h-[auto] placeholder-gray-500  w-[98%] mx-auto border border-gray-500 rounded mt-5 text-black px-3 py-[0.32rem]  "
+                                    className="peer block min-h-[auto] placeholder-gray-500  w-[93%] mx-auto border border-gray-500 rounded mt-5 text-black px-3 py-[0.32rem]  "
                                     rows="6"
                                     placeholder="Memo"
                                     value={inputuser4.memo}
@@ -2022,9 +2028,9 @@ const InvoicePage = () => {
                 <>
                   {isVisiblehours && (
                     <>
-                      <div className="p-3 h-auto   ">
-                        <div className="flex items-center pl-3 pt-20">
-                          <p className="font-bold w-full  text-xl ml-3">
+                      <div className="ml-5 mt-16h-auto   ">
+                        <div className="flex items-center ">
+                          <p className="font-extrabold text-[22px] w-full   ml-3">
                             Items
                           </p>
                           <button
@@ -2188,11 +2194,13 @@ const InvoicePage = () => {
                 <>
                   {isVisibleaccount && (
                     <>
-                      <div className="p-3 h-auto ">
-                        <div className="flex items-center  pl-3 pt-20">
-                          <p className="font-bold text-xl w-full ml-3">Items</p>
+                      <div className=" h-auto ">
+                        <div className="flex items-center  ml-5 mt-16">
+                          <p className="font-extrabold text-xl w-full ">
+                            Items
+                          </p>
                           <button
-                            className=" text-blue-500 text-xl font-extrabold  rounded-full  flex justify-end items-center mr-3"
+                            className=" text-blue-500 text-xl font-extrabold  rounded-full  flex justify-end items-center mr-6"
                             onClick={(event) => {
                               event.preventDefault();
                               setCustomisePopup(true);
@@ -2204,11 +2212,8 @@ const InvoicePage = () => {
 
                         {itemlist.map((singleItem, index) => {
                           return (
-                            <div
-                              key={index}
-                              className="h-36 w-[97%] mt-4 mb-6  border-2  rounded-xl mx-auto"
-                            >
-                              <div className="flex items-center mx-auto  mt-3 gap-10">
+                            <div key={index}>
+                              <div className="h-auto  w-[97%] mt-4  border-2 rounded-xl mx-auto">
                                 {customiseui ? (
                                   <div className="p-3 flex items-center gap-10">
                                     {renderFields({ singleItem, index })}
@@ -2216,10 +2221,10 @@ const InvoicePage = () => {
                                     {renderFields6({ singleItem, index })}
                                   </div>
                                 ) : (
-                                  <div className="p-3   ">
+                                  <div className="  ">
                                     <>
                                       {" "}
-                                      <div className="p-3   ">
+                                      <div className="  ">
                                         <div className="   flex items-center gap-5 ">
                                           {renderSelectedFields({
                                             singleItem,
@@ -2247,27 +2252,28 @@ const InvoicePage = () => {
                                     </>
                                   </div>
                                 )}
+                                <div className=" pr-7  mt-2 ">
+                                  {itemlist
+                                    .slice(itemlist.length - 1)
+                                    .map((index) => (
+                                      <div key={index} className=" pr-7 ">
+                                        {singleItem && (
+                                          <>
+                                            <p className="font-bold flex justify-end   text-md">
+                                              Amounts: {currency}
+                                              {singleItem.discount
+                                                ? (singleItem.price *
+                                                    singleItem.discount) /
+                                                  100
+                                                : singleItem.price}
+                                            </p>
+                                          </>
+                                        )}
+                                      </div>
+                                    ))}
+                                </div>
                               </div>
-                              <div className=" pr-7  mt-2 ">
-                                {itemlist
-                                  .slice(itemlist.length - 1)
-                                  .map((index) => (
-                                    <div key={index} className=" pr-7 pb-3">
-                                      {singleItem && (
-                                        <>
-                                          <p className="font-bold flex justify-end  pb-2 text-md">
-                                            Amounts: {currency}
-                                            {singleItem.discount
-                                              ? (singleItem.price *
-                                                  singleItem.discount) /
-                                                100
-                                              : singleItem.price}
-                                          </p>
-                                        </>
-                                      )}
-                                    </div>
-                                  ))}
-                              </div>
+
                               <div className="  ">
                                 {" "}
                                 {itemlist.length - 1 === index && (
@@ -2489,11 +2495,11 @@ const InvoicePage = () => {
               </select>
               <div className="mx-auto mt-3  h-[300px] grid grid-cols-2">
                 <div>
-                  <p className="font-semibold w-full text-lg p-3">Subtotal </p>
-                  <p className="font-semibold text-lg p-3">Other Discounts </p>
-                  <p className="font-semibold text-lg p-3">Shipping </p>
-                  <p className="font-semibold text-lg p-3">Other Amount </p>
-                  <p className="font-bold text-lg p-3">
+                  <p className="font-extrabold w-full text-lg p-3">Subtotal </p>
+                  <p className="font-extrabold text-lg p-3">Other Discounts </p>
+                  <p className="font-extrabold text-lg p-3">Shipping </p>
+                  <p className="font-extrabold text-lg p-3">Other Amount </p>
+                  <p className="font-extrabold text-lg p-3">
                     Total{" "}
                     <span className="text-sm text-blue-500 font-bold">
                       (Tax Excl.)
