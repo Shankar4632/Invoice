@@ -81,9 +81,9 @@ const AddEdit = () => {
   const [fields7, setFields7] = useState(["hours"]);
   const [fields8, setFields8] = useState(["rate"]);
   const [fields1, setField1] = useState(["description"]);
-  const [fields2, setField2] = useState(["tax"]);
-  const [fields3, setField3] = useState(["discount"]);
-  const [fields4, setField4] = useState(["date"]);
+  const [fields2, setField2] = useState([]);
+  const [fields3, setField3] = useState([]);
+  const [fields4, setField4] = useState([]);
 
   const [selectedFields, setSelectedFields] = useState([]);
   const [selectedFields5, setSelectedFields5] = useState([]);
@@ -97,6 +97,7 @@ const AddEdit = () => {
   const [selecteddateFields, setSelecteddateFields] = useState([]);
   const [selecteddiscountFields, setSelecteddiscountFields] = useState([]);
   const [customiseui, setCustomiseui] = useState(true);
+  //total and shiipping
   const [discounts, setDiscount] = useState("");
   const [shipping, setShipping] = useState("");
   const [otherAmount, setOtherAmount] = useState("");
@@ -829,27 +830,6 @@ const AddEdit = () => {
   // };
 
   // const renderFields7 = ({ singleItem, index }) => {
-  //   return fields7.map((field7) => (
-  //     <div key={field7}>
-  //       {singleItem[field7] !== undefined && singleItem[field7] !== 0 && (
-  //         <TextField
-  //           id="outlined-search"
-  //           type="text"
-  //           label={field7}
-  //           style={{
-  //             marginRight: "10px",
-  //             width: "100%",
-  //           }}
-  //           className=""
-  //           name={field7}
-  //           value={(singleItem && singleItem[field7]) || ""}
-  //           onChange={(e) => handlechangeadditemlist(e, index)}
-  //         />
-  //       )}
-  //     </div>
-  //   ));
-  // };
-  // const renderFields7 = ({ singleItem, index }) => {
   //   return fields7.map((field7) => {
   //     const isKey = typeof singleItem === "string";
 
@@ -1054,15 +1034,18 @@ const AddEdit = () => {
   };
 
   const renderFieldsdiscount = ({ singleItem, index }) => {
-    return fields3.map((fields3) => {
-      const isKey = typeof singleItem === "string";
+    const isKey = typeof singleItem === "string";
 
+    console.log("singleItem for renderFieldsdiscount:", singleItem);
+    console.log("isKey for renderFieldsdiscount:", isKey);
+    console.log("Discount field value:", singleItem["discount"]);
+    return fields3.map((fields3) => {
       return (
         <div key={fields3}>
-          {(!isKey ||
+          {/* {(!isKey ||
             (singleItem[fields3] !== undefined &&
               singleItem[fields3] !== "")) && (
-            <TextField
+            <TextFied
               id="outlined-search"
               type="text"
               label={fields3}
@@ -1073,6 +1056,28 @@ const AddEdit = () => {
               className=" w-[500px]"
               name={fields3}
               value={isKey ? "" : (singleItem && singleItem[fields3]) || ""}
+              onChange={(e) =>
+                isKey
+                  ? handlechangeadditemlist(e, index)
+                  : handlechangeadditemlist(e, index)
+              }
+            />
+          )} */}
+
+          {(!isKey ||
+            (singleItem["discount"] !== undefined &&
+              singleItem["discount"] !== "")) && (
+            <TextField
+              id="outlined-search"
+              type="text"
+              label="Discount"
+              style={{
+                marginRight: "10px",
+                width: "100%",
+              }}
+              className=" w-[500px]"
+              name="discount"
+              value={isKey ? "" : (singleItem && singleItem["discount"]) || ""}
               onChange={(e) =>
                 isKey
                   ? handlechangeadditemlist(e, index)
@@ -1133,124 +1138,6 @@ const AddEdit = () => {
       );
     });
   };
-  // const renderFieldsdate = ({ singleItem, index }) => {
-  //   return fields4.map((fields4) => {
-  //     const isKey = typeof singleItem === "string";
-  //     const fieldValue = singleItem[fields4];
-
-  //     console.log(`Field: ${fields4}`);
-  //     console.log(`isKey: ${isKey}`);
-  //     console.log(`fieldValue: ${fieldValue}`);
-  //     console.log("singleItem:", singleItem);
-
-  //     return (
-  //       <div key={fields4}>
-  //         {(!isKey ||
-  //           (fieldValue[fields4] !== undefined &&
-  //             fieldValue[fields4] !== "")) && (
-  //           <TextField
-  //             id="outlined-search"
-  //             type="date"
-  //             style={{
-  //               marginRight: "10px",
-  //               width: "100%",
-  //             }}
-  //             name="date"
-  //             // value={isKey ? "" : (singleItem && singleItem[fields4]) || ""}
-  //             value={isKey ? "" : fieldValue || ""}
-  //             onChange={(e) =>
-  //               isKey
-  //                 ? handlechangeadditemlist(e, index)
-  //                 : handlechangeadditemlist(e, index)
-  //             }
-  //           />
-  //         )}
-  //       </div>
-  //     );
-  //   });
-  // };
-  // const renderFieldsdate = ({ singleItem, index }) => {
-  //   return fields4.map((field) => {
-  //     const isKey = typeof singleItem === "string";
-  //     const fieldValue = singleItem[field];
-
-  //     console.log(`Field: ${field}`);
-  //     console.log(`isKey: ${isKey}`);
-  //     console.log(`fieldValue: ${fieldValue}`);
-  //     console.log("singleItemdate:", singleItem);
-
-  //     return (
-  //       <div key={field}>
-  //         {(!isKey ||
-  //           (fieldValue !== undefined && fieldValue[field] !== "")) && (
-
-  //           <input
-  //             type="date"
-  //             name={field}
-  //             className="p-4 border flex items-start ml-6 border-gray-300"
-  //             value={isKey ? "" : (fieldValue && fieldValue[field]) || ""}
-  //             onChange={(e) =>
-  //               isKey
-  //                 ? handlechangeadditemlist(e, index)
-  //                 : handlechangeadditemlist(e, index)
-  //             }
-  //           />
-  //         )}
-  //       </div>
-  //     );
-  //   });
-  // };
-
-  // const renderFields = ({ singleItem, index }) => {
-  //   return fields.map((field) => {
-  //     const isKey = typeof singleItem === "string";
-  //     console.log("singleItemdiscount:", singleItem);
-
-  //     return (
-  //       <div key={field}>
-  //         {(!isKey ||
-  //           (singleItem[field] !== undefined && singleItem[field] !== "")) && (
-  //           <TextField
-  //             id="outlined-search"
-  //             type="text"
-  //             label={field}
-  //             style={{
-  //               marginRight: "10px",
-  //             }}
-  //             className=" w-[500px]"
-  //             name={field}
-  //             value={isKey ? "" : (singleItem && singleItem[field]) || ""}
-  //             onChange={(e) =>
-  //               isKey
-  //                 ? handlechangeadditemlist(e, index)
-  //                 : handlechangeadditemlist(e, index)
-  //             }
-  //           />
-  //         )}
-  //       </div>
-  //     );
-  //   });
-  // };
-
-  // const renderFieldsdate = ({ singleItem, index }) => {
-  //   return fields4.map((fields4) => (
-  //     <div key={fields4}>
-  //       {singleItem[fields4] !== undefined && singleItem[fields4] !== 0 && (
-  //         <TextField
-  //           id="outlined-search"
-  //           type="date"
-  //           style={{
-  //             marginRight: "10px",
-  //             width: "100%",
-  //           }}
-  //           name="date"
-  //           value={singleItem[fields3]}
-  //           onChange={(e) => handlechangeadditemlist(e, index)}
-  //         />
-  //       )}
-  //     </div>
-  //   ));
-  // };
 
   // Render the selected fields below the form
   const renderSelectedFields = ({ singleItem, index }) => {
@@ -1367,36 +1254,6 @@ const AddEdit = () => {
     ));
   };
 
-  // const renderSelecteddiscountFields = ({ singleItem, index }) => {
-  //   return selecteddiscountFields.map((field) => {
-  //     const isKey = typeof singleItem === "string";
-  //     return (
-  //       <div key={field}>
-  //         {(!isKey ||
-  //           (singleItem[field] !== undefined && singleItem[field] !== "")) && (
-  //           <div key={field}>
-  //             <TextField
-  //               id="outlined-search"
-  //               type="text"
-  //               label="Discount"
-  //               name="discount"
-  //               style={{
-  //                 marginRight: "10px",
-  //                 width: "100%",
-  //               }}
-  //               value={isKey ? "" : (singleItem && singleItem[field]) || ""}
-  //               onChange={(e) =>
-  //                 isKey
-  //                   ? handlechangeadditemlist(e, index)
-  //                   : handlechangeadditemlist(e, index)
-  //               }
-  //             />
-  //           </div>
-  //         )}
-  //       </div>
-  //     );
-  //   });
-  // };
   const renderSelecteddiscountFields = ({ singleItem, index }) => {
     return selecteddiscountFields.map((field) => (
       <div key={field}>
@@ -1438,7 +1295,7 @@ const AddEdit = () => {
         <Box
           component="form"
           sx={{
-            "& .MuiTextField-root": { m: 1, width: "25ch" },
+            "& .MuiTextField-root": { width: "25ch" },
           }}
           noValidate
           autoComplete="off"
@@ -2083,7 +1940,7 @@ const AddEdit = () => {
                       <p>Section 2 data is missing or undefined</p>
                     )} */}
                     {data[key]?.section2 && data[key].section2.length > 0 ? (
-                      data[key].section2.map((key, index) => (
+                      data[key].section2.map((key, index, array) => (
                         <div className="flex" key={index}>
                           <div
                             className="h-auto  w-[97%] mt-4  border-2 rounded-xl mx-auto  "
@@ -2202,7 +2059,8 @@ const AddEdit = () => {
                               )}
                             </div>
                           </div>
-                          {index > 0 && (
+
+                          {array.length > 1 && (
                             <button
                               className="text-2xl font-extrabold"
                               onClick={() => removeItem(index)}
@@ -2210,15 +2068,6 @@ const AddEdit = () => {
                               <RxCross1 />
                             </button>
                           )}
-                          {/* {data[key]?.section2 &&
-                          data[key].section2.length > 0 ? (
-                            <button
-                              className="text-2xl font-extrabold"
-                              onClick={() => removeItem(index)}
-                            >
-                              <RxCross1 />
-                            </button>
-                          ) : null} */}
                         </div>
                       ))
                     ) : (
