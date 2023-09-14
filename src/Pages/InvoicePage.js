@@ -1480,7 +1480,6 @@ const InvoicePage = () => {
                                   singleItem,
                                   index,
                                 })}
-
                                 {renderFields7({
                                   singleItem,
                                   index,
@@ -1488,7 +1487,10 @@ const InvoicePage = () => {
                                 {renderFields8({
                                   singleItem,
                                   index,
-                                })}
+                                })}{" "}
+                                {renderFieldstax({ singleItem, index })}
+                                {renderFieldsdiscount({ singleItem, index })}
+                                {renderFieldsdate({ singleItem, index })}
                               </div>
                             </div>
                             <div>
@@ -2028,8 +2030,8 @@ const InvoicePage = () => {
                 <>
                   {isVisiblehours && (
                     <>
-                      <div className="ml-5 mt-16h-auto   ">
-                        <div className="flex items-center ">
+                      <div className="h-auto ">
+                        <div className="flex items-center ml-5 mt-16 ">
                           <p className="font-extrabold text-[22px] w-full   ml-3">
                             Items
                           </p>
@@ -2048,103 +2050,102 @@ const InvoicePage = () => {
                           return (
                             <>
                               {" "}
-                              <div
-                                key={index}
-                                className="h-64 w-[97%] mt-4  border-2  rounded-xl mx-auto  "
-                              >
-                                {customiseui ? (
-                                  <>
-                                    <div className="p-3   ">
-                                      <div className="   flex items-center ">
-                                        <div className="flex gap-4">
-                                          {renderFields({
-                                            singleItem,
-                                            index,
-                                          })}
+                              <div key={index}>
+                                <div className="h-64 w-[97%] mt-4  border-2  rounded-xl mx-auto  ">
+                                  {customiseui ? (
+                                    <>
+                                      <div className="p-3   ">
+                                        <div className="   flex items-center ">
+                                          <div className="flex gap-4">
+                                            {renderFields({
+                                              singleItem,
+                                              index,
+                                            })}
 
-                                          {renderFields7({
-                                            singleItem,
-                                            index,
-                                          })}
-                                          {renderFields8({
+                                            {renderFields7({
+                                              singleItem,
+                                              index,
+                                            })}
+                                            {renderFields8({
+                                              singleItem,
+                                              index,
+                                            })}
+                                          </div>
+                                        </div>
+                                        <div>
+                                          {renderFieldsdescription({
                                             singleItem,
                                             index,
                                           })}
                                         </div>
                                       </div>
-                                      <div>
-                                        {renderFieldsdescription({
-                                          singleItem,
-                                          index,
-                                        })}
-                                      </div>
-                                    </div>
-                                  </>
-                                ) : (
-                                  <>
-                                    <div className="p-3   ">
-                                      <div className="   flex items-center  ">
-                                        <div className="flex gap-4">
-                                          {renderSelectedFields({
-                                            singleItem,
-                                            index,
-                                          })}
-                                          {renderSelectedFields7({
-                                            singleItem,
-                                            index,
-                                          })}
-                                          {renderSelectedFields8({
-                                            singleItem,
-                                            index,
-                                          })}
-                                          {renderSelectedtaxFields({
-                                            singleItem,
-                                            index,
-                                          })}
-                                          {renderSelecteddiscountFields({
-                                            singleItem,
-                                            index,
-                                          })}
-                                          {renderSelecteddateFields({
+                                    </>
+                                  ) : (
+                                    <>
+                                      <div className="p-3   ">
+                                        <div className="   flex items-center  ">
+                                          <div className="flex gap-4">
+                                            {renderSelectedFields({
+                                              singleItem,
+                                              index,
+                                            })}
+                                            {renderSelectedFields7({
+                                              singleItem,
+                                              index,
+                                            })}
+                                            {renderSelectedFields8({
+                                              singleItem,
+                                              index,
+                                            })}
+                                            {renderSelectedtaxFields({
+                                              singleItem,
+                                              index,
+                                            })}
+                                            {renderSelecteddiscountFields({
+                                              singleItem,
+                                              index,
+                                            })}
+                                            {renderSelecteddateFields({
+                                              singleItem,
+                                              index,
+                                            })}
+                                          </div>
+                                        </div>
+                                        <div>
+                                          {" "}
+                                          {renderSelecteddescriptionFields({
                                             singleItem,
                                             index,
                                           })}
                                         </div>
                                       </div>
-                                      <div>
-                                        {" "}
-                                        {renderSelecteddescriptionFields({
-                                          singleItem,
-                                          index,
-                                        })}
-                                      </div>
-                                    </div>
-                                  </>
-                                )}
-                                <div className="flex justify-end pr-7 pb-3">
-                                  {itemlist
-                                    .slice(itemlist.length - 1)
-                                    .map((index) => (
-                                      <div
-                                        key={index}
-                                        className="flex justify-end pr-7 pb-3"
-                                      >
-                                        {singleItem && (
-                                          <>
-                                            <p className="font-bold text-md">
-                                              Amounts: {currency}
-                                              {singleItem.discount
-                                                ? (singleItem.hours *
-                                                    singleItem.rate *
-                                                    singleItem.discount) /
-                                                  100
-                                                : singleItem.hours *
-                                                  singleItem.rate}
-                                            </p>
-                                          </>
-                                        )}
-                                      </div>
-                                    ))}
+                                    </>
+                                  )}
+                                  <div className="flex justify-end pr-7 pb-3">
+                                    {itemlist
+                                      .slice(itemlist.length - 1)
+                                      .map((index) => (
+                                        <div
+                                          key={index}
+                                          className="flex justify-end pr-7 pb-3"
+                                        >
+                                          {singleItem && (
+                                            <>
+                                              <p className="font-bold text-md">
+                                                Amounts: {currency}
+                                                {singleItem.discount
+                                                  ? (singleItem.hours *
+                                                      singleItem.rate *
+                                                      singleItem.discount) /
+                                                    100
+                                                  : singleItem.hours *
+                                                    singleItem.rate}
+                                              </p>
+                                            </>
+                                          )}
+                                        </div>
+                                      ))}
+                                  </div>
                                 </div>
                                 <div>
                                   {" "}
@@ -2499,6 +2500,7 @@ const InvoicePage = () => {
                   <p className="font-extrabold text-lg p-3">Other Discounts </p>
                   <p className="font-extrabold text-lg p-3">Shipping </p>
                   <p className="font-extrabold text-lg p-3">Other Amount </p>
+                  <hr className="w-[100%] border border-blue-600 flex justify-end" />
                   <p className="font-extrabold text-lg p-3">
                     Total{" "}
                     <span className="text-sm text-blue-500 font-bold">
@@ -2591,6 +2593,7 @@ const InvoicePage = () => {
                       )}
                     </p>
                   </form>
+                  <hr className="w-[100%] border mx-auto" />
 
                   {isVisibleinvoicepage && (
                     <>
