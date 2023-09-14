@@ -348,6 +348,7 @@ const AddEdit = () => {
       section6Businessinformation: {
         lastDatasection6: {
           inputbusiness: { ...inputbusiness },
+          imageUrl: imageUrl,
         },
       },
     };
@@ -457,6 +458,7 @@ const AddEdit = () => {
       } else {
         setData({});
       }
+      console.log("Fetched Data :", snapshot.val());
       setIsLoading(false);
     });
     return () => {
@@ -528,25 +530,52 @@ const AddEdit = () => {
     };
   }, [key, data]); // Include loading state in the dependency array
 
+  // useEffect(() => {
+  //   if (
+  //     data &&
+  //     key &&
+  //     data[key] &&
+  //     data[key].section6Businessinformation?.lastDatasection6?.inputbusiness
+  //     // &&  data[key].section6Businessinformation?.imageUrl
+  //   ) {
+  //     setInputbusiness({
+  //       ...data[key].section6Businessinformation.lastDatasection6.inputbusiness,
+  //     });
+  //   } else {
+  //     setInputbusiness({ ...inititalsection6 });
+  //   }
+  //   return () => {
+  //     setInputbusiness({ ...inititalsection6 });
+  //     console.log("Updated Data6:", data);
+  //   };
+  // }, [key, data]); // Include loading state in the dependency array
   useEffect(() => {
+    console.log("Data:", data);
+
     if (
       data &&
       key &&
       data[key] &&
       data[key].section6Businessinformation?.lastDatasection6?.inputbusiness
-      // &&  data[key].section6Businessinformation?.imageUrl
     ) {
       setInputbusiness({
         ...data[key].section6Businessinformation.lastDatasection6.inputbusiness,
       });
+
+      // Uncomment this part to retrieve the imageUrl
+      const imageUrl =
+        data[key].section6Businessinformation.lastDatasection6.imageUrl;
+      setImageUrl(imageUrl);
     } else {
       setInputbusiness({ ...inititalsection6 });
     }
+
     return () => {
       setInputbusiness({ ...inititalsection6 });
       console.log("Updated Data6:", data);
     };
-  }, [key, data]); // Include loading state in the dependency array
+  }, [key, data]);
+
   const handleeditbusinessinfo = (e) => {
     e.preventDefault();
     setBusinessPopup(true);
@@ -2247,9 +2276,20 @@ const AddEdit = () => {
                   <div className="flex items-center h-20   w-full">
                     <div className="flex items-center justify-start ml-3 mt-3 w-full">
                       <div>
-                        {imageUrl && <img src={imageUrl} alt="Uploaded" />}
                         {imageUrl && (
-                          <>{data[key]?.section6Businessinformation.imageUrl}</>
+                          <div className="text-lg font-bold pl-5">
+                            <img
+                              src={imageUrl}
+                              alt="Image"
+                              style={{
+                                width: "60px",
+                                height: "60px",
+                              }}
+                              onError={(e) => {
+                                console.error("Error loading image:", e);
+                              }}
+                            />
+                          </div>
                         )}
                       </div>
                       <div>
